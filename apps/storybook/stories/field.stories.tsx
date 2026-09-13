@@ -4,6 +4,15 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 const meta: Meta<typeof Field> = {
   title: "Field",
   component: Field,
+  // Field's Input is width: 100% by design; constrain the canvas so the
+  // story reflects realistic usage instead of stretching full-bleed.
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 320 }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

@@ -5,6 +5,18 @@ import { expect, userEvent, within } from "storybook/test";
 const meta: Meta<typeof Combobox> = {
   title: "Combobox",
   component: Combobox,
+  // Combobox.Input is width: 100% by design (it fills whatever container a
+  // consumer gives it), so with no width constraint here it stretches to
+  // fill Storybook's full-bleed canvas -- correct per the component's
+  // contract, but not representative of real usage, where a combobox is
+  // typically placed in a form with a normal, bounded width.
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 320 }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
