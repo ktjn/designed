@@ -13,12 +13,14 @@
     "blue": {
       "500": { "$type": "color", "$value": "#3b82f6" },
       "600": { "$type": "color", "$value": "#2563eb" },
-      "700": { "$type": "color", "$value": "#1d4ed8" }
+      "700": { "$type": "color", "$value": "#1d4ed8" },
+      "800": { "$type": "color", "$value": "#1e40af" }
     },
     "red": {
       "500": { "$type": "color", "$value": "#ef4444" },
       "600": { "$type": "color", "$value": "#dc2626" },
-      "700": { "$type": "color", "$value": "#b91c1c" }
+      "700": { "$type": "color", "$value": "#b91c1c" },
+      "800": { "$type": "color", "$value": "#991b1b" }
     }
   }
 }

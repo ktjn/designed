@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "chromatic": "chromatic --exit-zero-on-changes"
   },
@@ -17,11 +18,15 @@
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.6.0",
+    "@storybook/addon-vitest": "10.6.0",
     "@storybook/react-vite": "10.6.0",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.1",
     "@vitejs/plugin-react": "6.1.1",
+    "@vitest/browser-playwright": "5.0.0",
+    "@vitest/coverage-v8": "5.0.0",
     "chromatic": "18.8.1",
+    "playwright": "1.63.0",
     "storybook": "10.6.0",
     "typescript": "6.0.2",
     "vite": "8.3.0"

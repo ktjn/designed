@@ -49,7 +49,7 @@ function App() {
             ]}
             defaultValue="basic"
           >
-            <Select.Trigger>
+            <Select.Trigger aria-label="Plan">
               <Select.Value placeholder="Choose a plan" />
             </Select.Trigger>
             <Select.Content>

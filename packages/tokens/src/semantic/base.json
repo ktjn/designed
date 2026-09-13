@@ -15,15 +15,15 @@
     },
     "action": {
       "primary": {
-        "default": { "$type": "color", "$value": "{color.blue.500}" },
-        "hover": { "$type": "color", "$value": "{color.blue.600}" },
-        "active": { "$type": "color", "$value": "{color.blue.700}" },
+        "default": { "$type": "color", "$value": "{color.blue.600}" },
+        "hover": { "$type": "color", "$value": "{color.blue.700}" },
+        "active": { "$type": "color", "$value": "{color.blue.800}" },
         "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
       },
       "danger": {
-        "default": { "$type": "color", "$value": "{color.red.500}" },
-        "hover": { "$type": "color", "$value": "{color.red.600}" },
-        "active": { "$type": "color", "$value": "{color.red.700}" },
+        "default": { "$type": "color", "$value": "{color.red.600}" },
+        "hover": { "$type": "color", "$value": "{color.red.700}" },
+        "active": { "$type": "color", "$value": "{color.red.800}" },
         "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
       }
     }

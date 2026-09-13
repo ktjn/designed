@@ -10,7 +10,7 @@ describe("Select", () => {
   it("renders a closed trigger with a placeholder, without mounting the popup", () => {
     render(
       <Select>
-        <Select.Trigger>
+        <Select.Trigger aria-label="Plan">
           <Select.Value placeholder="Choose a plan" />
         </Select.Trigger>
         <Select.Content>
@@ -37,7 +37,7 @@ describe("Select", () => {
           { value: "pro", label: "Pro" },
         ]}
       >
-        <Select.Trigger>
+        <Select.Trigger aria-label="Plan">
           <Select.Value placeholder="Choose a plan" />
         </Select.Trigger>
         <Select.Content>

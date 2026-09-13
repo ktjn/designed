@@ -19,7 +19,13 @@ const items = [
 export const Default: Story = {
   render: () => (
     <Select items={items}>
-      <Select.Trigger>
+      {/* aria-label is required: a combobox's accessible name comes from a
+          label mechanism, not its content (the content is the current
+          *value*, not a label) -- same reason native <select> needs an
+          associated <label>. Found via a real-browser axe check flagging
+          "Buttons must have discernible text" even though the trigger
+          visibly showed placeholder text. */}
+      <Select.Trigger aria-label="Plan">
         <Select.Value placeholder="Choose a plan" />
       </Select.Trigger>
       <Select.Content>
@@ -35,7 +41,7 @@ export const SelectInteraction: Story = {
     const onValueChange = fn();
     return (
       <Select items={items} onValueChange={onValueChange}>
-        <Select.Trigger>
+        <Select.Trigger aria-label="Plan">
           <Select.Value placeholder="Choose a plan" />
         </Select.Trigger>
         <Select.Content>

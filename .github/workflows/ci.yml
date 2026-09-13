@@ -27,6 +27,10 @@ jobs:
       # topological order, so build first is required, not just conventional.
       - run: pnpm build
       - run: pnpm typecheck
+      # apps/storybook's test script runs Storybook's play() functions via
+      # @storybook/addon-vitest in a real Chromium browser (Popover/Menu/
+      # Select/Combobox/Tooltip can't run under jsdom -- see README Phase 5).
+      - run: pnpm --filter @ktjn/storybook exec playwright install --with-deps chromium
       - run: pnpm test
       - run: pnpm run check:packages
       - run: pnpm run check:size

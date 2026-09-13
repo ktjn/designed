@@ -37,6 +37,8 @@ function SelectRoot<Value = unknown>({
 
 export interface SelectTriggerProps {
   id?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
   "aria-describedby"?: string;
   "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
   children?: ReactNode;
@@ -44,6 +46,8 @@ export interface SelectTriggerProps {
 
 function SelectTrigger({
   id,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   "aria-invalid": ariaInvalid,
   children,
@@ -52,6 +56,8 @@ function SelectTrigger({
   return (
     <BaseSelect.Trigger
       id={id ?? field?.controlId}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
       className={styles.trigger}

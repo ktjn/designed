@@ -453,11 +453,13 @@ interface SelectRootProps<Value = unknown> {
 declare function SelectRoot<Value = unknown>({ onValueChange, ...rest }: SelectRootProps<Value>): react_jsx_runtime.JSX.Element;
 interface SelectTriggerProps {
     id?: string;
+    "aria-label"?: string;
+    "aria-labelledby"?: string;
     "aria-describedby"?: string;
     "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
     children?: ReactNode;
 }
-declare function SelectTrigger({ id, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, }: SelectTriggerProps): react_jsx_runtime.JSX.Element;
+declare function SelectTrigger({ id, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, }: SelectTriggerProps): react_jsx_runtime.JSX.Element;
 interface SelectValueProps {
     placeholder?: string;
 }

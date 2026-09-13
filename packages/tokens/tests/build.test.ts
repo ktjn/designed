@@ -62,7 +62,7 @@ describe("token build", () => {
   it("resolves aliases to concrete values rather than leaving references unresolved", async () => {
     const base = await readFile(path.join(distDir, "css/base.css"), "utf8");
     expect(base).not.toContain("{color.");
-    expect(base).toContain("--ds-color-action-primary-default: #3b82f6;");
+    expect(base).toContain("--ds-color-action-primary-default: #2563eb;");
   });
 
   it("theme overrides only redefine the tokens that change for that dimension", async () => {

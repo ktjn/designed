@@ -19,12 +19,14 @@
     "blue": {
       "500": "#3b82f6",
       "600": "#2563eb",
-      "700": "#1d4ed8"
+      "700": "#1d4ed8",
+      "800": "#1e40af"
     },
     "red": {
       "500": "#ef4444",
       "600": "#dc2626",
-      "700": "#b91c1c"
+      "700": "#b91c1c",
+      "800": "#991b1b"
     },
     "background": {
       "default": "#ffffff",
@@ -41,15 +43,15 @@
     },
     "action": {
       "primary": {
-        "default": "#3b82f6",
-        "hover": "#2563eb",
-        "active": "#1d4ed8",
+        "default": "#2563eb",
+        "hover": "#1d4ed8",
+        "active": "#1e40af",
         "foreground": "#ffffff"
       },
       "danger": {
-        "default": "#ef4444",
-        "hover": "#dc2626",
-        "active": "#b91c1c",
+        "default": "#dc2626",
+        "hover": "#b91c1c",
+        "active": "#991b1b",
         "foreground": "#ffffff"
       }
     }
