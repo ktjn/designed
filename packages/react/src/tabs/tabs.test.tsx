@@ -61,4 +61,15 @@ describe("Tabs", () => {
     const { container } = render(<BasicTabs />);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  // Regression test for a real bug: the CSS targeted [data-selected] for the
+  // active-tab underline, but Base UI's Tab sets [data-active] instead, so
+  // the indicator never rendered (found via a manual Storybook review).
+  it("marks the selected tab with data-active, not data-selected", () => {
+    render(<BasicTabs />);
+    const account = screen.getByRole("tab", { name: "Account" });
+    const password = screen.getByRole("tab", { name: "Password" });
+    expect(account.hasAttribute("data-active")).toBe(true);
+    expect(password.hasAttribute("data-active")).toBe(false);
+  });
 });

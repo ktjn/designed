@@ -58,6 +58,24 @@ function CheckboxImpl(
             strokeLinejoin="round"
           />
         </svg>
+        {/* Indeterminate gets its own dash glyph -- CSS toggles which of
+            these two is visible via the indicator's data-indeterminate
+            attribute. Previously both checked and indeterminate rendered
+            the same checkmark, so the two states were visually identical. */}
+        <svg
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          focusable="false"
+          className={styles.dash}
+        >
+          <path
+            d="M3 8H13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
       </BaseCheckbox.Indicator>
     </BaseCheckbox.Root>
   );

@@ -15,7 +15,7 @@
   cursor: pointer;
 }
 
-.tab[data-selected] {
+.tab[data-active] {
   color: var(--ds-color-foreground-default);
   border-bottom: 2px solid var(--ds-color-action-primary-default);
 }

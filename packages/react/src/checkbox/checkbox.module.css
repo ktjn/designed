@@ -10,7 +10,8 @@
   background: var(--ds-color-background-default);
 }
 
-.root[data-checked] {
+.root[data-checked],
+.root[data-indeterminate] {
   background: var(--ds-color-action-primary-default);
   border-color: var(--ds-color-action-primary-default);
   color: var(--ds-color-action-primary-foreground);
@@ -30,7 +31,20 @@
   display: flex;
 }
 
-.checkmark {
+.checkmark,
+.dash {
   width: 0.625rem;
   height: 0.625rem;
+}
+
+.dash {
+  display: none;
+}
+
+.indicator[data-indeterminate] .checkmark {
+  display: none;
+}
+
+.indicator[data-indeterminate] .dash {
+  display: block;
 }
