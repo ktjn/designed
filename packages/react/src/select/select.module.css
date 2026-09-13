@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--ds-space-control-inline);
+  box-sizing: border-box;
   width: 100%;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
