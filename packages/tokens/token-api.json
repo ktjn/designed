@@ -1,0 +1,113 @@
+{
+  "border": {
+    "width": {
+      "100": "1px",
+      "200": "2px"
+    }
+  },
+  "color": {
+    "neutral": {
+      "0": "#ffffff",
+      "100": "#f4f4f5",
+      "200": "#e4e4e7",
+      "400": "#a1a1aa",
+      "700": "#3f3f46",
+      "800": "#27272a",
+      "900": "#18181b",
+      "1000": "#000000"
+    },
+    "blue": {
+      "500": "#3b82f6",
+      "600": "#2563eb",
+      "700": "#1d4ed8"
+    },
+    "red": {
+      "500": "#ef4444",
+      "600": "#dc2626",
+      "700": "#b91c1c"
+    },
+    "background": {
+      "default": "#ffffff",
+      "subtle": "#f4f4f5"
+    },
+    "foreground": {
+      "default": "#18181b",
+      "muted": "#3f3f46",
+      "inverse": "#ffffff"
+    },
+    "border": {
+      "default": "#e4e4e7",
+      "focus": "#3b82f6"
+    },
+    "action": {
+      "primary": {
+        "default": "#3b82f6",
+        "hover": "#2563eb",
+        "active": "#1d4ed8",
+        "foreground": "#ffffff"
+      },
+      "danger": {
+        "default": "#ef4444",
+        "hover": "#dc2626",
+        "active": "#b91c1c",
+        "foreground": "#ffffff"
+      }
+    }
+  },
+  "elevation": {
+    "100": {
+      "color": "#00000026",
+      "offsetX": "0",
+      "offsetY": "1px",
+      "blur": "2px",
+      "spread": "0"
+    },
+    "200": {
+      "color": "#00000033",
+      "offsetX": "0",
+      "offsetY": "4px",
+      "blur": "8px",
+      "spread": "0"
+    }
+  },
+  "font": {
+    "family": {
+      "base": ["system-ui", "sans-serif"]
+    },
+    "size": {
+      "100": "0.875rem",
+      "200": "1rem",
+      "300": "1.25rem"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "bold": 700
+    }
+  },
+  "motion": {
+    "duration": {
+      "fast": "120ms",
+      "default": "200ms"
+    },
+    "easing": {
+      "standard": [0.2, 0, 0, 1]
+    }
+  },
+  "radius": {
+    "100": "0.25rem",
+    "200": "0.5rem",
+    "control": "0.25rem"
+  },
+  "space": {
+    "100": "0.25rem",
+    "200": "0.5rem",
+    "300": "0.75rem",
+    "400": "1rem",
+    "600": "1.5rem",
+    "control": {
+      "inline": "1rem",
+      "block": "0.75rem"
+    }
+  }
+}

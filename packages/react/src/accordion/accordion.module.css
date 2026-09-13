@@ -1,0 +1,37 @@
+.item {
+  border-bottom: 1px solid var(--ds-color-border-default);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-default);
+  background: none;
+  border: none;
+  padding-block: var(--ds-space-control-block);
+  padding-inline: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.trigger[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.panel {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+  padding-block-end: var(--ds-space-control-block);
+}

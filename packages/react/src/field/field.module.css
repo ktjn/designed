@@ -1,0 +1,25 @@
+.root {
+  display: grid;
+  gap: var(--ds-space-control-block);
+}
+
+.label {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-default);
+}
+
+.description {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+  margin: 0;
+}
+
+.error {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-action-danger-default);
+  margin: 0;
+}

@@ -1,0 +1,52 @@
+.input {
+  display: block;
+  width: 100%;
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-default);
+  background: var(--ds-color-background-default);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 1px;
+}
+
+.popup {
+  display: grid;
+  gap: 2px;
+  min-width: 10rem;
+  max-height: 16rem;
+  overflow: auto;
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  padding: 4px;
+}
+
+.item {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  border-radius: var(--ds-radius-control);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  cursor: pointer;
+}
+
+.item[data-highlighted] {
+  background: var(--ds-color-background-subtle);
+  outline: none;
+}
+
+.empty {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+}

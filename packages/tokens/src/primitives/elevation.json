@@ -1,0 +1,24 @@
+{
+  "elevation": {
+    "100": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000026",
+        "offsetX": "0",
+        "offsetY": "1px",
+        "blur": "2px",
+        "spread": "0"
+      }
+    },
+    "200": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000033",
+        "offsetX": "0",
+        "offsetY": "4px",
+        "blur": "8px",
+        "spread": "0"
+      }
+    }
+  }
+}

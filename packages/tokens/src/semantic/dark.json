@@ -1,0 +1,17 @@
+{
+  "color": {
+    "background": {
+      "default": { "$type": "color", "$value": "{color.neutral.1000}" },
+      "subtle": { "$type": "color", "$value": "{color.neutral.900}" }
+    },
+    "foreground": {
+      "default": { "$type": "color", "$value": "{color.neutral.0}" },
+      "muted": { "$type": "color", "$value": "{color.neutral.400}" },
+      "inverse": { "$type": "color", "$value": "{color.neutral.900}" }
+    },
+    "border": {
+      "default": { "$type": "color", "$value": "{color.neutral.700}" },
+      "focus": { "$type": "color", "$value": "{color.blue.500}" }
+    }
+  }
+}

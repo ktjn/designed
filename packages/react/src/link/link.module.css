@@ -1,0 +1,12 @@
+.root {
+  color: var(--ds-color-action-primary-default);
+  font-family: var(--ds-font-family-base);
+}
+
+.root:hover {
+  color: var(--ds-color-action-primary-hover);
+}
+
+.root:active {
+  color: var(--ds-color-action-primary-active);
+}

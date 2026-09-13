@@ -1,0 +1,36 @@
+{
+  "name": "@ktjn/design-tokens",
+  "version": "0.1.0-alpha.0",
+  "description": "Framework-independent design tokens for the design system.",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./css/base.css": "./dist/css/base.css",
+    "./css/schemes/*.css": "./dist/css/schemes/*.css",
+    "./css/brands/*.css": "./dist/css/brands/*.css",
+    "./css/densities/*.css": "./dist/css/densities/*.css",
+    "./css/contrasts/*.css": "./dist/css/contrasts/*.css",
+    "./json/tokens.json": "./dist/json/tokens.json",
+    "./types": {
+      "types": "./dist/types/tokens.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsx scripts/build-tokens.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check:package": "publint"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "publint": "0.3.24",
+    "style-dictionary": "5.5.2",
+    "tsx": "4.19.4",
+    "typescript": "6.0.2",
+    "vitest": "5.0.0"
+  }
+}

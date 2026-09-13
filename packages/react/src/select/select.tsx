@@ -1,0 +1,110 @@
+import { Select as BaseSelect } from "@base-ui/react/select";
+import { ChevronDownIcon } from "@ktjn/design-icons";
+import type { ReactNode } from "react";
+import { useFieldContext } from "../field/field-context.js";
+import styles from "./select.module.css";
+
+export interface SelectRootProps<Value = unknown> {
+  value?: Value;
+  defaultValue?: Value;
+  onValueChange?: (value: Value | null) => void;
+  disabled?: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+  name?: string;
+  /**
+   * Maps item values to their display label, so `Select.Value` renders the
+   * label of the selected item instead of the raw value. Required for
+   * `Select.Value` to show anything other than the raw value once selected.
+   */
+  items?:
+    | Record<string, ReactNode>
+    | ReadonlyArray<{ label: ReactNode; value: Value }>;
+  children?: ReactNode;
+}
+
+function SelectRoot<Value = unknown>({
+  onValueChange,
+  ...rest
+}: SelectRootProps<Value>) {
+  return (
+    <BaseSelect.Root
+      onValueChange={(value) => onValueChange?.(value)}
+      {...rest}
+    />
+  );
+}
+
+export interface SelectTriggerProps {
+  id?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
+  children?: ReactNode;
+}
+
+function SelectTrigger({
+  id,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  children,
+}: SelectTriggerProps) {
+  const field = useFieldContext();
+  return (
+    <BaseSelect.Trigger
+      id={id ?? field?.controlId}
+      aria-describedby={ariaDescribedBy ?? field?.describedBy}
+      aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
+      className={styles.trigger}
+    >
+      {children}
+      <BaseSelect.Icon className={styles.icon}>
+        <ChevronDownIcon aria-hidden />
+      </BaseSelect.Icon>
+    </BaseSelect.Trigger>
+  );
+}
+
+export interface SelectValueProps {
+  placeholder?: string;
+}
+
+function SelectValue({ placeholder }: SelectValueProps) {
+  return <BaseSelect.Value placeholder={placeholder} />;
+}
+
+export interface SelectContentProps {
+  children?: ReactNode;
+}
+
+function SelectContent({ children }: SelectContentProps) {
+  return (
+    <BaseSelect.Portal>
+      <BaseSelect.Positioner sideOffset={4}>
+        <BaseSelect.Popup className={styles.popup}>
+          <BaseSelect.List>{children}</BaseSelect.List>
+        </BaseSelect.Popup>
+      </BaseSelect.Positioner>
+    </BaseSelect.Portal>
+  );
+}
+
+export interface SelectItemProps {
+  value: unknown;
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function SelectItem({ children, ...rest }: SelectItemProps) {
+  return (
+    <BaseSelect.Item className={styles.item} {...rest}>
+      <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
+    </BaseSelect.Item>
+  );
+}
+
+export const Select = Object.assign(SelectRoot, {
+  Trigger: SelectTrigger,
+  Value: SelectValue,
+  Content: SelectContent,
+  Item: SelectItem,
+});

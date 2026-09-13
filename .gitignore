@@ -1,0 +1,10 @@
+node_modules/
+dist/
+packages/icons/src/generated/
+packages/icons/src/index.ts
+*.tsbuildinfo
+.turbo/
+storybook-static/
+coverage/
+.env
+.env.*

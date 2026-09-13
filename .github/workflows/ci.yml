@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      # Build before typecheck/test: packages/react imports packages/icons at
+      # the source level (Dialog uses CloseIcon), and apps/storybook and
+      # examples/react resolve @ktjn/design-react/@ktjn/design-tokens through
+      # their package exports maps, which point at dist. pnpm -r runs in
+      # topological order, so build first is required, not just conventional.
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm run check:packages
+      - run: pnpm run check:size
+      - run: pnpm run check:tarballs

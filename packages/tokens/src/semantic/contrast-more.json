@@ -1,0 +1,11 @@
+{
+  "color": {
+    "border": {
+      "default": { "$type": "color", "$value": "{color.neutral.900}" },
+      "focus": { "$type": "color", "$value": "{color.blue.700}" }
+    },
+    "foreground": {
+      "muted": { "$type": "color", "$value": "{color.neutral.900}" }
+    }
+  }
+}

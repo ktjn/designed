@@ -1,0 +1,6 @@
+{
+  "radius": {
+    "100": { "$type": "dimension", "$value": "0.25rem" },
+    "200": { "$type": "dimension", "$value": "0.5rem" }
+  }
+}

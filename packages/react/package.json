@@ -1,0 +1,71 @@
+{
+  "name": "@ktjn/design-react",
+  "version": "0.1.0-alpha.0",
+  "description": "React component library for the design system, built on Base UI.",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@ktjn/design-tokens": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.8.0",
+    "@ktjn/design-icons": "workspace:*"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@size-limit/esbuild": "13.1.1",
+    "@size-limit/file": "13.1.1",
+    "@testing-library/react": "16.1.0",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
+    "axe-core": "4.13.0",
+    "jsdom": "26.1.0",
+    "publint": "0.3.24",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.88.0",
+    "size-limit": "13.1.1",
+    "tsup": "8.5.0",
+    "typescript": "6.0.2",
+    "vitest": "5.0.0",
+    "vitest-axe": "1.0.0-pre.5"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check:package": "publint && attw --pack . --profile esm-only",
+    "size": "size-limit"
+  },
+  "size-limit": [
+    {
+      "name": "Button (single component import)",
+      "path": "dist/button/button.js",
+      "import": "{ Button }",
+      "limit": "1 kB"
+    },
+    {
+      "name": "Full package import (all components, including Base UI + floating-ui)",
+      "path": "dist/index.js",
+      "limit": "100 kB"
+    }
+  ]
+}

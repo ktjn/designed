@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>@ktjn/design-tokens demo</title>
+    <link rel="stylesheet" href="../dist/css/base.css" />
+    <link rel="stylesheet" href="../dist/css/schemes/dark.css" />
+    <link rel="stylesheet" href="../dist/css/densities/compact.css" />
+    <link rel="stylesheet" href="../dist/css/contrasts/more.css" />
+    <style>
+      body {
+        background: var(--ds-color-background-default);
+        color: var(--ds-color-foreground-default);
+        font-family: system-ui, sans-serif;
+        padding: var(--ds-space-control-block) var(--ds-space-control-inline);
+      }
+      .card {
+        border: 1px solid var(--ds-color-border-default);
+        border-radius: var(--ds-radius-control);
+        padding: var(--ds-space-control-block) var(--ds-space-control-inline);
+        margin-block: var(--ds-space-control-block);
+      }
+      button {
+        background: var(--ds-color-action-primary-default);
+        color: var(--ds-color-action-primary-foreground);
+        border: none;
+        border-radius: var(--ds-radius-control);
+        padding-block: var(--ds-space-control-block);
+        padding-inline: var(--ds-space-control-inline);
+      }
+    </style>
+  </head>
+  <body>
+    <p>Plain HTML consuming @ktjn/design-tokens with no React dependency.</p>
+    <div class="card">
+      <button type="button">Action</button>
+    </div>
+    <fieldset>
+      <legend>Color scheme</legend>
+      <button type="button" onclick="document.documentElement.removeAttribute('data-color-scheme')">Light</button>
+      <button type="button" onclick="document.documentElement.setAttribute('data-color-scheme','dark')">Dark</button>
+    </fieldset>
+    <fieldset>
+      <legend>Density</legend>
+      <button type="button" onclick="document.documentElement.removeAttribute('data-density')">Default</button>
+      <button type="button" onclick="document.documentElement.setAttribute('data-density','compact')">Compact</button>
+    </fieldset>
+    <fieldset>
+      <legend>Contrast</legend>
+      <button type="button" onclick="document.documentElement.removeAttribute('data-contrast')">Default</button>
+      <button type="button" onclick="document.documentElement.setAttribute('data-contrast','more')">More</button>
+    </fieldset>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-control-inline);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-medium);
+  border: none;
+  border-radius: var(--ds-radius-control);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  cursor: pointer;
+}
+
+.root:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.primary {
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+}
+
+.primary:not(:disabled):hover {
+  background: var(--ds-color-action-primary-hover);
+}
+
+.primary:not(:disabled):active {
+  background: var(--ds-color-action-primary-active);
+}
+
+.secondary {
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  border: 1px solid var(--ds-color-border-default);
+}
+
+.danger {
+  background: var(--ds-color-action-danger-default);
+  color: var(--ds-color-action-danger-foreground);
+}
+
+.danger:not(:disabled):hover {
+  background: var(--ds-color-action-danger-hover);
+}
+
+.danger:not(:disabled):active {
+  background: var(--ds-color-action-danger-active);
+}

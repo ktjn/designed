@@ -1,0 +1,75 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(
+    in srgb,
+    var(--ds-color-foreground-default) 40%,
+    transparent
+  );
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  gap: var(--ds-space-control-block);
+  min-width: 20rem;
+  max-width: calc(100vw - 2rem);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  border-radius: var(--ds-radius-control);
+  padding: var(--ds-space-control-inline);
+}
+
+.title {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-200);
+  font-weight: var(--ds-font-weight-medium);
+  margin: 0;
+}
+
+.description {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+  margin: 0;
+}
+
+.iconClose {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: var(--ds-color-foreground-muted);
+  cursor: pointer;
+}
+
+.iconClose:hover {
+  background: var(--ds-color-background-subtle);
+}
+
+.iconClose:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.iconClose svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ds-space-control-inline);
+}

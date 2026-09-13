@@ -1,0 +1,37 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  width: 2rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--ds-color-border-default);
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.root[data-checked] {
+  background: var(--ds-color-action-primary-default);
+}
+
+.root[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.thumb {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 9999px;
+  background: var(--ds-color-background-default);
+  transition: translate 120ms ease;
+}
+
+.thumb[data-checked] {
+  translate: 0.875rem 0;
+}

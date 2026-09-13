@@ -1,0 +1,37 @@
+name: Chromatic
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    # Requires a CHROMATIC_PROJECT_TOKEN repository secret from a Chromatic
+    # project (https://www.chromatic.com). The publish step is skipped
+    # cleanly when the secret is absent, so this workflow doesn't fail
+    # before the project is set up.
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @ktjn/design-tokens run build
+      - run: pnpm --filter @ktjn/design-react run build
+      - name: Publish to Chromatic
+        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
+        uses: chromaui/action@v1
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        with:
+          workingDir: apps/storybook
+          exitZeroOnChanges: true

@@ -1,0 +1,40 @@
+{
+  "color": {
+    "background": {
+      "default": { "$type": "color", "$value": "{color.neutral.0}" },
+      "subtle": { "$type": "color", "$value": "{color.neutral.100}" }
+    },
+    "foreground": {
+      "default": { "$type": "color", "$value": "{color.neutral.900}" },
+      "muted": { "$type": "color", "$value": "{color.neutral.700}" },
+      "inverse": { "$type": "color", "$value": "{color.neutral.0}" }
+    },
+    "border": {
+      "default": { "$type": "color", "$value": "{color.neutral.200}" },
+      "focus": { "$type": "color", "$value": "{color.blue.500}" }
+    },
+    "action": {
+      "primary": {
+        "default": { "$type": "color", "$value": "{color.blue.500}" },
+        "hover": { "$type": "color", "$value": "{color.blue.600}" },
+        "active": { "$type": "color", "$value": "{color.blue.700}" },
+        "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
+      },
+      "danger": {
+        "default": { "$type": "color", "$value": "{color.red.500}" },
+        "hover": { "$type": "color", "$value": "{color.red.600}" },
+        "active": { "$type": "color", "$value": "{color.red.700}" },
+        "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
+      }
+    }
+  },
+  "space": {
+    "control": {
+      "inline": { "$type": "dimension", "$value": "{space.400}" },
+      "block": { "$type": "dimension", "$value": "{space.300}" }
+    }
+  },
+  "radius": {
+    "control": { "$type": "dimension", "$value": "{radius.100}" }
+  }
+}

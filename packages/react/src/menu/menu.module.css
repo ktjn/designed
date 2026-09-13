@@ -1,0 +1,29 @@
+.popup {
+  display: grid;
+  gap: 2px;
+  min-width: 10rem;
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  padding: 4px;
+}
+
+.item {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  border-radius: var(--ds-radius-control);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  cursor: pointer;
+}
+
+.item[data-highlighted] {
+  background: var(--ds-color-background-subtle);
+  outline: none;
+}
+
+.item[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
