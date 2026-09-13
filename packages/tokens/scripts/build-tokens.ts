@@ -7,6 +7,14 @@ const SEMANTIC_BASE = "src/semantic/base.json";
 const isFromFile = (fileName: string) => (token: TransformedToken) =>
   token.filePath.replace(/\\/g, "/").endsWith(fileName);
 
+// Typography has no semantic indirection today (a single font family and a
+// small fixed size/weight scale, none of which vary by theme override), so
+// its primitives are exposed directly as CSS variables/types alongside the
+// semantic/base.json tokens rather than duplicated behind semantic aliases.
+const isBaseCssToken = (token: TransformedToken) =>
+  isFromFile("semantic/base.json")(token) ||
+  isFromFile("primitives/font.json")(token);
+
 const tokenIdentifier = (token: TransformedToken) => token.path.join(".");
 
 function registerTypesFormat() {
@@ -15,9 +23,7 @@ function registerTypesFormat() {
   }: {
     dictionary: { allTokens: TransformedToken[] };
   }) => {
-    const semanticTokens = dictionary.allTokens.filter(
-      isFromFile("semantic/base.json"),
-    );
+    const semanticTokens = dictionary.allTokens.filter(isBaseCssToken);
     const identifierUnion = semanticTokens
       .map((token) => `  | "${tokenIdentifier(token)}"`)
       .join("\n");
@@ -53,7 +59,7 @@ async function buildBase() {
           {
             destination: "base.css",
             format: "css/variables",
-            filter: isFromFile("semantic/base.json"),
+            filter: isBaseCssToken,
             options: { selector: ":root" },
           },
         ],
