@@ -14,7 +14,12 @@ jobs:
     # Requires a CHROMATIC_PROJECT_TOKEN repository secret from a Chromatic
     # project (https://www.chromatic.com). The publish step is skipped
     # cleanly when the secret is absent, so this workflow doesn't fail
-    # before the project is set up.
+    # before the project is set up. Checking the secret through an env var
+    # (rather than referencing `secrets` directly in a step `if:`) avoids a
+    # GitHub Actions schema-validation failure that otherwise fails the
+    # whole workflow before any step runs.
+    env:
+      HAS_CHROMATIC_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -28,7 +33,7 @@ jobs:
       - run: pnpm --filter @ktjn/design-tokens run build
       - run: pnpm --filter @ktjn/design-react run build
       - name: Publish to Chromatic
-        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
+        if: ${{ env.HAS_CHROMATIC_TOKEN == 'true' }}
         uses: chromaui/action@v1
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
