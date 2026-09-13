@@ -92,7 +92,9 @@ export interface ComboboxContentProps {
   emptyMessage?: ReactNode;
 }
 
-function ComboboxContent({ emptyMessage = "No results" }: ComboboxContentProps) {
+function ComboboxContent({
+  emptyMessage = "No results",
+}: ComboboxContentProps) {
   return (
     <BaseCombobox.Portal>
       <BaseCombobox.Positioner sideOffset={4}>
