@@ -30,8 +30,10 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @ktjn/design-tokens run build
-      - run: pnpm --filter @ktjn/design-react run build
+      # Build order matters: packages/react imports packages/icons at the
+      # source level (Dialog/Select use CloseIcon/ChevronDownIcon), so icons
+      # must be built before react, not just tokens before react.
+      - run: pnpm --filter @ktjn/design-tokens --filter @ktjn/design-icons --filter @ktjn/design-react run build
       - name: Publish to Chromatic
         if: ${{ env.HAS_CHROMATIC_TOKEN == 'true' }}
         uses: chromaui/action@v1
@@ -39,4 +41,5 @@ jobs:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         with:
           workingDir: apps/storybook
+          buildScriptName: build
           exitZeroOnChanges: true
