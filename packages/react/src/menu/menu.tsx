@@ -1,5 +1,6 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import buttonStyles from "../button/button.module.css";
 import styles from "./menu.module.css";
 
 export interface MenuRootProps {
@@ -21,7 +22,12 @@ export interface MenuTriggerProps
 }
 
 function MenuTrigger(props: MenuTriggerProps) {
-  return <BaseMenu.Trigger {...props} />;
+  return (
+    <BaseMenu.Trigger
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export interface MenuContentProps {

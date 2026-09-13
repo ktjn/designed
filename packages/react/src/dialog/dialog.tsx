@@ -1,6 +1,7 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { CloseIcon } from "@ktjn/design-icons";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
 
 export interface DialogRootProps {
@@ -23,7 +24,12 @@ export interface DialogTriggerProps
 }
 
 function DialogTrigger(props: DialogTriggerProps) {
-  return <BaseDialog.Trigger {...props} />;
+  return (
+    <BaseDialog.Trigger
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export interface DialogContentProps {
@@ -80,7 +86,12 @@ export interface DialogCloseProps
 }
 
 function DialogCloseButton(props: DialogCloseProps) {
-  return <BaseDialog.Close {...props} />;
+  return (
+    <BaseDialog.Close
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export const Dialog = Object.assign(DialogRoot, {

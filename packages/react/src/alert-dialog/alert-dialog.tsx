@@ -1,5 +1,6 @@
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import buttonStyles from "../button/button.module.css";
 import { Dialog } from "../dialog/dialog.js";
 import styles from "../dialog/dialog.module.css";
 
@@ -25,7 +26,12 @@ export interface AlertDialogTriggerProps
 }
 
 function AlertDialogTrigger(props: AlertDialogTriggerProps) {
-  return <BaseAlertDialog.Trigger {...props} />;
+  return (
+    <BaseAlertDialog.Trigger
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export interface AlertDialogContentProps {

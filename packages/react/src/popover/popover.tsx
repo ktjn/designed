@@ -1,5 +1,6 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import buttonStyles from "../button/button.module.css";
 import styles from "./popover.module.css";
 
 export interface PopoverRootProps {
@@ -21,7 +22,12 @@ export interface PopoverTriggerProps
 }
 
 function PopoverTrigger(props: PopoverTriggerProps) {
-  return <BasePopover.Trigger {...props} />;
+  return (
+    <BasePopover.Trigger
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export type PopoverSide = "top" | "right" | "bottom" | "left";
@@ -83,7 +89,12 @@ export interface PopoverCloseProps
 }
 
 function PopoverClose(props: PopoverCloseProps) {
-  return <BasePopover.Close {...props} />;
+  return (
+    <BasePopover.Close
+      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      {...props}
+    />
+  );
 }
 
 export const Popover = Object.assign(PopoverRoot, {
