@@ -19,18 +19,14 @@ export const Default: Story = {
   ),
 };
 
-// KNOWN ISSUE: verified against a real Chromium browser (via Playwright,
-// against the built storybook-static output, not just jsdom) that hovering
-// the trigger does not open the tooltip within several seconds, even with
-// realistic multi-step pointer movement and confirmed mouseenter/pointerenter
-// events reaching the trigger element. The same result reproduces with
-// @base-ui/react's raw Tooltip compound components directly (no wrapper
-// involved), so this is not a bug in this package's Tooltip implementation.
-// Root cause not yet isolated — candidates include a floating-ui-react
-// hover-intent/velocity heuristic that headless Chromium's synthetic pointer
-// events don't satisfy, or a Base UI requirement not covered in its public
-// docs. This story is left in place (rather than deleted) so the gap stays
-// visible; do not treat a passing Storybook build as evidence this works.
+// Base UI's hover-open goes through floating-ui-react's `useHover`, which
+// only starts its open-delay ("rest") timer on a `mousemove` whose
+// movementX/movementY delta is large enough to not be filtered out as
+// pointer tremor (movementX**2 + movementY**2 < 2 is ignored). If the
+// pointer's start position happens to already be close to the trigger,
+// userEvent.hover's implicit move can fall under that threshold and the
+// tooltip never opens. Moving to a far corner first guarantees a large
+// enough delta regardless of where the pointer started.
 export const HoverInteraction: Story = {
   render: () => (
     <Tooltip content="Saves your changes">
@@ -39,15 +35,17 @@ export const HoverInteraction: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.hover(canvas.getByRole("button", { name: "Save" }));
+    const trigger = canvas.getByRole("button", { name: "Save" });
+    await userEvent.pointer({ target: canvasElement, coords: { x: 0, y: 0 } });
+    await userEvent.hover(trigger);
     const tooltip = await within(document.body).findByRole(
       "tooltip",
       {},
-      { timeout: 3000 },
+      { timeout: 5000 },
     );
     await expect(tooltip).toHaveTextContent("Saves your changes");
 
-    await userEvent.unhover(canvas.getByRole("button", { name: "Save" }));
+    await userEvent.unhover(trigger);
     await expectEventuallyRemoved(() =>
       within(document.body).queryByRole("tooltip"),
     );
