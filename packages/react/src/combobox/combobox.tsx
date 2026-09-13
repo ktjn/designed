@@ -3,6 +3,11 @@ import type { ReactNode } from "react";
 import { useFieldContext } from "../field/field-context.js";
 import styles from "./combobox.module.css";
 
+export interface ComboboxItem<Value> {
+  label: string;
+  value: Value;
+}
+
 export interface ComboboxRootProps<Value = unknown> {
   value?: Value;
   defaultValue?: Value;
@@ -12,17 +17,46 @@ export interface ComboboxRootProps<Value = unknown> {
   disabled?: boolean;
   readOnly?: boolean;
   name?: string;
+  /**
+   * The full list of selectable items. Base UI's filtering-as-you-type and
+   * its built-in empty state (`Combobox.Content`'s "no results" message)
+   * are entirely items-array driven -- without this, every item is treated
+   * as filtered out regardless of what's typed, and the empty message
+   * shows permanently. Found via a real-browser Storybook review: the
+   * input never filtered anything and "No results" rendered even when
+   * matching items existed.
+   */
+  items: ReadonlyArray<ComboboxItem<Value>>;
   children?: ReactNode;
 }
 
 function ComboboxRoot<Value = unknown>({
+  value,
+  defaultValue,
   onValueChange,
   onInputValueChange,
+  items,
   ...rest
 }: ComboboxRootProps<Value>) {
+  const findItem = (itemValue: Value | undefined) =>
+    items.find((item) => item.value === itemValue) ?? null;
+
   return (
     <BaseCombobox.Root
-      onValueChange={(value) => onValueChange?.(value)}
+      items={items}
+      itemToStringLabel={(item: ComboboxItem<Value>) => item.label}
+      itemToStringValue={(item: ComboboxItem<Value>) => String(item.value)}
+      isItemEqualToValue={(
+        item: ComboboxItem<Value>,
+        other: ComboboxItem<Value>,
+      ) => item.value === other.value}
+      value={value !== undefined ? findItem(value) : undefined}
+      defaultValue={
+        defaultValue !== undefined ? findItem(defaultValue) : undefined
+      }
+      onValueChange={(item: ComboboxItem<Value> | null) =>
+        onValueChange?.(item ? item.value : null)
+      }
       onInputValueChange={(inputValue) => onInputValueChange?.(inputValue)}
       {...rest}
     />
@@ -55,14 +89,10 @@ function ComboboxInput({
 }
 
 export interface ComboboxContentProps {
-  children?: ReactNode;
   emptyMessage?: ReactNode;
 }
 
-function ComboboxContent({
-  children,
-  emptyMessage = "No results",
-}: ComboboxContentProps) {
+function ComboboxContent({ emptyMessage = "No results" }: ComboboxContentProps) {
   return (
     <BaseCombobox.Portal>
       <BaseCombobox.Positioner sideOffset={4}>
@@ -70,28 +100,24 @@ function ComboboxContent({
           <BaseCombobox.Empty className={styles.empty}>
             {emptyMessage}
           </BaseCombobox.Empty>
-          <BaseCombobox.List>{children}</BaseCombobox.List>
+          <BaseCombobox.List>
+            {(item: ComboboxItem<unknown>) => (
+              <BaseCombobox.Item
+                key={String(item.value)}
+                value={item}
+                className={styles.item}
+              >
+                {item.label}
+              </BaseCombobox.Item>
+            )}
+          </BaseCombobox.List>
         </BaseCombobox.Popup>
       </BaseCombobox.Positioner>
     </BaseCombobox.Portal>
   );
 }
 
-export interface ComboboxItemProps {
-  value: unknown;
-  children?: ReactNode;
-}
-
-function ComboboxItem({ children, ...rest }: ComboboxItemProps) {
-  return (
-    <BaseCombobox.Item className={styles.item} {...rest}>
-      {children}
-    </BaseCombobox.Item>
-  );
-}
-
 export const Combobox = Object.assign(ComboboxRoot, {
   Input: ComboboxInput,
   Content: ComboboxContent,
-  Item: ComboboxItem,
 });

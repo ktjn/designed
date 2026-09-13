@@ -9,12 +9,14 @@ import { Combobox } from "./combobox";
 describe("Combobox", () => {
   it("renders a closed input without mounting the popup", () => {
     render(
-      <Combobox>
+      <Combobox
+        items={[
+          { value: "basic", label: "Basic" },
+          { value: "pro", label: "Pro" },
+        ]}
+      >
         <Combobox.Input placeholder="Search plans" />
-        <Combobox.Content>
-          <Combobox.Item value="basic">Basic</Combobox.Item>
-          <Combobox.Item value="pro">Pro</Combobox.Item>
-        </Combobox.Content>
+        <Combobox.Content />
       </Combobox>,
     );
     expect(screen.getByPlaceholderText("Search plans")).toBeTruthy();

@@ -22,7 +22,7 @@ export { Checkbox } from "./checkbox/checkbox.js";
 export type {
   ComboboxContentProps,
   ComboboxInputProps,
-  ComboboxItemProps,
+  ComboboxItem,
   ComboboxRootProps,
 } from "./combobox/combobox.js";
 export { Combobox } from "./combobox/combobox.js";

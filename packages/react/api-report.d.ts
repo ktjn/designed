@@ -113,6 +113,10 @@ export { Checkbox, type CheckboxProps };
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode } from 'react';
 
+interface ComboboxItem<Value> {
+    label: string;
+    value: Value;
+}
 interface ComboboxRootProps<Value = unknown> {
     value?: Value;
     defaultValue?: Value;
@@ -122,9 +126,19 @@ interface ComboboxRootProps<Value = unknown> {
     disabled?: boolean;
     readOnly?: boolean;
     name?: string;
+    /**
+     * The full list of selectable items. Base UI's filtering-as-you-type and
+     * its built-in empty state (`Combobox.Content`'s "no results" message)
+     * are entirely items-array driven -- without this, every item is treated
+     * as filtered out regardless of what's typed, and the empty message
+     * shows permanently. Found via a real-browser Storybook review: the
+     * input never filtered anything and "No results" rendered even when
+     * matching items existed.
+     */
+    items: ReadonlyArray<ComboboxItem<Value>>;
     children?: ReactNode;
 }
-declare function ComboboxRoot<Value = unknown>({ onValueChange, onInputValueChange, ...rest }: ComboboxRootProps<Value>): react_jsx_runtime.JSX.Element;
+declare function ComboboxRoot<Value = unknown>({ value, defaultValue, onValueChange, onInputValueChange, items, ...rest }: ComboboxRootProps<Value>): react_jsx_runtime.JSX.Element;
 interface ComboboxInputProps {
     id?: string;
     placeholder?: string;
@@ -133,22 +147,15 @@ interface ComboboxInputProps {
 }
 declare function ComboboxInput({ id, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): react_jsx_runtime.JSX.Element;
 interface ComboboxContentProps {
-    children?: ReactNode;
     emptyMessage?: ReactNode;
 }
-declare function ComboboxContent({ children, emptyMessage, }: ComboboxContentProps): react_jsx_runtime.JSX.Element;
-interface ComboboxItemProps {
-    value: unknown;
-    children?: ReactNode;
-}
-declare function ComboboxItem({ children, ...rest }: ComboboxItemProps): react_jsx_runtime.JSX.Element;
+declare function ComboboxContent({ emptyMessage }: ComboboxContentProps): react_jsx_runtime.JSX.Element;
 declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
-    Item: typeof ComboboxItem;
 };
 
-export { Combobox, type ComboboxContentProps, type ComboboxInputProps, type ComboboxItemProps, type ComboboxRootProps };
+export { Combobox, type ComboboxContentProps, type ComboboxInputProps, type ComboboxItem, type ComboboxRootProps };
 
 
 // ---- dialog/dialog.d.ts ----
@@ -274,7 +281,7 @@ export { Accordion, AccordionItemProps, AccordionPanelProps, AccordionRootProps,
 export { AlertDialog, AlertDialogContentProps, AlertDialogRootProps, AlertDialogTriggerProps } from './alert-dialog/alert-dialog.js';
 export { Button, ButtonProps, ButtonSize, ButtonVariant } from './button/button.js';
 export { Checkbox, CheckboxProps } from './checkbox/checkbox.js';
-export { Combobox, ComboboxContentProps, ComboboxInputProps, ComboboxItemProps, ComboboxRootProps } from './combobox/combobox.js';
+export { Combobox, ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps } from './combobox/combobox.js';
 export { Dialog, DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps } from './dialog/dialog.js';
 export { Field, FieldRootProps } from './field/field.js';
 export { FieldDescriptionProps } from './field/field-description.js';
