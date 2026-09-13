@@ -149,7 +149,7 @@ declare function ComboboxInput({ id, "aria-describedby": ariaDescribedBy, "aria-
 interface ComboboxContentProps {
     emptyMessage?: ReactNode;
 }
-declare function ComboboxContent({ emptyMessage }: ComboboxContentProps): react_jsx_runtime.JSX.Element;
+declare function ComboboxContent({ emptyMessage, }: ComboboxContentProps): react_jsx_runtime.JSX.Element;
 declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
