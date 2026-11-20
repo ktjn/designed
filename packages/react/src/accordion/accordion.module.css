@@ -6,17 +6,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--ds-space-control-inline);
+  box-sizing: border-box;
   width: 100%;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   font-weight: var(--ds-font-weight-medium);
   color: var(--ds-color-foreground-default);
   background: none;
   border: none;
-  padding-block: var(--ds-space-control-block);
+  padding-block: var(--ds-space-control-inline);
   padding-inline: 0;
   cursor: pointer;
   text-align: left;
+}
+
+.trigger::after {
+  content: "";
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-end: 0.25rem;
+  border-right: 2px solid var(--ds-color-foreground-muted);
+  border-bottom: 2px solid var(--ds-color-foreground-muted);
+  rotate: 45deg;
+  transition: rotate 150ms ease;
+}
+
+.trigger[data-panel-open]::after {
+  rotate: 225deg;
+}
+
+.trigger:hover:not([data-disabled]) {
+  color: var(--ds-color-action-primary-default);
 }
 
 .trigger[data-disabled] {
@@ -27,11 +50,13 @@
 .trigger:focus-visible {
   outline: 2px solid var(--ds-color-border-focus);
   outline-offset: 2px;
+  border-radius: var(--ds-radius-control);
 }
 
 .panel {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-muted);
-  padding-block-end: var(--ds-space-control-block);
+  padding-block-end: var(--ds-space-control-inline);
 }

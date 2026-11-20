@@ -1,23 +1,35 @@
 .list {
   display: flex;
-  gap: var(--ds-space-control-inline);
+  gap: var(--ds-space-stack-sm);
   border-bottom: 1px solid var(--ds-color-border-default);
 }
 
 .tab {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
   color: var(--ds-color-foreground-muted);
   background: none;
   border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
   cursor: pointer;
+  transition:
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.tab:hover:not([data-disabled]) {
+  color: var(--ds-color-foreground-default);
+  border-bottom-color: var(--ds-color-border-control);
 }
 
 .tab[data-active] {
   color: var(--ds-color-foreground-default);
-  border-bottom: 2px solid var(--ds-color-action-primary-default);
+  border-bottom-color: var(--ds-color-action-primary-default);
 }
 
 .tab[data-disabled] {
@@ -28,12 +40,14 @@
 .tab:focus-visible {
   outline: 2px solid var(--ds-color-border-focus);
   outline-offset: -2px;
+  border-radius: var(--ds-radius-control);
 }
 
 .panel {
-  padding-block: var(--ds-space-control-block);
+  padding-block: var(--ds-space-control-inline);
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-default);
 }
 

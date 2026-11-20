@@ -2,15 +2,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-control-inline);
+  gap: var(--ds-space-stack-md);
+  box-sizing: border-box;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   font-weight: var(--ds-font-weight-medium);
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--ds-radius-control);
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
   cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
 }
 
 .root:disabled {
@@ -32,9 +44,18 @@
 }
 
 .secondary {
-  background: var(--ds-color-background-subtle);
+  background: var(--ds-color-background-default);
   color: var(--ds-color-foreground-default);
-  border: 1px solid var(--ds-color-border-default);
+  border-color: var(--ds-color-border-control);
+}
+
+.secondary:not(:disabled):hover {
+  background: var(--ds-color-background-subtle);
+  border-color: var(--ds-color-border-strong);
+}
+
+.secondary:not(:disabled):active {
+  background: var(--ds-color-background-muted);
 }
 
 .danger {

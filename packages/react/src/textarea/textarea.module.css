@@ -1,27 +1,45 @@
 .root {
   display: block;
+  min-height: 5rem;
+  resize: vertical;
   box-sizing: border-box;
   width: 100%;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-default);
   background: var(--ds-color-background-default);
-  border: 1px solid var(--ds-color-border-default);
+  border: 1px solid var(--ds-color-border-control);
   border-radius: var(--ds-radius-control);
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.root::placeholder {
+  color: var(--ds-color-foreground-muted);
+  opacity: 0.8;
+}
+
+.root:hover:not(:disabled) {
+  border-color: var(--ds-color-border-strong);
 }
 
 .root:focus-visible {
   outline: 2px solid var(--ds-color-border-focus);
   outline-offset: 1px;
+  border-color: var(--ds-color-border-focus);
 }
 
 .root:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+  background: var(--ds-color-background-subtle);
 }
 
-.invalid {
+.invalid,
+.invalid:hover:not(:disabled) {
   border-color: var(--ds-color-action-danger-default);
 }

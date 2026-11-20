@@ -1,24 +1,29 @@
 .popup {
   display: grid;
-  gap: var(--ds-space-control-block);
+  gap: var(--ds-space-stack-sm);
+  box-sizing: border-box;
   max-width: 20rem;
   background: var(--ds-color-background-default);
   color: var(--ds-color-foreground-default);
   border: 1px solid var(--ds-color-border-default);
-  border-radius: var(--ds-radius-control);
+  border-radius: var(--ds-radius-surface);
+  box-shadow: var(--ds-shadow-overlay);
   padding: var(--ds-space-control-inline);
+  z-index: 1;
 }
 
 .title {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
-  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-bold);
   margin: 0;
 }
 
 .description {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-muted);
   margin: 0;
 }

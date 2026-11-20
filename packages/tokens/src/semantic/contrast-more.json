@@ -1,11 +1,28 @@
 {
   "color": {
     "border": {
-      "default": { "$type": "color", "$value": "{color.neutral.900}" },
-      "focus": { "$type": "color", "$value": "{color.blue.700}" }
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{color.blue.700}"
+      },
+      "control": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{color.neutral.1000}"
+      }
     },
     "foreground": {
-      "muted": { "$type": "color", "$value": "{color.neutral.900}" }
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      }
     }
   }
 }
