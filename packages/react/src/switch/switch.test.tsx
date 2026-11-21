@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
@@ -43,5 +46,19 @@ describe("Switch", () => {
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<Switch aria-label="Enable notifications" />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("positions the checked thumb with logical CSS rather than :dir()", async () => {
+    const css = await readFile(
+      path.join(
+        path.dirname(fileURLToPath(import.meta.url)),
+        "switch.module.css",
+      ),
+      "utf8",
+    );
+    expect(css).not.toContain(":dir(");
+    expect(css).toMatch(
+      /\.thumb\[data-checked\]\s*\{[^}]*(?:margin|inset)-inline-start:/,
+    );
   });
 });

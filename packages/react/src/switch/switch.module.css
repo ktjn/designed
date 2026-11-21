@@ -41,15 +41,12 @@
   border-radius: 9999px;
   background: var(--ds-color-action-primary-foreground);
   box-shadow: var(--ds-shadow-raised);
-  transition: translate 120ms ease;
+  margin-inline-start: 0;
+  transition: margin-inline-start 120ms ease;
 }
 
 .thumb[data-checked] {
-  translate: 1rem 0;
-}
-
-.thumb[data-checked]:dir(rtl) {
-  translate: -1rem 0;
+  margin-inline-start: 1rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

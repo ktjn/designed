@@ -3,11 +3,12 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
+  packages: write
 
 jobs:
   release:
@@ -21,7 +22,8 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com
+          scope: "@ktjn"
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
@@ -31,7 +33,4 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Attaches build provenance to each published package (npm >=9.5,
-          # requires the id-token: write permission above and OIDC-enabled
-          # trusted publishing on the npm side).
-          NPM_CONFIG_PROVENANCE: "true"
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

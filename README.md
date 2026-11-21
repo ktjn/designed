@@ -9,7 +9,7 @@ Run `pnpm run ci` from the repository root before every push. Push only after it
 - Use Node.js 24 or later and the pnpm version pinned in `package.json`.
 - On Linux, if Chromium reports missing system libraries, run `pnpm --filter @ktjn/storybook exec playwright install-deps chromium` after installing workspace dependencies, then rerun local CI.
 - Local CI installs locked dependencies, lints, builds the packages needed by the checks, type-checks, runs unit and browser tests, and validates packages, bundle sizes, and tarball installs.
-- GitHub Actions runs the full workspace build, release publishing, Storybook deployment, and Chromatic visual regression.
+- GitHub Actions runs the full workspace build, GitHub Packages release publishing, Storybook deployment, and Chromatic visual regression.
 
 ## Goals
 

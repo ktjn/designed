@@ -4,6 +4,14 @@
   "description": "Typed React icon components generated from SVG source.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ktjn/design.git",
+    "directory": "packages/icons"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist"
   ],
