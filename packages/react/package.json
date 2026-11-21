@@ -1,6 +1,6 @@
 {
   "name": "@ktjn/design-react",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0",
   "description": "React component library for the design system, built on Base UI.",
   "type": "module",
   "license": "MIT",
