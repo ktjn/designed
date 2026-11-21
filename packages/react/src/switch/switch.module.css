@@ -47,3 +47,14 @@
 .thumb[data-checked] {
   translate: 1rem 0;
 }
+
+.thumb[data-checked]:dir(rtl) {
+  translate: -1rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .thumb {
+    transition: none;
+  }
+}

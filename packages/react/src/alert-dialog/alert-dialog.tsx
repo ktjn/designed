@@ -3,6 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import buttonStyles from "../button/button.module.css";
 import { Dialog } from "../dialog/dialog.js";
 import styles from "../dialog/dialog.module.css";
+import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 
 export interface AlertDialogRootProps {
   open?: boolean;
@@ -39,16 +40,17 @@ export interface AlertDialogContentProps {
 }
 
 function AlertDialogContent({ children }: AlertDialogContentProps) {
-  // AlertDialog never renders a dismiss-by-icon affordance: the user must
-  // choose one of the explicit actions (for example Cancel/Confirm), which
-  // is the point of an alert dialog over a regular dialog.
+  const { container, scopeRef } = useDialogPortalContainer();
   return (
-    <BaseAlertDialog.Portal>
-      <BaseAlertDialog.Backdrop className={styles.backdrop} />
-      <BaseAlertDialog.Popup className={styles.popup}>
-        {children}
-      </BaseAlertDialog.Popup>
-    </BaseAlertDialog.Portal>
+    <>
+      <span hidden ref={scopeRef} />
+      <BaseAlertDialog.Portal container={container}>
+        <BaseAlertDialog.Backdrop className={styles.backdrop} />
+        <BaseAlertDialog.Popup className={styles.popup}>
+          {children}
+        </BaseAlertDialog.Popup>
+      </BaseAlertDialog.Portal>
+    </>
   );
 }
 
