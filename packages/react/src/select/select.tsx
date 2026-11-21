@@ -55,6 +55,7 @@ function SelectTrigger({
   const field = useFieldContext();
   return (
     <BaseSelect.Trigger
+      data-slot="select-trigger"
       id={id ?? field?.controlId}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
@@ -86,7 +87,7 @@ function SelectContent({ children }: SelectContentProps) {
   return (
     <BaseSelect.Portal>
       <BaseSelect.Positioner sideOffset={4}>
-        <BaseSelect.Popup className={styles.popup}>
+        <BaseSelect.Popup data-slot="select-content" className={styles.popup}>
           <BaseSelect.List>{children}</BaseSelect.List>
         </BaseSelect.Popup>
       </BaseSelect.Positioner>
@@ -102,7 +103,7 @@ export interface SelectItemProps {
 
 function SelectItem({ children, ...rest }: SelectItemProps) {
   return (
-    <BaseSelect.Item className={styles.item} {...rest}>
+    <BaseSelect.Item data-slot="select-item" className={styles.item} {...rest}>
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
     </BaseSelect.Item>
   );

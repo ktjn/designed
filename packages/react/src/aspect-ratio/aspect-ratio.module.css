@@ -1,0 +1,13 @@
+.root {
+  position: relative;
+  inline-size: 100%;
+  overflow: hidden;
+  border-radius: var(--ds-radius-surface);
+}
+
+.root > * {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}

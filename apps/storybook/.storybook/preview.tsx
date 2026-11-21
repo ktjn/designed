@@ -1,8 +1,4 @@
-import "@ktjn/design-tokens/css/base.css";
-import "@ktjn/design-tokens/css/brands/editorial.css";
-import "@ktjn/design-tokens/css/schemes/dark.css";
-import "@ktjn/design-tokens/css/densities/compact.css";
-import "@ktjn/design-tokens/css/contrasts/more.css";
+import "@ktjn/design-tokens/css/all.css";
 import "./preview.css";
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { useEffect } from "react";
@@ -92,6 +88,11 @@ const preview: Preview = {
     contrast: "default",
   },
   parameters: {
+    options: {
+      storySort: {
+        order: ["Overview", "Tokens", "Icons", "Blocks", "*"],
+      },
+    },
     a11y: {
       test: "error",
     },

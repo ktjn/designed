@@ -34,6 +34,7 @@ function FieldRoot({ invalid = false, disabled, children }: FieldRootProps) {
 
   return (
     <div
+      data-slot="field"
       className={styles.root}
       data-disabled={disabled || undefined}
       data-invalid={invalid || undefined}

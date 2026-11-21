@@ -36,7 +36,7 @@ function StepperImpl(
     .join(" ");
 
   return (
-    <ol ref={ref} className={classes} {...rest}>
+    <ol ref={ref} data-slot="stepper" className={classes} {...rest}>
       {steps.map((step, index) => {
         const status =
           index < currentStep
@@ -47,6 +47,7 @@ function StepperImpl(
         return (
           <li
             key={step.id}
+            data-slot="stepper-step"
             className={styles.step}
             data-status={status}
             aria-current={status === "current" ? "step" : undefined}

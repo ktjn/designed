@@ -1,0 +1,194 @@
+.shell {
+  display: flex;
+  min-block-size: 20rem;
+  inline-size: 100%;
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  inline-size: 15rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: var(--ds-color-background-subtle);
+  border-inline-end: 1px solid var(--ds-color-border-default);
+  transition:
+    inline-size 160ms ease,
+    border-color 160ms ease;
+  overflow: hidden;
+}
+
+.sidebar[data-state="collapsed"] {
+  inline-size: 0;
+  border-inline-end-color: transparent;
+  visibility: hidden;
+}
+
+.header {
+  padding: var(--ds-space-control-inline);
+  border-block-end: 1px solid var(--ds-color-border-default);
+  font-weight: var(--ds-font-weight-bold);
+  font-size: var(--ds-font-size-100);
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--ds-space-stack-md);
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-stack-lg);
+}
+
+.footer {
+  padding: var(--ds-space-control-inline);
+  border-block-start: 1px solid var(--ds-color-border-default);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+.group {
+  display: grid;
+  gap: 2px;
+}
+
+.groupLabel {
+  padding-block: var(--ds-space-stack-sm);
+  padding-inline: var(--ds-space-stack-md);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-bold);
+  color: var(--ds-color-foreground-muted);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-stack-md);
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-stack-md);
+  border: none;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 120ms ease;
+}
+
+.item:hover {
+  background: var(--ds-color-background-muted);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+.item[data-active="true"] {
+  background: var(--ds-color-background-selected);
+  color: var(--ds-color-foreground-default);
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.itemIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex-shrink: 0;
+}
+
+.itemIcon svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.inset {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  cursor: pointer;
+}
+
+.trigger:hover {
+  background: var(--ds-color-background-subtle);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.trigger svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.mobileBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 48%);
+  z-index: 40;
+}
+
+.mobilePopup {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: min(18rem, 85dvw);
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  border-inline-end: 1px solid var(--ds-color-border-default);
+  box-shadow: var(--ds-shadow-overlay);
+  z-index: 41;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .item {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .sidebar,
+  .mobilePopup {
+    border-inline-end: 1px solid CanvasText;
+  }
+
+  .trigger {
+    border: 1px solid ButtonText;
+  }
+
+  .item[data-active="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

@@ -28,7 +28,7 @@ function TagImpl(
     .join(" ");
 
   return (
-    <span ref={ref} className={classes} {...rest}>
+    <span ref={ref} data-slot="tag" className={classes} {...rest}>
       <span>{children}</span>
       {onRemove ? (
         <button

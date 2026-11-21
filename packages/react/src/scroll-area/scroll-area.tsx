@@ -37,11 +37,16 @@ function ScrollAreaImpl(
   return (
     <BaseScrollArea.Root
       ref={ref}
+      data-slot="scroll-area"
       className={classes}
       style={mergedStyle}
       {...rest}
     >
-      <BaseScrollArea.Viewport className={styles.viewport} tabIndex={0}>
+      <BaseScrollArea.Viewport
+        data-slot="scroll-area-viewport"
+        className={styles.viewport}
+        tabIndex={0}
+      >
         <BaseScrollArea.Content className={styles.content}>
           {children}
         </BaseScrollArea.Content>

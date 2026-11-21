@@ -11,7 +11,9 @@ function VisuallyHiddenImpl(
   ref: ForwardedRef<HTMLSpanElement>,
 ) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
-  return <span ref={ref} className={classes} {...rest} />;
+  return (
+    <span ref={ref} data-slot="visually-hidden" className={classes} {...rest} />
+  );
 }
 
 export const VisuallyHidden = forwardRef(VisuallyHiddenImpl);

@@ -17,7 +17,7 @@ function EmptyStateImpl(
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
-    <div ref={ref} className={classes} {...rest}>
+    <div ref={ref} data-slot="empty-state" className={classes} {...rest}>
       {icon ? <div className={styles.icon}>{icon}</div> : null}
       <h2 className={styles.title}>{title}</h2>
       {description ? <p className={styles.description}>{description}</p> : null}

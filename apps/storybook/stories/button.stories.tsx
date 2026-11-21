@@ -26,6 +26,26 @@ export const Danger: Story = {
   args: { variant: "danger", children: "Delete" },
 };
 
+export const Ghost: Story = {
+  args: { variant: "ghost", children: "More actions" },
+};
+
+export const IconOnly: Story = {
+  render: () => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+      <Button variant="primary" size="icon" aria-label="Add item">
+        <PlusIcon aria-hidden />
+      </Button>
+      <Button variant="secondary" size="icon" aria-label="Add item secondary">
+        <PlusIcon aria-hidden />
+      </Button>
+      <Button variant="ghost" size="icon" aria-label="Add item ghost">
+        <PlusIcon aria-hidden />
+      </Button>
+    </div>
+  ),
+};
+
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>

@@ -23,6 +23,7 @@ function InputImpl(
   return (
     <input
       ref={ref}
+      data-slot="input"
       id={id ?? field?.controlId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}

@@ -73,6 +73,7 @@ function DrawerRoot({
 function DrawerTrigger({ children, ...rest }: DrawerTriggerProps) {
   return (
     <BaseDrawer.Trigger
+      data-slot="drawer-trigger"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...rest}
     >
@@ -96,7 +97,11 @@ function DrawerContent({
       <BaseDrawer.Portal container={container}>
         <BaseDrawer.Backdrop className={styles.backdrop} />
         <BaseDrawer.Viewport className={styles.viewport}>
-          <BaseDrawer.Popup data-side={resolvedSide} className={styles.popup}>
+          <BaseDrawer.Popup
+            data-slot="drawer-content"
+            data-side={resolvedSide}
+            className={styles.popup}
+          >
             <BaseDrawer.Close
               aria-label={closeLabel}
               className={styles.iconClose}
@@ -113,7 +118,11 @@ function DrawerContent({
 
 function DrawerTitle({ children, ...rest }: DrawerTitleProps) {
   return (
-    <BaseDrawer.Title className={styles.title} {...rest}>
+    <BaseDrawer.Title
+      data-slot="drawer-title"
+      className={styles.title}
+      {...rest}
+    >
       {children}
     </BaseDrawer.Title>
   );
@@ -121,7 +130,11 @@ function DrawerTitle({ children, ...rest }: DrawerTitleProps) {
 
 function DrawerDescription({ children, ...rest }: DrawerDescriptionProps) {
   return (
-    <BaseDrawer.Description className={styles.description} {...rest}>
+    <BaseDrawer.Description
+      data-slot="drawer-description"
+      className={styles.description}
+      {...rest}
+    >
       {children}
     </BaseDrawer.Description>
   );
@@ -130,6 +143,7 @@ function DrawerDescription({ children, ...rest }: DrawerDescriptionProps) {
 function DrawerClose({ children, ...rest }: DrawerCloseProps) {
   return (
     <BaseDrawer.Close
+      data-slot="drawer-close"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...rest}
     >

@@ -55,6 +55,12 @@
   outline-offset: 2px;
 }
 
+.uploadIcon {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--ds-color-foreground-muted);
+}
+
 .prompt {
   margin: 0;
   font-size: var(--ds-font-size-100);

@@ -66,6 +66,7 @@ function OTPFieldImpl(
       ) : null}
       <BaseOTPField.Root
         ref={ref}
+        data-slot="otp-field"
         id={resolvedId}
         length={length}
         value={value}
@@ -86,6 +87,7 @@ function OTPFieldImpl(
         {slots.map((slot) => (
           <BaseOTPField.Input
             key={`slot-${slot}`}
+            data-slot="otp-field-input"
             aria-describedby={ariaDescribedBy ?? field?.describedBy}
             aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
             className={styles.input}

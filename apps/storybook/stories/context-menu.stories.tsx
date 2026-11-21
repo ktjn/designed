@@ -46,3 +46,46 @@ export const OpenInteraction: Story = {
     ).toBeInTheDocument();
   },
 };
+
+export const RichItemsInteraction: Story = {
+  render: () => (
+    <ContextMenu>
+      <ContextMenu.Trigger
+        style={{
+          padding: "2rem",
+          border: "1px dashed var(--ds-color-border-control)",
+          borderRadius: "var(--ds-radius-surface)",
+          textAlign: "center",
+          fontFamily: "var(--ds-font-family-base)",
+        }}
+      >
+        Right-click for view options
+      </ContextMenu.Trigger>
+      <ContextMenu.Content>
+        <ContextMenu.Group>
+          <ContextMenu.GroupLabel>Canvas</ContextMenu.GroupLabel>
+          <ContextMenu.CheckboxItem defaultChecked>
+            Show grid <ContextMenu.Shortcut>G</ContextMenu.Shortcut>
+          </ContextMenu.CheckboxItem>
+        </ContextMenu.Group>
+        <ContextMenu.Separator />
+        <ContextMenu.RadioGroup defaultValue="100">
+          <ContextMenu.RadioItem value="50">50%</ContextMenu.RadioItem>
+          <ContextMenu.RadioItem value="100">100%</ContextMenu.RadioItem>
+        </ContextMenu.RadioGroup>
+      </ContextMenu.Content>
+    </ContextMenu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const target = canvas.getByText("Right-click for view options");
+    await userEvent.pointer({ target, keys: "[MouseRight]" });
+    const menu = await within(document.body).findByRole("menu");
+    await expect(
+      within(menu).getByRole("menuitemcheckbox", { name: /Show grid/ }),
+    ).toHaveAttribute("aria-checked", "true");
+    await expect(
+      within(menu).getByRole("menuitemradio", { name: "100%" }),
+    ).toHaveAttribute("aria-checked", "true");
+  },
+};

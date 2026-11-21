@@ -27,6 +27,7 @@ export interface DialogTriggerProps
 function DialogTrigger(props: DialogTriggerProps) {
   return (
     <BaseDialog.Trigger
+      data-slot="dialog-trigger"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...props}
     />
@@ -45,7 +46,7 @@ function DialogContent({ children, closeLabel = "Close" }: DialogContentProps) {
       <span hidden ref={scopeRef} />
       <BaseDialog.Portal container={container}>
         <BaseDialog.Backdrop className={styles.backdrop} />
-        <BaseDialog.Popup className={styles.popup}>
+        <BaseDialog.Popup data-slot="dialog-content" className={styles.popup}>
           <BaseDialog.Close
             aria-label={closeLabel}
             className={styles.iconClose}
@@ -66,6 +67,7 @@ export interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 function DialogTitle({ className, ...rest }: DialogTitleProps) {
   return (
     <BaseDialog.Title
+      data-slot="dialog-title"
       className={className ? `${styles.title} ${className}` : styles.title}
       {...rest}
     />
@@ -80,6 +82,7 @@ export interface DialogDescriptionProps
 function DialogDescription({ className, ...rest }: DialogDescriptionProps) {
   return (
     <BaseDialog.Description
+      data-slot="dialog-description"
       className={
         className ? `${styles.description} ${className}` : styles.description
       }
@@ -96,6 +99,7 @@ export interface DialogCloseProps
 function DialogCloseButton(props: DialogCloseProps) {
   return (
     <BaseDialog.Close
+      data-slot="dialog-close"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...props}
     />

@@ -227,6 +227,24 @@ export async function buildTokens() {
       },
     ],
   });
+
+  const bundleFiles = [
+    "dist/css/base.css",
+    "dist/css/brands/editorial.css",
+    "dist/css/schemes/dark.css",
+    "dist/css/densities/compact.css",
+    "dist/css/contrasts/more.css",
+  ];
+  const headerPattern = /^\/\*\*[\s\S]*?\*\/\s*/;
+  const bundleParts = await Promise.all(
+    bundleFiles.map(async (file) =>
+      (await fs.readFile(file, "utf8")).replace(headerPattern, "").trim(),
+    ),
+  );
+  await fs.writeFile(
+    "dist/css/all.css",
+    `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${bundleParts.join("\n\n")}\n`,
+  );
 }
 
 const isCliInvocation =

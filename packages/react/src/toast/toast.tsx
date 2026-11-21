@@ -49,11 +49,24 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
   return (
     <>
       {toasts.map((toast) => (
-        <BaseToast.Root key={toast.id} toast={toast} className={styles.toast}>
+        <BaseToast.Root
+          key={toast.id}
+          data-slot="toast"
+          toast={toast}
+          className={styles.toast}
+        >
           <BaseToast.Content className={styles.body}>
-            {toast.title ? <BaseToast.Title className={styles.title} /> : null}
+            {toast.title ? (
+              <BaseToast.Title
+                data-slot="toast-title"
+                className={styles.title}
+              />
+            ) : null}
             {toast.description ? (
-              <BaseToast.Description className={styles.description} />
+              <BaseToast.Description
+                data-slot="toast-description"
+                className={styles.description}
+              />
             ) : null}
           </BaseToast.Content>
           <div className={styles.actions}>
@@ -66,6 +79,7 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
               </BaseToast.Action>
             ) : null}
             <BaseToast.Close
+              data-slot="toast-close"
               aria-label={dismissLabel}
               aria-hidden={false}
               className={styles.close}
@@ -92,7 +106,10 @@ function ToastProvider({
       {children}
       <span hidden ref={scopeRef} />
       <BaseToast.Portal container={container}>
-        <BaseToast.Viewport className={styles.viewport}>
+        <BaseToast.Viewport
+          data-slot="toast-viewport"
+          className={styles.viewport}
+        >
           <ToastList dismissLabel={dismissLabel} />
         </BaseToast.Viewport>
       </BaseToast.Portal>

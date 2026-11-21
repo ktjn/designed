@@ -22,7 +22,13 @@ function AlertImpl(
     .join(" ");
 
   return (
-    <div ref={ref} role={role ?? defaultRole} className={classes} {...rest}>
+    <div
+      ref={ref}
+      data-slot="alert"
+      role={role ?? defaultRole}
+      className={classes}
+      {...rest}
+    >
       {title ? <div className={styles.title}>{title}</div> : null}
       {children ? <div className={styles.content}>{children}</div> : null}
     </div>

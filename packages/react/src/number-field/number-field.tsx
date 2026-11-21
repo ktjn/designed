@@ -65,6 +65,7 @@ function NumberFieldImpl(
   return (
     <BaseNumberField.Root
       ref={ref}
+      data-slot="number-field"
       id={id ?? field?.controlId}
       value={value}
       defaultValue={defaultValue}
@@ -87,6 +88,7 @@ function NumberFieldImpl(
           <MinusIcon aria-hidden />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
+          data-slot="number-field-input"
           placeholder={placeholder}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}

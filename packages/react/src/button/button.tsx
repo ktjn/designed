@@ -2,8 +2,8 @@ import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import styles from "./button.module.css";
 
-export type ButtonVariant = "primary" | "secondary" | "danger";
-export type ButtonSize = "small" | "medium" | "large";
+export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
+export type ButtonSize = "small" | "medium" | "large" | "icon";
 
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
@@ -29,6 +29,7 @@ function ButtonImpl(
     <button
       ref={ref}
       type={type}
+      data-slot="button"
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={`${styles.root} ${styles[variant]} ${styles[size]}`}

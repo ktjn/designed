@@ -24,6 +24,7 @@ export interface PopoverTriggerProps
 function PopoverTrigger(props: PopoverTriggerProps) {
   return (
     <BasePopover.Trigger
+      data-slot="popover-trigger"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...props}
     />
@@ -46,7 +47,7 @@ function PopoverContent({
   return (
     <BasePopover.Portal>
       <BasePopover.Positioner side={side} sideOffset={sideOffset}>
-        <BasePopover.Popup className={styles.popup}>
+        <BasePopover.Popup data-slot="popover-content" className={styles.popup}>
           {children}
         </BasePopover.Popup>
       </BasePopover.Positioner>
@@ -61,6 +62,7 @@ export interface PopoverTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 function PopoverTitle({ className, ...rest }: PopoverTitleProps) {
   return (
     <BasePopover.Title
+      data-slot="popover-title"
       className={className ? `${styles.title} ${className}` : styles.title}
       {...rest}
     />
@@ -75,6 +77,7 @@ export interface PopoverDescriptionProps
 function PopoverDescription({ className, ...rest }: PopoverDescriptionProps) {
   return (
     <BasePopover.Description
+      data-slot="popover-description"
       className={
         className ? `${styles.description} ${className}` : styles.description
       }
@@ -91,6 +94,7 @@ export interface PopoverCloseProps
 function PopoverClose(props: PopoverCloseProps) {
   return (
     <BasePopover.Close
+      data-slot="popover-close"
       className={`${buttonStyles.root} ${buttonStyles.secondary}`}
       {...props}
     />

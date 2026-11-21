@@ -19,7 +19,13 @@ function SpinnerImpl(
     .join(" ");
 
   return (
-    <span ref={ref} role="status" className={classes} {...rest}>
+    <span
+      ref={ref}
+      data-slot="spinner"
+      role="status"
+      className={classes}
+      {...rest}
+    >
       <span className={styles.indicator} aria-hidden="true" />
       <span className={styles.srOnly}>{label}</span>
     </span>

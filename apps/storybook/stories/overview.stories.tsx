@@ -12,7 +12,9 @@ const npmrcSnippet = `@ktjn:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}`;
 
 const installSnippet = `pnpm add @ktjn/design-tokens @ktjn/design-react
-pnpm add @ktjn/design-icons`;
+pnpm add @ktjn/design-icons
+
+import "@ktjn/design-tokens/css/all.css";`;
 
 const themeSnippet = `<html data-brand="default" data-color-scheme="light" data-density="default" data-contrast="default">`;
 
@@ -30,8 +32,8 @@ export const GettingStarted: Story = {
       <div style={{ display: "grid", gap: "0.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <h1 style={{ margin: 0, fontSize: "1.5rem" }}>@ktjn Design System</h1>
-          <Badge variant="info">51 components</Badge>
-          <Badge variant="success">14 icons</Badge>
+          <Badge variant="info">59 components</Badge>
+          <Badge variant="success">16 icons</Badge>
         </div>
         <p
           style={{

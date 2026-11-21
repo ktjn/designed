@@ -36,6 +36,7 @@ export function Tooltip({
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner side={side} sideOffset={sideOffset}>
           <BaseTooltip.Popup
+            data-slot="tooltip-content"
             id={popupId}
             role="tooltip"
             className={styles.popup}

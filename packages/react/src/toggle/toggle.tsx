@@ -30,6 +30,7 @@ function ToggleImpl(
   return (
     <BaseToggle
       ref={ref}
+      data-slot="toggle"
       pressed={pressed}
       defaultPressed={defaultPressed}
       onPressedChange={

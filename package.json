@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "engines": {
-    "node": ">=24"
+    "node": ">=26"
   },
-  "packageManager": "pnpm@12.4.1",
+  "packageManager": "pnpm@12.21.0",
   "scripts": {
     "ci": "pnpm install --frozen-lockfile && pnpm run lint && pnpm --filter \"./packages/*\" run build && pnpm run typecheck && pnpm --filter @ktjn/storybook exec playwright install chromium && pnpm run test && pnpm run check:packages && pnpm run check:size && pnpm run check:tarballs",
     "build": "pnpm -r --if-present run build",
@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
-    "@biomejs/biome": "2.5.13",
-    "@changesets/cli": "3.0.2",
-    "@types/node": "24.10.1",
-    "publint": "0.3.24",
-    "tsx": "4.19.4",
-    "typescript": "6.0.2",
-    "vitest": "5.0.0"
+    "@biomejs/biome": "2.6.8",
+    "@changesets/cli": "3.0.3",
+    "@types/node": "26.6.6",
+    "publint": "0.3.25",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1"
   }
 }

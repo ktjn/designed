@@ -16,6 +16,7 @@
     "dist"
   ],
   "exports": {
+    "./css/all.css": "./dist/css/all.css",
     "./css/base.css": "./dist/css/base.css",
     "./css/schemes/*.css": "./dist/css/schemes/*.css",
     "./css/brands/*.css": "./dist/css/brands/*.css",
@@ -34,11 +35,11 @@
     "check:package": "publint"
   },
   "devDependencies": {
-    "@types/node": "24.10.1",
-    "publint": "0.3.24",
-    "style-dictionary": "5.5.2",
-    "tsx": "4.19.4",
-    "typescript": "6.0.2",
-    "vitest": "5.0.0"
+    "@types/node": "26.6.6",
+    "publint": "0.3.25",
+    "style-dictionary": "5.8.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1"
   }
 }

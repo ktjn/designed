@@ -29,6 +29,7 @@ function ProgressImpl(
   return (
     <BaseProgress.Root
       ref={ref}
+      data-slot="progress"
       value={value}
       min={min}
       max={max}
@@ -47,8 +48,11 @@ function ProgressImpl(
           ) : null}
         </div>
       ) : null}
-      <BaseProgress.Track className={styles.track}>
-        <BaseProgress.Indicator className={styles.indicator} />
+      <BaseProgress.Track data-slot="progress-track" className={styles.track}>
+        <BaseProgress.Indicator
+          data-slot="progress-indicator"
+          className={styles.indicator}
+        />
       </BaseProgress.Track>
     </BaseProgress.Root>
   );

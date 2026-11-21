@@ -35,6 +35,7 @@ function CheckboxImpl(
   return (
     <BaseCheckbox.Root
       ref={ref}
+      data-slot="checkbox"
       id={id ?? field?.controlId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}

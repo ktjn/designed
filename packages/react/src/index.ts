@@ -13,6 +13,8 @@ export type {
   AlertDialogTriggerProps,
 } from "./alert-dialog/alert-dialog.js";
 export { AlertDialog } from "./alert-dialog/alert-dialog.js";
+export type { AspectRatioProps } from "./aspect-ratio/aspect-ratio.js";
+export { AspectRatio } from "./aspect-ratio/aspect-ratio.js";
 export type { AutocompleteProps } from "./autocomplete/autocomplete.js";
 export { Autocomplete } from "./autocomplete/autocomplete.js";
 export type { AvatarProps, AvatarSize } from "./avatar/avatar.js";
@@ -34,6 +36,11 @@ export type {
   ButtonVariant,
 } from "./button/button.js";
 export { Button } from "./button/button.js";
+export type {
+  ButtonGroupOrientation,
+  ButtonGroupProps,
+} from "./button-group/button-group.js";
+export { ButtonGroup } from "./button-group/button-group.js";
 export type { CalendarProps } from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
 export type {
@@ -65,11 +72,19 @@ export type {
   CommandPaletteProps,
 } from "./command-palette/command-palette.js";
 export { CommandPalette } from "./command-palette/command-palette.js";
+export type { ContainerProps, ContainerSize } from "./container/container.js";
+export { Container } from "./container/container.js";
 export type {
+  ContextMenuCheckboxItemProps,
   ContextMenuContentProps,
+  ContextMenuGroupLabelProps,
+  ContextMenuGroupProps,
   ContextMenuItemProps,
+  ContextMenuRadioGroupProps,
+  ContextMenuRadioItemProps,
   ContextMenuRootProps,
   ContextMenuSeparatorProps,
+  ContextMenuShortcutProps,
   ContextMenuTriggerProps,
 } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
@@ -108,14 +123,37 @@ export type {
 export { Fieldset } from "./fieldset/fieldset.js";
 export type { FileUploadProps } from "./file-upload/file-upload.js";
 export { FileUpload } from "./file-upload/file-upload.js";
+export type {
+  GridAlign,
+  GridColumns,
+  GridGap,
+  GridProps,
+} from "./grid/grid.js";
+export { Grid } from "./grid/grid.js";
 export type { InputProps } from "./input/input.js";
 export { Input } from "./input/input.js";
+export type {
+  InputGroupAddonAlign,
+  InputGroupAddonProps,
+  InputGroupInputProps,
+  InputGroupRootProps,
+} from "./input-group/input-group.js";
+export { InputGroup } from "./input-group/input-group.js";
+export type { KbdProps, KbdSize } from "./kbd/kbd.js";
+export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
 export type {
+  MenuCheckboxItemProps,
   MenuContentProps,
+  MenuGroupLabelProps,
+  MenuGroupProps,
   MenuItemProps,
+  MenuRadioGroupProps,
+  MenuRadioItemProps,
   MenuRootProps,
+  MenuSeparatorProps,
+  MenuShortcutProps,
   MenuTriggerProps,
 } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
@@ -168,12 +206,34 @@ export type {
   SeparatorProps,
 } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
+export type {
+  SidebarContentProps,
+  SidebarFooterProps,
+  SidebarGroupLabelProps,
+  SidebarGroupProps,
+  SidebarHeaderProps,
+  SidebarInsetProps,
+  SidebarItemProps,
+  SidebarProviderProps,
+  SidebarRootProps,
+  SidebarTriggerProps,
+  UseSidebarResult,
+} from "./sidebar/sidebar.js";
+export { Sidebar, useSidebar } from "./sidebar/sidebar.js";
 export type { SkeletonProps, SkeletonVariant } from "./skeleton/skeleton.js";
 export { Skeleton } from "./skeleton/skeleton.js";
 export type { SliderProps, SliderValue } from "./slider/slider.js";
 export { Slider } from "./slider/slider.js";
 export type { SpinnerProps, SpinnerSize } from "./spinner/spinner.js";
 export { Spinner } from "./spinner/spinner.js";
+export type {
+  StackAlign,
+  StackDirection,
+  StackGap,
+  StackJustify,
+  StackProps,
+} from "./stack/stack.js";
+export { Stack } from "./stack/stack.js";
 export type {
   StepperOrientation,
   StepperProps,

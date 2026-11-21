@@ -19,6 +19,7 @@ function CollapsibleRoot({
 }: CollapsibleRootProps) {
   return (
     <BaseCollapsible.Root
+      data-slot="collapsible"
       onOpenChange={onOpenChange ? (open) => onOpenChange(open) : undefined}
       className={className ? `${styles.root} ${className}` : styles.root}
       {...rest}
@@ -38,6 +39,7 @@ function CollapsibleTrigger({
 }: CollapsibleTriggerProps) {
   return (
     <BaseCollapsible.Trigger
+      data-slot="collapsible-trigger"
       className={className ? `${styles.trigger} ${className}` : styles.trigger}
       {...rest}
     >
@@ -59,6 +61,7 @@ function CollapsiblePanel({
 }: CollapsiblePanelProps) {
   return (
     <BaseCollapsible.Panel
+      data-slot="collapsible-panel"
       className={className ? `${styles.panel} ${className}` : styles.panel}
       {...rest}
     >

@@ -79,6 +79,7 @@ function ComboboxInput({
   const field = useFieldContext();
   return (
     <BaseCombobox.Input
+      data-slot="combobox-input"
       id={id ?? field?.controlId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
@@ -98,7 +99,10 @@ function ComboboxContent({
   return (
     <BaseCombobox.Portal>
       <BaseCombobox.Positioner sideOffset={4}>
-        <BaseCombobox.Popup className={styles.popup}>
+        <BaseCombobox.Popup
+          data-slot="combobox-content"
+          className={styles.popup}
+        >
           <BaseCombobox.Empty className={styles.empty}>
             {emptyMessage}
           </BaseCombobox.Empty>
@@ -107,6 +111,7 @@ function ComboboxContent({
               <BaseCombobox.Item
                 key={String(item.value)}
                 value={item}
+                data-slot="combobox-item"
                 className={styles.item}
               >
                 {item.label}

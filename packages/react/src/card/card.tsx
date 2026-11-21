@@ -32,7 +32,7 @@ function CardRootImpl(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
-  return <div ref={ref} className={classes} {...rest} />;
+  return <div ref={ref} data-slot="card" className={classes} {...rest} />;
 }
 
 const CardRoot = forwardRef(CardRootImpl);
@@ -40,27 +40,27 @@ CardRoot.displayName = "Card";
 
 function CardHeader({ className, ...rest }: CardHeaderProps) {
   const classes = [styles.header, className].filter(Boolean).join(" ");
-  return <div className={classes} {...rest} />;
+  return <div data-slot="card-header" className={classes} {...rest} />;
 }
 
 function CardTitle({ className, ...rest }: CardTitleProps) {
   const classes = [styles.title, className].filter(Boolean).join(" ");
-  return <h3 className={classes} {...rest} />;
+  return <h3 data-slot="card-title" className={classes} {...rest} />;
 }
 
 function CardDescription({ className, ...rest }: CardDescriptionProps) {
   const classes = [styles.description, className].filter(Boolean).join(" ");
-  return <p className={classes} {...rest} />;
+  return <p data-slot="card-description" className={classes} {...rest} />;
 }
 
 function CardContent({ className, ...rest }: CardContentProps) {
   const classes = [styles.content, className].filter(Boolean).join(" ");
-  return <div className={classes} {...rest} />;
+  return <div data-slot="card-content" className={classes} {...rest} />;
 }
 
 function CardFooter({ className, ...rest }: CardFooterProps) {
   const classes = [styles.footer, className].filter(Boolean).join(" ");
-  return <div className={classes} {...rest} />;
+  return <div data-slot="card-footer" className={classes} {...rest} />;
 }
 
 export const Card = Object.assign(CardRoot, {

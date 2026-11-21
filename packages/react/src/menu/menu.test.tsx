@@ -20,4 +20,29 @@ describe("Menu", () => {
     expect(screen.getByRole("button", { name: "Options" })).toBeTruthy();
     expect(screen.queryByRole("menu")).toBeNull();
   });
+
+  it("exposes rich compound sub-parts and data-slot on trigger", () => {
+    render(
+      <Menu>
+        <Menu.Trigger>View</Menu.Trigger>
+        <Menu.Content>
+          <Menu.Group>
+            <Menu.GroupLabel>Display</Menu.GroupLabel>
+            <Menu.CheckboxItem defaultChecked>
+              Status bar <Menu.Shortcut>⌘B</Menu.Shortcut>
+            </Menu.CheckboxItem>
+          </Menu.Group>
+          <Menu.Separator />
+          <Menu.RadioGroup defaultValue="comfortable">
+            <Menu.RadioItem value="comfortable">Comfortable</Menu.RadioItem>
+            <Menu.RadioItem value="compact">Compact</Menu.RadioItem>
+          </Menu.RadioGroup>
+        </Menu.Content>
+      </Menu>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "View" }).getAttribute("data-slot"),
+    ).toBe("menu-trigger");
+  });
 });

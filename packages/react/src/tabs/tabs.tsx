@@ -12,6 +12,7 @@ export interface TabsRootProps {
 function TabsRoot({ onValueChange, ...rest }: TabsRootProps) {
   return (
     <BaseTabs.Root
+      data-slot="tabs"
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />
@@ -23,7 +24,11 @@ export interface TabsListProps {
 }
 
 function TabsList({ children }: TabsListProps) {
-  return <BaseTabs.List className={styles.list}>{children}</BaseTabs.List>;
+  return (
+    <BaseTabs.List data-slot="tabs-list" className={styles.list}>
+      {children}
+    </BaseTabs.List>
+  );
 }
 
 export interface TabsTabProps {
@@ -34,7 +39,7 @@ export interface TabsTabProps {
 
 function TabsTab({ children, ...rest }: TabsTabProps) {
   return (
-    <BaseTabs.Tab className={styles.tab} {...rest}>
+    <BaseTabs.Tab data-slot="tabs-tab" className={styles.tab} {...rest}>
       {children}
     </BaseTabs.Tab>
   );
@@ -47,7 +52,7 @@ export interface TabsPanelProps {
 
 function TabsPanel({ children, ...rest }: TabsPanelProps) {
   return (
-    <BaseTabs.Panel className={styles.panel} {...rest}>
+    <BaseTabs.Panel data-slot="tabs-panel" className={styles.panel} {...rest}>
       {children}
     </BaseTabs.Panel>
   );

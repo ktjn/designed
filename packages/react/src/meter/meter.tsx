@@ -39,6 +39,7 @@ function MeterImpl(
   return (
     <BaseMeter.Root
       ref={ref}
+      data-slot="meter"
       value={value}
       min={min}
       max={max}
@@ -53,8 +54,11 @@ function MeterImpl(
           {showValue ? <BaseMeter.Value className={styles.value} /> : null}
         </div>
       ) : null}
-      <BaseMeter.Track className={styles.track}>
-        <BaseMeter.Indicator className={styles.indicator} />
+      <BaseMeter.Track data-slot="meter-track" className={styles.track}>
+        <BaseMeter.Indicator
+          data-slot="meter-indicator"
+          className={styles.indicator}
+        />
       </BaseMeter.Track>
     </BaseMeter.Root>
   );

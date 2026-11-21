@@ -32,4 +32,30 @@ describe("ContextMenu", () => {
 
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it("exposes rich compound sub-parts and data-slot on trigger", () => {
+    render(
+      <ContextMenu>
+        <ContextMenu.Trigger data-testid="ctx-trigger">
+          Canvas
+        </ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Group>
+            <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
+            <ContextMenu.CheckboxItem defaultChecked>
+              Grid <ContextMenu.Shortcut>G</ContextMenu.Shortcut>
+            </ContextMenu.CheckboxItem>
+          </ContextMenu.Group>
+          <ContextMenu.Separator />
+          <ContextMenu.RadioGroup defaultValue="100">
+            <ContextMenu.RadioItem value="100">100%</ContextMenu.RadioItem>
+          </ContextMenu.RadioGroup>
+        </ContextMenu.Content>
+      </ContextMenu>,
+    );
+
+    expect(screen.getByTestId("ctx-trigger").getAttribute("data-slot")).toBe(
+      "context-menu-trigger",
+    );
+  });
 });

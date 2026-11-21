@@ -149,7 +149,7 @@ export function CommandPalette({
     if (flatItems.length === 0) {
       return;
     }
-    const start = resolvedActiveIndex < 0 ? 0 : resolvedActiveIndex;
+    const start = Math.max(resolvedActiveIndex, 0);
     for (let step = 1; step <= flatItems.length; step += 1) {
       const candidate =
         (start + direction * step + flatItems.length) % flatItems.length;
@@ -196,13 +196,17 @@ export function CommandPalette({
       >
         <BaseDialog.Portal container={container}>
           <BaseDialog.Backdrop className={styles.backdrop} />
-          <BaseDialog.Popup className={styles.popup}>
+          <BaseDialog.Popup
+            data-slot="command-palette"
+            className={styles.popup}
+          >
             <VisuallyHidden>
               <BaseDialog.Title>{title}</BaseDialog.Title>
             </VisuallyHidden>
             <div className={styles.searchRow}>
               <SearchIcon aria-hidden className={styles.searchIcon} />
               <input
+                data-slot="command-palette-input"
                 type="text"
                 role="combobox"
                 aria-expanded={true}
@@ -229,6 +233,7 @@ export function CommandPalette({
               </BaseDialog.Close>
             </div>
             <div
+              data-slot="command-palette-list"
               id={listboxId}
               role="listbox"
               aria-label={title}
@@ -252,6 +257,7 @@ export function CommandPalette({
                       return (
                         <div
                           key={item.id}
+                          data-slot="command-palette-item"
                           id={`${listboxId}-${item.id}`}
                           role="option"
                           tabIndex={-1}

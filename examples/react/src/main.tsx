@@ -1,8 +1,4 @@
-import "@ktjn/design-tokens/css/base.css";
-import "@ktjn/design-tokens/css/brands/editorial.css";
-import "@ktjn/design-tokens/css/schemes/dark.css";
-import "@ktjn/design-tokens/css/densities/compact.css";
-import "@ktjn/design-tokens/css/contrasts/more.css";
+import "@ktjn/design-tokens/css/all.css";
 import {
   Accordion,
   Alert,
@@ -13,7 +9,10 @@ import {
   Button,
   Card,
   Checkbox,
+  CommandPalette,
+  DatePicker,
   Dialog,
+  Drawer,
   Field,
   Fieldset,
   Input,
@@ -26,9 +25,11 @@ import {
   Separator,
   Slider,
   Spinner,
+  Stepper,
   Switch,
   Table,
   Tabs,
+  Tag,
   Textarea,
   Toast,
   Toggle,
@@ -45,6 +46,8 @@ function WorkspaceDemo() {
   const [density, setDensity] = useState("default");
   const [contrast, setContrast] = useState("default");
   const [page, setPage] = useState(1);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [tags, setTags] = useState(["Tokens", "Accessibility", "React"]);
   const toast = useToast();
 
   useEffect(() => {
@@ -165,6 +168,31 @@ function WorkspaceDemo() {
 
       <Progress value={72} label="Workspace storage" showValue />
 
+      <Stepper
+        aria-label="Workspace setup"
+        currentStep={1}
+        steps={[
+          { id: "account", label: "Account" },
+          { id: "workspace", label: "Workspace" },
+          { id: "launch", label: "Launch" },
+        ]}
+      />
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+        {tags.map((tag) => (
+          <Tag
+            key={tag}
+            variant="info"
+            removeLabel={`Remove ${tag}`}
+            onRemove={() =>
+              setTags((prev) => prev.filter((item) => item !== tag))
+            }
+          >
+            {tag}
+          </Tag>
+        ))}
+      </div>
+
       <Tabs defaultValue="profile">
         <Tabs.List>
           <Tabs.Tab value="profile">Profile</Tabs.Tab>
@@ -202,6 +230,10 @@ function WorkspaceDemo() {
               <Field>
                 <Field.Label>Seats</Field.Label>
                 <NumberField name="seats" defaultValue={5} min={1} max={50} />
+              </Field>
+              <Field>
+                <Field.Label>Renewal date</Field.Label>
+                <DatePicker name="renewalDate" defaultValue="2026-06-15" />
               </Field>
               <Select
                 items={[
@@ -314,6 +346,19 @@ function WorkspaceDemo() {
       <Separator />
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+        <Button variant="secondary" onClick={() => setPaletteOpen(true)}>
+          Command palette (Ctrl+K)
+        </Button>
+        <Drawer side="right">
+          <Drawer.Trigger>Open drawer</Drawer.Trigger>
+          <Drawer.Content>
+            <Drawer.Title>Workspace filters</Drawer.Title>
+            <Drawer.Description>
+              Filter activity by status or date range.
+            </Drawer.Description>
+            <Drawer.Close>Done</Drawer.Close>
+          </Drawer.Content>
+        </Drawer>
         <Dialog>
           <Dialog.Trigger>View details</Dialog.Trigger>
           <Dialog.Content>
@@ -336,6 +381,28 @@ function WorkspaceDemo() {
         </AlertDialog>
         <Link href="https://example.com">Learn more</Link>
       </div>
+
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        enableGlobalShortcut
+        items={[
+          {
+            id: "theme-dark",
+            label: "Switch to dark mode",
+            group: "Appearance",
+          },
+          {
+            id: "theme-editorial",
+            label: "Switch to editorial brand",
+            group: "Appearance",
+          },
+        ]}
+        onSelect={(item) => {
+          if (item.id === "theme-dark") setColorScheme("dark");
+          if (item.id === "theme-editorial") setBrand("editorial");
+        }}
+      />
     </main>
   );
 }

@@ -19,7 +19,12 @@ function FieldsetRoot({
 }: FieldsetRootProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
   return (
-    <BaseFieldset.Root disabled={disabled} className={classes} {...rest}>
+    <BaseFieldset.Root
+      data-slot="fieldset"
+      disabled={disabled}
+      className={classes}
+      {...rest}
+    >
       {children}
     </BaseFieldset.Root>
   );
@@ -28,7 +33,11 @@ function FieldsetRoot({
 function FieldsetLegend({ className, children, ...rest }: FieldsetLegendProps) {
   const classes = [styles.legend, className].filter(Boolean).join(" ");
   return (
-    <BaseFieldset.Legend className={classes} {...rest}>
+    <BaseFieldset.Legend
+      data-slot="fieldset-legend"
+      className={classes}
+      {...rest}
+    >
       {children}
     </BaseFieldset.Legend>
   );

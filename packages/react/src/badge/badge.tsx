@@ -22,7 +22,7 @@ function BadgeImpl(
     .filter(Boolean)
     .join(" ");
 
-  return <span ref={ref} className={classes} {...rest} />;
+  return <span ref={ref} data-slot="badge" className={classes} {...rest} />;
 }
 
 export const Badge = forwardRef(BadgeImpl);

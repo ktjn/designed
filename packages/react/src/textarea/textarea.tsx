@@ -23,6 +23,7 @@ function TextareaImpl(
   return (
     <textarea
       ref={ref}
+      data-slot="textarea"
       id={id ?? field?.controlId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}

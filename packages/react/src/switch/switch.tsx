@@ -33,6 +33,7 @@ function SwitchImpl(
   return (
     <BaseSwitch.Root
       ref={ref}
+      data-slot="switch"
       id={id ?? field?.controlId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
@@ -40,7 +41,7 @@ function SwitchImpl(
       onCheckedChange={(checked) => onCheckedChange?.(checked)}
       {...rest}
     >
-      <BaseSwitch.Thumb className={styles.thumb} />
+      <BaseSwitch.Thumb data-slot="switch-thumb" className={styles.thumb} />
     </BaseSwitch.Root>
   );
 }

@@ -50,6 +50,7 @@ export function Autocomplete({
       name={name}
     >
       <BaseAutocomplete.Input
+        data-slot="autocomplete-input"
         id={id ?? field?.controlId}
         placeholder={placeholder}
         aria-label={ariaLabel}
@@ -62,7 +63,10 @@ export function Autocomplete({
       <span hidden ref={scopeRef} />
       <BaseAutocomplete.Portal container={container}>
         <BaseAutocomplete.Positioner sideOffset={4}>
-          <BaseAutocomplete.Popup className={styles.popup}>
+          <BaseAutocomplete.Popup
+            data-slot="autocomplete-content"
+            className={styles.popup}
+          >
             <BaseAutocomplete.Empty className={styles.empty}>
               {emptyMessage}
             </BaseAutocomplete.Empty>
@@ -71,6 +75,7 @@ export function Autocomplete({
                 <BaseAutocomplete.Item
                   key={item}
                   value={item}
+                  data-slot="autocomplete-item"
                   className={styles.item}
                 >
                   {item}

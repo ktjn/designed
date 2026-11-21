@@ -24,7 +24,7 @@ function TableRootImpl(
   const classes = [styles.table, className].filter(Boolean).join(" ");
   return (
     <div className={styles.wrapper}>
-      <table ref={ref} className={classes} {...rest} />
+      <table ref={ref} data-slot="table" className={classes} {...rest} />
     </div>
   );
 }
@@ -34,37 +34,39 @@ TableRoot.displayName = "Table";
 
 function TableHeader({ className, ...rest }: TableHeaderProps) {
   const classes = [styles.header, className].filter(Boolean).join(" ");
-  return <thead className={classes} {...rest} />;
+  return <thead data-slot="table-header" className={classes} {...rest} />;
 }
 
 function TableBody({ className, ...rest }: TableBodyProps) {
   const classes = [styles.body, className].filter(Boolean).join(" ");
-  return <tbody className={classes} {...rest} />;
+  return <tbody data-slot="table-body" className={classes} {...rest} />;
 }
 
 function TableFooter({ className, ...rest }: TableFooterProps) {
   const classes = [styles.footer, className].filter(Boolean).join(" ");
-  return <tfoot className={classes} {...rest} />;
+  return <tfoot data-slot="table-footer" className={classes} {...rest} />;
 }
 
 function TableRow({ className, ...rest }: TableRowProps) {
   const classes = [styles.row, className].filter(Boolean).join(" ");
-  return <tr className={classes} {...rest} />;
+  return <tr data-slot="table-row" className={classes} {...rest} />;
 }
 
 function TableHead({ scope = "col", className, ...rest }: TableHeadProps) {
   const classes = [styles.head, className].filter(Boolean).join(" ");
-  return <th scope={scope} className={classes} {...rest} />;
+  return (
+    <th data-slot="table-head" scope={scope} className={classes} {...rest} />
+  );
 }
 
 function TableCell({ className, ...rest }: TableCellProps) {
   const classes = [styles.cell, className].filter(Boolean).join(" ");
-  return <td className={classes} {...rest} />;
+  return <td data-slot="table-cell" className={classes} {...rest} />;
 }
 
 function TableCaption({ className, ...rest }: TableCaptionProps) {
   const classes = [styles.caption, className].filter(Boolean).join(" ");
-  return <caption className={classes} {...rest} />;
+  return <caption data-slot="table-caption" className={classes} {...rest} />;
 }
 
 export const Table = Object.assign(TableRoot, {

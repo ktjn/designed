@@ -26,6 +26,7 @@ function RadioGroupRoot<Value = string>({
   const field = useFieldContext();
   return (
     <BaseRadioGroup
+      data-slot="radio-group"
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       className={styles.root}
       onValueChange={(value) => onValueChange?.(value)}
@@ -47,7 +48,7 @@ function RadioGroupItem<Value = string>({
 }: RadioGroupItemProps<Value>) {
   return (
     // biome-ignore lint/a11y/noLabelWithoutControl: BaseRadio.Root renders a hidden native <input> nested inside its <span>; verified accessible by the axe test in radio-group.test.tsx.
-    <label className={styles.item}>
+    <label data-slot="radio-group-item" className={styles.item}>
       <BaseRadio.Root
         value={value}
         disabled={disabled}

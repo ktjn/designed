@@ -29,6 +29,7 @@ export interface PreviewCardTriggerProps
 function PreviewCardTrigger({ className, ...rest }: PreviewCardTriggerProps) {
   return (
     <BasePreviewCard.Trigger
+      data-slot="preview-card-trigger"
       className={className ? `${styles.trigger} ${className}` : styles.trigger}
       {...rest}
     />
@@ -54,7 +55,10 @@ function PreviewCardContent({
       <span hidden ref={scopeRef} />
       <BasePreviewCard.Portal container={container}>
         <BasePreviewCard.Positioner side={side} sideOffset={sideOffset}>
-          <BasePreviewCard.Popup className={styles.popup}>
+          <BasePreviewCard.Popup
+            data-slot="preview-card-content"
+            className={styles.popup}
+          >
             {children}
           </BasePreviewCard.Popup>
         </BasePreviewCard.Positioner>

@@ -1,4 +1,4 @@
-import { CloseIcon } from "@ktjn/design-icons";
+import { CloseIcon, UploadIcon } from "@ktjn/design-icons";
 import type {
   ChangeEvent,
   DragEvent,
@@ -94,9 +94,10 @@ function FileUploadImpl(
   }
 
   return (
-    <div className={classes}>
+    <div data-slot="file-upload" className={classes}>
       {/* biome-ignore lint/a11y/noStaticElementInteractions: dropzone wraps a native file input for drag-and-drop convenience */}
       <div
+        data-slot="file-upload-dropzone"
         className={styles.dropzone}
         data-dragging={dragging ? "" : undefined}
         data-invalid={resolvedInvalid ? "" : undefined}
@@ -118,6 +119,7 @@ function FileUploadImpl(
           className={styles.input}
           {...rest}
         />
+        <UploadIcon aria-hidden className={styles.uploadIcon} />
         <p className={styles.prompt}>{prompt}</p>
         {hint ? <p className={styles.hint}>{hint}</p> : null}
       </div>

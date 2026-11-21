@@ -79,7 +79,13 @@ function PaginationImpl(
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
-    <nav ref={ref} aria-label={ariaLabel} className={classes} {...rest}>
+    <nav
+      ref={ref}
+      data-slot="pagination"
+      aria-label={ariaLabel}
+      className={classes}
+      {...rest}
+    >
       <ul className={styles.list}>
         <li>
           <button

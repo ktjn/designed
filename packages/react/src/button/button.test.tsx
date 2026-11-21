@@ -24,9 +24,13 @@ describe("Button", () => {
 
     rerender(<Button variant="danger">Delete</Button>);
     expect(screen.getByRole("button").className).toContain("danger");
+
+    rerender(<Button variant="ghost">More</Button>);
+    expect(screen.getByRole("button").className).toContain("ghost");
+    expect(screen.getByRole("button").getAttribute("data-slot")).toBe("button");
   });
 
-  it("supports small, medium, and large sizes", () => {
+  it("supports small, medium, large, and icon sizes", () => {
     const { rerender } = render(<Button size="small">Small</Button>);
     expect(screen.getByRole("button").className).toContain("small");
 
@@ -35,6 +39,13 @@ describe("Button", () => {
 
     rerender(<Button size="large">Large</Button>);
     expect(screen.getByRole("button").className).toContain("large");
+
+    rerender(
+      <Button size="icon" aria-label="Search">
+        S
+      </Button>,
+    );
+    expect(screen.getByRole("button").className).toContain("icon");
   });
 
   it("sets aria-busy and disables interaction while loading", () => {

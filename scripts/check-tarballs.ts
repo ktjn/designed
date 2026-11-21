@@ -85,10 +85,10 @@ async function main() {
         tarballPaths["@ktjn/design-tokens"] ?? "",
         tarballPaths["@ktjn/design-icons"] ?? "",
         tarballPaths["@ktjn/design-react"] ?? "",
-        "react@19.3.0",
-        "react-dom@19.3.0",
-        "vite@8.3.0",
-        "@vitejs/plugin-react@6.1.1",
+        "react@19.3.1",
+        "react-dom@19.3.1",
+        "vite@8.3.8",
+        "@vitejs/plugin-react@6.3.0",
       ],
       { cwd: scratchDir, stdio: "inherit" },
     );
@@ -125,7 +125,7 @@ async function main() {
     );
     await writeFile(
       path.join(scratchDir, "main.jsx"),
-      `import "@ktjn/design-tokens/css/base.css";
+      `import "@ktjn/design-tokens/css/all.css";
 import { Button } from "@ktjn/design-react";
 import { CloseIcon } from "@ktjn/design-icons";
 import { createElement } from "react";

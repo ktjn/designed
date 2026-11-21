@@ -31,6 +31,7 @@ describe("icon generation", () => {
     const expected = [
       "AlertCircleIcon",
       "AlertTriangleIcon",
+      "CalendarIcon",
       "CheckIcon",
       "ChevronDownIcon",
       "ChevronLeftIcon",
@@ -43,6 +44,7 @@ describe("icon generation", () => {
       "PlusIcon",
       "SearchIcon",
       "TrashIcon",
+      "UploadIcon",
     ] as const;
 
     for (const name of expected) {

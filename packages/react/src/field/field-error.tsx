@@ -12,7 +12,12 @@ export function FieldError({ children }: FieldErrorProps) {
     return null;
   }
   return (
-    <p id={field?.errorId} role="alert" className={styles.error}>
+    <p
+      data-slot="field-error"
+      id={field?.errorId}
+      role="alert"
+      className={styles.error}
+    >
       {children}
     </p>
   );

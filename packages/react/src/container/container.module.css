@@ -1,0 +1,25 @@
+.root {
+  inline-size: 100%;
+  box-sizing: border-box;
+  margin-inline: auto;
+}
+
+.root[data-size="sm"] {
+  max-inline-size: 40rem;
+}
+
+.root[data-size="md"] {
+  max-inline-size: 56rem;
+}
+
+.root[data-size="lg"] {
+  max-inline-size: 72rem;
+}
+
+.root[data-size="full"] {
+  max-inline-size: none;
+}
+
+.root[data-padded] {
+  padding-inline: var(--ds-space-surface);
+}

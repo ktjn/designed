@@ -22,7 +22,7 @@ export default defineConfig({
   // for the icons they actually import (icon-level tree shaking).
   bundle: false,
   format: ["esm"],
-  dts: true,
+  dts: false,
   sourcemap: true,
   clean: true,
 });

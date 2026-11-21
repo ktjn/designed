@@ -32,6 +32,7 @@ function SkeletonImpl(
   return (
     <span
       ref={ref}
+      data-slot="skeleton"
       aria-hidden="true"
       className={classes}
       style={mergedStyle}

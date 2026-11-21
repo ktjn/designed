@@ -18,6 +18,7 @@ function SeparatorImpl(
   return (
     <BaseSeparator
       ref={ref}
+      data-slot="separator"
       orientation={orientation}
       className={classes}
       {...rest}

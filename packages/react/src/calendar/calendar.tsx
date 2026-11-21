@@ -166,40 +166,55 @@ function CalendarImpl(
     event: KeyboardEvent<HTMLButtonElement>,
     date: Date,
   ) {
-    const keyMap: Record<string, () => Date> = {
-      ArrowLeft: () => addDays(date, -1),
-      ArrowRight: () => addDays(date, 1),
-      ArrowUp: () => addDays(date, -7),
-      ArrowDown: () => addDays(date, 7),
-      Home: () => addDays(date, -date.getUTCDay()),
-      End: () => addDays(date, 6 - date.getUTCDay()),
-      PageUp: () =>
-        new Date(
+    let next: Date | null = null;
+    switch (event.key) {
+      case "ArrowLeft":
+        next = addDays(date, -1);
+        break;
+      case "ArrowRight":
+        next = addDays(date, 1);
+        break;
+      case "ArrowUp":
+        next = addDays(date, -7);
+        break;
+      case "ArrowDown":
+        next = addDays(date, 7);
+        break;
+      case "Home":
+        next = addDays(date, -date.getUTCDay());
+        break;
+      case "End":
+        next = addDays(date, 6 - date.getUTCDay());
+        break;
+      case "PageUp":
+        next = new Date(
           Date.UTC(
             date.getUTCFullYear(),
             date.getUTCMonth() - 1,
             date.getUTCDate(),
           ),
-        ),
-      PageDown: () =>
-        new Date(
+        );
+        break;
+      case "PageDown":
+        next = new Date(
           Date.UTC(
             date.getUTCFullYear(),
             date.getUTCMonth() + 1,
             date.getUTCDate(),
           ),
-        ),
-    };
-    const nextFactory = keyMap[event.key];
-    if (!nextFactory) return;
+        );
+        break;
+      default:
+        return;
+    }
     event.preventDefault();
-    moveFocusTo(nextFactory());
+    moveFocusTo(next);
   }
 
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
-    <div ref={ref} className={classes} {...rest}>
+    <div ref={ref} data-slot="calendar" className={classes} {...rest}>
       <div className={styles.header}>
         <button
           type="button"

@@ -1,5 +1,5 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { ChevronDownIcon } from "@ktjn/design-icons";
+import { CalendarIcon } from "@ktjn/design-icons";
 import type { ForwardedRef, InputHTMLAttributes } from "react";
 import { forwardRef, useState } from "react";
 import { Calendar } from "../calendar/calendar.js";
@@ -66,9 +66,10 @@ function DatePickerImpl(
 
   return (
     <BasePopover.Root open={open} onOpenChange={setOpen}>
-      <div className={classes}>
+      <div data-slot="date-picker" className={classes}>
         <input
           ref={ref}
+          data-slot="date-picker-input"
           type="text"
           inputMode="numeric"
           id={id ?? field?.controlId}
@@ -82,17 +83,21 @@ function DatePickerImpl(
           {...rest}
         />
         <BasePopover.Trigger
+          data-slot="date-picker-trigger"
           aria-label={openCalendarLabel}
           disabled={disabled}
           className={styles.trigger}
         >
-          <ChevronDownIcon aria-hidden />
+          <CalendarIcon aria-hidden />
         </BasePopover.Trigger>
       </div>
       <span hidden ref={scopeRef} />
       <BasePopover.Portal container={container}>
         <BasePopover.Positioner side="bottom" align="end" sideOffset={6}>
-          <BasePopover.Popup className={styles.popup}>
+          <BasePopover.Popup
+            data-slot="date-picker-content"
+            className={styles.popup}
+          >
             <Calendar
               value={currentValue}
               min={min}

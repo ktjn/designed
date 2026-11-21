@@ -49,6 +49,7 @@ function SliderImpl(
   return (
     <BaseSlider.Root
       ref={ref}
+      data-slot="slider"
       id={id ?? field?.controlId}
       value={value}
       defaultValue={defaultValue}
@@ -63,11 +64,12 @@ function SliderImpl(
       {...rest}
     >
       <BaseSlider.Control className={styles.control}>
-        <BaseSlider.Track className={styles.track}>
+        <BaseSlider.Track data-slot="slider-track" className={styles.track}>
           <BaseSlider.Indicator className={styles.indicator} />
           {thumbIndices.map((thumbIndex) => (
             <BaseSlider.Thumb
               key={`thumb-${thumbIndex}`}
+              data-slot="slider-thumb"
               index={thumbIndex}
               aria-label={
                 ariaLabel

@@ -47,6 +47,18 @@ describe("token build", () => {
     await expect(
       readFile(path.join(distDir, "css/brands/editorial.css"), "utf8"),
     ).resolves.toContain('[data-brand="editorial"]');
+    const allCss = await readFile(path.join(distDir, "css/all.css"), "utf8");
+    expect(allCss).toContain(":root");
+    expect(allCss).toContain('[data-brand="editorial"]');
+    expect(allCss).toContain('[data-color-scheme="dark"]');
+    expect(allCss).toContain('[data-density="compact"]');
+    expect(allCss).toContain('[data-contrast="more"]');
+    expect(allCss.indexOf(":root")).toBeLessThan(
+      allCss.indexOf('[data-color-scheme="dark"]'),
+    );
+    expect(allCss.indexOf('[data-color-scheme="dark"]')).toBeLessThan(
+      allCss.indexOf('[data-contrast="more"]'),
+    );
     await expect(
       readFile(path.join(distDir, "json/tokens.json"), "utf8"),
     ).resolves.toBeTruthy();

@@ -22,11 +22,20 @@ function AvatarImpl(
     .join(" ");
 
   return (
-    <BaseAvatar.Root ref={ref} className={classes} {...rest}>
+    <BaseAvatar.Root ref={ref} data-slot="avatar" className={classes} {...rest}>
       {src ? (
-        <BaseAvatar.Image src={src} alt={alt} className={styles.image} />
+        <BaseAvatar.Image
+          data-slot="avatar-image"
+          src={src}
+          alt={alt}
+          className={styles.image}
+        />
       ) : null}
-      <BaseAvatar.Fallback className={styles.fallback} aria-label={alt}>
+      <BaseAvatar.Fallback
+        data-slot="avatar-fallback"
+        className={styles.fallback}
+        aria-label={alt}
+      >
         {fallback}
       </BaseAvatar.Fallback>
     </BaseAvatar.Root>

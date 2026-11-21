@@ -9,7 +9,11 @@ export interface FieldDescriptionProps {
 export function FieldDescription({ children }: FieldDescriptionProps) {
   const field = useFieldContext();
   return (
-    <p id={field?.descriptionId} className={styles.description}>
+    <p
+      data-slot="field-description"
+      id={field?.descriptionId}
+      className={styles.description}
+    >
       {children}
     </p>
   );

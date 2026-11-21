@@ -11,7 +11,7 @@ function LinkImpl(
   { ...rest }: LinkProps,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) {
-  return <a ref={ref} className={styles.root} {...rest} />;
+  return <a ref={ref} data-slot="link" className={styles.root} {...rest} />;
 }
 
 export const Link = forwardRef(LinkImpl);

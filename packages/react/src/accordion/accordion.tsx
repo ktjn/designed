@@ -18,6 +18,7 @@ export interface AccordionRootProps {
 function AccordionRoot({ onValueChange, ...rest }: AccordionRootProps) {
   return (
     <BaseAccordion.Root
+      data-slot="accordion"
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />
@@ -32,7 +33,11 @@ export interface AccordionItemProps {
 
 function AccordionItem({ children, ...rest }: AccordionItemProps) {
   return (
-    <BaseAccordion.Item className={styles.item} {...rest}>
+    <BaseAccordion.Item
+      data-slot="accordion-item"
+      className={styles.item}
+      {...rest}
+    >
       {children}
     </BaseAccordion.Item>
   );
@@ -45,7 +50,10 @@ export interface AccordionTriggerProps {
 function AccordionTrigger({ children }: AccordionTriggerProps) {
   return (
     <BaseAccordion.Header>
-      <BaseAccordion.Trigger className={styles.trigger}>
+      <BaseAccordion.Trigger
+        data-slot="accordion-trigger"
+        className={styles.trigger}
+      >
         {children}
       </BaseAccordion.Trigger>
     </BaseAccordion.Header>
@@ -58,7 +66,7 @@ export interface AccordionPanelProps {
 
 function AccordionPanel({ children }: AccordionPanelProps) {
   return (
-    <BaseAccordion.Panel className={styles.panel}>
+    <BaseAccordion.Panel data-slot="accordion-panel" className={styles.panel}>
       {children}
     </BaseAccordion.Panel>
   );

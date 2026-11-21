@@ -11,6 +11,7 @@ export function FieldLabel({ children, className, ...rest }: FieldLabelProps) {
   const field = useFieldContext();
   return (
     <label
+      data-slot="field-label"
       htmlFor={field?.controlId}
       className={className ? `${styles.label} ${className}` : styles.label}
       {...rest}

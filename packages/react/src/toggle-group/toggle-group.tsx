@@ -33,6 +33,7 @@ function ToggleGroupRoot({
 
   return (
     <BaseToggleGroup
+      data-slot="toggle-group"
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange ? (next) => onValueChange(next) : undefined}

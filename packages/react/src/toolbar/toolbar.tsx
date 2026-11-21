@@ -19,6 +19,7 @@ export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
 function ToolbarRoot({ className, ...rest }: ToolbarRootProps) {
   return (
     <BaseToolbar.Root
+      data-slot="toolbar"
       className={className ? `${styles.root} ${className}` : styles.root}
       {...rest}
     />
@@ -33,6 +34,7 @@ export interface ToolbarGroupProps extends HTMLAttributes<HTMLDivElement> {
 function ToolbarGroup({ className, ...rest }: ToolbarGroupProps) {
   return (
     <BaseToolbar.Group
+      data-slot="toolbar-group"
       className={className ? `${styles.group} ${className}` : styles.group}
       {...rest}
     />
@@ -48,6 +50,7 @@ export interface ToolbarButtonProps
 function ToolbarButton({ className, ...rest }: ToolbarButtonProps) {
   return (
     <BaseToolbar.Button
+      data-slot="toolbar-button"
       className={className ? `${styles.button} ${className}` : styles.button}
       {...rest}
     />
@@ -62,6 +65,7 @@ export interface ToolbarLinkProps
 function ToolbarLink({ className, ...rest }: ToolbarLinkProps) {
   return (
     <BaseToolbar.Link
+      data-slot="toolbar-link"
       className={className ? `${styles.link} ${className}` : styles.link}
       {...rest}
     />
@@ -73,6 +77,7 @@ export interface ToolbarSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
 function ToolbarSeparator({ className, ...rest }: ToolbarSeparatorProps) {
   return (
     <BaseToolbar.Separator
+      data-slot="toolbar-separator"
       className={
         className ? `${styles.separator} ${className}` : styles.separator
       }
