@@ -1,0 +1,99 @@
+.root {
+  display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--ds-font-family-base);
+}
+
+.group {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  overflow: hidden;
+  transition: border-color 120ms ease;
+}
+
+.group:hover:not(:has(input:disabled)) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.group:focus-within {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--ds-color-border-focus);
+}
+
+.invalid .group {
+  border-color: var(--ds-color-action-danger-default);
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  border: none;
+  background: transparent;
+  color: var(--ds-color-foreground-default);
+  font-family: inherit;
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  padding-inline: var(--ds-space-stack-md);
+  border: none;
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  font-family: inherit;
+  font-size: var(--ds-font-size-200);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.button:first-child {
+  border-inline-end: 1px solid var(--ds-color-border-default);
+}
+
+.button:last-child {
+  border-inline-start: 1px solid var(--ds-color-border-default);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--ds-color-background-muted);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group,
+  .button {
+    transition: none;
+  }
+}

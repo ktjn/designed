@@ -69,6 +69,80 @@ declare const AlertDialog: typeof AlertDialogRoot & {
 export { AlertDialog, type AlertDialogContentProps, type AlertDialogRootProps, type AlertDialogTriggerProps };
 
 
+// ---- alert/alert.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+
+type AlertVariant = "info" | "success" | "warning" | "danger";
+interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+    variant?: AlertVariant;
+    title?: ReactNode;
+    children?: ReactNode;
+}
+declare const Alert: react.ForwardRefExoticComponent<AlertProps & react.RefAttributes<HTMLDivElement>>;
+
+export { Alert, type AlertProps, type AlertVariant };
+
+
+// ---- avatar/avatar.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+
+type AvatarSize = "small" | "medium" | "large";
+interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    src?: string;
+    alt: string;
+    fallback?: ReactNode;
+    size?: AvatarSize;
+}
+declare const Avatar: react.ForwardRefExoticComponent<AvatarProps & react.RefAttributes<HTMLSpanElement>>;
+
+export { Avatar, type AvatarProps, type AvatarSize };
+
+
+// ---- badge/badge.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+
+type BadgeVariant = "neutral" | "info" | "success" | "warning" | "danger";
+interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+    variant?: BadgeVariant;
+    children?: ReactNode;
+}
+declare const Badge: react.ForwardRefExoticComponent<BadgeProps & react.RefAttributes<HTMLSpanElement>>;
+
+export { Badge, type BadgeProps, type BadgeVariant };
+
+
+// ---- breadcrumb/breadcrumb.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, OlHTMLAttributes, LiHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+
+type BreadcrumbRootProps = HTMLAttributes<HTMLElement>;
+type BreadcrumbListProps = OlHTMLAttributes<HTMLOListElement>;
+type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
+type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
+type BreadcrumbPageProps = HTMLAttributes<HTMLSpanElement>;
+interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement> {
+    children?: ReactNode;
+}
+declare function BreadcrumbList({ className, ...rest }: BreadcrumbListProps): react_jsx_runtime.JSX.Element;
+declare function BreadcrumbItem({ className, ...rest }: BreadcrumbItemProps): react_jsx_runtime.JSX.Element;
+declare function BreadcrumbLink({ className, ...rest }: BreadcrumbLinkProps): react_jsx_runtime.JSX.Element;
+declare function BreadcrumbPage({ className, ...rest }: BreadcrumbPageProps): react_jsx_runtime.JSX.Element;
+declare function BreadcrumbSeparator({ children, className, ...rest }: BreadcrumbSeparatorProps): react_jsx_runtime.JSX.Element;
+declare const Breadcrumb: react.ForwardRefExoticComponent<BreadcrumbRootProps & react.RefAttributes<HTMLElement>> & {
+    List: typeof BreadcrumbList;
+    Item: typeof BreadcrumbItem;
+    Link: typeof BreadcrumbLink;
+    Page: typeof BreadcrumbPage;
+    Separator: typeof BreadcrumbSeparator;
+};
+
+export { Breadcrumb, type BreadcrumbItemProps, type BreadcrumbLinkProps, type BreadcrumbListProps, type BreadcrumbPageProps, type BreadcrumbRootProps, type BreadcrumbSeparatorProps };
+
+
 // ---- button/button.d.ts ----
 import * as react from 'react';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
@@ -83,6 +157,45 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "cla
 declare const Button: react.ForwardRefExoticComponent<ButtonProps & react.RefAttributes<HTMLButtonElement>>;
 
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant };
+
+
+// ---- card/card.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+
+interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+}
+interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+}
+interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    children?: ReactNode;
+}
+interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    children?: ReactNode;
+}
+interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+}
+interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+}
+declare function CardHeader({ className, ...rest }: CardHeaderProps): react_jsx_runtime.JSX.Element;
+declare function CardTitle({ className, ...rest }: CardTitleProps): react_jsx_runtime.JSX.Element;
+declare function CardDescription({ className, ...rest }: CardDescriptionProps): react_jsx_runtime.JSX.Element;
+declare function CardContent({ className, ...rest }: CardContentProps): react_jsx_runtime.JSX.Element;
+declare function CardFooter({ className, ...rest }: CardFooterProps): react_jsx_runtime.JSX.Element;
+declare const Card: react.ForwardRefExoticComponent<CardRootProps & react.RefAttributes<HTMLDivElement>> & {
+    Header: typeof CardHeader;
+    Title: typeof CardTitle;
+    Description: typeof CardDescription;
+    Content: typeof CardContent;
+    Footer: typeof CardFooter;
+};
+
+export { Card, type CardContentProps, type CardDescriptionProps, type CardFooterProps, type CardHeaderProps, type CardRootProps, type CardTitleProps };
 
 
 // ---- checkbox/checkbox.d.ts ----
@@ -285,10 +398,34 @@ declare const Field: typeof FieldRoot & {
 export { Field, type FieldRootProps };
 
 
+// ---- fieldset/fieldset.d.ts ----
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import { FieldsetHTMLAttributes, ReactNode, HTMLAttributes } from 'react';
+
+interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
+    children?: ReactNode;
+}
+interface FieldsetLegendProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+}
+declare function FieldsetRoot({ disabled, className, children, ...rest }: FieldsetRootProps): react_jsx_runtime.JSX.Element;
+declare function FieldsetLegend({ className, children, ...rest }: FieldsetLegendProps): react_jsx_runtime.JSX.Element;
+declare const Fieldset: typeof FieldsetRoot & {
+    Legend: typeof FieldsetLegend;
+};
+
+export { Fieldset, type FieldsetLegendProps, type FieldsetRootProps };
+
+
 // ---- index.d.ts ----
 export { Accordion, AccordionItemProps, AccordionPanelProps, AccordionRootProps, AccordionTriggerProps } from './accordion/accordion.js';
+export { Alert, AlertProps, AlertVariant } from './alert/alert.js';
 export { AlertDialog, AlertDialogContentProps, AlertDialogRootProps, AlertDialogTriggerProps } from './alert-dialog/alert-dialog.js';
+export { Avatar, AvatarProps, AvatarSize } from './avatar/avatar.js';
+export { Badge, BadgeProps, BadgeVariant } from './badge/badge.js';
+export { Breadcrumb, BreadcrumbItemProps, BreadcrumbLinkProps, BreadcrumbListProps, BreadcrumbPageProps, BreadcrumbRootProps, BreadcrumbSeparatorProps } from './breadcrumb/breadcrumb.js';
 export { Button, ButtonProps, ButtonSize, ButtonVariant } from './button/button.js';
+export { Card, CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardTitleProps } from './card/card.js';
 export { Checkbox, CheckboxProps } from './checkbox/checkbox.js';
 export { Combobox, ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps } from './combobox/combobox.js';
 export { Dialog, DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps } from './dialog/dialog.js';
@@ -296,15 +433,27 @@ export { Field, FieldRootProps } from './field/field.js';
 export { FieldDescriptionProps } from './field/field-description.js';
 export { FieldErrorProps } from './field/field-error.js';
 export { FieldLabelProps } from './field/field-label.js';
+export { Fieldset, FieldsetLegendProps, FieldsetRootProps } from './fieldset/fieldset.js';
 export { Input, InputProps } from './input/input.js';
 export { Link, LinkProps } from './link/link.js';
 export { Menu, MenuContentProps, MenuItemProps, MenuRootProps, MenuTriggerProps } from './menu/menu.js';
+export { NumberField, NumberFieldProps } from './number-field/number-field.js';
+export { Pagination, PaginationProps } from './pagination/pagination.js';
 export { Popover, PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps } from './popover/popover.js';
+export { Progress, ProgressProps } from './progress/progress.js';
 export { RadioGroup, RadioGroupItemProps, RadioGroupProps } from './radio-group/radio-group.js';
 export { Select, SelectContentProps, SelectItemProps, SelectRootProps, SelectTriggerProps, SelectValueProps } from './select/select.js';
+export { Separator, SeparatorOrientation, SeparatorProps } from './separator/separator.js';
+export { Skeleton, SkeletonProps, SkeletonVariant } from './skeleton/skeleton.js';
+export { Slider, SliderProps, SliderValue } from './slider/slider.js';
+export { Spinner, SpinnerProps, SpinnerSize } from './spinner/spinner.js';
 export { Switch, SwitchProps } from './switch/switch.js';
+export { Table, TableBodyProps, TableCaptionProps, TableCellProps, TableFooterProps, TableHeadProps, TableHeaderProps, TableRootProps, TableRowProps } from './table/table.js';
 export { Tabs, TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps } from './tabs/tabs.js';
 export { Textarea, TextareaProps } from './textarea/textarea.js';
+export { Toast, ToastActionOptions, ToastOptions, ToastProviderProps, ToastVariant, UseToastResult, useToast } from './toast/toast.js';
+export { Toggle, ToggleProps } from './toggle/toggle.js';
+export { ToggleGroup, ToggleGroupOrientation, ToggleGroupProps } from './toggle-group/toggle-group.js';
 export { Tooltip, TooltipProps, TooltipSide } from './tooltip/tooltip.js';
 import 'react/jsx-runtime';
 import 'react';
@@ -367,6 +516,48 @@ declare const Menu: typeof MenuRoot & {
 export { Menu, type MenuContentProps, type MenuItemProps, type MenuRootProps, type MenuTriggerProps };
 
 
+// ---- number-field/number-field.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+interface NumberFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
+    value?: number | null;
+    defaultValue?: number;
+    onValueChange?: (value: number | null) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    disabled?: boolean;
+    readOnly?: boolean;
+    required?: boolean;
+    invalid?: boolean;
+    name?: string;
+    placeholder?: string;
+    decrementLabel?: string;
+    incrementLabel?: string;
+}
+declare const NumberField: react.ForwardRefExoticComponent<NumberFieldProps & react.RefAttributes<HTMLDivElement>>;
+
+export { NumberField, type NumberFieldProps };
+
+
+// ---- pagination/pagination.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+    page: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+    siblingCount?: number;
+    previousLabel?: string;
+    nextLabel?: string;
+}
+declare const Pagination: react.ForwardRefExoticComponent<PaginationProps & react.RefAttributes<HTMLElement>>;
+
+export { Pagination, type PaginationProps };
+
+
 // ---- popover/popover.d.ts ----
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode, ButtonHTMLAttributes, HTMLAttributes } from 'react';
@@ -410,6 +601,22 @@ declare const Popover: typeof PopoverRoot & {
 };
 
 export { Popover, type PopoverCloseProps, type PopoverContentProps, type PopoverDescriptionProps, type PopoverRootProps, type PopoverSide, type PopoverTitleProps, type PopoverTriggerProps };
+
+
+// ---- progress/progress.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+
+interface ProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    value: number | null;
+    min?: number;
+    max?: number;
+    label?: ReactNode;
+    showValue?: boolean;
+}
+declare const Progress: react.ForwardRefExoticComponent<ProgressProps & react.RefAttributes<HTMLDivElement>>;
+
+export { Progress, type ProgressProps };
 
 
 // ---- radio-group/radio-group.d.ts ----
@@ -500,6 +707,68 @@ declare const Select: typeof SelectRoot & {
 export { Select, type SelectContentProps, type SelectItemProps, type SelectRootProps, type SelectTriggerProps, type SelectValueProps };
 
 
+// ---- separator/separator.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+type SeparatorOrientation = "horizontal" | "vertical";
+interface SeparatorProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    orientation?: SeparatorOrientation;
+}
+declare const Separator: react.ForwardRefExoticComponent<SeparatorProps & react.RefAttributes<HTMLDivElement>>;
+
+export { Separator, type SeparatorOrientation, type SeparatorProps };
+
+
+// ---- skeleton/skeleton.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+type SkeletonVariant = "text" | "rectangular" | "circular";
+interface SkeletonProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    variant?: SkeletonVariant;
+    width?: number | string;
+    height?: number | string;
+}
+declare const Skeleton: react.ForwardRefExoticComponent<SkeletonProps & react.RefAttributes<HTMLSpanElement>>;
+
+export { Skeleton, type SkeletonProps, type SkeletonVariant };
+
+
+// ---- slider/slider.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+type SliderValue = number | readonly number[];
+interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
+    value?: SliderValue;
+    defaultValue?: SliderValue;
+    onValueChange?: (value: SliderValue) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    disabled?: boolean;
+    name?: string;
+}
+declare const Slider: react.ForwardRefExoticComponent<SliderProps & react.RefAttributes<HTMLDivElement>>;
+
+export { Slider, type SliderProps, type SliderValue };
+
+
+// ---- spinner/spinner.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes } from 'react';
+
+type SpinnerSize = "small" | "medium" | "large";
+interface SpinnerProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    size?: SpinnerSize;
+    label?: string;
+}
+declare const Spinner: react.ForwardRefExoticComponent<SpinnerProps & react.RefAttributes<HTMLSpanElement>>;
+
+export { Spinner, type SpinnerProps, type SpinnerSize };
+
+
 // ---- switch/switch.d.ts ----
 import * as react from 'react';
 
@@ -520,6 +789,39 @@ interface SwitchProps {
 declare const Switch: react.ForwardRefExoticComponent<SwitchProps & react.RefAttributes<HTMLElement>>;
 
 export { Switch, type SwitchProps };
+
+
+// ---- table/table.d.ts ----
+import * as react from 'react';
+import { TableHTMLAttributes, HTMLAttributes, ThHTMLAttributes, TdHTMLAttributes } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+
+type TableRootProps = TableHTMLAttributes<HTMLTableElement>;
+type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
+type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
+type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
+type TableRowProps = HTMLAttributes<HTMLTableRowElement>;
+type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
+type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
+type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
+declare function TableHeader({ className, ...rest }: TableHeaderProps): react_jsx_runtime.JSX.Element;
+declare function TableBody({ className, ...rest }: TableBodyProps): react_jsx_runtime.JSX.Element;
+declare function TableFooter({ className, ...rest }: TableFooterProps): react_jsx_runtime.JSX.Element;
+declare function TableRow({ className, ...rest }: TableRowProps): react_jsx_runtime.JSX.Element;
+declare function TableHead({ scope, className, ...rest }: TableHeadProps): react_jsx_runtime.JSX.Element;
+declare function TableCell({ className, ...rest }: TableCellProps): react_jsx_runtime.JSX.Element;
+declare function TableCaption({ className, ...rest }: TableCaptionProps): react_jsx_runtime.JSX.Element;
+declare const Table: react.ForwardRefExoticComponent<TableRootProps & react.RefAttributes<HTMLTableElement>> & {
+    Header: typeof TableHeader;
+    Body: typeof TableBody;
+    Footer: typeof TableFooter;
+    Row: typeof TableRow;
+    Head: typeof TableHead;
+    Cell: typeof TableCell;
+    Caption: typeof TableCaption;
+};
+
+export { Table, type TableBodyProps, type TableCaptionProps, type TableCellProps, type TableFooterProps, type TableHeadProps, type TableHeaderProps, type TableRootProps, type TableRowProps };
 
 
 // ---- tabs/tabs.d.ts ----
@@ -567,6 +869,84 @@ interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>
 declare const Textarea: react.ForwardRefExoticComponent<TextareaProps & react.RefAttributes<HTMLTextAreaElement>>;
 
 export { Textarea, type TextareaProps };
+
+
+// ---- toast/toast.d.ts ----
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import { ReactNode } from 'react';
+
+type ToastVariant = "neutral" | "info" | "success" | "warning" | "danger";
+interface ToastActionOptions {
+    label: string;
+    onClick: () => void;
+}
+interface ToastOptions {
+    id?: string;
+    title?: ReactNode;
+    description?: ReactNode;
+    variant?: ToastVariant;
+    timeout?: number;
+    priority?: "low" | "high";
+    action?: ToastActionOptions;
+}
+interface UseToastResult {
+    add: (options: ToastOptions) => string;
+    close: (id?: string) => void;
+}
+interface ToastProviderProps {
+    children: ReactNode;
+    timeout?: number;
+    limit?: number;
+    dismissLabel?: string;
+}
+declare function ToastProvider({ children, timeout, limit, dismissLabel, }: ToastProviderProps): react_jsx_runtime.JSX.Element;
+declare function useToast(): UseToastResult;
+declare const Toast: {
+    Provider: typeof ToastProvider;
+};
+
+export { Toast, type ToastActionOptions, type ToastOptions, type ToastProviderProps, type ToastVariant, type UseToastResult, useToast };
+
+
+// ---- toggle-group/toggle-group.d.ts ----
+import * as react from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import { ToggleProps } from '../toggle/toggle.js';
+
+type ToggleGroupOrientation = "horizontal" | "vertical";
+interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    value?: readonly string[];
+    defaultValue?: readonly string[];
+    onValueChange?: (value: string[]) => void;
+    multiple?: boolean;
+    disabled?: boolean;
+    orientation?: ToggleGroupOrientation;
+    loopFocus?: boolean;
+    children?: ReactNode;
+}
+declare function ToggleGroupRoot({ value, defaultValue, onValueChange, multiple, disabled, orientation, loopFocus, className, children, ...rest }: ToggleGroupProps): react_jsx_runtime.JSX.Element;
+declare const ToggleGroup: typeof ToggleGroupRoot & {
+    Item: react.ForwardRefExoticComponent<ToggleProps & react.RefAttributes<HTMLButtonElement>>;
+};
+
+export { ToggleGroup, type ToggleGroupOrientation, type ToggleGroupProps };
+
+
+// ---- toggle/toggle.d.ts ----
+import * as react from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+
+interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
+    pressed?: boolean;
+    defaultPressed?: boolean;
+    onPressedChange?: (pressed: boolean) => void;
+    value?: string;
+    children?: ReactNode;
+}
+declare const Toggle: react.ForwardRefExoticComponent<ToggleProps & react.RefAttributes<HTMLButtonElement>>;
+
+export { Toggle, type ToggleProps };
 
 
 // ---- tooltip/tooltip.d.ts ----

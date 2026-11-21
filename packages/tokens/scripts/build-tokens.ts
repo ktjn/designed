@@ -111,6 +111,43 @@ async function buildOverride(options: {
   await sd.buildAllPlatforms();
 }
 
+async function renderOverrideBlock(options: {
+  sourceFile: string;
+  selector: string;
+}): Promise<string> {
+  const sd = new StyleDictionary({
+    source: [PRIMITIVES, SEMANTIC_BASE, options.sourceFile],
+    log: { warnings: "disabled" },
+    platforms: {
+      css: {
+        transformGroup: "css",
+        prefix: "ds",
+      },
+    },
+  });
+  await sd.hasInitialized;
+  const dict = await sd.getPlatformTokens("css");
+  const lines = dict.allTokens
+    .filter(isFromFile(options.sourceFile))
+    .map((token) => `  --${token.name}: ${token.$value};`)
+    .join("\n");
+  return `${options.selector} {\n${lines}\n}\n`;
+}
+
+async function buildCompositeOverride(options: {
+  destination: string;
+  blocks: Array<{ sourceFile: string; selector: string }>;
+}) {
+  const fs = await import("node:fs/promises");
+  const path = await import("node:path");
+  const rendered = await Promise.all(options.blocks.map(renderOverrideBlock));
+  const header =
+    "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
+  const outPath = path.join("dist/css", options.destination);
+  await fs.mkdir(path.dirname(outPath), { recursive: true });
+  await fs.writeFile(outPath, `${header}${rendered.join("\n")}`);
+}
+
 export async function buildTokens() {
   await buildBase();
 
@@ -126,21 +163,40 @@ export async function buildTokens() {
     selector: '[data-density="compact"]',
   });
 
-  await buildOverride({
-    sourceFile: "src/semantic/contrast-more.json",
+  await buildCompositeOverride({
     destination: "contrasts/more.css",
-    selector: '[data-contrast="more"]',
+    blocks: [
+      {
+        sourceFile: "src/semantic/contrast-more.json",
+        selector: '[data-contrast="more"]',
+      },
+      {
+        sourceFile: "src/semantic/contrast-more-dark.json",
+        selector: '[data-color-scheme="dark"][data-contrast="more"]',
+      },
+    ],
   });
 
-  // Brand dimension has only one value today; the default brand introduces
-  // no overrides over base.css. The file exists so the dimension is
-  // addressable the same way as scheme/density/contrast.
   const fs = await import("node:fs/promises");
   await fs.mkdir("dist/css/brands", { recursive: true });
   await fs.writeFile(
     "dist/css/brands/default.css",
     "/**\n * Do not edit directly, this file was auto-generated.\n * The default brand introduces no overrides over base.css.\n */\n",
   );
+
+  await buildCompositeOverride({
+    destination: "brands/editorial.css",
+    blocks: [
+      {
+        sourceFile: "src/semantic/brand-editorial.json",
+        selector: '[data-brand="editorial"]',
+      },
+      {
+        sourceFile: "src/semantic/brand-editorial-dark.json",
+        selector: '[data-brand="editorial"][data-color-scheme="dark"]',
+      },
+    ],
+  });
 }
 
 const isCliInvocation =

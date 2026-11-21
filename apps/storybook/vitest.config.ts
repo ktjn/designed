@@ -7,6 +7,32 @@ const dirname = import.meta.dirname;
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  optimizeDeps: {
+    include: [
+      "@ktjn/design-react > @base-ui/react/accordion",
+      "@ktjn/design-react > @base-ui/react/alert-dialog",
+      "@ktjn/design-react > @base-ui/react/avatar",
+      "@ktjn/design-react > @base-ui/react/checkbox",
+      "@ktjn/design-react > @base-ui/react/combobox",
+      "@ktjn/design-react > @base-ui/react/dialog",
+      "@ktjn/design-react > @base-ui/react/fieldset",
+      "@ktjn/design-react > @base-ui/react/menu",
+      "@ktjn/design-react > @base-ui/react/number-field",
+      "@ktjn/design-react > @base-ui/react/popover",
+      "@ktjn/design-react > @base-ui/react/progress",
+      "@ktjn/design-react > @base-ui/react/radio",
+      "@ktjn/design-react > @base-ui/react/radio-group",
+      "@ktjn/design-react > @base-ui/react/select",
+      "@ktjn/design-react > @base-ui/react/separator",
+      "@ktjn/design-react > @base-ui/react/slider",
+      "@ktjn/design-react > @base-ui/react/switch",
+      "@ktjn/design-react > @base-ui/react/tabs",
+      "@ktjn/design-react > @base-ui/react/toast",
+      "@ktjn/design-react > @base-ui/react/toggle",
+      "@ktjn/design-react > @base-ui/react/toggle-group",
+      "@ktjn/design-react > @base-ui/react/tooltip",
+    ],
+  },
   test: {
     projects: [
       {

@@ -45,6 +45,9 @@ describe("token build", () => {
       readFile(path.join(distDir, "css/brands/default.css"), "utf8"),
     ).resolves.toContain("auto-generated");
     await expect(
+      readFile(path.join(distDir, "css/brands/editorial.css"), "utf8"),
+    ).resolves.toContain('[data-brand="editorial"]');
+    await expect(
       readFile(path.join(distDir, "json/tokens.json"), "utf8"),
     ).resolves.toBeTruthy();
     await expect(
@@ -90,6 +93,119 @@ describe("token build", () => {
       await readFile(path.join(packageRoot, "token-api.json"), "utf8"),
     );
     expect(current).toEqual(snapshot);
+  });
+});
+
+function parseCssVariables(
+  css: string,
+  selector: string,
+): Record<string, string> {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = css.match(new RegExp(`${escaped}\\s*\\{([\\s\\S]*?)\\}`));
+  if (!match?.[1]) return {};
+  const vars: Record<string, string> = {};
+  for (const [, name, value] of match[1].matchAll(
+    /(--[a-z0-9-]+)\s*:\s*([^;]+);/g,
+  )) {
+    if (name && value) vars[name] = value.trim();
+  }
+  return vars;
+}
+
+function relativeLuminance(hex: string): number {
+  const clean = hex.replace("#", "");
+  const channels = [0, 2, 4].map((offset) => {
+    const srgb = Number.parseInt(clean.slice(offset, offset + 2), 16) / 255;
+    return srgb <= 0.03928 ? srgb / 12.92 : ((srgb + 0.055) / 1.055) ** 2.4;
+  });
+  return (
+    0.2126 * (channels[0] ?? 0) +
+    0.7152 * (channels[1] ?? 0) +
+    0.0722 * (channels[2] ?? 0)
+  );
+}
+
+function contrastRatio(hexA: string, hexB: string): number {
+  const l1 = relativeLuminance(hexA);
+  const l2 = relativeLuminance(hexB);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+describe("theme composition and WCAG AA contrast", () => {
+  it("provides semantic status tokens and satisfies >= 4.5:1 contrast in light, dark, and high-contrast modes", async () => {
+    const baseCss = await readFile(path.join(distDir, "css/base.css"), "utf8");
+    const darkCss = await readFile(
+      path.join(distDir, "css/schemes/dark.css"),
+      "utf8",
+    );
+    const moreCss = await readFile(
+      path.join(distDir, "css/contrasts/more.css"),
+      "utf8",
+    );
+    const editorialCss = await readFile(
+      path.join(distDir, "css/brands/editorial.css"),
+      "utf8",
+    );
+
+    const light = parseCssVariables(baseCss, ":root");
+    const dark = {
+      ...light,
+      ...parseCssVariables(darkCss, '[data-color-scheme="dark"]'),
+    };
+    const lightMore = {
+      ...light,
+      ...parseCssVariables(moreCss, '[data-contrast="more"]'),
+    };
+    const darkMore = {
+      ...dark,
+      ...parseCssVariables(moreCss, '[data-contrast="more"]'),
+      ...parseCssVariables(
+        moreCss,
+        '[data-color-scheme="dark"][data-contrast="more"]',
+      ),
+    };
+    const editorial = {
+      ...light,
+      ...parseCssVariables(editorialCss, '[data-brand="editorial"]'),
+    };
+
+    for (const [themeName, vars] of [
+      ["light", light],
+      ["dark", dark],
+      ["light+more", lightMore],
+      ["dark+more", darkMore],
+    ] as const) {
+      expect(
+        contrastRatio(
+          vars["--ds-color-foreground-muted"] ?? "",
+          vars["--ds-color-background-default"] ?? "",
+        ),
+        `${themeName} muted foreground vs default background`,
+      ).toBeGreaterThanOrEqual(4.5);
+
+      for (const status of ["info", "success", "warning", "danger"] as const) {
+        const fg = vars[`--ds-color-status-${status}-foreground`];
+        const bg = vars[`--ds-color-status-${status}-background`];
+        const border = vars[`--ds-color-status-${status}-border`];
+        expect(fg, `${themeName} status.${status}.foreground`).toBeDefined();
+        expect(bg, `${themeName} status.${status}.background`).toBeDefined();
+        expect(border, `${themeName} status.${status}.border`).toBeDefined();
+        expect(
+          contrastRatio(fg ?? "", bg ?? ""),
+          `${themeName} status.${status} foreground vs background`,
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+
+    expect(
+      contrastRatio(
+        editorial["--ds-color-action-primary-foreground"] ?? "",
+        editorial["--ds-color-action-primary-default"] ?? "",
+      ),
+      "editorial primary button contrast",
+    ).toBeGreaterThanOrEqual(4.5);
   });
 });
 

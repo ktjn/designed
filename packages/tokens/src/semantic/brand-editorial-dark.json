@@ -1,0 +1,10 @@
+{
+  "color": {
+    "background": {
+      "selected": {
+        "$type": "color",
+        "$value": "{color.violet.950}"
+      }
+    }
+  }
+}

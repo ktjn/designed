@@ -1,0 +1,21 @@
+.root {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+  margin: 0;
+  padding: var(--ds-space-surface);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  font-family: var(--ds-font-family-base);
+}
+
+.root[data-disabled] {
+  opacity: 0.6;
+}
+
+.legend {
+  padding-inline: var(--ds-space-stack-sm);
+  font-size: var(--ds-font-size-200);
+  line-height: var(--ds-font-line-height-200);
+  font-weight: var(--ds-font-weight-bold);
+  color: var(--ds-color-foreground-default);
+}

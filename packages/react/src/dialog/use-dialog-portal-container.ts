@@ -7,7 +7,7 @@ export function useDialogPortalContainer() {
   const scopeRef = useCallback((node: HTMLSpanElement | null) => {
     if (node) {
       const scope = node.closest<HTMLElement>(
-        ":is([data-color-scheme], [data-density], [data-contrast]):not(html, body)",
+        ":is([data-brand], [data-color-scheme], [data-density], [data-contrast]):not(html, body)",
       );
       setContainer(scope ?? undefined);
     }

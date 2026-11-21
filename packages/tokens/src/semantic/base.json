@@ -87,6 +87,64 @@
           "$value": "{color.neutral.0}"
         }
       }
+    },
+    "status": {
+      "info": {
+        "background": {
+          "$type": "color",
+          "$value": "{color.blue.50}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.blue.800}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.blue.300}"
+        }
+      },
+      "success": {
+        "background": {
+          "$type": "color",
+          "$value": "{color.green.50}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.green.800}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.green.300}"
+        }
+      },
+      "warning": {
+        "background": {
+          "$type": "color",
+          "$value": "{color.amber.50}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.amber.800}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.amber.300}"
+        }
+      },
+      "danger": {
+        "background": {
+          "$type": "color",
+          "$value": "{color.red.50}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.red.800}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.red.300}"
+        }
+      }
     }
   },
   "space": {
