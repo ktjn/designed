@@ -1,0 +1,100 @@
+.root {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  transition: border-color 120ms ease;
+}
+
+.root:hover:not(:has(input:disabled)) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.root:focus-within {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--ds-color-border-focus);
+}
+
+.invalid {
+  border-color: var(--ds-color-action-danger-default);
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  border: none;
+  background: transparent;
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--ds-space-stack-md);
+  border: none;
+  border-inline-start: 1px solid var(--ds-color-border-default);
+  border-start-end-radius: var(--ds-radius-control);
+  border-end-end-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  cursor: pointer;
+}
+
+.trigger:hover:not(:disabled) {
+  background: var(--ds-color-background-muted);
+}
+
+.trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+.trigger svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.popup {
+  border-radius: var(--ds-radius-surface);
+  box-shadow: var(--ds-shadow-overlay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .root,
+  .trigger {
+    border-color: ButtonText;
+  }
+
+  .root:focus-within {
+    outline-color: Highlight;
+  }
+}

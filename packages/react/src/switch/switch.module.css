@@ -55,3 +55,23 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .root {
+    border: 1px solid ButtonText;
+  }
+
+  .root[data-checked] {
+    border-color: Highlight;
+  }
+
+  .thumb {
+    border: 1px solid ButtonText;
+    background: ButtonText;
+  }
+
+  .thumb[data-checked] {
+    background: Highlight;
+    border-color: Highlight;
+  }
+}

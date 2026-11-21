@@ -102,3 +102,17 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .group {
+    border-color: ButtonText;
+  }
+
+  .button {
+    border-color: ButtonText;
+  }
+
+  .group:focus-within {
+    outline-color: Highlight;
+  }
+}

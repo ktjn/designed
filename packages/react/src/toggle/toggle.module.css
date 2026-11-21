@@ -52,3 +52,19 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .root {
+    border-color: ButtonText;
+  }
+
+  .root[data-pressed] {
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}

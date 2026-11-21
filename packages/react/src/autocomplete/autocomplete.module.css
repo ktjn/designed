@@ -1,0 +1,87 @@
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-default);
+  background: var(--ds-color-background-default);
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  transition: border-color 120ms ease;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--ds-color-border-focus);
+}
+
+.input[aria-invalid]:not([aria-invalid="false"]) {
+  border-color: var(--ds-color-action-danger-default);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.popup {
+  box-sizing: border-box;
+  min-width: var(--anchor-width);
+  max-height: 15rem;
+  overflow-y: auto;
+  padding: var(--ds-space-stack-sm);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  box-shadow: var(--ds-shadow-overlay);
+}
+
+.item {
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  border-radius: var(--ds-radius-control);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  cursor: pointer;
+}
+
+.item[data-highlighted] {
+  background: var(--ds-color-background-muted);
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+.empty {
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .input,
+  .popup {
+    border-color: CanvasText;
+  }
+
+  .item[data-highlighted] {
+    outline-color: Highlight;
+  }
+}

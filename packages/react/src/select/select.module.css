@@ -93,3 +93,14 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+@media (forced-colors: active) {
+  .trigger,
+  .popup {
+    border-color: CanvasText;
+  }
+
+  .item[data-highlighted] {
+    outline-color: Highlight;
+  }
+}

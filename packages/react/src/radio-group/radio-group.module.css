@@ -53,3 +53,21 @@
   border-radius: 9999px;
   background: var(--ds-color-action-primary-default);
 }
+
+@media (forced-colors: active) {
+  .control {
+    border-color: ButtonText;
+  }
+
+  .control[data-checked] {
+    border-color: Highlight;
+  }
+
+  .indicator {
+    background: Highlight;
+  }
+
+  .control:focus-visible {
+    outline-color: Highlight;
+  }
+}

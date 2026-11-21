@@ -74,3 +74,14 @@
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
 }
+
+@media (forced-colors: active) {
+  .input,
+  .popup {
+    border-color: CanvasText;
+  }
+
+  .item[data-highlighted] {
+    outline-color: Highlight;
+  }
+}

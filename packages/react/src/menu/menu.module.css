@@ -32,3 +32,14 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+
+  .item[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

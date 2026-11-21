@@ -1,0 +1,70 @@
+.root {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  inline-size: 100%;
+  font-family: var(--ds-font-family-base);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-stack-sm);
+}
+
+.label {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-default);
+}
+
+.value {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  position: relative;
+  overflow: hidden;
+  block-size: 0.5rem;
+  border-radius: 9999px;
+  background: var(--ds-color-background-muted);
+}
+
+.indicator {
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--ds-color-action-primary-default);
+  transition: width 150ms ease;
+}
+
+.success .indicator {
+  background: var(--ds-color-status-success-foreground);
+}
+
+.warning .indicator {
+  background: var(--ds-color-status-warning-foreground);
+}
+
+.danger .indicator {
+  background: var(--ds-color-action-danger-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .track {
+    border: 1px solid CanvasText;
+  }
+
+  .indicator {
+    background: Highlight;
+  }
+}

@@ -64,3 +64,18 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .track {
+    border: 1px solid CanvasText;
+  }
+
+  .indicator {
+    background: Highlight;
+  }
+
+  .thumb {
+    border-color: Highlight;
+    background: Canvas;
+  }
+}

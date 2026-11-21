@@ -1,0 +1,73 @@
+.root {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  background: var(--ds-color-background-default);
+}
+
+.viewport {
+  inline-size: 100%;
+  block-size: 100%;
+  max-block-size: inherit;
+  box-sizing: border-box;
+  border-radius: inherit;
+}
+
+.viewport:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+.content {
+  box-sizing: border-box;
+  padding: var(--ds-space-control-inline);
+}
+
+.scrollbar {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  padding: 2px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.scrollbar[data-hovering],
+.scrollbar[data-scrolling] {
+  opacity: 1;
+}
+
+.scrollbar[data-orientation="vertical"] {
+  inline-size: 0.625rem;
+}
+
+.scrollbar[data-orientation="horizontal"] {
+  block-size: 0.625rem;
+}
+
+.thumb {
+  flex: 1;
+  border-radius: 9999px;
+  background: var(--ds-color-border-control);
+}
+
+.corner {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollbar {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border-color: CanvasText;
+  }
+
+  .thumb {
+    background: CanvasText;
+  }
+}

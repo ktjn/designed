@@ -1,0 +1,46 @@
+.trigger {
+  color: var(--ds-color-action-primary-default);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  border-radius: var(--ds-radius-control);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.popup {
+  max-inline-size: 20rem;
+  box-sizing: border-box;
+  padding: var(--ds-space-surface);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  box-shadow: var(--ds-shadow-overlay);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  transition: opacity 150ms ease;
+  z-index: 10;
+}
+
+.popup[data-starting-style],
+.popup[data-ending-style] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+}

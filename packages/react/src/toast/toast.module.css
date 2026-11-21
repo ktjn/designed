@@ -124,3 +124,13 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .toast {
+    border: 1px solid CanvasText;
+  }
+
+  .close {
+    border: 1px solid ButtonText;
+  }
+}

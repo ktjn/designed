@@ -1,0 +1,93 @@
+.root {
+  display: flex;
+  gap: var(--ds-space-stack-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--ds-font-family-base);
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-stack-md);
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--ds-color-border-control);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-muted);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.indicator svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.step[data-status="complete"] .indicator {
+  background: var(--ds-color-action-primary-default);
+  border-color: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+}
+
+.step[data-status="current"] .indicator {
+  border-color: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-default);
+  background: var(--ds-color-background-selected);
+}
+
+.content {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.label {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-default);
+}
+
+.step[data-status="current"] .label {
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.step[data-status="upcoming"] .label {
+  color: var(--ds-color-foreground-muted);
+}
+
+.description {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+@media (forced-colors: active) {
+  .indicator {
+    border-color: CanvasText;
+  }
+
+  .step[data-status="complete"] .indicator,
+  .step[data-status="current"] .indicator {
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+}

@@ -1,0 +1,56 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+}
+
+.input {
+  width: 2.5rem;
+  height: 2.75rem;
+  box-sizing: border-box;
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-200);
+  font-weight: var(--ds-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  transition: border-color 120ms ease;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--ds-color-border-focus);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.invalid .input {
+  border-color: var(--ds-color-action-danger-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .input {
+    border-color: ButtonText;
+  }
+
+  .input:focus-visible {
+    outline-color: Highlight;
+  }
+}

@@ -1,0 +1,141 @@
+.root {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+  width: 18rem;
+  box-sizing: border-box;
+  padding: var(--ds-space-control-inline);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-stack-sm);
+}
+
+.monthLabel {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.navButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  cursor: pointer;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--ds-color-background-subtle);
+  border-color: var(--ds-color-border-strong);
+}
+
+.navButton:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.weekday {
+  padding-block: 0.25rem;
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-muted);
+  text-align: center;
+}
+
+.cell {
+  padding: 2px;
+  text-align: center;
+}
+
+.day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: var(--ds-color-foreground-default);
+  font-family: inherit;
+  font-size: var(--ds-font-size-100);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.day:hover:not(:disabled) {
+  background: var(--ds-color-background-subtle);
+}
+
+.day:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.day[data-selected] {
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.day[data-selected]:hover:not(:disabled) {
+  background: var(--ds-color-action-primary-hover);
+}
+
+.day[data-outside] {
+  color: var(--ds-color-foreground-muted);
+}
+
+.day:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .root,
+  .navButton {
+    border-color: ButtonText;
+  }
+
+  .day[data-selected] {
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+
+  .day:focus-visible,
+  .navButton:focus-visible {
+    outline-color: Highlight;
+  }
+}

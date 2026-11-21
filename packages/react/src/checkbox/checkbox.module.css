@@ -64,3 +64,20 @@
 .indicator[data-indeterminate] .dash {
   display: block;
 }
+
+@media (forced-colors: active) {
+  .root {
+    border-color: ButtonText;
+  }
+
+  .root[data-checked],
+  .root[data-indeterminate] {
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}

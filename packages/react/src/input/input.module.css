@@ -41,3 +41,13 @@
 .invalid:hover:not(:disabled) {
   border-color: var(--ds-color-action-danger-default);
 }
+
+@media (forced-colors: active) {
+  .root {
+    border-color: ButtonText;
+  }
+
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}

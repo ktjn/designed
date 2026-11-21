@@ -99,3 +99,13 @@
   width: 1rem;
   height: 1rem;
 }
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+
+  .iconClose {
+    border: 1px solid ButtonText;
+  }
+}

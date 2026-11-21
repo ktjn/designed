@@ -27,3 +27,9 @@
   color: var(--ds-color-foreground-muted);
   margin: 0;
 }
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+}

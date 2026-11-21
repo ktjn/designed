@@ -11,3 +11,9 @@
   padding-inline: var(--ds-space-stack-md);
   z-index: 1;
 }
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+}
