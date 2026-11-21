@@ -202,13 +202,13 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@ktjn/design-icons':
+      '@ktjn/designed-icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@ktjn/design-react':
+      '@ktjn/designed-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@ktjn/design-tokens':
+      '@ktjn/designed-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -260,10 +260,10 @@ importers:
 
   examples/react:
     dependencies:
-      '@ktjn/design-react':
+      '@ktjn/designed-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@ktjn/design-tokens':
+      '@ktjn/designed-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -339,10 +339,10 @@ importers:
       '@base-ui/react':
         specifier: 1.9.0
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@ktjn/design-icons':
+      '@ktjn/designed-icons':
         specifier: workspace:*
         version: link:../icons
-      '@ktjn/design-tokens':
+      '@ktjn/designed-tokens':
         specifier: workspace:^
         version: link:../tokens
     devDependencies:

@@ -1,4 +1,4 @@
-import { Switch } from "@ktjn/design-react";
+import { Switch } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 

@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import {
   type AnchorHTMLAttributes,
   type ButtonHTMLAttributes,

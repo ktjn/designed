@@ -1,4 +1,4 @@
-import { CloseIcon, UploadIcon } from "@ktjn/design-icons";
+import { CloseIcon, UploadIcon } from "@ktjn/designed-icons";
 import type { ChangeEvent, DragEvent, InputHTMLAttributes, Ref } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";

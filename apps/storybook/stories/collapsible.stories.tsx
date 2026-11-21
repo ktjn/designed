@@ -1,4 +1,4 @@
-import { Collapsible } from "@ktjn/design-react";
+import { Collapsible } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 

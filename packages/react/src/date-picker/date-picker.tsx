@@ -1,5 +1,5 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { CalendarIcon } from "@ktjn/design-icons";
+import { CalendarIcon } from "@ktjn/designed-icons";
 import type {
   FocusEvent,
   InputHTMLAttributes,

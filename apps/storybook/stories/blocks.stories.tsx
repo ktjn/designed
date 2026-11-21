@@ -1,4 +1,4 @@
-import { CalendarIcon, InfoIcon, SearchIcon } from "@ktjn/design-icons";
+import { CalendarIcon, InfoIcon, SearchIcon } from "@ktjn/designed-icons";
 import {
   Avatar,
   Badge,
@@ -20,7 +20,7 @@ import {
   Switch,
   Table,
   Tag,
-} from "@ktjn/design-react";
+} from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta = {
@@ -288,14 +288,14 @@ export const DashboardShell: Story = {
                 </Table.Header>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell>@ktjn/design-tokens</Table.Cell>
+                    <Table.Cell>@ktjn/designed-tokens</Table.Cell>
                     <Table.Cell>
                       <Badge variant="success">Published</Badge>
                     </Table.Cell>
                     <Table.Cell>CSS, JSON, TS</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>@ktjn/design-react</Table.Cell>
+                    <Table.Cell>@ktjn/designed-react</Table.Cell>
                     <Table.Cell>
                       <Badge variant="success">Published</Badge>
                     </Table.Cell>

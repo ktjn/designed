@@ -1,4 +1,4 @@
-import "@ktjn/design-tokens/css/all.css";
+import "@ktjn/designed-tokens/css/all.css";
 import {
   Accordion,
   Alert,
@@ -35,7 +35,7 @@ import {
   Toggle,
   ToggleGroup,
   useToast,
-} from "@ktjn/design-react";
+} from "@ktjn/designed-react";
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -162,8 +162,8 @@ function WorkspaceDemo() {
       </Card>
 
       <Alert variant="info" title="Published packages">
-        This example imports only the public @ktjn/design-react and
-        @ktjn/design-tokens exports.
+        This example imports only the public @ktjn/designed-react and
+        @ktjn/designed-tokens exports.
       </Alert>
 
       <Progress value={72} label="Workspace storage" showValue />

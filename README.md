@@ -1,15 +1,15 @@
-# Design System
+# Designed
 
-Framework-independent design tokens (`@ktjn/design-tokens`), monochrome SVG icons (`@ktjn/design-icons`), and a client-side React 19 component library (`@ktjn/design-react`) built on native HTML and Base UI.
+Framework-independent design tokens (`@ktjn/designed-tokens`), monochrome SVG icons (`@ktjn/designed-icons`), and a client-side React 19 component library (`@ktjn/designed-react`) built on native HTML and Base UI.
 
 ## Scope
 
-- **Client-side React 19 only**: `@ktjn/design-react` targets client-rendered React 19 applications (`react >= 19`). It does not ship `"use client"` directives or React Server Components (RSC) exports.
-- **CSS-Modules-aware bundler required**: `@ktjn/design-react` ships `.module.css` files alongside compiled ESM JS so your application bundler (Vite, webpack, Rollup, Parcel, etc.) resolves and bundles styles.
+- **Client-side React 19 only**: `@ktjn/designed-react` targets client-rendered React 19 applications (`react >= 19`). It does not ship `"use client"` directives or React Server Components (RSC) exports.
+- **CSS-Modules-aware bundler required**: `@ktjn/designed-react` ships `.module.css` files alongside compiled ESM JS so your application bundler (Vite, webpack, Rollup, Parcel, etc.) resolves and bundles styles.
 - **Independent packages**:
-  - `@ktjn/design-tokens`: zero-JS CSS custom properties, JSON, and TypeScript token types.
-  - `@ktjn/design-react`: 59 accessible React components consuming semantic tokens; Base UI is an internal implementation detail never exposed in public types.
-  - `@ktjn/design-icons`: 16 tree-shakable monochrome SVG icon components using `currentColor`.
+  - `@ktjn/designed-tokens`: zero-JS CSS custom properties, JSON, and TypeScript token types.
+  - `@ktjn/designed-react`: 59 accessible React components consuming semantic tokens; Base UI is an internal implementation detail never exposed in public types.
+  - `@ktjn/designed-icons`: 16 tree-shakable monochrome SVG icon components using `currentColor`.
 
 ## Local validation before push
 
@@ -32,11 +32,11 @@ Configure `@ktjn` in your consumer `.npmrc` with a GitHub token that has `read:p
 Install the packages you need:
 
 ```sh
-pnpm add @ktjn/design-tokens @ktjn/design-react
-pnpm add @ktjn/design-icons
+pnpm add @ktjn/designed-tokens @ktjn/designed-react
+pnpm add @ktjn/designed-icons
 ```
 
-Import `@ktjn/design-tokens/css/all.css` once at your app entry point (or import `@ktjn/design-tokens/css/base.css` plus individual dimension sheets).
+Import `@ktjn/designed-tokens/css/all.css` once at your app entry point (or import `@ktjn/designed-tokens/css/base.css` plus individual dimension sheets).
 
 ## CSS Cascade Layers & Tailwind Coexistence
 
@@ -57,7 +57,7 @@ All token and component styles declare an explicit sub-layer order under the par
 ```css
 @layer theme, base, ds, components, utilities;
 @import "tailwindcss";
-@import "@ktjn/design-tokens/css/all.css";
+@import "@ktjn/designed-tokens/css/all.css";
 ```
 
 ## Themes
@@ -91,18 +91,18 @@ Themes compose four independent dimensions via `data-*` attributes on `<html>` o
 
 ## Component catalog
 
-Every public component exported from `@ktjn/design-react` links to its live Storybook page (verified by `packages/react/tests/readme-catalog.test.ts`):
+Every public component exported from `@ktjn/designed-react` links to its live Storybook page (verified by `packages/react/tests/readme-catalog.test.ts`):
 
-- **Layout**: [AspectRatio](https://ktjn.github.io/design/?path=/story/aspectratio--sixteen-by-nine), [Container](https://ktjn.github.io/design/?path=/story/container--default), [Grid](https://ktjn.github.io/design/?path=/story/grid--three-columns), [ScrollArea](https://ktjn.github.io/design/?path=/story/scrollarea--default), [Separator](https://ktjn.github.io/design/?path=/story/separator--horizontal), [Sidebar](https://ktjn.github.io/design/?path=/story/sidebar--default), [Stack](https://ktjn.github.io/design/?path=/story/stack--vertical)
-- **Actions & Forms**: [Autocomplete](https://ktjn.github.io/design/?path=/story/autocomplete--default), [Button](https://ktjn.github.io/design/?path=/story/button--primary), [ButtonGroup](https://ktjn.github.io/design/?path=/story/buttongroup--horizontal), [Calendar](https://ktjn.github.io/design/?path=/story/calendar--default), [Checkbox](https://ktjn.github.io/design/?path=/story/checkbox--unchecked), [Combobox](https://ktjn.github.io/design/?path=/story/combobox--default), [DatePicker](https://ktjn.github.io/design/?path=/story/datepicker--default), [Field](https://ktjn.github.io/design/?path=/story/field--default), [Fieldset](https://ktjn.github.io/design/?path=/story/fieldset--default), [FileUpload](https://ktjn.github.io/design/?path=/story/fileupload--default), [Input](https://ktjn.github.io/design/?path=/story/input--default), [InputGroup](https://ktjn.github.io/design/?path=/story/inputgroup--default), [Link](https://ktjn.github.io/design/?path=/story/link--default), [NumberField](https://ktjn.github.io/design/?path=/story/numberfield--default), [OTPField](https://ktjn.github.io/design/?path=/story/otpfield--default), [RadioGroup](https://ktjn.github.io/design/?path=/story/radiogroup--default), [Select](https://ktjn.github.io/design/?path=/story/select--default), [Slider](https://ktjn.github.io/design/?path=/story/slider--default), [Switch](https://ktjn.github.io/design/?path=/story/switch--off), [Textarea](https://ktjn.github.io/design/?path=/story/textarea--default), [Toggle](https://ktjn.github.io/design/?path=/story/toggle--default), [ToggleGroup](https://ktjn.github.io/design/?path=/story/togglegroup--single), [Toolbar](https://ktjn.github.io/design/?path=/story/toolbar--default)
-- **Overlays & Disclosure**: [Accordion](https://ktjn.github.io/design/?path=/story/accordion--default), [AlertDialog](https://ktjn.github.io/design/?path=/story/alertdialog--default), [Collapsible](https://ktjn.github.io/design/?path=/story/collapsible--default), [CommandPalette](https://ktjn.github.io/design/?path=/story/commandpalette--default), [ContextMenu](https://ktjn.github.io/design/?path=/story/contextmenu--default), [Dialog](https://ktjn.github.io/design/?path=/story/dialog--default), [Drawer](https://ktjn.github.io/design/?path=/story/drawer--right), [Menu](https://ktjn.github.io/design/?path=/story/menu--default), [Popover](https://ktjn.github.io/design/?path=/story/popover--default), [PreviewCard](https://ktjn.github.io/design/?path=/story/previewcard--default), [Tabs](https://ktjn.github.io/design/?path=/story/tabs--default), [Tooltip](https://ktjn.github.io/design/?path=/story/tooltip--default)
-- **Navigation, Feedback & Display**: [Alert](https://ktjn.github.io/design/?path=/story/alert--info), [Avatar](https://ktjn.github.io/design/?path=/story/avatar--sizes), [Badge](https://ktjn.github.io/design/?path=/story/badge--all-variants), [Breadcrumb](https://ktjn.github.io/design/?path=/story/breadcrumb--default), [Card](https://ktjn.github.io/design/?path=/story/card--default), [EmptyState](https://ktjn.github.io/design/?path=/story/emptystate--default), [Kbd](https://ktjn.github.io/design/?path=/story/kbd--default), [Meter](https://ktjn.github.io/design/?path=/story/meter--default), [Pagination](https://ktjn.github.io/design/?path=/story/pagination--default), [Progress](https://ktjn.github.io/design/?path=/story/progress--determinate), [Skeleton](https://ktjn.github.io/design/?path=/story/skeleton--card-placeholder), [Spinner](https://ktjn.github.io/design/?path=/story/spinner--sizes), [Stepper](https://ktjn.github.io/design/?path=/story/stepper--horizontal), [Table](https://ktjn.github.io/design/?path=/story/table--default), [Tag](https://ktjn.github.io/design/?path=/story/tag--variants), [Toast](https://ktjn.github.io/design/?path=/story/toast--default), [VisuallyHidden](https://ktjn.github.io/design/?path=/story/visuallyhidden--icon-only-button)
+- **Layout**: [AspectRatio](https://ktjn.github.io/designed/?path=/story/aspectratio--sixteen-by-nine), [Container](https://ktjn.github.io/designed/?path=/story/container--default), [Grid](https://ktjn.github.io/designed/?path=/story/grid--three-columns), [ScrollArea](https://ktjn.github.io/designed/?path=/story/scrollarea--default), [Separator](https://ktjn.github.io/designed/?path=/story/separator--horizontal), [Sidebar](https://ktjn.github.io/designed/?path=/story/sidebar--default), [Stack](https://ktjn.github.io/designed/?path=/story/stack--vertical)
+- **Actions & Forms**: [Autocomplete](https://ktjn.github.io/designed/?path=/story/autocomplete--default), [Button](https://ktjn.github.io/designed/?path=/story/button--primary), [ButtonGroup](https://ktjn.github.io/designed/?path=/story/buttongroup--horizontal), [Calendar](https://ktjn.github.io/designed/?path=/story/calendar--default), [Checkbox](https://ktjn.github.io/designed/?path=/story/checkbox--unchecked), [Combobox](https://ktjn.github.io/designed/?path=/story/combobox--default), [DatePicker](https://ktjn.github.io/designed/?path=/story/datepicker--default), [Field](https://ktjn.github.io/designed/?path=/story/field--default), [Fieldset](https://ktjn.github.io/designed/?path=/story/fieldset--default), [FileUpload](https://ktjn.github.io/designed/?path=/story/fileupload--default), [Input](https://ktjn.github.io/designed/?path=/story/input--default), [InputGroup](https://ktjn.github.io/designed/?path=/story/inputgroup--default), [Link](https://ktjn.github.io/designed/?path=/story/link--default), [NumberField](https://ktjn.github.io/designed/?path=/story/numberfield--default), [OTPField](https://ktjn.github.io/designed/?path=/story/otpfield--default), [RadioGroup](https://ktjn.github.io/designed/?path=/story/radiogroup--default), [Select](https://ktjn.github.io/designed/?path=/story/select--default), [Slider](https://ktjn.github.io/designed/?path=/story/slider--default), [Switch](https://ktjn.github.io/designed/?path=/story/switch--off), [Textarea](https://ktjn.github.io/designed/?path=/story/textarea--default), [Toggle](https://ktjn.github.io/designed/?path=/story/toggle--default), [ToggleGroup](https://ktjn.github.io/designed/?path=/story/togglegroup--single), [Toolbar](https://ktjn.github.io/designed/?path=/story/toolbar--default)
+- **Overlays & Disclosure**: [Accordion](https://ktjn.github.io/designed/?path=/story/accordion--default), [AlertDialog](https://ktjn.github.io/designed/?path=/story/alertdialog--default), [Collapsible](https://ktjn.github.io/designed/?path=/story/collapsible--default), [CommandPalette](https://ktjn.github.io/designed/?path=/story/commandpalette--default), [ContextMenu](https://ktjn.github.io/designed/?path=/story/contextmenu--default), [Dialog](https://ktjn.github.io/designed/?path=/story/dialog--default), [Drawer](https://ktjn.github.io/designed/?path=/story/drawer--right), [Menu](https://ktjn.github.io/designed/?path=/story/menu--default), [Popover](https://ktjn.github.io/designed/?path=/story/popover--default), [PreviewCard](https://ktjn.github.io/designed/?path=/story/previewcard--default), [Tabs](https://ktjn.github.io/designed/?path=/story/tabs--default), [Tooltip](https://ktjn.github.io/designed/?path=/story/tooltip--default)
+- **Navigation, Feedback & Display**: [Alert](https://ktjn.github.io/designed/?path=/story/alert--info), [Avatar](https://ktjn.github.io/designed/?path=/story/avatar--sizes), [Badge](https://ktjn.github.io/designed/?path=/story/badge--all-variants), [Breadcrumb](https://ktjn.github.io/designed/?path=/story/breadcrumb--default), [Card](https://ktjn.github.io/designed/?path=/story/card--default), [EmptyState](https://ktjn.github.io/designed/?path=/story/emptystate--default), [Kbd](https://ktjn.github.io/designed/?path=/story/kbd--default), [Meter](https://ktjn.github.io/designed/?path=/story/meter--default), [Pagination](https://ktjn.github.io/designed/?path=/story/pagination--default), [Progress](https://ktjn.github.io/designed/?path=/story/progress--determinate), [Skeleton](https://ktjn.github.io/designed/?path=/story/skeleton--card-placeholder), [Spinner](https://ktjn.github.io/designed/?path=/story/spinner--sizes), [Stepper](https://ktjn.github.io/designed/?path=/story/stepper--horizontal), [Table](https://ktjn.github.io/designed/?path=/story/table--default), [Tag](https://ktjn.github.io/designed/?path=/story/tag--variants), [Toast](https://ktjn.github.io/designed/?path=/story/toast--default), [VisuallyHidden](https://ktjn.github.io/designed/?path=/story/visuallyhidden--icon-only-button)
 
-Additional Storybook guides: [Overview](https://ktjn.github.io/design/?path=/story/overview--getting-started), [Tokens](https://ktjn.github.io/design/?path=/story/tokens--specimen), [Icons](https://ktjn.github.io/design/?path=/story/icons--gallery), [Blocks](https://ktjn.github.io/design/?path=/story/blocks--login-form).
+Additional Storybook guides: [Overview](https://ktjn.github.io/designed/?path=/story/overview--getting-started), [Tokens](https://ktjn.github.io/designed/?path=/story/tokens--specimen), [Icons](https://ktjn.github.io/designed/?path=/story/icons--gallery), [Blocks](https://ktjn.github.io/designed/?path=/story/blocks--login-form).
 
 ## Versioning, API Baselines & Security
 
-- **Independent SemVer**: packages version independently via Changesets (`@ktjn/design-tokens`, `@ktjn/design-react`, `@ktjn/design-icons`). Prereleases (`0.x.y`) may change before `1.0.0`.
+- **Independent SemVer**: packages version independently via Changesets (`@ktjn/designed-tokens`, `@ktjn/designed-react`, `@ktjn/designed-icons`). Prereleases (`0.x.y`) may change before `1.0.0`.
 - **Deprecation policy**: deprecate in a minor release with `@deprecated` JSDoc and changelog notes; remove only in a subsequent major release.
 - **API baselines**: `packages/tokens/token-api.json` and `packages/react/api-report.d.ts` are snapshot-tested during `pnpm run ci` to prevent accidental breaking changes or Base UI type leaks.
 - **Security**: SVG sources are sanitized and rejected on scripts/event handlers/foreign objects/remote refs; GitHub Actions jobs use least-privilege permissions and commit-SHA-pinned actions; packages publish to GitHub Packages (`https://npm.pkg.github.com`).

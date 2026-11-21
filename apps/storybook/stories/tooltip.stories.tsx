@@ -1,4 +1,4 @@
-import { Button, Tooltip } from "@ktjn/design-react";
+import { Button, Tooltip } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { expectEventuallyRemoved } from "./utils/expect-removed";

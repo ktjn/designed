@@ -1,6 +1,6 @@
 # Architecture & Implementation Log
 
-Historical milestone notes from the initial build of `@ktjn/design-tokens`, `@ktjn/design-react`, and `@ktjn/design-icons`.
+Historical milestone notes from the initial build of `@ktjn/designed-tokens`, `@ktjn/designed-react`, and `@ktjn/designed-icons`.
 
 ## Milestones
 
@@ -10,7 +10,7 @@ Historical milestone notes from the initial build of `@ktjn/design-tokens`, `@kt
 - **Phase 3 (Forms & Accessibility)**: Native HTML form semantics, `Field` context wiring (`controlId`, dynamic `aria-describedby`, `invalid`, `disabled`), external form library interop verified with `react-hook-form` (devDependency only), axe + keyboard/focus tests.
 - **Phase 4 (Storybook & Visual Contract)**: Storybook with `@storybook/addon-a11y`, `@storybook/addon-vitest` Chromium browser tests, theme toolbar, Chromatic visual regression.
 - **Phase 5–6 (Overlays, Selection & Disclosure)**: Base UI-backed overlays and selection controls (`Dialog`, `AlertDialog`, `Drawer`, `Popover`, `Tooltip`, `Menu`, `ContextMenu`, `Select`, `Combobox`, `Autocomplete`, `CommandPalette`, `PreviewCard`, `Tabs`, `Accordion`, `Collapsible`, `Toast`).
-- **Phase 7 (Icons)**: `@ktjn/design-icons` generated from sanitized SVGs (`svgo` + `@svgr/core`) with strict security rejection of `<script>`, inline handlers, `<foreignObject>`, and remote `href`s.
+- **Phase 7 (Icons)**: `@ktjn/designed-icons` generated from sanitized SVGs (`svgo` + `@svgr/core`) with strict security rejection of `<script>`, inline handlers, `<foreignObject>`, and remote `href`s.
 - **Phase 8 (Release Hardening)**: Committed API baselines (`token-api.json`, `api-report.d.ts`), `publint` + `attw`, `size-limit` budgets, packed tarball install checks (`scripts/check-tarballs.ts`), CSS cascade sub-layers, and scoped body-mounted portals.
 
 ## Notable Engineering Findings

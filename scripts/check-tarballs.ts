@@ -15,9 +15,9 @@ interface PackageSpec {
 }
 
 const packages: PackageSpec[] = [
-  { dir: "packages/tokens", name: "@ktjn/design-tokens" },
-  { dir: "packages/icons", name: "@ktjn/design-icons" },
-  { dir: "packages/react", name: "@ktjn/design-react" },
+  { dir: "packages/tokens", name: "@ktjn/designed-tokens" },
+  { dir: "packages/icons", name: "@ktjn/designed-icons" },
+  { dir: "packages/react", name: "@ktjn/designed-react" },
 ];
 
 function run(
@@ -43,7 +43,7 @@ async function main() {
 
   try {
     // Pack every publishable package. `pnpm pack` rewrites `workspace:*`
-    // dependencies (e.g. @ktjn/design-react -> @ktjn/design-icons) to a
+    // dependencies (e.g. @ktjn/designed-react -> @ktjn/designed-icons) to a
     // resolvable version range in the packed package.json, which is why the
     // scratch install below needs local tarball paths for those siblings
     // rather than a real registry.
@@ -82,9 +82,9 @@ async function main() {
         "--no-audit",
         "--no-fund",
         "--silent",
-        tarballPaths["@ktjn/design-tokens"] ?? "",
-        tarballPaths["@ktjn/design-icons"] ?? "",
-        tarballPaths["@ktjn/design-react"] ?? "",
+        tarballPaths["@ktjn/designed-tokens"] ?? "",
+        tarballPaths["@ktjn/designed-icons"] ?? "",
+        tarballPaths["@ktjn/designed-react"] ?? "",
         "react@19.3.1",
         "react-dom@19.3.1",
         "vite@8.3.8",
@@ -98,16 +98,18 @@ async function main() {
     const tokensBaseCss = await readFile(
       path.join(
         scratchDir,
-        "node_modules/@ktjn/design-tokens/dist/css/base.css",
+        "node_modules/@ktjn/designed-tokens/dist/css/base.css",
       ),
       "utf8",
     );
     if (!tokensBaseCss.includes("--ds-color-background-default")) {
       throw new Error(
-        "@ktjn/design-tokens tarball is missing expected CSS custom properties",
+        "@ktjn/designed-tokens tarball is missing expected CSS custom properties",
       );
     }
-    console.log("@ktjn/design-tokens tarball: CSS output present and correct");
+    console.log(
+      "@ktjn/designed-tokens tarball: CSS output present and correct",
+    );
 
     // React + Icons: components import their own CSS Modules unprocessed
     // (see README "Styling" section), which plain Node cannot load -- a
@@ -125,9 +127,9 @@ async function main() {
     );
     await writeFile(
       path.join(scratchDir, "main.jsx"),
-      `import "@ktjn/design-tokens/css/all.css";
-import { Button } from "@ktjn/design-react";
-import { CloseIcon } from "@ktjn/design-icons";
+      `import "@ktjn/designed-tokens/css/all.css";
+import { Button } from "@ktjn/designed-react";
+import { CloseIcon } from "@ktjn/designed-icons";
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 createRoot(document.getElementById("root")).render(
@@ -150,7 +152,7 @@ createRoot(document.getElementById("root")).render(
       );
     }
     console.log(
-      "@ktjn/design-react + @ktjn/design-icons tarballs: Vite build succeeds and resolves CSS Modules",
+      "@ktjn/designed-react + @ktjn/designed-icons tarballs: Vite build succeeds and resolves CSS Modules",
     );
 
     const mixedDir = path.join(scratchDir, "mixed-tokens-consumer");
@@ -196,7 +198,7 @@ createRoot(document.getElementById("root")).render(
       .pop()
       ?.trim();
     if (!patchedTarball) {
-      throw new Error("Failed to pack patched @ktjn/design-tokens tarball");
+      throw new Error("Failed to pack patched @ktjn/designed-tokens tarball");
     }
     await mkdir(mixedDir, { recursive: true });
     await cp(
@@ -211,15 +213,15 @@ createRoot(document.getElementById("root")).render(
         "--no-fund",
         "--silent",
         patchedTarball,
-        tarballPaths["@ktjn/design-icons"] ?? "",
-        tarballPaths["@ktjn/design-react"] ?? "",
+        tarballPaths["@ktjn/designed-icons"] ?? "",
+        tarballPaths["@ktjn/designed-react"] ?? "",
         "react@19.3.1",
         "react-dom@19.3.1",
       ],
       { cwd: mixedDir, stdio: "inherit" },
     );
     console.log(
-      `@ktjn/design-react accepts independent @ktjn/design-tokens patch (${bumpedVersion}) without peer conflicts`,
+      `@ktjn/designed-react accepts independent @ktjn/designed-tokens patch (${bumpedVersion}) without peer conflicts`,
     );
 
     console.log("\nAll packed tarballs install and work correctly.");

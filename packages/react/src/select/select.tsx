@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { ChevronDownIcon } from "@ktjn/design-icons";
+import { ChevronDownIcon } from "@ktjn/designed-icons";
 import type { ReactNode } from "react";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";

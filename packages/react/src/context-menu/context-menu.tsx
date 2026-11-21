@@ -1,5 +1,5 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
-import { CheckIcon } from "@ktjn/design-icons";
+import { CheckIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./context-menu.module.css";

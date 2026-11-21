@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, KeyboardEvent, Ref } from "react";
 import { useMemo, useRef, useState } from "react";
 import styles from "./calendar.module.css";

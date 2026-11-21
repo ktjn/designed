@@ -1,5 +1,5 @@
-import { SearchIcon } from "@ktjn/design-icons";
-import { Button, EmptyState } from "@ktjn/design-react";
+import { SearchIcon } from "@ktjn/designed-icons";
+import { Button, EmptyState } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof EmptyState> = {

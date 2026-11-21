@@ -1,18 +1,18 @@
-# @ktjn/design-react
+# @ktjn/designed-react
 
-Accessible client-side React 19 component library styled with `@ktjn/design-tokens` and CSS Modules.
+Accessible client-side React 19 component library styled with `@ktjn/designed-tokens` and CSS Modules.
 
 ## Install
 
 ```sh
-pnpm add @ktjn/design-tokens @ktjn/design-react
+pnpm add @ktjn/designed-tokens @ktjn/designed-react
 ```
 
 ## Usage
 
 ```tsx
-import "@ktjn/design-tokens/css/all.css";
-import { Button, Stack } from "@ktjn/design-react";
+import "@ktjn/designed-tokens/css/all.css";
+import { Button, Stack } from "@ktjn/designed-react";
 
 export function Example() {
   return (
@@ -33,5 +33,5 @@ With Tailwind CSS, declare the layer order as the first line of your stylesheet:
 ```css
 @layer theme, base, ds, components, utilities;
 @import "tailwindcss";
-@import "@ktjn/design-tokens/css/all.css";
+@import "@ktjn/designed-tokens/css/all.css";
 ```

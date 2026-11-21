@@ -1,4 +1,4 @@
-import { DatePicker, Field } from "@ktjn/design-react";
+import { DatePicker, Field } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 

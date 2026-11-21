@@ -1,4 +1,4 @@
-import { Skeleton } from "@ktjn/design-react";
+import { Skeleton } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof Skeleton> = {

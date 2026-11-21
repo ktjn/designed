@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { CheckIcon } from "@ktjn/design-icons";
+import { CheckIcon } from "@ktjn/designed-icons";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,

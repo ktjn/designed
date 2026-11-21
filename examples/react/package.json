@@ -9,8 +9,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ktjn/design-react": "workspace:*",
-    "@ktjn/design-tokens": "workspace:*",
+    "@ktjn/designed-react": "workspace:*",
+    "@ktjn/designed-tokens": "workspace:*",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

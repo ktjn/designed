@@ -1,4 +1,4 @@
-import { ContextMenu } from "@ktjn/design-react";
+import { ContextMenu } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 

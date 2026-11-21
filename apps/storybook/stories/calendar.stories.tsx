@@ -1,4 +1,4 @@
-import { Calendar } from "@ktjn/design-react";
+import { Calendar } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 

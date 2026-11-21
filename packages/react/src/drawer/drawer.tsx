@@ -1,5 +1,5 @@
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { CloseIcon } from "@ktjn/design-icons";
+import { CloseIcon } from "@ktjn/designed-icons";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,

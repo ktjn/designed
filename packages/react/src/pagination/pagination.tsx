@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, Ref } from "react";
 import styles from "./pagination.module.css";
 

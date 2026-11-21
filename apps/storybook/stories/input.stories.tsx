@@ -1,4 +1,4 @@
-import { Input } from "@ktjn/design-react";
+import { Input } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof Input> = {

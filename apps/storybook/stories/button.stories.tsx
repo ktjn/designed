@@ -1,5 +1,5 @@
-import { PlusIcon } from "@ktjn/design-icons";
-import { Button } from "@ktjn/design-react";
+import { PlusIcon } from "@ktjn/designed-icons";
+import { Button } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 

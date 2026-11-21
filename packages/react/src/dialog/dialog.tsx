@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { CloseIcon } from "@ktjn/design-icons";
+import { CloseIcon } from "@ktjn/designed-icons";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,

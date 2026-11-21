@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { CloseIcon, SearchIcon } from "@ktjn/design-icons";
+import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
 import { type KeyboardEvent, useEffect, useId, useMemo, useState } from "react";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";

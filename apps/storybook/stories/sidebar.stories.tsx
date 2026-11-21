@@ -1,5 +1,5 @@
-import { CalendarIcon, InfoIcon, SearchIcon } from "@ktjn/design-icons";
-import { Card, Sidebar, Stack } from "@ktjn/design-react";
+import { CalendarIcon, InfoIcon, SearchIcon } from "@ktjn/designed-icons";
+import { Card, Sidebar, Stack } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 

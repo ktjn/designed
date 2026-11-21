@@ -1,4 +1,4 @@
-import { CloseIcon } from "@ktjn/design-icons";
+import { CloseIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./tag.module.css";
 

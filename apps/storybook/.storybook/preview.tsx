@@ -1,4 +1,4 @@
-import "@ktjn/design-tokens/css/all.css";
+import "@ktjn/designed-tokens/css/all.css";
 import "./preview.css";
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { useEffect } from "react";

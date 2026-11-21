@@ -1,5 +1,5 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { MinusIcon, PlusIcon } from "@ktjn/design-icons";
+import { MinusIcon, PlusIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./number-field.module.css";

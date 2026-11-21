@@ -1,12 +1,12 @@
 {
-  "name": "@ktjn/design-react",
+  "name": "@ktjn/designed-react",
   "version": "0.5.0",
-  "description": "React component library for the design system, built on Base UI.",
+  "description": "React component library for Designed, built on Base UI.",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ktjn/design.git",
+    "url": "git+https://github.com/ktjn/designed.git",
     "directory": "packages/react"
   },
   "publishConfig": {
@@ -27,13 +27,13 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@ktjn/design-tokens": "workspace:^",
+    "@ktjn/designed-tokens": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
-    "@ktjn/design-icons": "workspace:*"
+    "@ktjn/designed-icons": "workspace:*"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",

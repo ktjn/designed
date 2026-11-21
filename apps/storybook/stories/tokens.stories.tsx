@@ -1,4 +1,4 @@
-import { Grid, Stack } from "@ktjn/design-react";
+import { Grid, Stack } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta = {

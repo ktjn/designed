@@ -15,7 +15,7 @@ import {
   SearchIcon,
   TrashIcon,
   UploadIcon,
-} from "@ktjn/design-icons";
+} from "@ktjn/designed-icons";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta = {

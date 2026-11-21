@@ -1,5 +1,5 @@
-import { MinusIcon, PlusIcon } from "@ktjn/design-icons";
-import { Button, ButtonGroup, Stack } from "@ktjn/design-react";
+import { MinusIcon, PlusIcon } from "@ktjn/designed-icons";
+import { Button, ButtonGroup, Stack } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof ButtonGroup> = {

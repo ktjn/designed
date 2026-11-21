@@ -1,5 +1,5 @@
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
-import { ChevronDownIcon } from "@ktjn/design-icons";
+import { ChevronDownIcon } from "@ktjn/designed-icons";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import styles from "./collapsible.module.css";
 

@@ -11,9 +11,9 @@
     "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
-    "@ktjn/design-icons": "workspace:*",
-    "@ktjn/design-react": "workspace:*",
-    "@ktjn/design-tokens": "workspace:*",
+    "@ktjn/designed-icons": "workspace:*",
+    "@ktjn/designed-react": "workspace:*",
+    "@ktjn/designed-tokens": "workspace:*",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

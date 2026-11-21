@@ -1,4 +1,4 @@
-import { CheckIcon } from "@ktjn/design-icons";
+import { CheckIcon } from "@ktjn/designed-icons";
 import type { OlHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./stepper.module.css";
 

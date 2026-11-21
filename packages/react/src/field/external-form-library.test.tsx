@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { Input } from "../input/input";
 import { Field } from "./field";
 
-// Verifies @ktjn/design-react's Input works with an external form-state
+// Verifies @ktjn/designed-react's Input works with an external form-state
 // library without any design-system-provided adapter. react-hook-form is a
 // devDependency here only, never a production dependency of this package.
 function DemoForm({

@@ -1,4 +1,4 @@
-import { Separator } from "@ktjn/design-react";
+import { Separator } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof Separator> = {

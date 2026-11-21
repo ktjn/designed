@@ -1,5 +1,5 @@
 import { Toast as BaseToast } from "@base-ui/react/toast";
-import { CloseIcon } from "@ktjn/design-icons";
+import { CloseIcon } from "@ktjn/designed-icons";
 import type { ReactNode } from "react";
 import { useCallback, useMemo } from "react";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";

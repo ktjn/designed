@@ -1,4 +1,4 @@
-import { Pagination } from "@ktjn/design-react";
+import { Pagination } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";

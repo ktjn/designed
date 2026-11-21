@@ -1,12 +1,12 @@
 {
-  "name": "@ktjn/design-icons",
+  "name": "@ktjn/designed-icons",
   "version": "0.2.0",
   "description": "Typed React icon components generated from SVG source.",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ktjn/design.git",
+    "url": "git+https://github.com/ktjn/designed.git",
     "directory": "packages/icons"
   },
   "publishConfig": {
