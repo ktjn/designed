@@ -1,0 +1,34 @@
+name: Feature Request
+description: Propose a component enhancement, token addition, or API improvement
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Target package
+      options:
+        - "@ktjn/designed-react"
+        - "@ktjn/designed-tokens"
+        - "@ktjn/designed-icons"
+        - Storybook / Docs
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case
+      description: Describe the concrete product use case this solves.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behavior
+      description: Include example JSX, CSS tokens, or keyboard/accessibility expectations.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Can this already be composed from existing primitives?

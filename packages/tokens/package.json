@@ -4,6 +4,20 @@
   "description": "Framework-independent design tokens for Designed.",
   "type": "module",
   "license": "MIT",
+  "author": "ktjn",
+  "homepage": "https://ktjn.github.io/designed/",
+  "bugs": {
+    "url": "https://github.com/ktjn/designed/issues"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "css-variables",
+    "css-layers",
+    "theming",
+    "style-dictionary"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ktjn/designed.git",

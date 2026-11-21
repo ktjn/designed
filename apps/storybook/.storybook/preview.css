@@ -1,3 +1,9 @@
+html {
+  background-color: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+}
+
 html[data-color-scheme="dark"] {
   color-scheme: dark;
   background-color: var(--ds-color-background-default);

@@ -2,6 +2,16 @@
   "name": "designed",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
+  "author": "ktjn",
+  "homepage": "https://ktjn.github.io/designed/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ktjn/designed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ktjn/designed/issues"
+  },
   "engines": {
     "node": ">=26"
   },

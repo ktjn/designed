@@ -4,6 +4,19 @@
   "description": "Typed React icon components generated from SVG source.",
   "type": "module",
   "license": "MIT",
+  "author": "ktjn",
+  "homepage": "https://ktjn.github.io/designed/",
+  "bugs": {
+    "url": "https://github.com/ktjn/designed/issues"
+  },
+  "keywords": [
+    "design-system",
+    "icons",
+    "svg",
+    "react",
+    "typescript",
+    "tree-shakeable"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ktjn/designed.git",

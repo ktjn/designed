@@ -1,0 +1,250 @@
+.page {
+  max-inline-size: 64rem;
+  margin-inline: auto;
+  padding: 2rem 1.5rem 3.5rem;
+  display: grid;
+  gap: 2.25rem;
+  font-family: var(--ds-font-family-base);
+  color: var(--ds-color-foreground-default);
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--ds-radius-control) * 2);
+  border: 1px solid var(--ds-color-border-default);
+  background:
+    radial-gradient(
+      circle at 92% 12%,
+      color-mix(
+        in srgb,
+        var(--ds-color-action-primary-default) 14%,
+        transparent
+      ),
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 8% 88%,
+      color-mix(
+        in srgb,
+        var(--ds-color-action-primary-default) 8%,
+        transparent
+      ),
+      transparent 44%
+    ),
+    var(--ds-color-background-subtle);
+  padding: 2.25rem 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.brandLockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: calc(var(--ds-radius-control) * 1.25);
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+  flex-shrink: 0;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.heroLead {
+  margin: 0;
+  max-inline-size: 46rem;
+  font-size: var(--ds-font-size-200);
+  line-height: 1.55;
+  color: var(--ds-color-foreground-muted);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-medium);
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  border-radius: var(--ds-radius-control);
+  border: 1px solid transparent;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.actionPrimary {
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+}
+
+.actionPrimary:hover {
+  background: var(--ds-color-action-primary-hover);
+}
+
+.actionSecondary {
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  border-color: var(--ds-color-border-control);
+}
+
+.actionSecondary:hover {
+  background: var(--ds-color-background-muted);
+}
+
+.actionLink:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.section {
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.sectionSubtitle {
+  margin: 0;
+  font-size: var(--ds-font-size-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+
+.controlGroup {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.controlLabel {
+  font-size: 0.75rem;
+  font-weight: var(--ds-font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-color-foreground-muted);
+}
+
+.playgroundSurface {
+  overflow: hidden;
+  border-radius: calc(var(--ds-radius-control) * 1.5);
+  border: 1px solid var(--ds-color-border-default);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.playgroundHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.playgroundTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.playgroundGrid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  align-items: start;
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.switchLabel {
+  font-size: var(--ds-font-size-100);
+}
+
+.featureCard {
+  height: 100%;
+}
+
+.featureBody {
+  margin: 0;
+  font-size: var(--ds-font-size-100);
+  line-height: 1.5;
+  color: var(--ds-color-foreground-muted);
+}
+
+.codeWrap {
+  position: relative;
+}
+
+.codeBlock {
+  margin: 0;
+  padding: 1rem 3rem 1rem 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-subtle);
+  border: 1px solid var(--ds-color-border-default);
+  color: var(--ds-color-foreground-default);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.copyButton {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+}
