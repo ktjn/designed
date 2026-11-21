@@ -70,3 +70,63 @@
 .danger:not(:disabled):active {
   background: var(--ds-color-action-danger-active);
 }
+
+.small {
+  padding-block: calc(var(--ds-space-control-block) * 0.6);
+  padding-inline: calc(var(--ds-space-control-inline) * 0.75);
+}
+
+.medium {
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+}
+
+.large {
+  font-size: var(--ds-font-size-200);
+  line-height: var(--ds-font-line-height-200);
+  padding-block: calc(var(--ds-space-control-block) * 1.25);
+  padding-inline: calc(var(--ds-space-control-inline) * 1.25);
+}
+
+.root svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.spinner {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  box-sizing: border-box;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  animation: buttonSpin 750ms linear infinite;
+}
+
+@keyframes buttonSpin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+
+  .spinner {
+    animation-duration: 2400ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border-color: ButtonText;
+  }
+
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}

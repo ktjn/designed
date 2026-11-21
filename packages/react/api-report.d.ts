@@ -123,10 +123,11 @@ export {};
 // ---- button/button.d.ts ----
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 export type ButtonVariant = "primary" | "secondary" | "danger";
-export type ButtonSize = "medium";
+export type ButtonSize = "small" | "medium" | "large";
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
     variant?: ButtonVariant;
     size?: ButtonSize;
+    loading?: boolean;
     children?: ReactNode;
 }
 export declare const Button: import("react").ForwardRefExoticComponent<ButtonProps & import("react").RefAttributes<HTMLButtonElement>>;

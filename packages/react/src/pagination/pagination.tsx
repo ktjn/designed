@@ -1,3 +1,4 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
 import type { ForwardedRef, HTMLAttributes } from "react";
 import { forwardRef } from "react";
 import styles from "./pagination.module.css";
@@ -87,6 +88,7 @@ function PaginationImpl(
             disabled={current <= 1}
             onClick={() => onPageChange(current - 1)}
           >
+            <ChevronLeftIcon aria-hidden />
             {previousLabel}
           </button>
         </li>
@@ -116,6 +118,7 @@ function PaginationImpl(
             onClick={() => onPageChange(current + 1)}
           >
             {nextLabel}
+            <ChevronRightIcon aria-hidden />
           </button>
         </li>
       </ul>

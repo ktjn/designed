@@ -3,12 +3,13 @@ import { forwardRef } from "react";
 import styles from "./button.module.css";
 
 export type ButtonVariant = "primary" | "secondary" | "danger";
-export type ButtonSize = "medium";
+export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  loading?: boolean;
   children?: ReactNode;
 }
 
@@ -16,19 +17,32 @@ function ButtonImpl(
   {
     variant = "primary",
     size = "medium",
+    loading = false,
+    disabled,
     type = "button",
+    children,
     ...rest
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
-  void size;
   return (
     <button
       ref={ref}
       type={type}
-      className={`${styles.root} ${styles[variant]}`}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      className={`${styles.root} ${styles[variant]} ${styles[size]}`}
       {...rest}
-    />
+    >
+      {loading ? (
+        <span
+          className={styles.spinner}
+          data-loading-indicator=""
+          aria-hidden="true"
+        />
+      ) : null}
+      {children}
+    </button>
   );
 }
 

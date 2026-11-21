@@ -26,6 +26,25 @@ describe("Button", () => {
     expect(screen.getByRole("button").className).toContain("danger");
   });
 
+  it("supports small, medium, and large sizes", () => {
+    const { rerender } = render(<Button size="small">Small</Button>);
+    expect(screen.getByRole("button").className).toContain("small");
+
+    rerender(<Button size="medium">Medium</Button>);
+    expect(screen.getByRole("button").className).toContain("medium");
+
+    rerender(<Button size="large">Large</Button>);
+    expect(screen.getByRole("button").className).toContain("large");
+  });
+
+  it("sets aria-busy and disables interaction while loading", () => {
+    render(<Button loading>Saving</Button>);
+    const button = screen.getByRole("button") as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(button.querySelector("[data-loading-indicator]")).not.toBeNull();
+  });
+
   it("forwards a ref to the underlying button element", () => {
     const ref = createRef<HTMLButtonElement>();
     render(<Button ref={ref}>Save</Button>);

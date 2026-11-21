@@ -1,3 +1,4 @@
+import { PlusIcon } from "@ktjn/design-icons";
 import { Button } from "@ktjn/design-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
@@ -23,6 +24,29 @@ export const Secondary: Story = {
 
 export const Danger: Story = {
   args: { variant: "danger", children: "Delete" },
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+      <Button size="small">Small</Button>
+      <Button size="medium">Medium</Button>
+      <Button size="large">Large</Button>
+    </div>
+  ),
+};
+
+export const Loading: Story = {
+  args: { variant: "primary", loading: true, children: "Saving" },
+};
+
+export const WithIcon: Story = {
+  render: () => (
+    <Button variant="primary">
+      <PlusIcon aria-hidden />
+      New item
+    </Button>
+  ),
 };
 
 export const Disabled: Story = {

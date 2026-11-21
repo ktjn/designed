@@ -11,6 +11,22 @@ Run `pnpm run ci` from the repository root before every push. Push only after it
 - Local CI installs locked dependencies, lints, builds the packages needed by the checks, type-checks, runs unit and browser tests, and validates packages, bundle sizes, and tarball installs.
 - GitHub Actions runs the full workspace build, GitHub Packages release publishing, Storybook deployment, and Chromatic visual regression.
 
+## Installing from GitHub Packages
+
+Configure `@ktjn` in your consumer `.npmrc` with a GitHub token that has `read:packages`:
+
+```ini
+@ktjn:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Then install the packages you need:
+
+```sh
+pnpm add @ktjn/design-tokens @ktjn/design-react
+pnpm add @ktjn/design-icons
+```
+
 ## Goals
 
 - Publish design tokens independently from components.

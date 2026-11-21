@@ -1,4 +1,5 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
+import { MinusIcon, PlusIcon } from "@ktjn/design-icons";
 import type { ForwardedRef, HTMLAttributes } from "react";
 import { forwardRef } from "react";
 import { useFieldContext } from "../field/field-context.js";
@@ -83,7 +84,7 @@ function NumberFieldImpl(
           aria-label={decrementLabel}
           className={styles.button}
         >
-          −
+          <MinusIcon aria-hidden />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
           placeholder={placeholder}
@@ -97,7 +98,7 @@ function NumberFieldImpl(
           aria-label={incrementLabel}
           className={styles.button}
         >
-          +
+          <PlusIcon aria-hidden />
         </BaseNumberField.Increment>
       </BaseNumberField.Group>
     </BaseNumberField.Root>

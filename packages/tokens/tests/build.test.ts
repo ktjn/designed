@@ -207,6 +207,22 @@ describe("theme composition and WCAG AA contrast", () => {
       "editorial primary button contrast",
     ).toBeGreaterThanOrEqual(4.5);
   });
+
+  it("supports platform preference media queries overridable by explicit attributes", async () => {
+    const darkCss = await readFile(
+      path.join(distDir, "css/schemes/dark.css"),
+      "utf8",
+    );
+    const moreCss = await readFile(
+      path.join(distDir, "css/contrasts/more.css"),
+      "utf8",
+    );
+
+    expect(darkCss).toContain("@media (prefers-color-scheme: dark)");
+    expect(darkCss).toContain(':root:not([data-color-scheme="light"])');
+    expect(moreCss).toContain("@media (prefers-contrast: more)");
+    expect(moreCss).toContain(':root:not([data-contrast="default"])');
+  });
 });
 
 describe("token validation", () => {

@@ -107,5 +107,8 @@ export const SelectInteraction: Story = {
     await expect(selected).toHaveAttribute("data-highlighted");
     await expect(getComputedStyle(selected).outlineStyle).toBe("solid");
     await userEvent.keyboard("{Escape}");
+    await expectEventuallyRemoved(() =>
+      within(document.body).queryByRole("listbox"),
+    );
   },
 };

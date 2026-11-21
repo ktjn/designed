@@ -91,6 +91,11 @@
   outline-offset: -2px;
 }
 
+.button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .group,
   .button {

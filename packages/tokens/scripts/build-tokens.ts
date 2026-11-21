@@ -114,6 +114,7 @@ async function buildOverride(options: {
 async function renderOverrideBlock(options: {
   sourceFile: string;
   selector: string;
+  media?: string;
 }): Promise<string> {
   const sd = new StyleDictionary({
     source: [PRIMITIVES, SEMANTIC_BASE, options.sourceFile],
@@ -127,16 +128,20 @@ async function renderOverrideBlock(options: {
   });
   await sd.hasInitialized;
   const dict = await sd.getPlatformTokens("css");
+  const indent = options.media ? "    " : "  ";
   const lines = dict.allTokens
     .filter(isFromFile(options.sourceFile))
-    .map((token) => `  --${token.name}: ${token.$value};`)
+    .map((token) => `${indent}--${token.name}: ${token.$value};`)
     .join("\n");
+  if (options.media) {
+    return `@media ${options.media} {\n  ${options.selector} {\n${lines}\n  }\n}\n`;
+  }
   return `${options.selector} {\n${lines}\n}\n`;
 }
 
 async function buildCompositeOverride(options: {
   destination: string;
-  blocks: Array<{ sourceFile: string; selector: string }>;
+  blocks: Array<{ sourceFile: string; selector: string; media?: string }>;
 }) {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
@@ -151,10 +156,19 @@ async function buildCompositeOverride(options: {
 export async function buildTokens() {
   await buildBase();
 
-  await buildOverride({
-    sourceFile: "src/semantic/dark.json",
+  await buildCompositeOverride({
     destination: "schemes/dark.css",
-    selector: '[data-color-scheme="dark"]',
+    blocks: [
+      {
+        sourceFile: "src/semantic/dark.json",
+        selector: ':root:not([data-color-scheme="light"])',
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        sourceFile: "src/semantic/dark.json",
+        selector: '[data-color-scheme="dark"]',
+      },
+    ],
   });
 
   await buildOverride({
@@ -166,6 +180,22 @@ export async function buildTokens() {
   await buildCompositeOverride({
     destination: "contrasts/more.css",
     blocks: [
+      {
+        sourceFile: "src/semantic/contrast-more.json",
+        selector: ':root:not([data-contrast="default"])',
+        media: "(prefers-contrast: more)",
+      },
+      {
+        sourceFile: "src/semantic/contrast-more-dark.json",
+        selector: '[data-color-scheme="dark"]:not([data-contrast="default"])',
+        media: "(prefers-contrast: more)",
+      },
+      {
+        sourceFile: "src/semantic/contrast-more-dark.json",
+        selector:
+          ':root:not([data-color-scheme="light"]):not([data-contrast="default"])',
+        media: "(prefers-color-scheme: dark) and (prefers-contrast: more)",
+      },
       {
         sourceFile: "src/semantic/contrast-more.json",
         selector: '[data-contrast="more"]',

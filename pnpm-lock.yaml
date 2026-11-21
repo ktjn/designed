@@ -193,6 +193,9 @@ importers:
 
   apps/storybook:
     dependencies:
+      '@ktjn/design-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@ktjn/design-react':
         specifier: workspace:*
         version: link:../../packages/react

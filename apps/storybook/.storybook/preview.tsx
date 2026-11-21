@@ -20,7 +20,7 @@ const withTheme: Decorator = (Story, context) => {
     if (colorScheme && colorScheme !== "default") {
       root.setAttribute("data-color-scheme", colorScheme);
     } else {
-      root.removeAttribute("data-color-scheme");
+      root.setAttribute("data-color-scheme", "light");
     }
     if (density && density !== "default") {
       root.setAttribute("data-density", density);
@@ -30,7 +30,7 @@ const withTheme: Decorator = (Story, context) => {
     if (contrast && contrast !== "default") {
       root.setAttribute("data-contrast", contrast);
     } else {
-      root.removeAttribute("data-contrast");
+      root.setAttribute("data-contrast", "default");
     }
   }, [brand, colorScheme, density, contrast]);
 

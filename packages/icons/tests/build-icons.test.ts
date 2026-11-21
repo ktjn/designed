@@ -27,12 +27,34 @@ beforeAll(async () => {
 
 describe("icon generation", () => {
   it("generates a typed component for every source SVG", async () => {
-    const { CloseIcon, ChevronDownIcon, SearchIcon } = await import(
-      "../src/index.ts"
-    );
-    expect(CloseIcon).toBeDefined();
-    expect(ChevronDownIcon).toBeDefined();
-    expect(SearchIcon).toBeDefined();
+    const icons = await import("../src/index.ts");
+    const expected = [
+      "AlertCircleIcon",
+      "AlertTriangleIcon",
+      "CheckIcon",
+      "ChevronDownIcon",
+      "ChevronLeftIcon",
+      "ChevronRightIcon",
+      "CloseIcon",
+      "CopyIcon",
+      "ExternalLinkIcon",
+      "InfoIcon",
+      "MinusIcon",
+      "PlusIcon",
+      "SearchIcon",
+      "TrashIcon",
+    ] as const;
+
+    for (const name of expected) {
+      expect(icons[name], `${name} should be exported`).toBeDefined();
+      const markup = renderToStaticMarkup(createElement(icons[name]));
+      expect(markup).toContain("currentColor");
+      expect(markup).not.toMatch(/#[0-9a-f]{3,6}/i);
+      const openingTag = markup.match(/^<svg[^>]*>/)?.[0] ?? "";
+      expect(openingTag).not.toMatch(/\swidth="/);
+      expect(openingTag).not.toMatch(/\sheight="/);
+      expect(openingTag).toContain("viewBox");
+    }
   });
 
   it("renders monochrome icons using currentColor, not a hard-coded color", async () => {

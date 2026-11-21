@@ -24,6 +24,13 @@ describe("NumberField", () => {
 
     await user.click(screen.getByRole("button", { name: "Decrease" }));
     expect(onValueChange).toHaveBeenLastCalledWith(2);
+
+    expect(
+      screen.getByRole("button", { name: "Increase" }).querySelector("svg"),
+    ).not.toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Decrease" }).querySelector("svg"),
+    ).not.toBeNull();
   });
 
   it("integrates with Field label and invalid state", () => {
