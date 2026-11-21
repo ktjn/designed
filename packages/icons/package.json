@@ -1,6 +1,6 @@
 {
   "name": "@ktjn/design-icons",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0",
   "description": "Typed React icon components generated from SVG source.",
   "type": "module",
   "license": "MIT",

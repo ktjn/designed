@@ -1,5 +1,18 @@
 # @ktjn/design-react
 
+## 0.3.0
+
+### Minor Changes
+
+- d7a16d4: Add 17 standard components (`Autocomplete`, `Calendar`, `Collapsible`, `CommandPalette`, `ContextMenu`, `DatePicker`, `Drawer`, `EmptyState`, `FileUpload`, `Meter`, `OTPField`, `PreviewCard`, `ScrollArea`, `Stepper`, `Tag`, `Toolbar`, `VisuallyHidden`) and extend `@media (forced-colors: active)` styling across interactive form controls and overlays.
+- 72e6fce: Expand `@ktjn/design-icons` to 14 core monochrome icons, add platform `prefers-color-scheme` / `prefers-contrast` media queries overridable via `data-*` attributes, add `Button` `small`/`medium`/`large` sizes, `loading` state, and forced-colors styling, and integrate `@ktjn/design-icons` into `NumberField` and `Pagination`.
+
+### Patch Changes
+
+- Updated dependencies [72e6fce]
+  - @ktjn/design-icons@0.1.0
+  - @ktjn/design-tokens@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
