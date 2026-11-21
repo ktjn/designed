@@ -1,19 +1,22 @@
-import type { ForwardedRef, HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, Ref } from "react";
 import styles from "./spinner.module.css";
 
 export type SpinnerSize = "small" | "medium" | "large";
 
 export interface SpinnerProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+  ref?: Ref<HTMLSpanElement>;
   size?: SpinnerSize;
   label?: string;
 }
 
-function SpinnerImpl(
-  { size = "medium", label = "Loading", className, ...rest }: SpinnerProps,
-  ref: ForwardedRef<HTMLSpanElement>,
-) {
+export function Spinner({
+  ref,
+  size = "medium",
+  label = "Loading",
+  className,
+  ...rest
+}: SpinnerProps) {
   const classes = [styles.root, styles[size], className]
     .filter(Boolean)
     .join(" ");
@@ -31,6 +34,3 @@ function SpinnerImpl(
     </span>
   );
 }
-
-export const Spinner = forwardRef(SpinnerImpl);
-Spinner.displayName = "Spinner";

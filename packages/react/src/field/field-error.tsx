@@ -1,22 +1,41 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useLayoutEffect } from "react";
 import styles from "./field.module.css";
 import { useFieldContext } from "./field-context.js";
 
-export interface FieldErrorProps {
+export interface FieldErrorProps extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
   children?: ReactNode;
 }
 
-export function FieldError({ children }: FieldErrorProps) {
+export function FieldError({
+  ref,
+  id,
+  className,
+  children,
+  ...rest
+}: FieldErrorProps) {
   const field = useFieldContext();
-  if (!children) {
+  const registerError = field?.registerError;
+  const hasContent = Boolean(children);
+
+  useLayoutEffect(() => {
+    if (!registerError) return;
+    registerError(hasContent);
+    return () => registerError(false);
+  }, [registerError, hasContent]);
+
+  if (!hasContent) {
     return null;
   }
   return (
     <p
+      ref={ref}
       data-slot="field-error"
-      id={field?.errorId}
+      id={id ?? field?.errorId}
       role="alert"
-      className={styles.error}
+      className={className ? `${styles.error} ${className}` : styles.error}
+      {...rest}
     >
       {children}
     </p>

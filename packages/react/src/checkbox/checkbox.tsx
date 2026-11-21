@@ -1,10 +1,10 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-import type { ForwardedRef } from "react";
-import { forwardRef } from "react";
+import type { Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./checkbox.module.css";
 
 export interface CheckboxProps {
+  ref?: Ref<HTMLElement>;
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -22,18 +22,16 @@ export interface CheckboxProps {
   "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
 
-function CheckboxImpl(
-  {
-    onCheckedChange,
-    disabled,
-    id,
-    className,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: CheckboxProps,
-  ref: ForwardedRef<HTMLElement>,
-) {
+export function Checkbox({
+  ref,
+  onCheckedChange,
+  disabled,
+  id,
+  className,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: CheckboxProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   return (
@@ -86,6 +84,3 @@ function CheckboxImpl(
     </BaseCheckbox.Root>
   );
 }
-
-export const Checkbox = forwardRef(CheckboxImpl);
-Checkbox.displayName = "Checkbox";

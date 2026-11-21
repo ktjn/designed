@@ -1,5 +1,10 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import buttonStyles from "../button/button.module.css";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./popover.module.css";
@@ -19,16 +24,20 @@ function PopoverRoot({ onOpenChange, ...rest }: PopoverRootProps) {
 
 export interface PopoverTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function PopoverTrigger({ className, ...rest }: PopoverTriggerProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BasePopover.Trigger
       data-slot="popover-trigger"
+      render={render}
       className={classes}
       {...rest}
     />
@@ -104,16 +113,20 @@ function PopoverDescription({ className, ...rest }: PopoverDescriptionProps) {
 
 export interface PopoverCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function PopoverClose({ className, ...rest }: PopoverCloseProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function PopoverClose({ render, className, ...rest }: PopoverCloseProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BasePopover.Close
       data-slot="popover-close"
+      render={render}
       className={classes}
       {...rest}
     />

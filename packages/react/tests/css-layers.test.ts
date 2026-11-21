@@ -25,7 +25,7 @@ describe("CSS cascade layers", () => {
       const css = await readFile(file, "utf8");
       const rel = path.relative(distDir, file).replace(/\\/g, "/");
       expect(css, `${rel} should declare layer order`).toContain(
-        "@layer ds.tokens, ds.components;",
+        "@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;",
       );
       expect(
         css,

@@ -5,8 +5,8 @@
 ### Minor Changes
 
 - fb134e8: - `@ktjn/design-tokens`:
-    - Wrap emitted token stylesheets in `@layer ds.tokens` (`@layer ds.tokens, ds.components;`).
-    - Fix OS dark mode (`prefers-color-scheme: dark`) combined with explicit `data-contrast="more"` to apply dark high-contrast token overrides instead of light high-contrast overrides.
+  - Wrap emitted token stylesheets in `@layer ds.tokens` (`@layer ds.tokens, ds.components;`).
+  - Fix OS dark mode (`prefers-color-scheme: dark`) combined with explicit `data-contrast="more"` to apply dark high-contrast token overrides instead of light high-contrast overrides.
   - `@ktjn/design-react`:
     - Wrap built component CSS Modules in `@layer ds.components`.
     - Sync `FileUpload` removals and drops into the native `<input type="file">` via `DataTransfer` so `FormData` submits the exact visible file list, and add `getRemoveLabel` for localization.

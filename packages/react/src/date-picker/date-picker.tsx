@@ -2,17 +2,11 @@ import { Popover as BasePopover } from "@base-ui/react/popover";
 import { CalendarIcon } from "@ktjn/design-icons";
 import type {
   FocusEvent,
-  ForwardedRef,
   InputHTMLAttributes,
   KeyboardEvent,
+  Ref,
 } from "react";
-import {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Calendar,
   parseIsoDate,
@@ -27,6 +21,7 @@ export interface DatePickerProps
     InputHTMLAttributes<HTMLInputElement>,
     "type" | "value" | "defaultValue" | "onChange"
   > {
+  ref?: Ref<HTMLInputElement>;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -52,30 +47,28 @@ function validateDateText(text: string, min?: string, max?: string): string {
   return "";
 }
 
-function DatePickerImpl(
-  {
-    value,
-    defaultValue = "",
-    onValueChange,
-    min,
-    max,
-    locale,
-    weekStartsOn,
-    invalid,
-    disabled,
-    readOnly,
-    placeholder = "YYYY-MM-DD",
-    openCalendarLabel = "Choose date",
-    id,
-    className,
-    onBlur,
-    onKeyDown,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: DatePickerProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export function DatePicker({
+  ref,
+  value,
+  defaultValue = "",
+  onValueChange,
+  min,
+  max,
+  locale,
+  weekStartsOn,
+  invalid,
+  disabled,
+  readOnly,
+  placeholder = "YYYY-MM-DD",
+  openCalendarLabel = "Choose date",
+  id,
+  className,
+  onBlur,
+  onKeyDown,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: DatePickerProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
@@ -227,6 +220,3 @@ function DatePickerImpl(
     </BasePopover.Root>
   );
 }
-
-export const DatePicker = forwardRef(DatePickerImpl);
-DatePicker.displayName = "DatePicker";

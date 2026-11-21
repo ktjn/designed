@@ -1,7 +1,6 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { MinusIcon, PlusIcon } from "@ktjn/design-icons";
-import type { ForwardedRef, HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./number-field.module.css";
 
@@ -10,6 +9,7 @@ export interface NumberFieldProps
     HTMLAttributes<HTMLDivElement>,
     "defaultValue" | "onChange" | "children"
   > {
+  ref?: Ref<HTMLDivElement>;
   value?: number | null;
   defaultValue?: number;
   onValueChange?: (value: number | null) => void;
@@ -26,32 +26,30 @@ export interface NumberFieldProps
   incrementLabel?: string;
 }
 
-function NumberFieldImpl(
-  {
-    value,
-    defaultValue,
-    onValueChange,
-    min,
-    max,
-    step = 1,
-    disabled,
-    readOnly,
-    required,
-    invalid,
-    name,
-    placeholder,
-    decrementLabel = "Decrease",
-    incrementLabel = "Increase",
-    id,
-    className,
-    "aria-label": ariaLabel,
-    "aria-labelledby": ariaLabelledBy,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: NumberFieldProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function NumberField({
+  ref,
+  value,
+  defaultValue,
+  onValueChange,
+  min,
+  max,
+  step = 1,
+  disabled,
+  readOnly,
+  required,
+  invalid,
+  name,
+  placeholder,
+  decrementLabel = "Decrease",
+  incrementLabel = "Increase",
+  id,
+  className,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: NumberFieldProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
@@ -108,6 +106,3 @@ function NumberFieldImpl(
     </BaseNumberField.Root>
   );
 }
-
-export const NumberField = forwardRef(NumberFieldImpl);
-NumberField.displayName = "NumberField";

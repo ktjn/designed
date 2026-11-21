@@ -83,8 +83,8 @@ export const GettingStarted: Story = {
         <Card.Header>
           <Card.Title>2. Install and import tokens</Card.Title>
           <Card.Description>
-            Consumers need a CSS-Modules-aware bundler (Vite, Next.js, webpack,
-            Remix).
+            Client-side React 19 library requiring a CSS-Modules-aware bundler
+            (Vite, webpack, Rollup, Parcel).
           </Card.Description>
         </Card.Header>
         <Card.Content>

@@ -51,6 +51,30 @@ describe("Dialog", () => {
     expect(container.contains(dialog)).toBe(false);
   });
 
+  it("portals to document.body while stamping resolved nested theme attributes", async () => {
+    const user = userEvent.setup();
+    render(
+      <div data-brand="editorial" data-color-scheme="dark">
+        <div
+          data-color-scheme="light"
+          data-testid="nested-panel"
+          style={{ overflow: "hidden" }}
+        >
+          <BasicDialog />
+        </div>
+      </div>,
+    );
+
+    const panel = screen.getByTestId("nested-panel");
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    const dialog = await screen.findByRole("dialog");
+    expect(panel.contains(dialog)).toBe(false);
+    const host = dialog.closest('[data-slot="portal-theme-scope"]');
+    expect(host?.parentElement).toBe(document.body);
+    expect(host?.getAttribute("data-brand")).toBe("editorial");
+    expect(host?.getAttribute("data-color-scheme")).toBe("light");
+  });
+
   it("exposes an accessible name and description via Title/Description", async () => {
     const user = userEvent.setup();
     render(<BasicDialog />);
@@ -107,6 +131,36 @@ describe("Dialog", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
     await user.click(screen.getByRole("button", { name: "Open externally" }));
     expect(await screen.findByRole("dialog")).toBeTruthy();
+  });
+
+  it("composes custom trigger and close elements via render without nested buttons", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog>
+        <Dialog.Trigger
+          render={<Button variant="primary">Delete account</Button>}
+        />
+        <Dialog.Content>
+          <Dialog.Title>Delete account?</Dialog.Title>
+          <Dialog.Close render={<Button variant="danger">Confirm</Button>} />
+        </Dialog.Content>
+      </Dialog>,
+    );
+    const trigger = screen.getByRole("button", { name: "Delete account" });
+    expect(trigger.querySelector("button")).toBeNull();
+    expect(trigger.className).toContain("primary");
+    expect(trigger.className).not.toContain("secondary");
+
+    await user.click(trigger);
+    expect(await screen.findByRole("dialog")).toBeTruthy();
+
+    const confirm = screen.getByRole("button", { name: "Confirm" });
+    expect(confirm.querySelector("button")).toBeNull();
+    expect(confirm.className).toContain("danger");
+    await user.click(confirm);
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).toBeNull();
+    });
   });
 
   it("has no automatically detectable accessibility violations while open", async () => {

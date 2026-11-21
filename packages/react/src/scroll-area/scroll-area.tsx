@@ -1,27 +1,25 @@
 import { ScrollArea as BaseScrollArea } from "@base-ui/react/scroll-area";
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./scroll-area.module.css";
 
 export type ScrollAreaOrientation = "vertical" | "horizontal" | "both";
 
 export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   orientation?: ScrollAreaOrientation;
   maxHeight?: number | string;
   children?: ReactNode;
 }
 
-function ScrollAreaImpl(
-  {
-    orientation = "vertical",
-    maxHeight,
-    className,
-    style,
-    children,
-    ...rest
-  }: ScrollAreaProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function ScrollArea({
+  ref,
+  orientation = "vertical",
+  maxHeight,
+  className,
+  style,
+  children,
+  ...rest
+}: ScrollAreaProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
   const mergedStyle =
     maxHeight !== undefined
@@ -73,6 +71,3 @@ function ScrollAreaImpl(
     </BaseScrollArea.Root>
   );
 }
-
-export const ScrollArea = forwardRef(ScrollAreaImpl);
-ScrollArea.displayName = "ScrollArea";

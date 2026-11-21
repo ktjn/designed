@@ -48,12 +48,28 @@ describe("Button", () => {
     expect(screen.getByRole("button").className).toContain("icon");
   });
 
-  it("sets aria-busy and disables interaction while loading", () => {
-    render(<Button loading>Saving</Button>);
+  it("sets aria-busy and aria-disabled, keeps focus, and blocks activation while loading", () => {
+    const onClick = vi.fn();
+    const onSubmit = vi.fn((event: React.FormEvent) => event.preventDefault());
+    render(
+      <form onSubmit={onSubmit}>
+        <Button type="submit" loading onClick={onClick}>
+          Saving
+        </Button>
+      </form>,
+    );
     const button = screen.getByRole("button") as HTMLButtonElement;
-    expect(button.disabled).toBe(true);
+    expect(button.disabled).toBe(false);
+    expect(button.getAttribute("aria-disabled")).toBe("true");
     expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(button.hasAttribute("data-loading")).toBe(true);
     expect(button.querySelector("[data-loading-indicator]")).not.toBeNull();
+
+    button.focus();
+    expect(document.activeElement).toBe(button);
+    button.click();
+    expect(onClick).not.toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it("forwards a ref to the underlying button element", () => {

@@ -120,6 +120,8 @@ export const ScopedDarkThemeInteraction: Story = {
       data-testid="dark-panel"
       style={{
         padding: "1rem",
+        overflow: "hidden",
+        transform: "translateZ(0)",
         background: "var(--ds-color-background-default)",
         color: "var(--ds-color-foreground-default)",
       }}
@@ -133,17 +135,33 @@ export const ScopedDarkThemeInteraction: Story = {
           <Select.Item value="pro">Pro</Select.Item>
         </Select.Content>
       </Select>
+      <div
+        data-color-scheme="light"
+        data-testid="nested-light-panel"
+        style={{
+          marginTop: "0.75rem",
+          padding: "0.75rem",
+          background: "var(--ds-color-background-default)",
+          color: "var(--ds-color-foreground-default)",
+        }}
+      >
+        Nested light surface
+      </div>
     </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const panel = canvas.getByTestId("dark-panel");
+    const nestedLight = canvas.getByTestId("nested-light-panel");
+    await expect(getComputedStyle(nestedLight).backgroundColor).toBe(
+      "rgb(255, 255, 255)",
+    );
     const trigger = canvas.getByRole("combobox", { name: "Dark panel plan" });
     await userEvent.click(trigger);
     const popup = (await within(document.body).findByRole("listbox")).closest(
       '[data-slot="select-content"]',
     ) as HTMLElement;
-    await expect(panel.contains(popup)).toBe(true);
+    await expect(panel.contains(popup)).toBe(false);
     await expect(getComputedStyle(popup).backgroundColor).toBe(
       getComputedStyle(panel).backgroundColor,
     );

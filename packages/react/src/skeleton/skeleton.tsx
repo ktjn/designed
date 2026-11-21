@@ -1,11 +1,11 @@
-import type { CSSProperties, ForwardedRef, HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { CSSProperties, HTMLAttributes, Ref } from "react";
 import styles from "./skeleton.module.css";
 
 export type SkeletonVariant = "text" | "rectangular" | "circular";
 
 export interface SkeletonProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+  ref?: Ref<HTMLSpanElement>;
   variant?: SkeletonVariant;
   width?: number | string;
   height?: number | string;
@@ -16,10 +16,15 @@ function toDimension(value: number | string | undefined): string | undefined {
   return value;
 }
 
-function SkeletonImpl(
-  { variant = "text", width, height, style, className, ...rest }: SkeletonProps,
-  ref: ForwardedRef<HTMLSpanElement>,
-) {
+export function Skeleton({
+  ref,
+  variant = "text",
+  width,
+  height,
+  style,
+  className,
+  ...rest
+}: SkeletonProps) {
   const classes = [styles.root, styles[variant], className]
     .filter(Boolean)
     .join(" ");
@@ -40,6 +45,3 @@ function SkeletonImpl(
     />
   );
 }
-
-export const Skeleton = forwardRef(SkeletonImpl);
-Skeleton.displayName = "Skeleton";

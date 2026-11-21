@@ -1,6 +1,11 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { CloseIcon } from "@ktjn/design-icons";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
 import { useDialogPortalContainer } from "./use-dialog-portal-container.js";
@@ -21,16 +26,20 @@ function DialogRoot({ onOpenChange, ...rest }: DialogRootProps) {
 
 export interface DialogTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function DialogTrigger({ className, ...rest }: DialogTriggerProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function DialogTrigger({ render, className, ...rest }: DialogTriggerProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BaseDialog.Trigger
       data-slot="dialog-trigger"
+      render={render}
       className={classes}
       {...rest}
     />
@@ -105,15 +114,23 @@ function DialogDescription({ className, ...rest }: DialogDescriptionProps) {
 
 export interface DialogCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function DialogCloseButton({ className, ...rest }: DialogCloseProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function DialogCloseButton({ render, className, ...rest }: DialogCloseProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
-    <BaseDialog.Close data-slot="dialog-close" className={classes} {...rest} />
+    <BaseDialog.Close
+      data-slot="dialog-close"
+      render={render}
+      className={classes}
+      {...rest}
+    />
   );
 }
 

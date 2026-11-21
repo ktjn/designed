@@ -29,6 +29,36 @@ describe("OTPField", () => {
     expect(onValueComplete).toHaveBeenCalledWith("4829");
   });
 
+  it("associates Field.Label with the first input and gives each slot a distinct position name", () => {
+    render(
+      <Field>
+        <Field.Label>Verification code</Field.Label>
+        <OTPField length={4} />
+      </Field>,
+    );
+    const label = screen.getByText("Verification code") as HTMLLabelElement;
+    const target = document.getElementById(label.htmlFor);
+    expect(target?.tagName).toBe("INPUT");
+
+    const inputs = screen.getAllByRole("textbox");
+    expect(inputs[0]).toBe(target);
+    const descriptions = inputs.map((input) => {
+      const ids = (input.getAttribute("aria-describedby") ?? "")
+        .split(/\s+/)
+        .filter(Boolean);
+      return ids
+        .map((id) => document.getElementById(id)?.textContent ?? "")
+        .join(" ")
+        .trim();
+    });
+    expect(descriptions).toEqual([
+      "Character 1 of 4",
+      "Character 2 of 4",
+      "Character 3 of 4",
+      "Character 4 of 4",
+    ]);
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>

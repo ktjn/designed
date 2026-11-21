@@ -1,11 +1,6 @@
 import { CloseIcon, UploadIcon } from "@ktjn/design-icons";
-import type {
-  ChangeEvent,
-  DragEvent,
-  ForwardedRef,
-  InputHTMLAttributes,
-} from "react";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import type { ChangeEvent, DragEvent, InputHTMLAttributes, Ref } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./file-upload.module.css";
 
@@ -14,6 +9,7 @@ export interface FileUploadProps
     InputHTMLAttributes<HTMLInputElement>,
     "type" | "value" | "defaultValue" | "onChange"
   > {
+  ref?: Ref<HTMLInputElement>;
   files?: File[];
   defaultFiles?: File[];
   onFilesChange?: (files: File[]) => void;
@@ -21,6 +17,25 @@ export interface FileUploadProps
   prompt?: string;
   hint?: string;
   getRemoveLabel?: (file: File) => string;
+}
+
+function matchesAccept(file: File, accept: string | undefined): boolean {
+  if (!accept) return true;
+  const tokens = accept
+    .split(",")
+    .map((token) => token.trim().toLowerCase())
+    .filter(Boolean);
+  if (tokens.length === 0) return true;
+  const fileName = file.name.toLowerCase();
+  const mimeType = file.type.toLowerCase();
+  return tokens.some((token) => {
+    if (token === "*/*") return true;
+    if (token.startsWith(".")) return fileName.endsWith(token);
+    if (token.endsWith("/*")) {
+      return mimeType.startsWith(token.slice(0, -1));
+    }
+    return mimeType === token;
+  });
 }
 
 function formatBytes(bytes: number): string {
@@ -48,26 +63,24 @@ function syncInputFiles(
   }
 }
 
-function FileUploadImpl(
-  {
-    files,
-    defaultFiles = [],
-    onFilesChange,
-    invalid,
-    disabled,
-    multiple,
-    accept,
-    prompt = "Choose files or drag and drop",
-    hint,
-    getRemoveLabel = (file) => `Remove ${file.name}`,
-    id,
-    className,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: FileUploadProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export function FileUpload({
+  ref,
+  files,
+  defaultFiles = [],
+  onFilesChange,
+  invalid,
+  disabled,
+  multiple,
+  accept,
+  prompt = "Choose files or drag and drop",
+  hint,
+  getRemoveLabel = (file) => `Remove ${file.name}`,
+  id,
+  className,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: FileUploadProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
@@ -122,7 +135,9 @@ function FileUploadImpl(
     if (resolvedDisabled) return;
     event.preventDefault();
     setDragging(false);
-    const dropped = Array.from(event.dataTransfer.files ?? []);
+    const dropped = Array.from(event.dataTransfer.files ?? []).filter((file) =>
+      matchesAccept(file, accept),
+    );
     if (dropped.length === 0) return;
     updateFiles(multiple ? [...currentFiles, ...dropped] : dropped.slice(0, 1));
   }
@@ -190,6 +205,3 @@ function FileUploadImpl(
     </div>
   );
 }
-
-export const FileUpload = forwardRef(FileUploadImpl);
-FileUpload.displayName = "FileUpload";

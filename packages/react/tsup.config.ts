@@ -48,7 +48,7 @@ export default defineConfig({
         const source = await readFile(file, "utf8");
         const target = path.join("dist", path.relative("src", file));
         await mkdir(path.dirname(target), { recursive: true });
-        const wrapped = `@layer ds.tokens, ds.components;\n\n@layer ds.components {\n${source.trim()}\n}\n`;
+        const wrapped = `@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;\n\n@layer ds.components {\n${source.trim()}\n}\n`;
         await writeFile(target, wrapped);
       }),
     );

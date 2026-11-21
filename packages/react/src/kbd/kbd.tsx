@@ -1,18 +1,15 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./kbd.module.css";
 
 export type KbdSize = "sm" | "md";
 
 export interface KbdProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
   size?: KbdSize;
   children?: ReactNode;
 }
 
-function KbdImpl(
-  { size = "md", className, ...rest }: KbdProps,
-  ref: ForwardedRef<HTMLElement>,
-) {
+export function Kbd({ ref, size = "md", className, ...rest }: KbdProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -25,6 +22,3 @@ function KbdImpl(
     />
   );
 }
-
-export const Kbd = forwardRef(KbdImpl);
-Kbd.displayName = "Kbd";

@@ -1,10 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
-import type { ForwardedRef, HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, Ref } from "react";
 import styles from "./pagination.module.css";
 
 export interface PaginationProps
   extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+  ref?: Ref<HTMLElement>;
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -59,20 +59,18 @@ function buildPageRange(
   return items;
 }
 
-function PaginationImpl(
-  {
-    page,
-    totalPages,
-    onPageChange,
-    siblingCount = 1,
-    previousLabel = "Previous",
-    nextLabel = "Next",
-    "aria-label": ariaLabel = "Pagination",
-    className,
-    ...rest
-  }: PaginationProps,
-  ref: ForwardedRef<HTMLElement>,
-) {
+export function Pagination({
+  ref,
+  page,
+  totalPages,
+  onPageChange,
+  siblingCount = 1,
+  previousLabel = "Previous",
+  nextLabel = "Next",
+  "aria-label": ariaLabel = "Pagination",
+  className,
+  ...rest
+}: PaginationProps) {
   const safeTotal = Math.max(1, totalPages);
   const current = Math.min(Math.max(1, page), safeTotal);
   const items = buildPageRange(current, safeTotal, siblingCount);
@@ -131,6 +129,3 @@ function PaginationImpl(
     </nav>
   );
 }
-
-export const Pagination = forwardRef(PaginationImpl);
-Pagination.displayName = "Pagination";

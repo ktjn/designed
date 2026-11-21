@@ -59,23 +59,39 @@ describe("token build", () => {
     expect(allCss.indexOf('[data-color-scheme="dark"]')).toBeLessThan(
       allCss.indexOf('[data-contrast="more"]'),
     );
-    for (const file of [
-      "css/base.css",
-      "css/all.css",
-      "css/schemes/dark.css",
-      "css/densities/compact.css",
-      "css/contrasts/more.css",
-      "css/brands/editorial.css",
-    ]) {
+    const layerHeader =
+      "@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;";
+    for (const [file, layer] of [
+      ["css/base.css", "ds.tokens.base"],
+      ["css/densities/compact.css", "ds.tokens.density"],
+      ["css/schemes/dark.css", "ds.tokens.scheme"],
+      ["css/contrasts/more.css", "ds.tokens.contrast"],
+      ["css/brands/default.css", "ds.tokens.brand"],
+      ["css/brands/editorial.css", "ds.tokens.brand"],
+    ] as const) {
       const content = await readFile(path.join(distDir, file), "utf8");
       expect(content, `${file} should declare layer order`).toContain(
-        "@layer ds.tokens, ds.components;",
+        layerHeader,
       );
-      expect(
-        content,
-        `${file} should wrap rules in @layer ds.tokens`,
-      ).toContain("@layer ds.tokens {");
+      expect(content, `${file} should wrap rules in @layer ${layer}`).toContain(
+        `@layer ${layer} {`,
+      );
     }
+    expect(allCss).toContain(layerHeader);
+    expect(allCss).toContain('[data-color-scheme="light"]');
+    expect(allCss).toContain('[data-density="default"]');
+    expect(allCss).toContain('[data-contrast="default"]');
+    expect(allCss).toContain('[data-brand="default"]');
+    const darkCssCheck = await readFile(
+      path.join(distDir, "css/schemes/dark.css"),
+      "utf8",
+    );
+    expect(darkCssCheck).not.toContain("--ds-color-border-focus");
+    const editorialCssCheck = await readFile(
+      path.join(distDir, "css/brands/editorial.css"),
+      "utf8",
+    );
+    expect(editorialCssCheck).toContain("@media (prefers-color-scheme: dark)");
     await expect(
       readFile(path.join(distDir, "json/tokens.json"), "utf8"),
     ).resolves.toBeTruthy();

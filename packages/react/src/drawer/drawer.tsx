@@ -1,6 +1,11 @@
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { CloseIcon } from "@ktjn/design-icons";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import { createContext, useContext } from "react";
 import buttonStyles from "../button/button.module.css";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
@@ -18,7 +23,8 @@ export interface DrawerRootProps {
 
 export interface DrawerTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  render?: ReactElement;
+  children?: ReactNode;
 }
 
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -38,7 +44,8 @@ export interface DrawerDescriptionProps
 
 export interface DrawerCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  render?: ReactElement;
+  children?: ReactNode;
 }
 
 const DrawerSideContext = createContext<DrawerSide>("right");
@@ -69,13 +76,21 @@ function DrawerRoot({
   );
 }
 
-function DrawerTrigger({ className, children, ...rest }: DrawerTriggerProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function DrawerTrigger({
+  render,
+  className,
+  children,
+  ...rest
+}: DrawerTriggerProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BaseDrawer.Trigger
       data-slot="drawer-trigger"
+      render={render}
       className={classes}
       {...rest}
     >
@@ -153,12 +168,24 @@ function DrawerDescription({
   );
 }
 
-function DrawerClose({ className, children, ...rest }: DrawerCloseProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function DrawerClose({
+  render,
+  className,
+  children,
+  ...rest
+}: DrawerCloseProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
-    <BaseDrawer.Close data-slot="drawer-close" className={classes} {...rest}>
+    <BaseDrawer.Close
+      data-slot="drawer-close"
+      render={render}
+      className={classes}
+      {...rest}
+    >
       {children}
     </BaseDrawer.Close>
   );

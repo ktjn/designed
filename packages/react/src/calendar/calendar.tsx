@@ -1,12 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/design-icons";
-import type { ForwardedRef, HTMLAttributes, KeyboardEvent } from "react";
-import { forwardRef, useMemo, useRef, useState } from "react";
+import type { HTMLAttributes, KeyboardEvent, Ref } from "react";
+import { useMemo, useRef, useState } from "react";
 import styles from "./calendar.module.css";
 
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface CalendarProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -126,23 +127,21 @@ function buildMonthGrid(
   return weeks;
 }
 
-function CalendarImpl(
-  {
-    value,
-    defaultValue,
-    onValueChange,
-    min,
-    max,
-    locale,
-    weekStartsOn,
-    disabled = false,
-    previousMonthLabel = "Previous month",
-    nextMonthLabel = "Next month",
-    className,
-    ...rest
-  }: CalendarProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Calendar({
+  ref,
+  value,
+  defaultValue,
+  onValueChange,
+  min,
+  max,
+  locale,
+  weekStartsOn,
+  disabled = false,
+  previousMonthLabel = "Previous month",
+  nextMonthLabel = "Next month",
+  className,
+  ...rest
+}: CalendarProps) {
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const selectedIso = value ?? internalValue;
   const initialDate = parseIsoDate(selectedIso) ?? getTodayUtc();
@@ -361,6 +360,3 @@ function CalendarImpl(
     </div>
   );
 }
-
-export const Calendar = forwardRef(CalendarImpl);
-Calendar.displayName = "Calendar";

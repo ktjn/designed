@@ -1,19 +1,22 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./container.module.css";
 
 export type ContainerSize = "sm" | "md" | "lg" | "full";
 
 export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   size?: ContainerSize;
   padded?: boolean;
   children?: ReactNode;
 }
 
-function ContainerImpl(
-  { size = "lg", padded = true, className, ...rest }: ContainerProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Container({
+  ref,
+  size = "lg",
+  padded = true,
+  className,
+  ...rest
+}: ContainerProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -27,6 +30,3 @@ function ContainerImpl(
     />
   );
 }
-
-export const Container = forwardRef(ContainerImpl);
-Container.displayName = "Container";

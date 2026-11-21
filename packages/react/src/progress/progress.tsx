@@ -1,10 +1,10 @@
 import { Progress as BaseProgress } from "@base-ui/react/progress";
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./progress.module.css";
 
 export interface ProgressProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  ref?: Ref<HTMLDivElement>;
   value: number | null;
   min?: number;
   max?: number;
@@ -12,18 +12,16 @@ export interface ProgressProps
   showValue?: boolean;
 }
 
-function ProgressImpl(
-  {
-    value,
-    min = 0,
-    max = 100,
-    label,
-    showValue = false,
-    className,
-    ...rest
-  }: ProgressProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Progress({
+  ref,
+  value,
+  min = 0,
+  max = 100,
+  label,
+  showValue = false,
+  className,
+  ...rest
+}: ProgressProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -57,6 +55,3 @@ function ProgressImpl(
     </BaseProgress.Root>
   );
 }
-
-export const Progress = forwardRef(ProgressImpl);
-Progress.displayName = "Progress";

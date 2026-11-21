@@ -1,20 +1,25 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./alert.module.css";
 
 export type AlertVariant = "info" | "success" | "warning" | "danger";
 
 export interface AlertProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  ref?: Ref<HTMLDivElement>;
   variant?: AlertVariant;
   title?: ReactNode;
   children?: ReactNode;
 }
 
-function AlertImpl(
-  { variant = "info", title, children, role, className, ...rest }: AlertProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Alert({
+  ref,
+  variant = "info",
+  title,
+  children,
+  role,
+  className,
+  ...rest
+}: AlertProps) {
   const defaultRole =
     variant === "danger" || variant === "warning" ? "alert" : "status";
   const classes = [styles.root, styles[variant], className]
@@ -34,6 +39,3 @@ function AlertImpl(
     </div>
   );
 }
-
-export const Alert = forwardRef(AlertImpl);
-Alert.displayName = "Alert";

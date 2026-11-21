@@ -1,18 +1,20 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./button-group.module.css";
 
 export type ButtonGroupOrientation = "horizontal" | "vertical";
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   orientation?: ButtonGroupOrientation;
   children?: ReactNode;
 }
 
-function ButtonGroupImpl(
-  { orientation = "horizontal", className, ...rest }: ButtonGroupProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function ButtonGroup({
+  ref,
+  orientation = "horizontal",
+  className,
+  ...rest
+}: ButtonGroupProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -27,6 +29,3 @@ function ButtonGroupImpl(
     />
   );
 }
-
-export const ButtonGroup = forwardRef(ButtonGroupImpl);
-ButtonGroup.displayName = "ButtonGroup";

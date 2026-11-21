@@ -1,10 +1,10 @@
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
-import type { ForwardedRef } from "react";
-import { forwardRef } from "react";
+import type { Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./switch.module.css";
 
 export interface SwitchProps {
+  ref?: Ref<HTMLElement>;
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -20,18 +20,16 @@ export interface SwitchProps {
   "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
 
-function SwitchImpl(
-  {
-    onCheckedChange,
-    disabled,
-    id,
-    className,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: SwitchProps,
-  ref: ForwardedRef<HTMLElement>,
-) {
+export function Switch({
+  ref,
+  onCheckedChange,
+  disabled,
+  id,
+  className,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: SwitchProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   return (
@@ -50,6 +48,3 @@ function SwitchImpl(
     </BaseSwitch.Root>
   );
 }
-
-export const Switch = forwardRef(SwitchImpl);
-Switch.displayName = "Switch";

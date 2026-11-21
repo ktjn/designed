@@ -121,6 +121,33 @@ describe("FileUpload", () => {
     expect(input.getAttribute("aria-invalid")).toBe("true");
   });
 
+  it("filters dropped files against the accept attribute", () => {
+    const onFilesChange = vi.fn();
+    render(
+      <Field>
+        <Field.Label>Documents</Field.Label>
+        <FileUpload
+          multiple
+          accept=".pdf,image/*,text/csv"
+          onFilesChange={onFilesChange}
+        />
+      </Field>,
+    );
+    const dropzone = screen
+      .getByText("Choose files or drag and drop")
+      .closest('[data-slot="file-upload-dropzone"]') as HTMLElement;
+    const pdf = new File(["pdf"], "Report.PDF", { type: "application/pdf" });
+    const png = new File(["png"], "photo.png", { type: "image/png" });
+    const csv = new File(["a,b"], "data.csv", { type: "text/csv" });
+    const exe = new File(["bin"], "script.exe", {
+      type: "application/x-msdownload",
+    });
+
+    fireEvent.drop(dropzone, { dataTransfer: { files: [pdf, png, csv, exe] } });
+    expect(onFilesChange).toHaveBeenCalledWith([pdf, png, csv]);
+    expect(screen.queryByText("script.exe")).toBeNull();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>

@@ -16,12 +16,13 @@ Import the combined theme bundle once at your app entry point:
 import "@ktjn/design-tokens/css/all.css";
 ```
 
-Or import individual layers:
+Or import individual dimension sheets:
 
 - `@ktjn/design-tokens/css/base.css`
-- `@ktjn/design-tokens/css/brands/editorial.css`
-- `@ktjn/design-tokens/css/schemes/dark.css`
 - `@ktjn/design-tokens/css/densities/compact.css`
+- `@ktjn/design-tokens/css/schemes/dark.css`
 - `@ktjn/design-tokens/css/contrasts/more.css`
+- `@ktjn/design-tokens/css/brands/default.css`
+- `@ktjn/design-tokens/css/brands/editorial.css`
 
-All rules are wrapped in `@layer ds.tokens` with cascade order `@layer ds.tokens, ds.components;`.
+All rules use ordered cascade sub-layers: `@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;`.

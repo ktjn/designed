@@ -4,10 +4,12 @@ export interface FieldContextValue {
   controlId: string;
   descriptionId: string;
   errorId: string;
-  describedBy: string;
+  describedBy: string | undefined;
   invalid: boolean;
   disabled: boolean;
   registerControlId: (id: string | undefined) => void;
+  registerDescription: (mounted: boolean) => void;
+  registerError: (mounted: boolean) => void;
 }
 
 export const FieldContext = createContext<FieldContextValue | null>(null);

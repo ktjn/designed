@@ -4,18 +4,32 @@ import type { TransformedToken } from "style-dictionary/types";
 const PRIMITIVES = "src/primitives/*.json";
 const SEMANTIC_BASE = "src/semantic/base.json";
 
+const GENERATED_HEADER =
+  "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
+const HEADER_PATTERN = /^\/\*\*[\s\S]*?\*\/\s*/;
+const LAYER_DECLARATION =
+  "@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;\n\n";
+
 const isFromFile = (fileName: string) => (token: TransformedToken) =>
   token.filePath.replace(/\\/g, "/").endsWith(fileName);
 
-// Typography has no semantic indirection today (a single font family and a
-// small fixed size/weight scale, none of which vary by theme override), so
-// its primitives are exposed directly as CSS variables/types alongside the
-// semantic/base.json tokens rather than duplicated behind semantic aliases.
 const isBaseCssToken = (token: TransformedToken) =>
   isFromFile("semantic/base.json")(token) ||
   isFromFile("primitives/font.json")(token);
 
 const tokenIdentifier = (token: TransformedToken) => token.path.join(".");
+
+function indentBlock(css: string): string {
+  return css
+    .trim()
+    .split("\n")
+    .map((line) => (line.length > 0 ? `  ${line}` : ""))
+    .join("\n");
+}
+
+function wrapInLayer(layer: string, body: string): string {
+  return `${GENERATED_HEADER}${LAYER_DECLARATION}@layer ${layer} {\n${indentBlock(body)}\n}\n`;
+}
 
 function registerTypesFormat() {
   return async ({
@@ -81,56 +95,28 @@ async function buildBase() {
   await sd.buildAllPlatforms();
 }
 
-async function buildOverride(options: {
-  sourceFile: string;
-  destination: string;
-  selector: string;
-}) {
+async function getPlatformTokens(sources: string[]) {
   const sd = new StyleDictionary({
-    source: [PRIMITIVES, SEMANTIC_BASE, options.sourceFile],
-    // Overrides intentionally redefine a subset of semantic/base.json tokens;
-    // the collision is expected and filtered down to just the override file below.
+    source: sources,
     log: { warnings: "disabled" },
     platforms: {
       css: {
         transformGroup: "css",
         prefix: "ds",
-        buildPath: "dist/css/",
-        files: [
-          {
-            destination: options.destination,
-            format: "css/variables",
-            filter: isFromFile(options.sourceFile),
-            options: { selector: options.selector },
-          },
-        ],
       },
     },
   });
   await sd.hasInitialized;
-  await sd.buildAllPlatforms();
+  return (await sd.getPlatformTokens("css")).allTokens;
 }
 
-async function renderOverrideBlock(options: {
-  sourceFile: string;
+function formatBlock(options: {
+  tokens: TransformedToken[];
   selector: string;
   media?: string;
-}): Promise<string> {
-  const sd = new StyleDictionary({
-    source: [PRIMITIVES, SEMANTIC_BASE, options.sourceFile],
-    log: { warnings: "disabled" },
-    platforms: {
-      css: {
-        transformGroup: "css",
-        prefix: "ds",
-      },
-    },
-  });
-  await sd.hasInitialized;
-  const dict = await sd.getPlatformTokens("css");
+}): string {
   const indent = options.media ? "    " : "  ";
-  const lines = dict.allTokens
-    .filter(isFromFile(options.sourceFile))
+  const lines = options.tokens
     .map((token) => `${indent}--${token.name}: ${token.$value};`)
     .join("\n");
   if (options.media) {
@@ -139,144 +125,214 @@ async function renderOverrideBlock(options: {
   return `${options.selector} {\n${lines}\n}\n`;
 }
 
-const GENERATED_HEADER =
-  "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
-const HEADER_PATTERN = /^\/\*\*[\s\S]*?\*\/\s*/;
-const LAYER_DECLARATION = "@layer ds.tokens, ds.components;\n\n";
-
-function indentBlock(css: string): string {
-  return css
-    .trim()
-    .split("\n")
-    .map((line) => (line.length > 0 ? `  ${line}` : ""))
-    .join("\n");
+async function renderOverrideBlock(options: {
+  sourceFile: string;
+  selector: string;
+  media?: string;
+}): Promise<string> {
+  const tokens = await getPlatformTokens([
+    PRIMITIVES,
+    SEMANTIC_BASE,
+    options.sourceFile,
+  ]);
+  return formatBlock({
+    tokens: tokens.filter(isFromFile(options.sourceFile)),
+    selector: options.selector,
+    media: options.media,
+  });
 }
 
-function wrapInTokensLayer(body: string): string {
-  return `${GENERATED_HEADER}${LAYER_DECLARATION}@layer ds.tokens {\n${indentBlock(body)}\n}\n`;
+async function renderResetBlock(options: {
+  matchSourceFiles: string[];
+  valueSources: string[];
+  selector: string;
+}): Promise<string> {
+  const targetNames = new Set<string>();
+  for (const file of options.matchSourceFiles) {
+    const tokens = await getPlatformTokens([PRIMITIVES, SEMANTIC_BASE, file]);
+    for (const token of tokens.filter(isFromFile(file))) {
+      targetNames.add(token.name);
+    }
+  }
+  const valueTokens = await getPlatformTokens(options.valueSources);
+  const matching = valueTokens.filter((token) => targetNames.has(token.name));
+  return formatBlock({ tokens: matching, selector: options.selector });
 }
 
-async function wrapFileInTokensLayer(filePath: string) {
-  const fs = await import("node:fs/promises");
-  const raw = await fs.readFile(filePath, "utf8");
-  const body = raw.replace(HEADER_PATTERN, "").trim();
-  await fs.writeFile(filePath, wrapInTokensLayer(body));
-}
-
-async function buildCompositeOverride(options: {
+async function writeLayeredSheet(options: {
   destination: string;
-  blocks: Array<{ sourceFile: string; selector: string; media?: string }>;
+  layer: string;
+  blocks: string[];
 }) {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
-  const rendered = await Promise.all(options.blocks.map(renderOverrideBlock));
   const outPath = path.join("dist/css", options.destination);
   await fs.mkdir(path.dirname(outPath), { recursive: true });
-  await fs.writeFile(outPath, wrapInTokensLayer(rendered.join("\n")));
+  await fs.writeFile(
+    outPath,
+    wrapInLayer(options.layer, options.blocks.join("\n")),
+  );
 }
 
 export async function buildTokens() {
-  await buildBase();
-  await wrapFileInTokensLayer("dist/css/base.css");
+  const fs = await import("node:fs/promises");
 
-  await buildCompositeOverride({
-    destination: "schemes/dark.css",
+  await buildBase();
+  const baseRaw = await fs.readFile("dist/css/base.css", "utf8");
+  const baseBody = baseRaw.replace(HEADER_PATTERN, "").trim();
+  await fs.writeFile(
+    "dist/css/base.css",
+    wrapInLayer("ds.tokens.base", baseBody),
+  );
+
+  await writeLayeredSheet({
+    destination: "densities/compact.css",
+    layer: "ds.tokens.density",
     blocks: [
-      {
-        sourceFile: "src/semantic/dark.json",
-        selector: ':root:not([data-color-scheme="light"])',
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        sourceFile: "src/semantic/dark.json",
-        selector: '[data-color-scheme="dark"]',
-      },
+      await renderResetBlock({
+        matchSourceFiles: ["src/semantic/density-compact.json"],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE],
+        selector: '[data-density="default"]',
+      }),
+      await renderOverrideBlock({
+        sourceFile: "src/semantic/density-compact.json",
+        selector: '[data-density="compact"]',
+      }),
     ],
   });
 
-  await buildOverride({
-    sourceFile: "src/semantic/density-compact.json",
-    destination: "densities/compact.css",
-    selector: '[data-density="compact"]',
-  });
-  await wrapFileInTokensLayer("dist/css/densities/compact.css");
-
-  await buildCompositeOverride({
-    destination: "contrasts/more.css",
+  await writeLayeredSheet({
+    destination: "schemes/dark.css",
+    layer: "ds.tokens.scheme",
     blocks: [
-      {
+      await renderResetBlock({
+        matchSourceFiles: ["src/semantic/dark.json"],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE],
+        selector: '[data-color-scheme="light"]',
+      }),
+      await renderOverrideBlock({
+        sourceFile: "src/semantic/dark.json",
+        selector: ':root:not([data-color-scheme="light"])',
+        media: "(prefers-color-scheme: dark)",
+      }),
+      await renderOverrideBlock({
+        sourceFile: "src/semantic/dark.json",
+        selector: '[data-color-scheme="dark"]',
+      }),
+    ],
+  });
+
+  await writeLayeredSheet({
+    destination: "contrasts/more.css",
+    layer: "ds.tokens.contrast",
+    blocks: [
+      await renderResetBlock({
+        matchSourceFiles: [
+          "src/semantic/contrast-more.json",
+          "src/semantic/contrast-more-dark.json",
+        ],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE],
+        selector: '[data-contrast="default"]',
+      }),
+      await renderResetBlock({
+        matchSourceFiles: [
+          "src/semantic/contrast-more.json",
+          "src/semantic/contrast-more-dark.json",
+        ],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE, "src/semantic/dark.json"],
+        selector: '[data-color-scheme="dark"][data-contrast="default"]',
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more.json",
         selector: ':root:not([data-contrast="default"])',
         media: "(prefers-contrast: more)",
-      },
-      {
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more-dark.json",
         selector: '[data-color-scheme="dark"]:not([data-contrast="default"])',
         media: "(prefers-contrast: more)",
-      },
-      {
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more-dark.json",
         selector:
           ':root:not([data-color-scheme="light"]):not([data-contrast="default"])',
         media: "(prefers-color-scheme: dark) and (prefers-contrast: more)",
-      },
-      {
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more.json",
         selector: '[data-contrast="more"]',
-      },
-      {
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more-dark.json",
         selector:
           ':root:not([data-color-scheme="light"])[data-contrast="more"], :root:not([data-color-scheme="light"]) [data-contrast="more"]',
         media: "(prefers-color-scheme: dark)",
-      },
-      {
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/contrast-more-dark.json",
         selector: '[data-color-scheme="dark"][data-contrast="more"]',
-      },
+      }),
     ],
   });
 
-  const fs = await import("node:fs/promises");
-  await fs.mkdir("dist/css/brands", { recursive: true });
-  await fs.writeFile(
-    "dist/css/brands/default.css",
-    "/**\n * Do not edit directly, this file was auto-generated.\n * The default brand introduces no overrides over base.css.\n */\n",
-  );
-
-  await buildCompositeOverride({
-    destination: "brands/editorial.css",
+  await writeLayeredSheet({
+    destination: "brands/default.css",
+    layer: "ds.tokens.brand",
     blocks: [
-      {
+      await renderResetBlock({
+        matchSourceFiles: [
+          "src/semantic/brand-editorial.json",
+          "src/semantic/brand-editorial-dark.json",
+        ],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE],
+        selector: '[data-brand="default"]',
+      }),
+      await renderResetBlock({
+        matchSourceFiles: ["src/semantic/brand-editorial-dark.json"],
+        valueSources: [PRIMITIVES, SEMANTIC_BASE, "src/semantic/dark.json"],
+        selector: '[data-brand="default"][data-color-scheme="dark"]',
+      }),
+    ],
+  });
+
+  await writeLayeredSheet({
+    destination: "brands/editorial.css",
+    layer: "ds.tokens.brand",
+    blocks: [
+      await renderOverrideBlock({
         sourceFile: "src/semantic/brand-editorial.json",
         selector: '[data-brand="editorial"]',
-      },
-      {
+      }),
+      await renderOverrideBlock({
+        sourceFile: "src/semantic/brand-editorial-dark.json",
+        selector: '[data-brand="editorial"]:not([data-color-scheme="light"])',
+        media: "(prefers-color-scheme: dark)",
+      }),
+      await renderOverrideBlock({
         sourceFile: "src/semantic/brand-editorial-dark.json",
         selector: '[data-brand="editorial"][data-color-scheme="dark"]',
-      },
+      }),
     ],
   });
 
   const bundleFiles = [
     "dist/css/base.css",
-    "dist/css/brands/editorial.css",
-    "dist/css/schemes/dark.css",
     "dist/css/densities/compact.css",
+    "dist/css/schemes/dark.css",
     "dist/css/contrasts/more.css",
+    "dist/css/brands/default.css",
+    "dist/css/brands/editorial.css",
   ];
-  const unwrapPattern =
-    /^\/\*\*[\s\S]*?\*\/\s*@layer ds\.tokens, ds\.components;\s*@layer ds\.tokens \{\s*([\s\S]*?)\s*\}\s*$/;
+  const stripPreamble = (raw: string) =>
+    raw.replace(HEADER_PATTERN, "").replace(LAYER_DECLARATION, "").trim();
   const bundleParts = await Promise.all(
-    bundleFiles.map(async (file) => {
-      const raw = await fs.readFile(file, "utf8");
-      const match = unwrapPattern.exec(raw);
-      return (match?.[1] ?? raw.replace(HEADER_PATTERN, "")).trim();
-    }),
+    bundleFiles.map(async (file) =>
+      stripPreamble(await fs.readFile(file, "utf8")),
+    ),
   );
   await fs.writeFile(
     "dist/css/all.css",
-    `${GENERATED_HEADER}${LAYER_DECLARATION}@layer ds.tokens {\n${bundleParts.join("\n\n")}\n}\n`,
+    `${GENERATED_HEADER}${LAYER_DECLARATION}${bundleParts.join("\n\n")}\n`,
   );
 }
 

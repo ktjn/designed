@@ -36,7 +36,7 @@ export {};
 
 
 // ---- alert-dialog/alert-dialog.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 import type { DialogCloseProps, DialogDescriptionProps, DialogTitleProps } from "../dialog/dialog.js";
 export interface AlertDialogRootProps {
     open?: boolean;
@@ -46,16 +46,17 @@ export interface AlertDialogRootProps {
 }
 declare function AlertDialogRoot({ onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
 export interface AlertDialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function AlertDialogTrigger({ className, ...rest }: AlertDialogTriggerProps): import("react").JSX.Element;
+declare function AlertDialogTrigger({ render, className, ...rest }: AlertDialogTriggerProps): import("react").JSX.Element;
 export interface AlertDialogContentProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 declare function AlertDialogContent({ className, children, ...rest }: AlertDialogContentProps): import("react").JSX.Element;
 declare function AlertDialogTitle({ className, ...rest }: DialogTitleProps): import("react").JSX.Element;
 declare function AlertDialogDescription({ className, ...rest }: DialogDescriptionProps): import("react").JSX.Element;
-declare function AlertDialogClose({ className, ...rest }: DialogCloseProps): import("react").JSX.Element;
+declare function AlertDialogClose({ render, className, ...rest }: DialogCloseProps): import("react").JSX.Element;
 export declare const AlertDialog: typeof AlertDialogRoot & {
     Trigger: typeof AlertDialogTrigger;
     Content: typeof AlertDialogContent;
@@ -67,23 +68,25 @@ export {};
 
 
 // ---- alert/alert.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type AlertVariant = "info" | "success" | "warning" | "danger";
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+    ref?: Ref<HTMLDivElement>;
     variant?: AlertVariant;
     title?: ReactNode;
     children?: ReactNode;
 }
-export declare const Alert: import("react").ForwardRefExoticComponent<AlertProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Alert({ ref, variant, title, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
 
 
 // ---- aspect-ratio/aspect-ratio.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     ratio?: number;
     children?: ReactNode;
 }
-export declare const AspectRatio: import("react").ForwardRefExoticComponent<AspectRatioProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function AspectRatio({ ref, ratio, className, style, ...rest }: AspectRatioProps): import("react").JSX.Element;
 
 
 // ---- autocomplete/autocomplete.d.ts ----
@@ -100,30 +103,34 @@ export declare function Autocomplete({ items, value, defaultValue, onValueChange
 
 
 // ---- avatar/avatar.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type AvatarSize = "small" | "medium" | "large";
 export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    ref?: Ref<HTMLSpanElement>;
     src?: string;
     alt: string;
     fallback?: ReactNode;
     size?: AvatarSize;
 }
-export declare const Avatar: import("react").ForwardRefExoticComponent<AvatarProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function Avatar({ ref, src, alt, fallback, size, className, ...rest }: AvatarProps): import("react").JSX.Element;
 
 
 // ---- badge/badge.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type BadgeVariant = "neutral" | "info" | "success" | "warning" | "danger";
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     variant?: BadgeVariant;
     children?: ReactNode;
 }
-export declare const Badge: import("react").ForwardRefExoticComponent<BadgeProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function Badge({ ref, variant, className, ...rest }: BadgeProps): import("react").JSX.Element;
 
 
 // ---- breadcrumb/breadcrumb.d.ts ----
-import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode } from "react";
-export type BreadcrumbRootProps = HTMLAttributes<HTMLElement>;
+import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode, Ref } from "react";
+export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+}
 export type BreadcrumbListProps = OlHTMLAttributes<HTMLOListElement>;
 export type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
 export type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -131,12 +138,13 @@ export type BreadcrumbPageProps = HTMLAttributes<HTMLSpanElement>;
 export interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement> {
     children?: ReactNode;
 }
+declare function BreadcrumbRoot({ ref, "aria-label": ariaLabel, className, ...rest }: BreadcrumbRootProps): import("react").JSX.Element;
 declare function BreadcrumbList({ className, ...rest }: BreadcrumbListProps): import("react").JSX.Element;
 declare function BreadcrumbItem({ className, ...rest }: BreadcrumbItemProps): import("react").JSX.Element;
 declare function BreadcrumbLink({ className, ...rest }: BreadcrumbLinkProps): import("react").JSX.Element;
 declare function BreadcrumbPage({ className, ...rest }: BreadcrumbPageProps): import("react").JSX.Element;
 declare function BreadcrumbSeparator({ children, className, ...rest }: BreadcrumbSeparatorProps): import("react").JSX.Element;
-export declare const Breadcrumb: import("react").ForwardRefExoticComponent<BreadcrumbRootProps & import("react").RefAttributes<HTMLElement>> & {
+export declare const Breadcrumb: typeof BreadcrumbRoot & {
     List: typeof BreadcrumbList;
     Item: typeof BreadcrumbItem;
     Link: typeof BreadcrumbLink;
@@ -147,32 +155,35 @@ export {};
 
 
 // ---- button-group/button-group.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type ButtonGroupOrientation = "horizontal" | "vertical";
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     orientation?: ButtonGroupOrientation;
     children?: ReactNode;
 }
-export declare const ButtonGroup: import("react").ForwardRefExoticComponent<ButtonGroupProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function ButtonGroup({ ref, orientation, className, ...rest }: ButtonGroupProps): import("react").JSX.Element;
 
 
 // ---- button/button.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 export type ButtonSize = "small" | "medium" | "large" | "icon";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     variant?: ButtonVariant;
     size?: ButtonSize;
     loading?: boolean;
     children?: ReactNode;
 }
-export declare const Button: import("react").ForwardRefExoticComponent<ButtonProps & import("react").RefAttributes<HTMLButtonElement>>;
+export declare function Button({ ref, variant, size, loading, disabled, type, className, onClick, "aria-disabled": ariaDisabled, children, ...rest }: ButtonProps): import("react").JSX.Element;
 
 
 // ---- calendar/calendar.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
@@ -185,12 +196,13 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "def
     nextMonthLabel?: string;
 }
 export declare function parseIsoDate(iso: string | undefined): Date | null;
-export declare const Calendar: import("react").ForwardRefExoticComponent<CalendarProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Calendar({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, className, ...rest }: CalendarProps): import("react").JSX.Element;
 
 
 // ---- card/card.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -208,12 +220,13 @@ export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
+declare function CardRoot({ ref, className, ...rest }: CardRootProps): import("react").JSX.Element;
 declare function CardHeader({ className, ...rest }: CardHeaderProps): import("react").JSX.Element;
 declare function CardTitle({ className, ...rest }: CardTitleProps): import("react").JSX.Element;
 declare function CardDescription({ className, ...rest }: CardDescriptionProps): import("react").JSX.Element;
 declare function CardContent({ className, ...rest }: CardContentProps): import("react").JSX.Element;
 declare function CardFooter({ className, ...rest }: CardFooterProps): import("react").JSX.Element;
-export declare const Card: import("react").ForwardRefExoticComponent<CardRootProps & import("react").RefAttributes<HTMLDivElement>> & {
+export declare const Card: typeof CardRoot & {
     Header: typeof CardHeader;
     Title: typeof CardTitle;
     Description: typeof CardDescription;
@@ -224,7 +237,9 @@ export {};
 
 
 // ---- checkbox/checkbox.d.ts ----
+import type { Ref } from "react";
 export interface CheckboxProps {
+    ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
@@ -241,7 +256,7 @@ export interface CheckboxProps {
     "aria-describedby"?: string;
     "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
-export declare const Checkbox: import("react").ForwardRefExoticComponent<CheckboxProps & import("react").RefAttributes<HTMLElement>>;
+export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
 
 // ---- collapsible/collapsible.d.ts ----
@@ -335,14 +350,15 @@ export declare function CommandPalette({ items, open, defaultOpen, onOpenChange,
 
 
 // ---- container/container.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type ContainerSize = "sm" | "md" | "lg" | "full";
 export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     size?: ContainerSize;
     padded?: boolean;
     children?: ReactNode;
 }
-export declare const Container: import("react").ForwardRefExoticComponent<ContainerProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Container({ ref, size, padded, className, ...rest }: ContainerProps): import("react").JSX.Element;
 
 
 // ---- context-menu/context-menu.d.ts ----
@@ -421,9 +437,10 @@ export {};
 
 
 // ---- date-picker/date-picker.d.ts ----
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 import { type WeekdayIndex } from "../calendar/calendar.js";
 export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
@@ -434,11 +451,11 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     invalid?: boolean;
     openCalendarLabel?: string;
 }
-export declare const DatePicker: import("react").ForwardRefExoticComponent<DatePickerProps & import("react").RefAttributes<HTMLInputElement>>;
+export declare function DatePicker({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
 
 
 // ---- dialog/dialog.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 export interface DialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -448,9 +465,10 @@ export interface DialogRootProps {
 }
 declare function DialogRoot({ onOpenChange, ...rest }: DialogRootProps): import("react").JSX.Element;
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function DialogTrigger({ className, ...rest }: DialogTriggerProps): import("react").JSX.Element;
+declare function DialogTrigger({ render, className, ...rest }: DialogTriggerProps): import("react").JSX.Element;
 export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
     closeLabel?: string;
@@ -465,9 +483,10 @@ export interface DialogDescriptionProps extends HTMLAttributes<HTMLParagraphElem
 }
 declare function DialogDescription({ className, ...rest }: DialogDescriptionProps): import("react").JSX.Element;
 export interface DialogCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function DialogCloseButton({ className, ...rest }: DialogCloseProps): import("react").JSX.Element;
+declare function DialogCloseButton({ render, className, ...rest }: DialogCloseProps): import("react").JSX.Element;
 export declare const Dialog: typeof DialogRoot & {
     Trigger: typeof DialogTrigger;
     Content: typeof DialogContent;
@@ -480,13 +499,13 @@ export {};
 
 // ---- dialog/use-dialog-portal-container.d.ts ----
 export declare function useDialogPortalContainer(): {
-    container: HTMLElement | null | undefined;
+    container: HTMLElement | undefined;
     scopeRef: (node: HTMLSpanElement | null) => void;
 };
 
 
 // ---- drawer/drawer.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
     open?: boolean;
@@ -496,7 +515,8 @@ export interface DrawerRootProps {
     children: ReactNode;
 }
 export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode;
+    render?: ReactElement;
+    children?: ReactNode;
 }
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
     side?: DrawerSide;
@@ -510,14 +530,15 @@ export interface DrawerDescriptionProps extends HTMLAttributes<HTMLParagraphElem
     children: ReactNode;
 }
 export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode;
+    render?: ReactElement;
+    children?: ReactNode;
 }
 declare function DrawerRoot({ open, defaultOpen, onOpenChange, side, children, }: DrawerRootProps): import("react").JSX.Element;
-declare function DrawerTrigger({ className, children, ...rest }: DrawerTriggerProps): import("react").JSX.Element;
+declare function DrawerTrigger({ render, className, children, ...rest }: DrawerTriggerProps): import("react").JSX.Element;
 declare function DrawerContent({ side, closeLabel, className, children, ...rest }: DrawerContentProps): import("react").JSX.Element;
 declare function DrawerTitle({ className, children, ...rest }: DrawerTitleProps): import("react").JSX.Element;
 declare function DrawerDescription({ className, children, ...rest }: DrawerDescriptionProps): import("react").JSX.Element;
-declare function DrawerClose({ className, children, ...rest }: DrawerCloseProps): import("react").JSX.Element;
+declare function DrawerClose({ render, className, children, ...rest }: DrawerCloseProps): import("react").JSX.Element;
 export declare const Drawer: typeof DrawerRoot & {
     Trigger: typeof DrawerTrigger;
     Content: typeof DrawerContent;
@@ -529,14 +550,15 @@ export {};
 
 
 // ---- empty-state/empty-state.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+    ref?: Ref<HTMLDivElement>;
     icon?: ReactNode;
     title: ReactNode;
     description?: ReactNode;
     action?: ReactNode;
 }
-export declare const EmptyState: import("react").ForwardRefExoticComponent<EmptyStateProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function EmptyState({ ref, icon, title, description, action, className, ...rest }: EmptyStateProps): import("react").JSX.Element;
 
 
 // ---- field/field-context.d.ts ----
@@ -544,10 +566,12 @@ export interface FieldContextValue {
     controlId: string;
     descriptionId: string;
     errorId: string;
-    describedBy: string;
+    describedBy: string | undefined;
     invalid: boolean;
     disabled: boolean;
     registerControlId: (id: string | undefined) => void;
+    registerDescription: (mounted: boolean) => void;
+    registerError: (mounted: boolean) => void;
 }
 export declare const FieldContext: import("react").Context<FieldContextValue | null>;
 export declare function useFieldContext(): FieldContextValue | null;
@@ -555,19 +579,21 @@ export declare function useFieldControlId(explicitId: string | undefined): strin
 
 
 // ---- field/field-description.d.ts ----
-import type { ReactNode } from "react";
-export interface FieldDescriptionProps {
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface FieldDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children?: ReactNode;
 }
-export declare function FieldDescription({ children }: FieldDescriptionProps): import("react").JSX.Element;
+export declare function FieldDescription({ ref, id, className, children, ...rest }: FieldDescriptionProps): import("react").JSX.Element;
 
 
 // ---- field/field-error.d.ts ----
-import type { ReactNode } from "react";
-export interface FieldErrorProps {
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface FieldErrorProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children?: ReactNode;
 }
-export declare function FieldError({ children }: FieldErrorProps): import("react").JSX.Element | null;
+export declare function FieldError({ ref, id, className, children, ...rest }: FieldErrorProps): import("react").JSX.Element | null;
 
 
 // ---- field/field-label.d.ts ----
@@ -615,8 +641,9 @@ export {};
 
 
 // ---- file-upload/file-upload.d.ts ----
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 export interface FileUploadProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
     files?: File[];
     defaultFiles?: File[];
     onFilesChange?: (files: File[]) => void;
@@ -625,22 +652,23 @@ export interface FileUploadProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     hint?: string;
     getRemoveLabel?: (file: File) => string;
 }
-export declare const FileUpload: import("react").ForwardRefExoticComponent<FileUploadProps & import("react").RefAttributes<HTMLInputElement>>;
+export declare function FileUpload({ ref, files, defaultFiles, onFilesChange, invalid, disabled, multiple, accept, prompt, hint, getRemoveLabel, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: FileUploadProps): import("react").JSX.Element;
 
 
 // ---- grid/grid.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type GridColumns = 1 | 2 | 3 | 4 | "auto";
 export type GridGap = "none" | "sm" | "md" | "lg";
 export type GridAlign = "start" | "center" | "end" | "stretch";
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     columns?: GridColumns;
     minItemWidth?: string;
     gap?: GridGap;
     align?: GridAlign;
     children?: ReactNode;
 }
-export declare const Grid: import("react").ForwardRefExoticComponent<GridProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Grid({ ref, columns, minItemWidth, gap, align, className, style, ...rest }: GridProps): import("react").JSX.Element;
 
 
 // ---- index.d.ts ----
@@ -768,53 +796,63 @@ export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";
 
 
 // ---- input-group/input-group.d.ts ----
-import type { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, InputHTMLAttributes, ReactNode, Ref } from "react";
 export interface InputGroupRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     invalid?: boolean;
     children?: ReactNode;
 }
+declare function InputGroupRoot({ ref, invalid, className, ...rest }: InputGroupRootProps): import("react").JSX.Element;
 export type InputGroupAddonAlign = "start" | "end";
 export interface InputGroupAddonProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     align?: InputGroupAddonAlign;
     children?: ReactNode;
 }
+declare function InputGroupAddon({ ref, align, className, ...rest }: InputGroupAddonProps): import("react").JSX.Element;
 export interface InputGroupInputProps extends InputHTMLAttributes<HTMLInputElement> {
+    ref?: Ref<HTMLInputElement>;
     invalid?: boolean;
 }
-export declare const InputGroup: import("react").ForwardRefExoticComponent<InputGroupRootProps & import("react").RefAttributes<HTMLDivElement>> & {
-    Addon: import("react").ForwardRefExoticComponent<InputGroupAddonProps & import("react").RefAttributes<HTMLSpanElement>>;
-    Input: import("react").ForwardRefExoticComponent<InputGroupInputProps & import("react").RefAttributes<HTMLInputElement>>;
+declare function InputGroupInput({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: InputGroupInputProps): import("react").JSX.Element;
+export declare const InputGroup: typeof InputGroupRoot & {
+    Addon: typeof InputGroupAddon;
+    Input: typeof InputGroupInput;
 };
+export {};
 
 
 // ---- input/input.d.ts ----
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    ref?: Ref<HTMLInputElement>;
     invalid?: boolean;
 }
-export declare const Input: import("react").ForwardRefExoticComponent<InputProps & import("react").RefAttributes<HTMLInputElement>>;
+export declare function Input({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: InputProps): import("react").JSX.Element;
 
 
 // ---- kbd/kbd.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type KbdSize = "sm" | "md";
 export interface KbdProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
     size?: KbdSize;
     children?: ReactNode;
 }
-export declare const Kbd: import("react").ForwardRefExoticComponent<KbdProps & import("react").RefAttributes<HTMLElement>>;
+export declare function Kbd({ ref, size, className, ...rest }: KbdProps): import("react").JSX.Element;
 
 
 // ---- link/link.d.ts ----
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    ref?: Ref<HTMLAnchorElement>;
     children?: ReactNode;
 }
-export declare const Link: import("react").ForwardRefExoticComponent<LinkProps & import("react").RefAttributes<HTMLAnchorElement>>;
+export declare function Link({ ref, className, ...rest }: LinkProps): import("react").JSX.Element;
 
 
 // ---- menu/menu.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 export interface MenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -823,9 +861,10 @@ export interface MenuRootProps {
 }
 declare function MenuRoot({ onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
 export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function MenuTrigger({ className, ...rest }: MenuTriggerProps): import("react").JSX.Element;
+declare function MenuTrigger({ render, className, ...rest }: MenuTriggerProps): import("react").JSX.Element;
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
@@ -888,9 +927,10 @@ export {};
 
 
 // ---- meter/meter.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type MeterVariant = "default" | "success" | "warning" | "danger";
 export interface MeterProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    ref?: Ref<HTMLDivElement>;
     value: number;
     min?: number;
     max?: number;
@@ -898,12 +938,13 @@ export interface MeterProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
     showValue?: boolean;
     variant?: MeterVariant;
 }
-export declare const Meter: import("react").ForwardRefExoticComponent<MeterProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Meter({ ref, value, min, max, label, showValue, variant, className, ...rest }: MeterProps): import("react").JSX.Element;
 
 
 // ---- number-field/number-field.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export interface NumberFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
+    ref?: Ref<HTMLDivElement>;
     value?: number | null;
     defaultValue?: number;
     onValueChange?: (value: number | null) => void;
@@ -919,12 +960,13 @@ export interface NumberFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "
     decrementLabel?: string;
     incrementLabel?: string;
 }
-export declare const NumberField: import("react").ForwardRefExoticComponent<NumberFieldProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function NumberField({ ref, value, defaultValue, onValueChange, min, max, step, disabled, readOnly, required, invalid, name, placeholder, decrementLabel, incrementLabel, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: NumberFieldProps): import("react").JSX.Element;
 
 
 // ---- otp-field/otp-field.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export interface OTPFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
+    ref?: Ref<HTMLDivElement>;
     length?: number;
     value?: string;
     defaultValue?: string;
@@ -935,13 +977,15 @@ export interface OTPFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "def
     mask?: boolean;
     invalid?: boolean;
     name?: string;
+    getSlotDescription?: (position: number, length: number) => string;
 }
-export declare const OTPField: import("react").ForwardRefExoticComponent<OTPFieldProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function OTPField({ ref, length, value, defaultValue, onValueChange, onValueComplete, disabled, required, mask, invalid, name, getSlotDescription, id, className, "aria-label": ariaLabel, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: OTPFieldProps): import("react").JSX.Element;
 
 
 // ---- pagination/pagination.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+    ref?: Ref<HTMLElement>;
     page: number;
     totalPages: number;
     onPageChange: (page: number) => void;
@@ -949,11 +993,11 @@ export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "chil
     previousLabel?: string;
     nextLabel?: string;
 }
-export declare const Pagination: import("react").ForwardRefExoticComponent<PaginationProps & import("react").RefAttributes<HTMLElement>>;
+export declare function Pagination({ ref, page, totalPages, onPageChange, siblingCount, previousLabel, nextLabel, "aria-label": ariaLabel, className, ...rest }: PaginationProps): import("react").JSX.Element;
 
 
 // ---- popover/popover.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 export interface PopoverRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -962,9 +1006,10 @@ export interface PopoverRootProps {
 }
 declare function PopoverRoot({ onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function PopoverTrigger({ className, ...rest }: PopoverTriggerProps): import("react").JSX.Element;
+declare function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps): import("react").JSX.Element;
 export type PopoverSide = "top" | "right" | "bottom" | "left";
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
     side?: PopoverSide;
@@ -981,9 +1026,10 @@ export interface PopoverDescriptionProps extends HTMLAttributes<HTMLParagraphEle
 }
 declare function PopoverDescription({ className, ...rest }: PopoverDescriptionProps): import("react").JSX.Element;
 export interface PopoverCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    render?: ReactElement;
     children?: ReactNode;
 }
-declare function PopoverClose({ className, ...rest }: PopoverCloseProps): import("react").JSX.Element;
+declare function PopoverClose({ render, className, ...rest }: PopoverCloseProps): import("react").JSX.Element;
 export declare const Popover: typeof PopoverRoot & {
     Trigger: typeof PopoverTrigger;
     Content: typeof PopoverContent;
@@ -1025,15 +1071,16 @@ export {};
 
 
 // ---- progress/progress.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface ProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    ref?: Ref<HTMLDivElement>;
     value: number | null;
     min?: number;
     max?: number;
     label?: ReactNode;
     showValue?: boolean;
 }
-export declare const Progress: import("react").ForwardRefExoticComponent<ProgressProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Progress({ ref, value, min, max, label, showValue, className, ...rest }: ProgressProps): import("react").JSX.Element;
 
 
 // ---- radio-group/radio-group.d.ts ----
@@ -1066,14 +1113,15 @@ export {};
 
 
 // ---- scroll-area/scroll-area.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type ScrollAreaOrientation = "vertical" | "horizontal" | "both";
 export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     orientation?: ScrollAreaOrientation;
     maxHeight?: number | string;
     children?: ReactNode;
 }
-export declare const ScrollArea: import("react").ForwardRefExoticComponent<ScrollAreaProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function ScrollArea({ ref, orientation, maxHeight, className, style, children, ...rest }: ScrollAreaProps): import("react").JSX.Element;
 
 
 // ---- select/select.d.ts ----
@@ -1129,12 +1177,13 @@ export {};
 
 
 // ---- separator/separator.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export type SeparatorOrientation = "horizontal" | "vertical";
 export interface SeparatorProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    ref?: Ref<HTMLDivElement>;
     orientation?: SeparatorOrientation;
 }
-export declare const Separator: import("react").ForwardRefExoticComponent<SeparatorProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Separator({ ref, orientation, className, ...rest }: SeparatorProps): import("react").JSX.Element;
 
 
 // ---- sidebar/sidebar.d.ts ----
@@ -1215,20 +1264,22 @@ export {};
 
 
 // ---- skeleton/skeleton.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export type SkeletonVariant = "text" | "rectangular" | "circular";
 export interface SkeletonProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    ref?: Ref<HTMLSpanElement>;
     variant?: SkeletonVariant;
     width?: number | string;
     height?: number | string;
 }
-export declare const Skeleton: import("react").ForwardRefExoticComponent<SkeletonProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function Skeleton({ ref, variant, width, height, style, className, ...rest }: SkeletonProps): import("react").JSX.Element;
 
 
 // ---- slider/slider.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export type SliderValue = number | readonly number[];
 export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
+    ref?: Ref<HTMLDivElement>;
     value?: SliderValue;
     defaultValue?: SliderValue;
     onValueChange?: (value: SliderValue) => void;
@@ -1238,26 +1289,28 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defau
     disabled?: boolean;
     name?: string;
 }
-export declare const Slider: import("react").ForwardRefExoticComponent<SliderProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Slider({ ref, value, defaultValue, onValueChange, min, max, step, disabled, name, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, ...rest }: SliderProps): import("react").JSX.Element;
 
 
 // ---- spinner/spinner.d.ts ----
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, Ref } from "react";
 export type SpinnerSize = "small" | "medium" | "large";
 export interface SpinnerProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+    ref?: Ref<HTMLSpanElement>;
     size?: SpinnerSize;
     label?: string;
 }
-export declare const Spinner: import("react").ForwardRefExoticComponent<SpinnerProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function Spinner({ ref, size, label, className, ...rest }: SpinnerProps): import("react").JSX.Element;
 
 
 // ---- stack/stack.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type StackDirection = "vertical" | "horizontal";
 export type StackGap = "none" | "sm" | "md" | "lg";
 export type StackAlign = "start" | "center" | "end" | "stretch" | "baseline";
 export type StackJustify = "start" | "center" | "end" | "between";
 export interface StackProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     direction?: StackDirection;
     gap?: StackGap;
     align?: StackAlign;
@@ -1265,11 +1318,11 @@ export interface StackProps extends HTMLAttributes<HTMLDivElement> {
     wrap?: boolean;
     children?: ReactNode;
 }
-export declare const Stack: import("react").ForwardRefExoticComponent<StackProps & import("react").RefAttributes<HTMLDivElement>>;
+export declare function Stack({ ref, direction, gap, align, justify, wrap, className, ...rest }: StackProps): import("react").JSX.Element;
 
 
 // ---- stepper/stepper.d.ts ----
-import type { OlHTMLAttributes, ReactNode } from "react";
+import type { OlHTMLAttributes, ReactNode, Ref } from "react";
 export type StepperOrientation = "horizontal" | "vertical";
 export interface StepperStep {
     id: string;
@@ -1277,15 +1330,18 @@ export interface StepperStep {
     description?: ReactNode;
 }
 export interface StepperProps extends OlHTMLAttributes<HTMLOListElement> {
+    ref?: Ref<HTMLOListElement>;
     steps: readonly StepperStep[];
     currentStep: number;
     orientation?: StepperOrientation;
 }
-export declare const Stepper: import("react").ForwardRefExoticComponent<StepperProps & import("react").RefAttributes<HTMLOListElement>>;
+export declare function Stepper({ ref, steps, currentStep, orientation, className, ...rest }: StepperProps): import("react").JSX.Element;
 
 
 // ---- switch/switch.d.ts ----
+import type { Ref } from "react";
 export interface SwitchProps {
+    ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
@@ -1300,12 +1356,14 @@ export interface SwitchProps {
     "aria-describedby"?: string;
     "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
-export declare const Switch: import("react").ForwardRefExoticComponent<SwitchProps & import("react").RefAttributes<HTMLElement>>;
+export declare function Switch({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SwitchProps): import("react").JSX.Element;
 
 
 // ---- table/table.d.ts ----
-import type { HTMLAttributes, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
-export type TableRootProps = TableHTMLAttributes<HTMLTableElement>;
+import type { HTMLAttributes, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
+    ref?: Ref<HTMLTableElement>;
+}
 export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
 export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
 export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
@@ -1313,6 +1371,7 @@ export type TableRowProps = HTMLAttributes<HTMLTableRowElement>;
 export type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
 export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
 export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
+declare function TableRoot({ ref, className, ...rest }: TableRootProps): import("react").JSX.Element;
 declare function TableHeader({ className, ...rest }: TableHeaderProps): import("react").JSX.Element;
 declare function TableBody({ className, ...rest }: TableBodyProps): import("react").JSX.Element;
 declare function TableFooter({ className, ...rest }: TableFooterProps): import("react").JSX.Element;
@@ -1320,7 +1379,7 @@ declare function TableRow({ className, ...rest }: TableRowProps): import("react"
 declare function TableHead({ scope, className, ...rest }: TableHeadProps): import("react").JSX.Element;
 declare function TableCell({ className, ...rest }: TableCellProps): import("react").JSX.Element;
 declare function TableCaption({ className, ...rest }: TableCaptionProps): import("react").JSX.Element;
-export declare const Table: import("react").ForwardRefExoticComponent<TableRootProps & import("react").RefAttributes<HTMLTableElement>> & {
+export declare const Table: typeof TableRoot & {
     Header: typeof TableHeader;
     Body: typeof TableBody;
     Footer: typeof TableFooter;
@@ -1365,23 +1424,25 @@ export {};
 
 
 // ---- tag/tag.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type TagVariant = "neutral" | "info" | "success" | "warning" | "danger";
 export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     variant?: TagVariant;
     onRemove?: () => void;
     removeLabel?: string;
     children?: ReactNode;
 }
-export declare const Tag: import("react").ForwardRefExoticComponent<TagProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function Tag({ ref, variant, onRemove, removeLabel, className, children, ...rest }: TagProps): import("react").JSX.Element;
 
 
 // ---- textarea/textarea.d.ts ----
-import type { TextareaHTMLAttributes } from "react";
+import type { Ref, TextareaHTMLAttributes } from "react";
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    ref?: Ref<HTMLTextAreaElement>;
     invalid?: boolean;
 }
-export declare const Textarea: import("react").ForwardRefExoticComponent<TextareaProps & import("react").RefAttributes<HTMLTextAreaElement>>;
+export declare function Textarea({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TextareaProps): import("react").JSX.Element;
 
 
 // ---- toast/toast.d.ts ----
@@ -1420,6 +1481,7 @@ export {};
 
 // ---- toggle-group/toggle-group.d.ts ----
 import type { HTMLAttributes, ReactNode } from "react";
+import { Toggle } from "../toggle/toggle.js";
 export type ToggleGroupOrientation = "horizontal" | "vertical";
 export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
     value?: readonly string[];
@@ -1433,21 +1495,22 @@ export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "
 }
 declare function ToggleGroupRoot({ value, defaultValue, onValueChange, multiple, disabled, orientation, loopFocus, className, children, ...rest }: ToggleGroupProps): import("react").JSX.Element;
 export declare const ToggleGroup: typeof ToggleGroupRoot & {
-    Item: import("react").ForwardRefExoticComponent<import("../toggle/toggle.js").ToggleProps & import("react").RefAttributes<HTMLButtonElement>>;
+    Item: typeof Toggle;
 };
 export {};
 
 
 // ---- toggle/toggle.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
+    ref?: Ref<HTMLButtonElement>;
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?: (pressed: boolean) => void;
     value?: string;
     children?: ReactNode;
 }
-export declare const Toggle: import("react").ForwardRefExoticComponent<ToggleProps & import("react").RefAttributes<HTMLButtonElement>>;
+export declare function Toggle({ ref, pressed, defaultPressed, onPressedChange, value, disabled, className, children, ...rest }: ToggleProps): import("react").JSX.Element;
 
 
 // ---- toolbar/toolbar.d.ts ----
@@ -1503,9 +1566,10 @@ export declare function Tooltip({ content, side, sideOffset, className, onOpenCh
 
 
 // ---- visually-hidden/visually-hidden.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface VisuallyHiddenProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     children?: ReactNode;
 }
-export declare const VisuallyHidden: import("react").ForwardRefExoticComponent<VisuallyHiddenProps & import("react").RefAttributes<HTMLSpanElement>>;
+export declare function VisuallyHidden({ ref, className, ...rest }: VisuallyHiddenProps): import("react").JSX.Element;
 

@@ -1,5 +1,10 @@
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import buttonStyles from "../button/button.module.css";
 import type {
   DialogCloseProps,
@@ -27,16 +32,24 @@ function AlertDialogRoot({ onOpenChange, ...rest }: AlertDialogRootProps) {
 
 export interface AlertDialogTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function AlertDialogTrigger({ className, ...rest }: AlertDialogTriggerProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function AlertDialogTrigger({
+  render,
+  className,
+  ...rest
+}: AlertDialogTriggerProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BaseAlertDialog.Trigger
       data-slot="alert-dialog-trigger"
+      render={render}
       className={classes}
       {...rest}
     />
@@ -96,13 +109,16 @@ function AlertDialogDescription({
   );
 }
 
-function AlertDialogClose({ className, ...rest }: DialogCloseProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function AlertDialogClose({ render, className, ...rest }: DialogCloseProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
     <BaseAlertDialog.Close
       data-slot="alert-dialog-close"
+      render={render}
       className={classes}
       {...rest}
     />

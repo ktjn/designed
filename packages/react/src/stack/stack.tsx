@@ -1,5 +1,4 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./stack.module.css";
 
 export type StackDirection = "vertical" | "horizontal";
@@ -8,6 +7,7 @@ export type StackAlign = "start" | "center" | "end" | "stretch" | "baseline";
 export type StackJustify = "start" | "center" | "end" | "between";
 
 export interface StackProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   direction?: StackDirection;
   gap?: StackGap;
   align?: StackAlign;
@@ -16,18 +16,16 @@ export interface StackProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function StackImpl(
-  {
-    direction = "vertical",
-    gap = "md",
-    align,
-    justify,
-    wrap = false,
-    className,
-    ...rest
-  }: StackProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Stack({
+  ref,
+  direction = "vertical",
+  gap = "md",
+  align,
+  justify,
+  wrap = false,
+  className,
+  ...rest
+}: StackProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -44,6 +42,3 @@ function StackImpl(
     />
   );
 }
-
-export const Stack = forwardRef(StackImpl);
-Stack.displayName = "Stack";

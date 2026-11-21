@@ -1,6 +1,5 @@
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-import type { ForwardedRef, HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./slider.module.css";
 
@@ -11,6 +10,7 @@ export interface SliderProps
     HTMLAttributes<HTMLDivElement>,
     "defaultValue" | "onChange" | "children"
   > {
+  ref?: Ref<HTMLDivElement>;
   value?: SliderValue;
   defaultValue?: SliderValue;
   onValueChange?: (value: SliderValue) => void;
@@ -21,25 +21,23 @@ export interface SliderProps
   name?: string;
 }
 
-function SliderImpl(
-  {
-    value,
-    defaultValue,
-    onValueChange,
-    min = 0,
-    max = 100,
-    step = 1,
-    disabled,
-    name,
-    id,
-    className,
-    "aria-label": ariaLabel,
-    "aria-labelledby": ariaLabelledBy,
-    "aria-describedby": ariaDescribedBy,
-    ...rest
-  }: SliderProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Slider({
+  ref,
+  value,
+  defaultValue,
+  onValueChange,
+  min = 0,
+  max = 100,
+  step = 1,
+  disabled,
+  name,
+  id,
+  className,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
+  ...rest
+}: SliderProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
@@ -90,6 +88,3 @@ function SliderImpl(
     </BaseSlider.Root>
   );
 }
-
-export const Slider = forwardRef(SliderImpl);
-Slider.displayName = "Slider";

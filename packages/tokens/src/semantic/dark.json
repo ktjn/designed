@@ -37,10 +37,6 @@
         "$type": "color",
         "$value": "{color.neutral.700}"
       },
-      "focus": {
-        "$type": "color",
-        "$value": "{color.blue.500}"
-      },
       "control": {
         "$type": "color",
         "$value": "{color.neutral.400}"

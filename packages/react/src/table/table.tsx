@@ -1,14 +1,15 @@
 import type {
-  ForwardedRef,
   HTMLAttributes,
+  Ref,
   TableHTMLAttributes,
   TdHTMLAttributes,
   ThHTMLAttributes,
 } from "react";
-import { forwardRef } from "react";
 import styles from "./table.module.css";
 
-export type TableRootProps = TableHTMLAttributes<HTMLTableElement>;
+export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
+  ref?: Ref<HTMLTableElement>;
+}
 export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
 export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
 export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
@@ -17,10 +18,7 @@ export type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
 export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
 export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
 
-function TableRootImpl(
-  { className, ...rest }: TableRootProps,
-  ref: ForwardedRef<HTMLTableElement>,
-) {
+function TableRoot({ ref, className, ...rest }: TableRootProps) {
   const classes = [styles.table, className].filter(Boolean).join(" ");
   return (
     <div className={styles.wrapper}>
@@ -28,9 +26,6 @@ function TableRootImpl(
     </div>
   );
 }
-
-const TableRoot = forwardRef(TableRootImpl);
-TableRoot.displayName = "Table";
 
 function TableHeader({ className, ...rest }: TableHeaderProps) {
   const classes = [styles.header, className].filter(Boolean).join(" ");

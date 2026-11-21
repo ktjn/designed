@@ -1,19 +1,24 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./empty-state.module.css";
 
 export interface EmptyStateProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  ref?: Ref<HTMLDivElement>;
   icon?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
   action?: ReactNode;
 }
 
-function EmptyStateImpl(
-  { icon, title, description, action, className, ...rest }: EmptyStateProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function EmptyState({
+  ref,
+  icon,
+  title,
+  description,
+  action,
+  className,
+  ...rest
+}: EmptyStateProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -25,6 +30,3 @@ function EmptyStateImpl(
     </div>
   );
 }
-
-export const EmptyState = forwardRef(EmptyStateImpl);
-EmptyState.displayName = "EmptyState";

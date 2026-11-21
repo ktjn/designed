@@ -30,16 +30,21 @@
   opacity: 0.5;
 }
 
+.root[data-loading] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
 .primary {
   background: var(--ds-color-action-primary-default);
   color: var(--ds-color-action-primary-foreground);
 }
 
-.primary:not(:disabled):hover {
+.primary:not(:disabled, [data-loading]):hover {
   background: var(--ds-color-action-primary-hover);
 }
 
-.primary:not(:disabled):active {
+.primary:not(:disabled, [data-loading]):active {
   background: var(--ds-color-action-primary-active);
 }
 
@@ -49,12 +54,12 @@
   border-color: var(--ds-color-border-control);
 }
 
-.secondary:not(:disabled):hover {
+.secondary:not(:disabled, [data-loading]):hover {
   background: var(--ds-color-background-subtle);
   border-color: var(--ds-color-border-strong);
 }
 
-.secondary:not(:disabled):active {
+.secondary:not(:disabled, [data-loading]):active {
   background: var(--ds-color-background-muted);
 }
 
@@ -63,11 +68,11 @@
   color: var(--ds-color-action-danger-foreground);
 }
 
-.danger:not(:disabled):hover {
+.danger:not(:disabled, [data-loading]):hover {
   background: var(--ds-color-action-danger-hover);
 }
 
-.danger:not(:disabled):active {
+.danger:not(:disabled, [data-loading]):active {
   background: var(--ds-color-action-danger-active);
 }
 
@@ -76,11 +81,11 @@
   color: var(--ds-color-foreground-default);
 }
 
-.ghost:not(:disabled):hover {
+.ghost:not(:disabled, [data-loading]):hover {
   background: var(--ds-color-background-subtle);
 }
 
-.ghost:not(:disabled):active {
+.ghost:not(:disabled, [data-loading]):active {
   background: var(--ds-color-background-muted);
 }
 

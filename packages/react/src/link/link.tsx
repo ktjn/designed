@@ -1,15 +1,12 @@
-import type { AnchorHTMLAttributes, ForwardedRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./link.module.css";
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: Ref<HTMLAnchorElement>;
   children?: ReactNode;
 }
 
-function LinkImpl(
-  { className, ...rest }: LinkProps,
-  ref: ForwardedRef<HTMLAnchorElement>,
-) {
+export function Link({ ref, className, ...rest }: LinkProps) {
   return (
     <a
       ref={ref}
@@ -19,6 +16,3 @@ function LinkImpl(
     />
   );
 }
-
-export const Link = forwardRef(LinkImpl);
-Link.displayName = "Link";

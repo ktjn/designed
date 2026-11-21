@@ -1,16 +1,19 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./aspect-ratio.module.css";
 
 export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   ratio?: number;
   children?: ReactNode;
 }
 
-function AspectRatioImpl(
-  { ratio = 16 / 9, className, style, ...rest }: AspectRatioProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function AspectRatio({
+  ref,
+  ratio = 16 / 9,
+  className,
+  style,
+  ...rest
+}: AspectRatioProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -23,6 +26,3 @@ function AspectRatioImpl(
     />
   );
 }
-
-export const AspectRatio = forwardRef(AspectRatioImpl);
-AspectRatio.displayName = "AspectRatio";

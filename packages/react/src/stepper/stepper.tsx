@@ -1,6 +1,5 @@
 import { CheckIcon } from "@ktjn/design-icons";
-import type { ForwardedRef, OlHTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { OlHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./stepper.module.css";
 
 export type StepperOrientation = "horizontal" | "vertical";
@@ -12,21 +11,20 @@ export interface StepperStep {
 }
 
 export interface StepperProps extends OlHTMLAttributes<HTMLOListElement> {
+  ref?: Ref<HTMLOListElement>;
   steps: readonly StepperStep[];
   currentStep: number;
   orientation?: StepperOrientation;
 }
 
-function StepperImpl(
-  {
-    steps,
-    currentStep,
-    orientation = "horizontal",
-    className,
-    ...rest
-  }: StepperProps,
-  ref: ForwardedRef<HTMLOListElement>,
-) {
+export function Stepper({
+  ref,
+  steps,
+  currentStep,
+  orientation = "horizontal",
+  className,
+  ...rest
+}: StepperProps) {
   const classes = [
     styles.root,
     orientation === "vertical" ? styles.vertical : undefined,
@@ -67,6 +65,3 @@ function StepperImpl(
     </ol>
   );
 }
-
-export const Stepper = forwardRef(StepperImpl);
-Stepper.displayName = "Stepper";

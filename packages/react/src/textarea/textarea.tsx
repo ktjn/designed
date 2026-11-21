@@ -1,25 +1,23 @@
-import type { ForwardedRef, TextareaHTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { Ref, TextareaHTMLAttributes } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./textarea.module.css";
 
 export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  ref?: Ref<HTMLTextAreaElement>;
   invalid?: boolean;
 }
 
-function TextareaImpl(
-  {
-    invalid,
-    disabled,
-    id,
-    className,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: TextareaProps,
-  ref: ForwardedRef<HTMLTextAreaElement>,
-) {
+export function Textarea({
+  ref,
+  invalid,
+  disabled,
+  id,
+  className,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: TextareaProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
@@ -45,6 +43,3 @@ function TextareaImpl(
     />
   );
 }
-
-export const Textarea = forwardRef(TextareaImpl);
-Textarea.displayName = "Textarea";

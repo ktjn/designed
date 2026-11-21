@@ -1,10 +1,10 @@
 import { Toggle as BaseToggle } from "@base-ui/react/toggle";
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./toggle.module.css";
 
 export interface ToggleProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
+  ref?: Ref<HTMLButtonElement>;
   pressed?: boolean;
   defaultPressed?: boolean;
   onPressedChange?: (pressed: boolean) => void;
@@ -12,19 +12,17 @@ export interface ToggleProps
   children?: ReactNode;
 }
 
-function ToggleImpl(
-  {
-    pressed,
-    defaultPressed,
-    onPressedChange,
-    value,
-    disabled,
-    className,
-    children,
-    ...rest
-  }: ToggleProps,
-  ref: ForwardedRef<HTMLButtonElement>,
-) {
+export function Toggle({
+  ref,
+  pressed,
+  defaultPressed,
+  onPressedChange,
+  value,
+  disabled,
+  className,
+  children,
+  ...rest
+}: ToggleProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
   return (
@@ -45,6 +43,3 @@ function ToggleImpl(
     </BaseToggle>
   );
 }
-
-export const Toggle = forwardRef(ToggleImpl);
-Toggle.displayName = "Toggle";

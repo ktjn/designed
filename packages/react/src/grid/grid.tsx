@@ -1,10 +1,4 @@
-import type {
-  CSSProperties,
-  ForwardedRef,
-  HTMLAttributes,
-  ReactNode,
-} from "react";
-import { forwardRef } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./grid.module.css";
 
 export type GridColumns = 1 | 2 | 3 | 4 | "auto";
@@ -12,6 +6,7 @@ export type GridGap = "none" | "sm" | "md" | "lg";
 export type GridAlign = "start" | "center" | "end" | "stretch";
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   columns?: GridColumns;
   minItemWidth?: string;
   gap?: GridGap;
@@ -19,18 +14,16 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function GridImpl(
-  {
-    columns = "auto",
-    minItemWidth,
-    gap = "md",
-    align,
-    className,
-    style,
-    ...rest
-  }: GridProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function Grid({
+  ref,
+  columns = "auto",
+  minItemWidth,
+  gap = "md",
+  align,
+  className,
+  style,
+  ...rest
+}: GridProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
   const mergedStyle = minItemWidth
     ? ({ ...style, "--ds-grid-min-width": minItemWidth } as CSSProperties)
@@ -49,6 +42,3 @@ function GridImpl(
     />
   );
 }
-
-export const Grid = forwardRef(GridImpl);
-Grid.displayName = "Grid";

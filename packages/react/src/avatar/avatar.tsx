@@ -1,22 +1,27 @@
 import { Avatar as BaseAvatar } from "@base-ui/react/avatar";
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./avatar.module.css";
 
 export type AvatarSize = "small" | "medium" | "large";
 
 export interface AvatarProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+  ref?: Ref<HTMLSpanElement>;
   src?: string;
   alt: string;
   fallback?: ReactNode;
   size?: AvatarSize;
 }
 
-function AvatarImpl(
-  { src, alt, fallback, size = "medium", className, ...rest }: AvatarProps,
-  ref: ForwardedRef<HTMLSpanElement>,
-) {
+export function Avatar({
+  ref,
+  src,
+  alt,
+  fallback,
+  size = "medium",
+  className,
+  ...rest
+}: AvatarProps) {
   const classes = [styles.root, styles[size], className]
     .filter(Boolean)
     .join(" ");
@@ -41,6 +46,3 @@ function AvatarImpl(
     </BaseAvatar.Root>
   );
 }
-
-export const Avatar = forwardRef(AvatarImpl);
-Avatar.displayName = "Avatar";

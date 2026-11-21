@@ -1,8 +1,8 @@
-import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./card.module.css";
 
 export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -27,16 +27,10 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function CardRootImpl(
-  { className, ...rest }: CardRootProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+function CardRoot({ ref, className, ...rest }: CardRootProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
   return <div ref={ref} data-slot="card" className={classes} {...rest} />;
 }
-
-const CardRoot = forwardRef(CardRootImpl);
-CardRoot.displayName = "Card";
 
 function CardHeader({ className, ...rest }: CardHeaderProps) {
   const classes = [styles.header, className].filter(Boolean).join(" ");

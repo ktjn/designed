@@ -1,15 +1,16 @@
 import type {
   AnchorHTMLAttributes,
-  ForwardedRef,
   HTMLAttributes,
   LiHTMLAttributes,
   OlHTMLAttributes,
   ReactNode,
+  Ref,
 } from "react";
-import { forwardRef } from "react";
 import styles from "./breadcrumb.module.css";
 
-export type BreadcrumbRootProps = HTMLAttributes<HTMLElement>;
+export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+}
 export type BreadcrumbListProps = OlHTMLAttributes<HTMLOListElement>;
 export type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
 export type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -19,14 +20,12 @@ export interface BreadcrumbSeparatorProps
   children?: ReactNode;
 }
 
-function BreadcrumbRootImpl(
-  {
-    "aria-label": ariaLabel = "Breadcrumb",
-    className,
-    ...rest
-  }: BreadcrumbRootProps,
-  ref: ForwardedRef<HTMLElement>,
-) {
+function BreadcrumbRoot({
+  ref,
+  "aria-label": ariaLabel = "Breadcrumb",
+  className,
+  ...rest
+}: BreadcrumbRootProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
   return (
     <nav
@@ -38,9 +37,6 @@ function BreadcrumbRootImpl(
     />
   );
 }
-
-const BreadcrumbRoot = forwardRef(BreadcrumbRootImpl);
-BreadcrumbRoot.displayName = "Breadcrumb";
 
 function BreadcrumbList({ className, ...rest }: BreadcrumbListProps) {
   const classes = [styles.list, className].filter(Boolean).join(" ");

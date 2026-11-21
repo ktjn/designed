@@ -1,22 +1,24 @@
 import type {
-  ForwardedRef,
   HTMLAttributes,
   InputHTMLAttributes,
   ReactNode,
+  Ref,
 } from "react";
-import { forwardRef } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./input-group.module.css";
 
 export interface InputGroupRootProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   invalid?: boolean;
   children?: ReactNode;
 }
 
-function InputGroupRootImpl(
-  { invalid, className, ...rest }: InputGroupRootProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+function InputGroupRoot({
+  ref,
+  invalid,
+  className,
+  ...rest
+}: InputGroupRootProps) {
   const field = useFieldContext();
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
   const classes = [styles.root, className].filter(Boolean).join(" ");
@@ -32,20 +34,20 @@ function InputGroupRootImpl(
   );
 }
 
-const InputGroupRoot = forwardRef(InputGroupRootImpl);
-InputGroupRoot.displayName = "InputGroup";
-
 export type InputGroupAddonAlign = "start" | "end";
 
 export interface InputGroupAddonProps extends HTMLAttributes<HTMLSpanElement> {
+  ref?: Ref<HTMLSpanElement>;
   align?: InputGroupAddonAlign;
   children?: ReactNode;
 }
 
-function InputGroupAddonImpl(
-  { align = "start", className, ...rest }: InputGroupAddonProps,
-  ref: ForwardedRef<HTMLSpanElement>,
-) {
+function InputGroupAddon({
+  ref,
+  align = "start",
+  className,
+  ...rest
+}: InputGroupAddonProps) {
   const classes = [styles.addon, className].filter(Boolean).join(" ");
 
   return (
@@ -59,26 +61,22 @@ function InputGroupAddonImpl(
   );
 }
 
-const InputGroupAddon = forwardRef(InputGroupAddonImpl);
-InputGroupAddon.displayName = "InputGroupAddon";
-
 export interface InputGroupInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
+  ref?: Ref<HTMLInputElement>;
   invalid?: boolean;
 }
 
-function InputGroupInputImpl(
-  {
-    invalid,
-    disabled,
-    id,
-    className,
-    "aria-describedby": ariaDescribedBy,
-    "aria-invalid": ariaInvalid,
-    ...rest
-  }: InputGroupInputProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+function InputGroupInput({
+  ref,
+  invalid,
+  disabled,
+  id,
+  className,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
+  ...rest
+}: InputGroupInputProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
@@ -98,9 +96,6 @@ function InputGroupInputImpl(
     />
   );
 }
-
-const InputGroupInput = forwardRef(InputGroupInputImpl);
-InputGroupInput.displayName = "InputGroupInput";
 
 export const InputGroup = Object.assign(InputGroupRoot, {
   Addon: InputGroupAddon,

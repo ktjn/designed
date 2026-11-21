@@ -1,41 +1,41 @@
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./button.module.css";
 
 export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 export type ButtonSize = "small" | "medium" | "large" | "icon";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
   children?: ReactNode;
 }
 
-function ButtonImpl(
-  {
-    variant = "primary",
-    size = "medium",
-    loading = false,
-    disabled,
-    type = "button",
-    className,
-    children,
-    ...rest
-  }: ButtonProps,
-  ref: ForwardedRef<HTMLButtonElement>,
-) {
-  const classes = [styles.root, styles[variant], styles[size], className]
-    .filter(Boolean)
-    .join(" ");
+export function Button({
+  ref,
+  variant = "primary",
+  size = "medium",
+  loading = false,
+  disabled,
+  type = "button",
+  className,
+  onClick,
+  "aria-disabled": ariaDisabled,
+  children,
+  ...rest
+}: ButtonProps) {
   return (
     <button
       ref={ref}
       type={type}
       data-slot="button"
-      disabled={disabled || loading}
+      data-loading={loading ? "" : undefined}
+      disabled={disabled}
+      aria-disabled={ariaDisabled ?? (loading || undefined)}
       aria-busy={loading || undefined}
-      className={classes}
+      onClick={loading ? (event) => event.preventDefault() : onClick}
+      className={`${styles.root} ${styles[variant]} ${styles[size]}${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {loading ? (
@@ -49,6 +49,3 @@ function ButtonImpl(
     </button>
   );
 }
-
-export const Button = forwardRef(ButtonImpl);
-Button.displayName = "Button";

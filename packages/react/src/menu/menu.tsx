@@ -1,6 +1,11 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 import { CheckIcon } from "@ktjn/design-icons";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 import buttonStyles from "../button/button.module.css";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./menu.module.css";
@@ -23,15 +28,23 @@ function MenuRoot({ onOpenChange, ...rest }: MenuRootProps) {
 
 export interface MenuTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  render?: ReactElement;
   children?: ReactNode;
 }
 
-function MenuTrigger({ className, ...rest }: MenuTriggerProps) {
-  const classes = [buttonStyles.root, buttonStyles.secondary, className]
-    .filter(Boolean)
-    .join(" ");
+function MenuTrigger({ render, className, ...rest }: MenuTriggerProps) {
+  const classes = render
+    ? className
+    : [buttonStyles.root, buttonStyles.secondary, className]
+        .filter(Boolean)
+        .join(" ");
   return (
-    <BaseMenu.Trigger data-slot="menu-trigger" className={classes} {...rest} />
+    <BaseMenu.Trigger
+      data-slot="menu-trigger"
+      render={render}
+      className={classes}
+      {...rest}
+    />
   );
 }
 

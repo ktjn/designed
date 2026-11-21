@@ -25,6 +25,8 @@ function FieldRoot({
   const [registeredControlId, setRegisteredControlId] = useState<
     string | undefined
   >(undefined);
+  const [hasDescription, setHasDescription] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const descriptionId = useId();
   const errorId = useId();
   const controlId =
@@ -34,17 +36,42 @@ function FieldRoot({
     setRegisteredControlId(id);
   }, []);
 
+  const registerDescription = useCallback((mounted: boolean) => {
+    setHasDescription(mounted);
+  }, []);
+
+  const registerError = useCallback((mounted: boolean) => {
+    setHasError(mounted);
+  }, []);
+
+  const describedBy =
+    [hasDescription ? descriptionId : null, hasError ? errorId : null]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   const value = useMemo<FieldContextValue>(
     () => ({
       controlId,
       descriptionId,
       errorId,
-      describedBy: `${descriptionId} ${errorId}`,
+      describedBy,
       invalid,
       disabled,
       registerControlId,
+      registerDescription,
+      registerError,
     }),
-    [controlId, descriptionId, errorId, invalid, disabled, registerControlId],
+    [
+      controlId,
+      descriptionId,
+      errorId,
+      describedBy,
+      invalid,
+      disabled,
+      registerControlId,
+      registerDescription,
+      registerError,
+    ],
   );
 
   return (

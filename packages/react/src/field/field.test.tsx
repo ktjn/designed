@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import { Input } from "../input/input";
@@ -89,6 +90,70 @@ describe("Field", () => {
     expect(input.disabled).toBe(true);
     const form = screen.getByTestId("disabled-form") as HTMLFormElement;
     expect(new FormData(form).get("email")).toBeNull();
+  });
+
+  it("omits aria-describedby when no description or error is rendered", () => {
+    render(
+      <Field>
+        <Field.Label>Email</Field.Label>
+        <Input name="email" />
+        <Field.Error>{undefined}</Field.Error>
+      </Field>,
+    );
+    const input = screen.getByRole("textbox");
+    expect(input.getAttribute("aria-describedby")).toBeNull();
+  });
+
+  it("includes only mounted description or error ids in aria-describedby", () => {
+    const { rerender } = render(
+      <Field>
+        <Field.Label>Email</Field.Label>
+        <Input name="email" />
+        <Field.Description>Helper text</Field.Description>
+        <Field.Error>{undefined}</Field.Error>
+      </Field>,
+    );
+    const input = screen.getByRole("textbox");
+    const description = screen.getByText("Helper text");
+    expect(input.getAttribute("aria-describedby")).toBe(description.id);
+
+    rerender(
+      <Field invalid>
+        <Field.Label>Email</Field.Label>
+        <Input name="email" />
+        <Field.Description>Helper text</Field.Description>
+        <Field.Error>Invalid email</Field.Error>
+      </Field>,
+    );
+    const error = screen.getByText("Invalid email");
+    expect(input.getAttribute("aria-describedby")).toBe(
+      `${description.id} ${error.id}`,
+    );
+  });
+
+  it("forwards className, ref, and DOM attributes on Field.Description and Field.Error", () => {
+    const descRef = createRef<HTMLParagraphElement>();
+    const errRef = createRef<HTMLParagraphElement>();
+    render(
+      <Field invalid>
+        <Field.Label>Email</Field.Label>
+        <Input name="email" />
+        <Field.Description
+          ref={descRef}
+          className="custom-desc"
+          data-testid="desc"
+        >
+          Helper
+        </Field.Description>
+        <Field.Error ref={errRef} className="custom-err" data-testid="err">
+          Required
+        </Field.Error>
+      </Field>,
+    );
+    expect(descRef.current).toBe(screen.getByTestId("desc"));
+    expect(descRef.current?.className).toContain("custom-desc");
+    expect(errRef.current).toBe(screen.getByTestId("err"));
+    expect(errRef.current?.className).toContain("custom-err");
   });
 
   it("has no automatically detectable accessibility violations", async () => {
