@@ -26,7 +26,8 @@
     "registry": "https://npm.pkg.github.com"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE-LUCIDE"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",

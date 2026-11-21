@@ -1,21 +1,4 @@
-import {
-  AlertCircleIcon,
-  AlertTriangleIcon,
-  CalendarIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  CloseIcon,
-  CopyIcon,
-  ExternalLinkIcon,
-  InfoIcon,
-  MinusIcon,
-  PlusIcon,
-  SearchIcon,
-  TrashIcon,
-  UploadIcon,
-} from "@ktjn/designed-icons";
+import * as icons from "@ktjn/designed-icons";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta = {
@@ -25,24 +8,9 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-const iconEntries = [
-  ["AlertCircleIcon", AlertCircleIcon],
-  ["AlertTriangleIcon", AlertTriangleIcon],
-  ["CalendarIcon", CalendarIcon],
-  ["CheckIcon", CheckIcon],
-  ["ChevronDownIcon", ChevronDownIcon],
-  ["ChevronLeftIcon", ChevronLeftIcon],
-  ["ChevronRightIcon", ChevronRightIcon],
-  ["CloseIcon", CloseIcon],
-  ["CopyIcon", CopyIcon],
-  ["ExternalLinkIcon", ExternalLinkIcon],
-  ["InfoIcon", InfoIcon],
-  ["MinusIcon", MinusIcon],
-  ["PlusIcon", PlusIcon],
-  ["SearchIcon", SearchIcon],
-  ["TrashIcon", TrashIcon],
-  ["UploadIcon", UploadIcon],
-] as const;
+const iconEntries = Object.entries(icons).sort(([first], [second]) =>
+  first.localeCompare(second),
+);
 
 export const Gallery: Story = {
   render: () => (
