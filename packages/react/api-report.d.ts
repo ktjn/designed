@@ -202,6 +202,15 @@ declare const Dialog: typeof DialogRoot & {
 export { Dialog, type DialogCloseProps, type DialogContentProps, type DialogDescriptionProps, type DialogRootProps, type DialogTitleProps, type DialogTriggerProps };
 
 
+// ---- dialog/use-dialog-portal-container.d.ts ----
+declare function useDialogPortalContainer(): {
+    container: HTMLElement | null | undefined;
+    scopeRef: (node: HTMLSpanElement | null) => void;
+};
+
+export { useDialogPortalContainer };
+
+
 // ---- field/field-context.d.ts ----
 import * as react from 'react';
 

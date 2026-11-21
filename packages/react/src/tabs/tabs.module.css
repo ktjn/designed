@@ -22,7 +22,7 @@
     border-color 120ms ease;
 }
 
-.tab:hover:not([data-disabled]) {
+.tab:hover:not([data-disabled], [data-active]) {
   color: var(--ds-color-foreground-default);
   border-bottom-color: var(--ds-color-border-control);
 }

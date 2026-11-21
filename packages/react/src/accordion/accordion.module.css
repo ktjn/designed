@@ -34,6 +34,12 @@
   transition: rotate 150ms ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .trigger::after {
+    transition: none;
+  }
+}
+
 .trigger[data-panel-open]::after {
   rotate: 225deg;
 }

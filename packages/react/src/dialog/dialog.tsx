@@ -3,6 +3,7 @@ import { CloseIcon } from "@ktjn/design-icons";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
+import { useDialogPortalContainer } from "./use-dialog-portal-container.js";
 
 export interface DialogRootProps {
   open?: boolean;
@@ -38,16 +39,23 @@ export interface DialogContentProps {
 }
 
 function DialogContent({ children, closeLabel = "Close" }: DialogContentProps) {
+  const { container, scopeRef } = useDialogPortalContainer();
   return (
-    <BaseDialog.Portal>
-      <BaseDialog.Backdrop className={styles.backdrop} />
-      <BaseDialog.Popup className={styles.popup}>
-        <BaseDialog.Close aria-label={closeLabel} className={styles.iconClose}>
-          <CloseIcon aria-hidden />
-        </BaseDialog.Close>
-        {children}
-      </BaseDialog.Popup>
-    </BaseDialog.Portal>
+    <>
+      <span hidden ref={scopeRef} />
+      <BaseDialog.Portal container={container}>
+        <BaseDialog.Backdrop className={styles.backdrop} />
+        <BaseDialog.Popup className={styles.popup}>
+          <BaseDialog.Close
+            aria-label={closeLabel}
+            className={styles.iconClose}
+          >
+            <CloseIcon aria-hidden />
+          </BaseDialog.Close>
+          {children}
+        </BaseDialog.Popup>
+      </BaseDialog.Portal>
+    </>
   );
 }
 

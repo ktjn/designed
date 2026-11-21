@@ -1,11 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: color-mix(
-    in srgb,
-    var(--ds-color-foreground-default) 40%,
-    transparent
-  );
+  background: rgb(0 0 0 / 48%);
   transition: opacity 150ms ease;
 }
 
@@ -20,11 +16,16 @@
   left: 50%;
   translate: -50% -50%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--ds-space-stack-md);
   box-sizing: border-box;
-  min-width: 20rem;
-  max-width: min(32rem, calc(100vw - 2rem));
-  background: var(--ds-color-background-default);
+  min-inline-size: min(20rem, calc(100dvw - 2rem));
+  max-inline-size: min(32rem, calc(100dvw - 2rem));
+  max-block-size: calc(100dvh - 2rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-wrap: anywhere;
+  background: var(--ds-color-background-subtle);
   color: var(--ds-color-foreground-default);
   border: 1px solid var(--ds-color-border-default);
   border-radius: var(--ds-radius-surface);
@@ -39,6 +40,13 @@
 .popup[data-ending-style] {
   opacity: 0;
   scale: 0.97;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .popup {
+    transition: none;
+  }
 }
 
 .title {
@@ -60,8 +68,8 @@
 
 .iconClose {
   position: absolute;
-  top: var(--ds-space-control-inline);
-  right: var(--ds-space-control-inline);
+  inset-block-start: var(--ds-space-control-inline);
+  inset-inline-end: var(--ds-space-control-inline);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -90,11 +98,4 @@
 .iconClose svg {
   width: 1rem;
   height: 1rem;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--ds-space-stack-md);
-  margin-block-start: var(--ds-space-stack-md);
 }

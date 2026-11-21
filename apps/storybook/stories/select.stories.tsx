@@ -1,4 +1,4 @@
-import { Select } from "@ktjn/design-react";
+import { Field, Select } from "@ktjn/design-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { expectEventuallyRemoved } from "./utils/expect-removed";
@@ -45,6 +45,32 @@ export const Default: Story = {
   ),
 };
 
+export const Invalid: Story = {
+  render: () => (
+    <Field invalid>
+      <Field.Label>Plan</Field.Label>
+      <Select items={items}>
+        <Select.Trigger>
+          <Select.Value placeholder="Choose a plan" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Content>
+      </Select>
+      <Field.Error>Choose a plan to continue.</Field.Error>
+    </Field>
+  ),
+  play: async ({ canvasElement }) => {
+    const trigger = within(canvasElement).getByRole("combobox", {
+      name: "Plan",
+    });
+    await expect(getComputedStyle(trigger).borderTopColor).toBe(
+      "rgb(220, 38, 38)",
+    );
+  },
+};
+
 export const SelectInteraction: Story = {
   render: () => {
     const onValueChange = fn();
@@ -73,5 +99,13 @@ export const SelectInteraction: Story = {
     // the raw value ("pro") -- verified after a real bug where the trigger
     // showed the raw value with no items map supplied.
     await expect(canvas.getByText("Pro")).toBeInTheDocument();
+    await userEvent.click(trigger);
+    const selected = await within(document.body).findByRole("option", {
+      selected: true,
+    });
+    await userEvent.hover(selected);
+    await expect(selected).toHaveAttribute("data-highlighted");
+    await expect(getComputedStyle(selected).outlineStyle).toBe("solid");
+    await userEvent.keyboard("{Escape}");
   },
 };

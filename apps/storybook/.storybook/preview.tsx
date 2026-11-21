@@ -2,6 +2,7 @@ import "@ktjn/design-tokens/css/base.css";
 import "@ktjn/design-tokens/css/schemes/dark.css";
 import "@ktjn/design-tokens/css/densities/compact.css";
 import "@ktjn/design-tokens/css/contrasts/more.css";
+import "./preview.css";
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { useEffect } from "react";
 

@@ -1,4 +1,4 @@
-import { Combobox } from "@ktjn/design-react";
+import { Combobox, Field } from "@ktjn/design-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
@@ -34,6 +34,25 @@ export const Default: Story = {
       <Combobox.Content />
     </Combobox>
   ),
+};
+
+export const Invalid: Story = {
+  render: () => (
+    <Field invalid>
+      <Field.Label>Plan</Field.Label>
+      <Combobox items={items}>
+        <Combobox.Input placeholder="Search plans" />
+        <Combobox.Content />
+      </Combobox>
+      <Field.Error>Choose a plan to continue.</Field.Error>
+    </Field>
+  ),
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Plan" });
+    await expect(getComputedStyle(input).borderTopColor).toBe(
+      "rgb(220, 38, 38)",
+    );
+  },
 };
 
 export const TypeToOpenInteraction: Story = {
