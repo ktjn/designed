@@ -1,12 +1,23 @@
 .root {
   color: var(--ds-color-action-primary-default);
   font-family: var(--ds-font-family-base);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
 }
 
 .root:hover {
   color: var(--ds-color-action-primary-hover);
+  text-decoration-thickness: 2px;
 }
 
 .root:active {
   color: var(--ds-color-action-primary-active);
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--ds-radius-control);
 }

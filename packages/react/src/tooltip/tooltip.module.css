@@ -1,9 +1,13 @@
 .popup {
+  box-sizing: border-box;
+  max-width: 16rem;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-inverse);
   background: var(--ds-color-foreground-default);
   border-radius: var(--ds-radius-control);
-  padding-block: var(--ds-space-control-block);
-  padding-inline: var(--ds-space-control-inline);
+  padding-block: var(--ds-space-stack-sm);
+  padding-inline: var(--ds-space-stack-md);
+  z-index: 1;
 }

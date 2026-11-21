@@ -10,13 +10,16 @@
       "0": "#ffffff",
       "100": "#f4f4f5",
       "200": "#e4e4e7",
+      "300": "#d4d4d8",
       "400": "#a1a1aa",
+      "500": "#71717a",
       "700": "#3f3f46",
       "800": "#27272a",
       "900": "#18181b",
       "1000": "#000000"
     },
     "blue": {
+      "100": "#dbeafe",
       "500": "#3b82f6",
       "600": "#2563eb",
       "700": "#1d4ed8",
@@ -30,7 +33,9 @@
     },
     "background": {
       "default": "#ffffff",
-      "subtle": "#f4f4f5"
+      "subtle": "#f4f4f5",
+      "muted": "#e4e4e7",
+      "selected": "#dbeafe"
     },
     "foreground": {
       "default": "#18181b",
@@ -39,7 +44,9 @@
     },
     "border": {
       "default": "#e4e4e7",
-      "focus": "#3b82f6"
+      "focus": "#3b82f6",
+      "control": "#71717a",
+      "strong": "#3f3f46"
     },
     "action": {
       "primary": {
@@ -65,10 +72,10 @@
       "spread": "0"
     },
     "200": {
-      "color": "#00000033",
+      "color": "#00000040",
       "offsetX": "0",
-      "offsetY": "4px",
-      "blur": "8px",
+      "offsetY": "8px",
+      "blur": "24px",
       "spread": "0"
     }
   },
@@ -85,6 +92,10 @@
       "regular": 400,
       "medium": 500,
       "bold": 700
+    },
+    "lineHeight": {
+      "100": "1.25rem",
+      "200": "1.5rem"
     }
   },
   "motion": {
@@ -99,17 +110,43 @@
   "radius": {
     "100": "0.25rem",
     "200": "0.5rem",
-    "control": "0.25rem"
+    "300": "0.75rem",
+    "control": "0.25rem",
+    "surface": "0.5rem"
   },
   "space": {
     "100": "0.25rem",
+    "150": "0.375rem",
     "200": "0.5rem",
     "300": "0.75rem",
     "400": "1rem",
+    "500": "1.25rem",
     "600": "1.5rem",
     "control": {
       "inline": "1rem",
-      "block": "0.75rem"
+      "block": "0.5rem"
+    },
+    "stack": {
+      "sm": "0.25rem",
+      "md": "0.5rem",
+      "lg": "1rem"
+    },
+    "surface": "1.5rem"
+  },
+  "shadow": {
+    "raised": {
+      "color": "#00000026",
+      "offsetX": "0",
+      "offsetY": "1px",
+      "blur": "2px",
+      "spread": "0"
+    },
+    "overlay": {
+      "color": "#00000040",
+      "offsetX": "0",
+      "offsetY": "8px",
+      "blur": "24px",
+      "spread": "0"
     }
   }
 }

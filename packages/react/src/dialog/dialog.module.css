@@ -6,6 +6,12 @@
     var(--ds-color-foreground-default) 40%,
     transparent
   );
+  transition: opacity 150ms ease;
+}
+
+.backdrop[data-starting-style],
+.backdrop[data-ending-style] {
+  opacity: 0;
 }
 
 .popup {
@@ -14,48 +20,66 @@
   left: 50%;
   translate: -50% -50%;
   display: grid;
-  gap: var(--ds-space-control-block);
+  gap: var(--ds-space-stack-md);
+  box-sizing: border-box;
   min-width: 20rem;
-  max-width: calc(100vw - 2rem);
+  max-width: min(32rem, calc(100vw - 2rem));
   background: var(--ds-color-background-default);
   color: var(--ds-color-foreground-default);
-  border-radius: var(--ds-radius-control);
-  padding: var(--ds-space-control-inline);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  box-shadow: var(--ds-shadow-overlay);
+  padding: var(--ds-space-surface);
+  transition:
+    opacity 150ms ease,
+    scale 150ms ease;
+}
+
+.popup[data-starting-style],
+.popup[data-ending-style] {
+  opacity: 0;
+  scale: 0.97;
 }
 
 .title {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-200);
-  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-200);
+  font-weight: var(--ds-font-weight-bold);
   margin: 0;
+  padding-inline-end: var(--ds-space-surface);
 }
 
 .description {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-muted);
   margin: 0;
 }
 
 .iconClose {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  top: var(--ds-space-control-inline);
+  right: var(--ds-space-control-inline);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
   flex-shrink: 0;
   border: none;
   border-radius: var(--ds-radius-control);
   background: transparent;
   color: var(--ds-color-foreground-muted);
   cursor: pointer;
+  transition: background-color 120ms ease;
 }
 
 .iconClose:hover {
-  background: var(--ds-color-background-subtle);
+  background: var(--ds-color-background-muted);
+  color: var(--ds-color-foreground-default);
 }
 
 .iconClose:focus-visible {
@@ -71,5 +95,6 @@
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--ds-space-control-inline);
+  gap: var(--ds-space-stack-md);
+  margin-block-start: var(--ds-space-stack-md);
 }

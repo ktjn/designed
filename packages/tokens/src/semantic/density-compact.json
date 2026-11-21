@@ -1,8 +1,14 @@
 {
   "space": {
     "control": {
-      "inline": { "$type": "dimension", "$value": "{space.300}" },
-      "block": { "$type": "dimension", "$value": "{space.200}" }
+      "inline": {
+        "$type": "dimension",
+        "$value": "{space.300}"
+      },
+      "block": {
+        "$type": "dimension",
+        "$value": "{space.100}"
+      }
     }
   }
 }

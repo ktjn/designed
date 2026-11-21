@@ -1,40 +1,142 @@
 {
   "color": {
     "background": {
-      "default": { "$type": "color", "$value": "{color.neutral.0}" },
-      "subtle": { "$type": "color", "$value": "{color.neutral.100}" }
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.0}"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.200}"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.blue.100}"
+      }
     },
     "foreground": {
-      "default": { "$type": "color", "$value": "{color.neutral.900}" },
-      "muted": { "$type": "color", "$value": "{color.neutral.700}" },
-      "inverse": { "$type": "color", "$value": "{color.neutral.0}" }
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.700}"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.neutral.0}"
+      }
     },
     "border": {
-      "default": { "$type": "color", "$value": "{color.neutral.200}" },
-      "focus": { "$type": "color", "$value": "{color.blue.500}" }
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.200}"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{color.blue.500}"
+      },
+      "control": {
+        "$type": "color",
+        "$value": "{color.neutral.500}"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{color.neutral.700}"
+      }
     },
     "action": {
       "primary": {
-        "default": { "$type": "color", "$value": "{color.blue.600}" },
-        "hover": { "$type": "color", "$value": "{color.blue.700}" },
-        "active": { "$type": "color", "$value": "{color.blue.800}" },
-        "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
+        "default": {
+          "$type": "color",
+          "$value": "{color.blue.600}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{color.blue.700}"
+        },
+        "active": {
+          "$type": "color",
+          "$value": "{color.blue.800}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.neutral.0}"
+        }
       },
       "danger": {
-        "default": { "$type": "color", "$value": "{color.red.600}" },
-        "hover": { "$type": "color", "$value": "{color.red.700}" },
-        "active": { "$type": "color", "$value": "{color.red.800}" },
-        "foreground": { "$type": "color", "$value": "{color.neutral.0}" }
+        "default": {
+          "$type": "color",
+          "$value": "{color.red.600}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{color.red.700}"
+        },
+        "active": {
+          "$type": "color",
+          "$value": "{color.red.800}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{color.neutral.0}"
+        }
       }
     }
   },
   "space": {
     "control": {
-      "inline": { "$type": "dimension", "$value": "{space.400}" },
-      "block": { "$type": "dimension", "$value": "{space.300}" }
+      "inline": {
+        "$type": "dimension",
+        "$value": "{space.400}"
+      },
+      "block": {
+        "$type": "dimension",
+        "$value": "{space.200}"
+      }
+    },
+    "stack": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "{space.100}"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{space.200}"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "{space.400}"
+      }
+    },
+    "surface": {
+      "$type": "dimension",
+      "$value": "{space.600}"
     }
   },
   "radius": {
-    "control": { "$type": "dimension", "$value": "{radius.100}" }
+    "control": {
+      "$type": "dimension",
+      "$value": "{radius.100}"
+    },
+    "surface": {
+      "$type": "dimension",
+      "$value": "{radius.200}"
+    }
+  },
+  "shadow": {
+    "raised": {
+      "$type": "shadow",
+      "$value": "{elevation.100}"
+    },
+    "overlay": {
+      "$type": "shadow",
+      "$value": "{elevation.200}"
+    }
   }
 }

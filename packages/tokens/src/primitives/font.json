@@ -7,14 +7,42 @@
       }
     },
     "size": {
-      "100": { "$type": "dimension", "$value": "0.875rem" },
-      "200": { "$type": "dimension", "$value": "1rem" },
-      "300": { "$type": "dimension", "$value": "1.25rem" }
+      "100": {
+        "$type": "dimension",
+        "$value": "0.875rem"
+      },
+      "200": {
+        "$type": "dimension",
+        "$value": "1rem"
+      },
+      "300": {
+        "$type": "dimension",
+        "$value": "1.25rem"
+      }
     },
     "weight": {
-      "regular": { "$type": "fontWeight", "$value": 400 },
-      "medium": { "$type": "fontWeight", "$value": 500 },
-      "bold": { "$type": "fontWeight", "$value": 700 }
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      }
+    },
+    "lineHeight": {
+      "100": {
+        "$type": "dimension",
+        "$value": "1.25rem"
+      },
+      "200": {
+        "$type": "dimension",
+        "$value": "1.5rem"
+      }
     }
   }
 }

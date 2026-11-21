@@ -9,11 +9,18 @@
   font-size: var(--ds-font-size-100);
   color: var(--ds-color-foreground-default);
   background: var(--ds-color-background-default);
-  border: 1px solid var(--ds-color-border-default);
+  border: 1px solid var(--ds-color-border-control);
   border-radius: var(--ds-radius-control);
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
+  line-height: var(--ds-font-line-height-100);
+  text-align: left;
   cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.trigger:hover:not([data-disabled]) {
+  border-color: var(--ds-color-border-strong);
 }
 
 .trigger[data-disabled] {
@@ -23,7 +30,8 @@
 
 .trigger:focus-visible {
   outline: 2px solid var(--ds-color-border-focus);
-  outline-offset: 2px;
+  outline-offset: 1px;
+  border-color: var(--ds-color-border-focus);
 }
 
 .icon {
@@ -32,34 +40,44 @@
 }
 
 .icon svg {
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .popup {
   display: grid;
   gap: 2px;
-  min-width: 10rem;
+  min-width: var(--anchor-width, 10rem);
   max-height: 16rem;
   overflow: auto;
   background: var(--ds-color-background-default);
   color: var(--ds-color-foreground-default);
   border: 1px solid var(--ds-color-border-default);
-  border-radius: var(--ds-radius-control);
-  padding: 4px;
+  border-radius: var(--ds-radius-surface);
+  box-shadow: var(--ds-shadow-overlay);
+  box-sizing: border-box;
+  padding: var(--ds-space-stack-sm);
+  z-index: 1;
 }
 
 .item {
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
   border-radius: var(--ds-radius-control);
-  padding-block: var(--ds-space-control-block);
+  padding-block: var(--ds-space-stack-md);
   padding-inline: var(--ds-space-control-inline);
   cursor: pointer;
+  user-select: none;
+}
+
+.item[data-selected] {
+  background: var(--ds-color-background-selected);
+  font-weight: var(--ds-font-weight-medium);
 }
 
 .item[data-highlighted] {
-  background: var(--ds-color-background-subtle);
+  background: var(--ds-color-background-muted);
   outline: none;
 }
 
