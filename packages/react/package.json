@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ktjn/design.git",
+    "url": "git+https://github.com/ktjn/design.git",
     "directory": "packages/react"
   },
   "publishConfig": {
@@ -57,7 +57,7 @@
     "vitest-axe": "1.0.0-pre.5"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc -p tsconfig.build.json",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "check:package": "publint && attw --pack . --profile esm-only",

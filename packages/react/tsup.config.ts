@@ -32,7 +32,7 @@ export default defineConfig({
   // paths valid after build (see onSuccess below).
   bundle: false,
   format: ["esm"],
-  dts: true,
+  dts: false,
   sourcemap: true,
   clean: true,
   async onSuccess() {
