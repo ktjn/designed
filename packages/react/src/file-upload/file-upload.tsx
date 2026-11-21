@@ -5,8 +5,8 @@ import type {
   ForwardedRef,
   InputHTMLAttributes,
 } from "react";
-import { forwardRef, useState } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./file-upload.module.css";
 
 export interface FileUploadProps
@@ -20,12 +20,32 @@ export interface FileUploadProps
   invalid?: boolean;
   prompt?: string;
   hint?: string;
+  getRemoveLabel?: (file: File) => string;
 }
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function syncInputFiles(
+  input: HTMLInputElement | null,
+  files: readonly File[],
+) {
+  if (!input) return;
+  if (typeof DataTransfer !== "undefined") {
+    const dataTransfer = new DataTransfer();
+    for (const file of files) {
+      dataTransfer.items.add(file);
+    }
+    const ownDescriptor = Object.getOwnPropertyDescriptor(input, "files");
+    if (!ownDescriptor || ownDescriptor.writable || ownDescriptor.set) {
+      input.files = dataTransfer.files;
+    }
+  } else if (files.length === 0) {
+    input.value = "";
+  }
 }
 
 function FileUploadImpl(
@@ -39,6 +59,7 @@ function FileUploadImpl(
     accept,
     prompt = "Choose files or drag and drop",
     hint,
+    getRemoveLabel = (file) => `Remove ${file.name}`,
     id,
     className,
     "aria-describedby": ariaDescribedBy,
@@ -48,14 +69,31 @@ function FileUploadImpl(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const [internalFiles, setInternalFiles] = useState<File[]>(defaultFiles);
   const [dragging, setDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const currentFiles = files ?? internalFiles;
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
   const classes = [styles.root, className].filter(Boolean).join(" ");
 
+  useEffect(() => {
+    syncInputFiles(inputRef.current, currentFiles);
+  }, [currentFiles]);
+
+  function assignRefs(node: HTMLInputElement | null) {
+    inputRef.current = node;
+    if (typeof ref === "function") {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  }
+
   function updateFiles(next: File[]) {
+    syncInputFiles(inputRef.current, next);
     if (files === undefined) {
       setInternalFiles(next);
     }
@@ -71,7 +109,7 @@ function FileUploadImpl(
   }
 
   function handleDragOver(event: DragEvent<HTMLDivElement>) {
-    if (disabled) return;
+    if (resolvedDisabled) return;
     event.preventDefault();
     setDragging(true);
   }
@@ -81,7 +119,7 @@ function FileUploadImpl(
   }
 
   function handleDrop(event: DragEvent<HTMLDivElement>) {
-    if (disabled) return;
+    if (resolvedDisabled) return;
     event.preventDefault();
     setDragging(false);
     const dropped = Array.from(event.dataTransfer.files ?? []);
@@ -101,18 +139,18 @@ function FileUploadImpl(
         className={styles.dropzone}
         data-dragging={dragging ? "" : undefined}
         data-invalid={resolvedInvalid ? "" : undefined}
-        data-disabled={disabled ? "" : undefined}
+        data-disabled={resolvedDisabled ? "" : undefined}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         <input
-          ref={ref}
+          ref={assignRefs}
           type="file"
-          id={id ?? field?.controlId}
+          id={resolvedId}
           accept={accept}
           multiple={multiple}
-          disabled={disabled}
+          disabled={resolvedDisabled}
           aria-describedby={ariaDescribedBy ?? field?.describedBy}
           aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
           onChange={handleChange}
@@ -138,8 +176,8 @@ function FileUploadImpl(
               </span>
               <button
                 type="button"
-                disabled={disabled}
-                aria-label={`Remove ${file.name}`}
+                disabled={resolvedDisabled}
+                aria-label={getRemoveLabel(file)}
                 onClick={() => removeFile(index)}
                 className={styles.remove}
               >

@@ -1,7 +1,7 @@
 import { Slider as BaseSlider } from "@base-ui/react/slider";
 import type { ForwardedRef, HTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./slider.module.css";
 
 export type SliderValue = number | readonly number[];
@@ -41,6 +41,8 @@ function SliderImpl(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const initialValues = value ?? defaultValue;
   const thumbCount = Array.isArray(initialValues) ? initialValues.length : 1;
   const thumbIndices = Array.from({ length: thumbCount }, (_, i) => i);
@@ -50,14 +52,14 @@ function SliderImpl(
     <BaseSlider.Root
       ref={ref}
       data-slot="slider"
-      id={id ?? field?.controlId}
+      id={resolvedId}
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange ? (next) => onValueChange(next) : undefined}
       min={min}
       max={max}
       step={step}
-      disabled={disabled}
+      disabled={resolvedDisabled}
       name={name}
       aria-labelledby={ariaLabelledBy}
       className={classes}

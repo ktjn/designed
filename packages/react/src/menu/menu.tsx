@@ -22,32 +22,37 @@ function MenuRoot({ onOpenChange, ...rest }: MenuRootProps) {
 }
 
 export interface MenuTriggerProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function MenuTrigger(props: MenuTriggerProps) {
+function MenuTrigger({ className, ...rest }: MenuTriggerProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <BaseMenu.Trigger
-      data-slot="menu-trigger"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
-    />
+    <BaseMenu.Trigger data-slot="menu-trigger" className={classes} {...rest} />
   );
 }
 
-export interface MenuContentProps {
+export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function MenuContent({ children }: MenuContentProps) {
+function MenuContent({ className, children, ...rest }: MenuContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
       <span hidden ref={scopeRef} />
       <BaseMenu.Portal container={container}>
         <BaseMenu.Positioner sideOffset={4}>
-          <BaseMenu.Popup data-slot="menu-content" className={styles.popup}>
+          <BaseMenu.Popup
+            data-slot="menu-content"
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+            {...rest}
+          >
             {children}
           </BaseMenu.Popup>
         </BaseMenu.Positioner>

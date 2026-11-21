@@ -17,28 +17,27 @@ export interface DrawerRootProps {
 }
 
 export interface DrawerTriggerProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-export interface DrawerContentProps {
+export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   side?: DrawerSide;
   closeLabel?: string;
   children: ReactNode;
 }
 
-export interface DrawerTitleProps
-  extends Omit<HTMLAttributes<HTMLHeadingElement>, "className"> {
+export interface DrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
 }
 
 export interface DrawerDescriptionProps
-  extends Omit<HTMLAttributes<HTMLParagraphElement>, "className"> {
+  extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode;
 }
 
 export interface DrawerCloseProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
@@ -70,11 +69,14 @@ function DrawerRoot({
   );
 }
 
-function DrawerTrigger({ children, ...rest }: DrawerTriggerProps) {
+function DrawerTrigger({ className, children, ...rest }: DrawerTriggerProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseDrawer.Trigger
       data-slot="drawer-trigger"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
+      className={classes}
       {...rest}
     >
       {children}
@@ -85,7 +87,9 @@ function DrawerTrigger({ children, ...rest }: DrawerTriggerProps) {
 function DrawerContent({
   side,
   closeLabel = "Close",
+  className,
   children,
+  ...rest
 }: DrawerContentProps) {
   const inheritedSide = useContext(DrawerSideContext);
   const resolvedSide = side ?? inheritedSide;
@@ -100,7 +104,10 @@ function DrawerContent({
           <BaseDrawer.Popup
             data-slot="drawer-content"
             data-side={resolvedSide}
-            className={styles.popup}
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+            {...rest}
           >
             <BaseDrawer.Close
               aria-label={closeLabel}
@@ -116,11 +123,11 @@ function DrawerContent({
   );
 }
 
-function DrawerTitle({ children, ...rest }: DrawerTitleProps) {
+function DrawerTitle({ className, children, ...rest }: DrawerTitleProps) {
   return (
     <BaseDrawer.Title
       data-slot="drawer-title"
-      className={styles.title}
+      className={className ? `${styles.title} ${className}` : styles.title}
       {...rest}
     >
       {children}
@@ -128,11 +135,17 @@ function DrawerTitle({ children, ...rest }: DrawerTitleProps) {
   );
 }
 
-function DrawerDescription({ children, ...rest }: DrawerDescriptionProps) {
+function DrawerDescription({
+  className,
+  children,
+  ...rest
+}: DrawerDescriptionProps) {
   return (
     <BaseDrawer.Description
       data-slot="drawer-description"
-      className={styles.description}
+      className={
+        className ? `${styles.description} ${className}` : styles.description
+      }
       {...rest}
     >
       {children}
@@ -140,13 +153,12 @@ function DrawerDescription({ children, ...rest }: DrawerDescriptionProps) {
   );
 }
 
-function DrawerClose({ children, ...rest }: DrawerCloseProps) {
+function DrawerClose({ className, children, ...rest }: DrawerCloseProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <BaseDrawer.Close
-      data-slot="drawer-close"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...rest}
-    >
+    <BaseDrawer.Close data-slot="drawer-close" className={classes} {...rest}>
       {children}
     </BaseDrawer.Close>
   );

@@ -41,12 +41,14 @@ export type PreviewCardSide = "top" | "right" | "bottom" | "left";
 export interface PreviewCardContentProps {
   side?: PreviewCardSide;
   sideOffset?: number;
+  className?: string;
   children?: ReactNode;
 }
 
 function PreviewCardContent({
   side = "bottom",
   sideOffset = 8,
+  className,
   children,
 }: PreviewCardContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
@@ -57,7 +59,9 @@ function PreviewCardContent({
         <BasePreviewCard.Positioner side={side} sideOffset={sideOffset}>
           <BasePreviewCard.Popup
             data-slot="preview-card-content"
-            className={styles.popup}
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
           >
             {children}
           </BasePreviewCard.Popup>

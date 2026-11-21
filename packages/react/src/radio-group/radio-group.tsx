@@ -12,6 +12,7 @@ export interface RadioGroupProps<Value = string> {
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
+  className?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
@@ -19,6 +20,8 @@ export interface RadioGroupProps<Value = string> {
 }
 
 function RadioGroupRoot<Value = string>({
+  disabled,
+  className,
   onValueChange,
   "aria-describedby": ariaDescribedBy,
   ...rest
@@ -27,8 +30,9 @@ function RadioGroupRoot<Value = string>({
   return (
     <BaseRadioGroup
       data-slot="radio-group"
+      disabled={disabled ?? field?.disabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
-      className={styles.root}
+      className={className ? `${styles.root} ${className}` : styles.root}
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />

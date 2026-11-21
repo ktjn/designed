@@ -1,17 +1,18 @@
 import type { ForwardedRef, InputHTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./input.module.css";
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "className"> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   invalid?: boolean;
 }
 
 function InputImpl(
   {
     invalid,
+    disabled,
     id,
+    className,
     "aria-describedby": ariaDescribedBy,
     "aria-invalid": ariaInvalid,
     ...rest
@@ -19,17 +20,26 @@ function InputImpl(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
+  const classes = [
+    styles.root,
+    resolvedInvalid ? styles.invalid : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <input
       ref={ref}
       data-slot="input"
-      id={id ?? field?.controlId}
+      id={resolvedId}
+      disabled={resolvedDisabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
-      className={
-        resolvedInvalid ? `${styles.root} ${styles.invalid}` : styles.root
-      }
+      className={classes}
       {...rest}
     />
   );

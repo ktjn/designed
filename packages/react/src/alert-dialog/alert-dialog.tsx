@@ -1,5 +1,5 @@
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import buttonStyles from "../button/button.module.css";
 import type {
   DialogCloseProps,
@@ -26,25 +26,33 @@ function AlertDialogRoot({ onOpenChange, ...rest }: AlertDialogRootProps) {
 }
 
 export interface AlertDialogTriggerProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function AlertDialogTrigger(props: AlertDialogTriggerProps) {
+function AlertDialogTrigger({ className, ...rest }: AlertDialogTriggerProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseAlertDialog.Trigger
       data-slot="alert-dialog-trigger"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
+      className={classes}
+      {...rest}
     />
   );
 }
 
-export interface AlertDialogContentProps {
+export interface AlertDialogContentProps
+  extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function AlertDialogContent({ children }: AlertDialogContentProps) {
+function AlertDialogContent({
+  className,
+  children,
+  ...rest
+}: AlertDialogContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
@@ -53,7 +61,8 @@ function AlertDialogContent({ children }: AlertDialogContentProps) {
         <BaseAlertDialog.Backdrop className={styles.backdrop} />
         <BaseAlertDialog.Popup
           data-slot="alert-dialog-content"
-          className={styles.popup}
+          className={className ? `${styles.popup} ${className}` : styles.popup}
+          {...rest}
         >
           {children}
         </BaseAlertDialog.Popup>
@@ -87,12 +96,15 @@ function AlertDialogDescription({
   );
 }
 
-function AlertDialogClose(props: DialogCloseProps) {
+function AlertDialogClose({ className, ...rest }: DialogCloseProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseAlertDialog.Close
       data-slot="alert-dialog-close"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
+      className={classes}
+      {...rest}
     />
   );
 }

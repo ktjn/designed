@@ -153,6 +153,75 @@ createRoot(document.getElementById("root")).render(
       "@ktjn/design-react + @ktjn/design-icons tarballs: Vite build succeeds and resolves CSS Modules",
     );
 
+    const mixedDir = path.join(scratchDir, "mixed-tokens-consumer");
+    const patchedTokensDir = path.join(scratchDir, "patched-tokens");
+    const tokensDistSrc = path.join(repoRoot, "packages/tokens");
+    await writeFile(
+      path.join(scratchDir, "package-mixed.json"),
+      JSON.stringify(
+        {
+          name: "mixed-version-consumer",
+          version: "0.0.0",
+          private: true,
+          type: "module",
+        },
+        null,
+        2,
+      ),
+    );
+    const { cp, mkdir } = await import("node:fs/promises");
+    await mkdir(patchedTokensDir, { recursive: true });
+    await cp(
+      path.join(tokensDistSrc, "dist"),
+      path.join(patchedTokensDir, "dist"),
+      { recursive: true },
+    );
+    const tokensManifest = JSON.parse(
+      await readFile(path.join(tokensDistSrc, "package.json"), "utf8"),
+    ) as { version: string };
+    const [major = "0", minor = "0", patch = "0"] =
+      tokensManifest.version.split(".");
+    const bumpedVersion = `${major}.${minor}.${Number(patch) + 1}`;
+    await writeFile(
+      path.join(patchedTokensDir, "package.json"),
+      JSON.stringify({ ...tokensManifest, version: bumpedVersion }, null, 2),
+    );
+    const patchedTarball = run(
+      "pnpm",
+      ["pack", "--pack-destination", scratchDir],
+      { cwd: patchedTokensDir },
+    )
+      .trim()
+      .split("\n")
+      .pop()
+      ?.trim();
+    if (!patchedTarball) {
+      throw new Error("Failed to pack patched @ktjn/design-tokens tarball");
+    }
+    await mkdir(mixedDir, { recursive: true });
+    await cp(
+      path.join(scratchDir, "package-mixed.json"),
+      path.join(mixedDir, "package.json"),
+    );
+    run(
+      "npm",
+      [
+        "install",
+        "--no-audit",
+        "--no-fund",
+        "--silent",
+        patchedTarball,
+        tarballPaths["@ktjn/design-icons"] ?? "",
+        tarballPaths["@ktjn/design-react"] ?? "",
+        "react@19.3.1",
+        "react-dom@19.3.1",
+      ],
+      { cwd: mixedDir, stdio: "inherit" },
+    );
+    console.log(
+      `@ktjn/design-react accepts independent @ktjn/design-tokens patch (${bumpedVersion}) without peer conflicts`,
+    );
+
     console.log("\nAll packed tarballs install and work correctly.");
   } finally {
     await rm(scratchDir, { recursive: true, force: true });

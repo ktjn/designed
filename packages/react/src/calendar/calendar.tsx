@@ -3,6 +3,8 @@ import type { ForwardedRef, HTMLAttributes, KeyboardEvent } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 import styles from "./calendar.module.css";
 
+export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
 export interface CalendarProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   value?: string;
@@ -11,6 +13,7 @@ export interface CalendarProps
   min?: string;
   max?: string;
   locale?: string;
+  weekStartsOn?: WeekdayIndex;
   disabled?: boolean;
   previousMonthLabel?: string;
   nextMonthLabel?: string;
@@ -18,7 +21,7 @@ export interface CalendarProps
 
 const ISO_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-function parseIsoDate(iso: string | undefined): Date | null {
+export function parseIsoDate(iso: string | undefined): Date | null {
   if (!iso) return null;
   const match = ISO_DATE_RE.exec(iso);
   if (!match) return null;
@@ -61,14 +64,56 @@ function addMonths(year: number, month: number, delta: number) {
   };
 }
 
+function addMonthsClamped(date: Date, deltaMonths: number): Date {
+  const shifted = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + deltaMonths, 1),
+  );
+  const lastDay = new Date(
+    Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  return new Date(
+    Date.UTC(
+      shifted.getUTCFullYear(),
+      shifted.getUTCMonth(),
+      Math.min(date.getUTCDate(), lastDay),
+    ),
+  );
+}
+
 function getTodayUtc(): Date {
   const now = new Date();
   return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
 }
 
-function buildMonthGrid(year: number, month: number): Date[][] {
+function resolveWeekStartsOn(
+  locale: string | undefined,
+  explicit?: WeekdayIndex,
+): WeekdayIndex {
+  if (explicit !== undefined) return explicit;
+  try {
+    const resolvedLocale =
+      locale ?? new Intl.DateTimeFormat().resolvedOptions().locale;
+    const intlLocale = new Intl.Locale(resolvedLocale) as Intl.Locale & {
+      getWeekInfo?: () => { firstDay: number };
+      weekInfo?: { firstDay: number };
+    };
+    const info = intlLocale.getWeekInfo?.() ?? intlLocale.weekInfo;
+    if (info && typeof info.firstDay === "number") {
+      return (info.firstDay % 7) as WeekdayIndex;
+    }
+  } catch {
+    return 0;
+  }
+  return 0;
+}
+
+function buildMonthGrid(
+  year: number,
+  month: number,
+  weekStartsOn: WeekdayIndex,
+): Date[][] {
   const firstOfMonth = new Date(Date.UTC(year, month, 1));
-  const startOffset = firstOfMonth.getUTCDay();
+  const startOffset = (firstOfMonth.getUTCDay() - weekStartsOn + 7) % 7;
   const gridStart = addDays(firstOfMonth, -startOffset);
   const weeks: Date[][] = [];
   for (let week = 0; week < 6; week++) {
@@ -89,6 +134,7 @@ function CalendarImpl(
     min,
     max,
     locale,
+    weekStartsOn,
     disabled = false,
     previousMonthLabel = "Previous month",
     nextMonthLabel = "Next month",
@@ -107,6 +153,11 @@ function CalendarImpl(
   const [focusedIso, setFocusedIso] = useState(formatIsoDate(initialDate));
   const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
+  const resolvedWeekStartsOn = useMemo(
+    () => resolveWeekStartsOn(locale, weekStartsOn),
+    [locale, weekStartsOn],
+  );
+
   const monthFormatter = useMemo(
     () =>
       new Intl.DateTimeFormat(locale, {
@@ -124,13 +175,13 @@ function CalendarImpl(
     });
     const sunday = new Date(Date.UTC(2026, 0, 4));
     return Array.from({ length: 7 }, (_, index) =>
-      formatter.format(addDays(sunday, index)),
+      formatter.format(addDays(sunday, (resolvedWeekStartsOn + index) % 7)),
     );
-  }, [locale]);
+  }, [locale, resolvedWeekStartsOn]);
 
   const weeks = useMemo(
-    () => buildMonthGrid(view.year, view.month),
-    [view.year, view.month],
+    () => buildMonthGrid(view.year, view.month, resolvedWeekStartsOn),
+    [view.year, view.month, resolvedWeekStartsOn],
   );
 
   const monthTitle = monthFormatter.format(
@@ -143,6 +194,25 @@ function CalendarImpl(
     if (max && iso > max) return true;
     return false;
   }
+
+  const effectiveFocusedIso = (() => {
+    const flatDays = weeks.flat();
+    const visibleIsos = new Set(flatDays.map(formatIsoDate));
+    if (visibleIsos.has(focusedIso) && !isDisabledDate(focusedIso)) {
+      return focusedIso;
+    }
+    const firstEnabledInMonth = flatDays.find(
+      (day) =>
+        day.getUTCMonth() === view.month && !isDisabledDate(formatIsoDate(day)),
+    );
+    if (firstEnabledInMonth) {
+      return formatIsoDate(firstEnabledInMonth);
+    }
+    const firstEnabledInGrid = flatDays.find(
+      (day) => !isDisabledDate(formatIsoDate(day)),
+    );
+    return firstEnabledInGrid ? formatIsoDate(firstEnabledInGrid) : focusedIso;
+  })();
 
   function selectDate(iso: string) {
     if (isDisabledDate(iso)) return;
@@ -162,11 +232,22 @@ function CalendarImpl(
     });
   }
 
+  function shiftMonth(delta: number) {
+    const nextView = addMonths(view.year, view.month, delta);
+    setView(nextView);
+    const currentFocused =
+      parseIsoDate(focusedIso) ?? new Date(Date.UTC(view.year, view.month, 1));
+    const shifted = addMonthsClamped(currentFocused, delta);
+    setFocusedIso(formatIsoDate(shifted));
+  }
+
   function handleDayKeyDown(
     event: KeyboardEvent<HTMLButtonElement>,
     date: Date,
   ) {
     let next: Date | null = null;
+    const offsetFromWeekStart =
+      (date.getUTCDay() - resolvedWeekStartsOn + 7) % 7;
     switch (event.key) {
       case "ArrowLeft":
         next = addDays(date, -1);
@@ -181,28 +262,16 @@ function CalendarImpl(
         next = addDays(date, 7);
         break;
       case "Home":
-        next = addDays(date, -date.getUTCDay());
+        next = addDays(date, -offsetFromWeekStart);
         break;
       case "End":
-        next = addDays(date, 6 - date.getUTCDay());
+        next = addDays(date, 6 - offsetFromWeekStart);
         break;
       case "PageUp":
-        next = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth() - 1,
-            date.getUTCDate(),
-          ),
-        );
+        next = addMonthsClamped(date, -1);
         break;
       case "PageDown":
-        next = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth() + 1,
-            date.getUTCDate(),
-          ),
-        );
+        next = addMonthsClamped(date, 1);
         break;
       default:
         return;
@@ -221,21 +290,19 @@ function CalendarImpl(
           className={styles.navButton}
           aria-label={previousMonthLabel}
           disabled={disabled}
-          onClick={() =>
-            setView((prev) => addMonths(prev.year, prev.month, -1))
-          }
+          onClick={() => shiftMonth(-1)}
         >
           <ChevronLeftIcon aria-hidden />
         </button>
-        <div className={styles.monthLabel} aria-live="polite">
+        <span className={styles.monthLabel} aria-live="polite">
           {monthTitle}
-        </div>
+        </span>
         <button
           type="button"
           className={styles.navButton}
           aria-label={nextMonthLabel}
           disabled={disabled}
-          onClick={() => setView((prev) => addMonths(prev.year, prev.month, 1))}
+          onClick={() => shiftMonth(1)}
         >
           <ChevronRightIcon aria-hidden />
         </button>
@@ -258,7 +325,8 @@ function CalendarImpl(
                 const outside = day.getUTCMonth() !== view.month;
                 const selected = iso === selectedIso;
                 const dayDisabled = isDisabledDate(iso);
-                const tabStop = iso === focusedIso ? 0 : -1;
+                const tabStop =
+                  !dayDisabled && iso === effectiveFocusedIso ? 0 : -1;
 
                 return (
                   <td key={iso} className={styles.cell}>

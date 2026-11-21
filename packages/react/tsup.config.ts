@@ -1,5 +1,5 @@
 import { readdirSync } from "node:fs";
-import { cp, readdir } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { defineConfig } from "tsup";
 
@@ -44,9 +44,13 @@ export default defineConfig({
     // for it at its own build time.
     const cssFiles = await collectModuleCssFiles("src");
     await Promise.all(
-      cssFiles.map((file) =>
-        cp(file, path.join("dist", path.relative("src", file))),
-      ),
+      cssFiles.map(async (file) => {
+        const source = await readFile(file, "utf8");
+        const target = path.join("dist", path.relative("src", file));
+        await mkdir(path.dirname(target), { recursive: true });
+        const wrapped = `@layer ds.tokens, ds.components;\n\n@layer ds.components {\n${source.trim()}\n}\n`;
+        await writeFile(target, wrapped);
+      }),
     );
   },
 });

@@ -1,7 +1,8 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronDownIcon } from "@ktjn/design-icons";
 import type { ReactNode } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./select.module.css";
 
 export interface SelectRootProps<Value = unknown> {
@@ -12,11 +13,6 @@ export interface SelectRootProps<Value = unknown> {
   required?: boolean;
   readOnly?: boolean;
   name?: string;
-  /**
-   * Maps item values to their display label, so `Select.Value` renders the
-   * label of the selected item instead of the raw value. Required for
-   * `Select.Value` to show anything other than the raw value once selected.
-   */
   items?:
     | Record<string, ReactNode>
     | ReadonlyArray<{ label: ReactNode; value: Value }>;
@@ -24,11 +20,14 @@ export interface SelectRootProps<Value = unknown> {
 }
 
 function SelectRoot<Value = unknown>({
+  disabled,
   onValueChange,
   ...rest
 }: SelectRootProps<Value>) {
+  const field = useFieldContext();
   return (
     <BaseSelect.Root
+      disabled={disabled ?? field?.disabled}
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />
@@ -37,6 +36,7 @@ function SelectRoot<Value = unknown>({
 
 export interface SelectTriggerProps {
   id?: string;
+  className?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
@@ -46,6 +46,7 @@ export interface SelectTriggerProps {
 
 function SelectTrigger({
   id,
+  className,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
@@ -53,15 +54,16 @@ function SelectTrigger({
   children,
 }: SelectTriggerProps) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   return (
     <BaseSelect.Trigger
       data-slot="select-trigger"
-      id={id ?? field?.controlId}
+      id={resolvedId}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
-      className={styles.trigger}
+      className={className ? `${styles.trigger} ${className}` : styles.trigger}
     >
       {children}
       <BaseSelect.Icon className={styles.icon}>
@@ -80,30 +82,45 @@ function SelectValue({ placeholder }: SelectValueProps) {
 }
 
 export interface SelectContentProps {
+  className?: string;
   children?: ReactNode;
 }
 
-function SelectContent({ children }: SelectContentProps) {
+function SelectContent({ className, children }: SelectContentProps) {
+  const { container, scopeRef } = useDialogPortalContainer();
   return (
-    <BaseSelect.Portal>
-      <BaseSelect.Positioner sideOffset={4}>
-        <BaseSelect.Popup data-slot="select-content" className={styles.popup}>
-          <BaseSelect.List>{children}</BaseSelect.List>
-        </BaseSelect.Popup>
-      </BaseSelect.Positioner>
-    </BaseSelect.Portal>
+    <>
+      <span hidden ref={scopeRef} />
+      <BaseSelect.Portal container={container}>
+        <BaseSelect.Positioner sideOffset={4}>
+          <BaseSelect.Popup
+            data-slot="select-content"
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+          >
+            <BaseSelect.List>{children}</BaseSelect.List>
+          </BaseSelect.Popup>
+        </BaseSelect.Positioner>
+      </BaseSelect.Portal>
+    </>
   );
 }
 
 export interface SelectItemProps {
   value: unknown;
   disabled?: boolean;
+  className?: string;
   children?: ReactNode;
 }
 
-function SelectItem({ children, ...rest }: SelectItemProps) {
+function SelectItem({ className, children, ...rest }: SelectItemProps) {
   return (
-    <BaseSelect.Item data-slot="select-item" className={styles.item} {...rest}>
+    <BaseSelect.Item
+      data-slot="select-item"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    >
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
     </BaseSelect.Item>
   );

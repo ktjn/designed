@@ -139,6 +139,30 @@ async function renderOverrideBlock(options: {
   return `${options.selector} {\n${lines}\n}\n`;
 }
 
+const GENERATED_HEADER =
+  "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
+const HEADER_PATTERN = /^\/\*\*[\s\S]*?\*\/\s*/;
+const LAYER_DECLARATION = "@layer ds.tokens, ds.components;\n\n";
+
+function indentBlock(css: string): string {
+  return css
+    .trim()
+    .split("\n")
+    .map((line) => (line.length > 0 ? `  ${line}` : ""))
+    .join("\n");
+}
+
+function wrapInTokensLayer(body: string): string {
+  return `${GENERATED_HEADER}${LAYER_DECLARATION}@layer ds.tokens {\n${indentBlock(body)}\n}\n`;
+}
+
+async function wrapFileInTokensLayer(filePath: string) {
+  const fs = await import("node:fs/promises");
+  const raw = await fs.readFile(filePath, "utf8");
+  const body = raw.replace(HEADER_PATTERN, "").trim();
+  await fs.writeFile(filePath, wrapInTokensLayer(body));
+}
+
 async function buildCompositeOverride(options: {
   destination: string;
   blocks: Array<{ sourceFile: string; selector: string; media?: string }>;
@@ -146,15 +170,14 @@ async function buildCompositeOverride(options: {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
   const rendered = await Promise.all(options.blocks.map(renderOverrideBlock));
-  const header =
-    "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
   const outPath = path.join("dist/css", options.destination);
   await fs.mkdir(path.dirname(outPath), { recursive: true });
-  await fs.writeFile(outPath, `${header}${rendered.join("\n")}`);
+  await fs.writeFile(outPath, wrapInTokensLayer(rendered.join("\n")));
 }
 
 export async function buildTokens() {
   await buildBase();
+  await wrapFileInTokensLayer("dist/css/base.css");
 
   await buildCompositeOverride({
     destination: "schemes/dark.css",
@@ -176,6 +199,7 @@ export async function buildTokens() {
     destination: "densities/compact.css",
     selector: '[data-density="compact"]',
   });
+  await wrapFileInTokensLayer("dist/css/densities/compact.css");
 
   await buildCompositeOverride({
     destination: "contrasts/more.css",
@@ -199,6 +223,12 @@ export async function buildTokens() {
       {
         sourceFile: "src/semantic/contrast-more.json",
         selector: '[data-contrast="more"]',
+      },
+      {
+        sourceFile: "src/semantic/contrast-more-dark.json",
+        selector:
+          ':root:not([data-color-scheme="light"])[data-contrast="more"], :root:not([data-color-scheme="light"]) [data-contrast="more"]',
+        media: "(prefers-color-scheme: dark)",
       },
       {
         sourceFile: "src/semantic/contrast-more-dark.json",
@@ -235,15 +265,18 @@ export async function buildTokens() {
     "dist/css/densities/compact.css",
     "dist/css/contrasts/more.css",
   ];
-  const headerPattern = /^\/\*\*[\s\S]*?\*\/\s*/;
+  const unwrapPattern =
+    /^\/\*\*[\s\S]*?\*\/\s*@layer ds\.tokens, ds\.components;\s*@layer ds\.tokens \{\s*([\s\S]*?)\s*\}\s*$/;
   const bundleParts = await Promise.all(
-    bundleFiles.map(async (file) =>
-      (await fs.readFile(file, "utf8")).replace(headerPattern, "").trim(),
-    ),
+    bundleFiles.map(async (file) => {
+      const raw = await fs.readFile(file, "utf8");
+      const match = unwrapPattern.exec(raw);
+      return (match?.[1] ?? raw.replace(HEADER_PATTERN, "")).trim();
+    }),
   );
   await fs.writeFile(
     "dist/css/all.css",
-    `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${bundleParts.join("\n\n")}\n`,
+    `${GENERATED_HEADER}${LAYER_DECLARATION}@layer ds.tokens {\n${bundleParts.join("\n\n")}\n}\n`,
   );
 }
 

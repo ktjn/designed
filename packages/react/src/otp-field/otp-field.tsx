@@ -1,7 +1,7 @@
 import { OTPField as BaseOTPField } from "@base-ui/react/otp-field";
 import type { ForwardedRef, HTMLAttributes } from "react";
 import { forwardRef, useId } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";
 import styles from "./otp-field.module.css";
 
@@ -44,10 +44,11 @@ function OTPFieldImpl(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const field = useFieldContext();
+  const fieldControlId = useFieldControlId(id);
   const generatedId = useId();
-  const resolvedId =
-    id ?? field?.controlId ?? (ariaLabel ? generatedId : undefined);
+  const resolvedId = fieldControlId ?? (ariaLabel ? generatedId : undefined);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const slots = Array.from({ length }, (_, index) => index);
   const classes = [
     styles.root,
@@ -77,7 +78,7 @@ function OTPFieldImpl(
         onValueComplete={
           onValueComplete ? (next) => onValueComplete(next) : undefined
         }
-        disabled={disabled}
+        disabled={resolvedDisabled}
         required={required}
         mask={mask}
         name={name}

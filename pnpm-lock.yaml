@@ -343,7 +343,7 @@ importers:
         specifier: workspace:*
         version: link:../icons
       '@ktjn/design-tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
     devDependencies:
       '@arethetypeswrong/cli':

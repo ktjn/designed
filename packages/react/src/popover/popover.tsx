@@ -1,6 +1,7 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import buttonStyles from "../button/button.module.css";
+import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./popover.module.css";
 
 export interface PopoverRootProps {
@@ -17,23 +18,26 @@ function PopoverRoot({ onOpenChange, ...rest }: PopoverRootProps) {
 }
 
 export interface PopoverTriggerProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function PopoverTrigger(props: PopoverTriggerProps) {
+function PopoverTrigger({ className, ...rest }: PopoverTriggerProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BasePopover.Trigger
       data-slot="popover-trigger"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
+      className={classes}
+      {...rest}
     />
   );
 }
 
 export type PopoverSide = "top" | "right" | "bottom" | "left";
 
-export interface PopoverContentProps {
+export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   side?: PopoverSide;
   sideOffset?: number;
   children?: ReactNode;
@@ -42,16 +46,28 @@ export interface PopoverContentProps {
 function PopoverContent({
   side = "bottom",
   sideOffset = 8,
+  className,
   children,
+  ...rest
 }: PopoverContentProps) {
+  const { container, scopeRef } = useDialogPortalContainer();
   return (
-    <BasePopover.Portal>
-      <BasePopover.Positioner side={side} sideOffset={sideOffset}>
-        <BasePopover.Popup data-slot="popover-content" className={styles.popup}>
-          {children}
-        </BasePopover.Popup>
-      </BasePopover.Positioner>
-    </BasePopover.Portal>
+    <>
+      <span hidden ref={scopeRef} />
+      <BasePopover.Portal container={container}>
+        <BasePopover.Positioner side={side} sideOffset={sideOffset}>
+          <BasePopover.Popup
+            data-slot="popover-content"
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+            {...rest}
+          >
+            {children}
+          </BasePopover.Popup>
+        </BasePopover.Positioner>
+      </BasePopover.Portal>
+    </>
   );
 }
 
@@ -87,16 +103,19 @@ function PopoverDescription({ className, ...rest }: PopoverDescriptionProps) {
 }
 
 export interface PopoverCloseProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function PopoverClose(props: PopoverCloseProps) {
+function PopoverClose({ className, ...rest }: PopoverCloseProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BasePopover.Close
       data-slot="popover-close"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
+      className={classes}
+      {...rest}
     />
   );
 }

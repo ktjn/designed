@@ -41,7 +41,7 @@ export type {
   ButtonGroupProps,
 } from "./button-group/button-group.js";
 export { ButtonGroup } from "./button-group/button-group.js";
-export type { CalendarProps } from "./calendar/calendar.js";
+export type { CalendarProps, WeekdayIndex } from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
 export type {
   CardContentProps,

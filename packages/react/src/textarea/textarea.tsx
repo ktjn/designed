@@ -1,17 +1,19 @@
 import type { ForwardedRef, TextareaHTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./textarea.module.css";
 
 export interface TextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "className"> {
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   invalid?: boolean;
 }
 
 function TextareaImpl(
   {
     invalid,
+    disabled,
     id,
+    className,
     "aria-describedby": ariaDescribedBy,
     "aria-invalid": ariaInvalid,
     ...rest
@@ -19,17 +21,26 @@ function TextareaImpl(
   ref: ForwardedRef<HTMLTextAreaElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
+  const classes = [
+    styles.root,
+    resolvedInvalid ? styles.invalid : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <textarea
       ref={ref}
       data-slot="textarea"
-      id={id ?? field?.controlId}
+      id={resolvedId}
+      disabled={resolvedDisabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
-      className={
-        resolvedInvalid ? `${styles.root} ${styles.invalid}` : styles.root
-      }
+      className={classes}
       {...rest}
     />
   );

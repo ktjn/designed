@@ -59,6 +59,23 @@ describe("token build", () => {
     expect(allCss.indexOf('[data-color-scheme="dark"]')).toBeLessThan(
       allCss.indexOf('[data-contrast="more"]'),
     );
+    for (const file of [
+      "css/base.css",
+      "css/all.css",
+      "css/schemes/dark.css",
+      "css/densities/compact.css",
+      "css/contrasts/more.css",
+      "css/brands/editorial.css",
+    ]) {
+      const content = await readFile(path.join(distDir, file), "utf8");
+      expect(content, `${file} should declare layer order`).toContain(
+        "@layer ds.tokens, ds.components;",
+      );
+      expect(
+        content,
+        `${file} should wrap rules in @layer ds.tokens`,
+      ).toContain("@layer ds.tokens {");
+    }
     await expect(
       readFile(path.join(distDir, "json/tokens.json"), "utf8"),
     ).resolves.toBeTruthy();
@@ -234,6 +251,33 @@ describe("theme composition and WCAG AA contrast", () => {
     expect(darkCss).toContain(':root:not([data-color-scheme="light"])');
     expect(moreCss).toContain("@media (prefers-contrast: more)");
     expect(moreCss).toContain(':root:not([data-contrast="default"])');
+
+    const osDarkExplicitMoreMatch = moreCss.match(
+      /@media \(prefers-color-scheme: dark\) \{\s*:root:not\(\[data-color-scheme="light"\]\)\[data-contrast="more"\][^{]*\{([\s\S]*?)\}\s*\}/,
+    );
+    expect(
+      osDarkExplicitMoreMatch?.[1],
+      "OS dark mode + explicit data-contrast=more should emit dark high-contrast overrides",
+    ).toBeTruthy();
+
+    const baseCss = await readFile(path.join(distDir, "css/base.css"), "utf8");
+    const darkBase = {
+      ...parseCssVariables(baseCss, ":root"),
+      ...parseCssVariables(darkCss, '[data-color-scheme="dark"]'),
+    };
+    const darkExplicitMoreVars: Record<string, string> = { ...darkBase };
+    for (const [, name, value] of (osDarkExplicitMoreMatch?.[1] ?? "").matchAll(
+      /(--[a-z0-9-]+)\s*:\s*([^;]+);/g,
+    )) {
+      if (name && value) darkExplicitMoreVars[name] = value.trim();
+    }
+    expect(
+      contrastRatio(
+        darkExplicitMoreVars["--ds-color-foreground-muted"] ?? "",
+        darkExplicitMoreVars["--ds-color-background-default"] ?? "",
+      ),
+      "OS dark + explicit data-contrast=more muted foreground contrast",
+    ).toBeGreaterThanOrEqual(4.5);
   });
 });
 

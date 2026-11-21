@@ -2,7 +2,7 @@ import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { MinusIcon, PlusIcon } from "@ktjn/design-icons";
 import type { ForwardedRef, HTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./number-field.module.css";
 
 export interface NumberFieldProps
@@ -53,7 +53,9 @@ function NumberFieldImpl(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const classes = [
     styles.root,
     resolvedInvalid ? styles.invalid : "",
@@ -66,14 +68,14 @@ function NumberFieldImpl(
     <BaseNumberField.Root
       ref={ref}
       data-slot="number-field"
-      id={id ?? field?.controlId}
+      id={resolvedId}
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange ? (next) => onValueChange(next) : undefined}
       min={min}
       max={max}
       step={step}
-      disabled={disabled}
+      disabled={resolvedDisabled}
       readOnly={readOnly}
       required={required}
       name={name}

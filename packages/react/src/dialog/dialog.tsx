@@ -20,33 +20,45 @@ function DialogRoot({ onOpenChange, ...rest }: DialogRootProps) {
 }
 
 export interface DialogTriggerProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function DialogTrigger(props: DialogTriggerProps) {
+function DialogTrigger({ className, ...rest }: DialogTriggerProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseDialog.Trigger
       data-slot="dialog-trigger"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
+      className={classes}
+      {...rest}
     />
   );
 }
 
-export interface DialogContentProps {
+export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   closeLabel?: string;
 }
 
-function DialogContent({ children, closeLabel = "Close" }: DialogContentProps) {
+function DialogContent({
+  children,
+  closeLabel = "Close",
+  className,
+  ...rest
+}: DialogContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
       <span hidden ref={scopeRef} />
       <BaseDialog.Portal container={container}>
         <BaseDialog.Backdrop className={styles.backdrop} />
-        <BaseDialog.Popup data-slot="dialog-content" className={styles.popup}>
+        <BaseDialog.Popup
+          data-slot="dialog-content"
+          className={className ? `${styles.popup} ${className}` : styles.popup}
+          {...rest}
+        >
           <BaseDialog.Close
             aria-label={closeLabel}
             className={styles.iconClose}
@@ -92,17 +104,16 @@ function DialogDescription({ className, ...rest }: DialogDescriptionProps) {
 }
 
 export interface DialogCloseProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-function DialogCloseButton(props: DialogCloseProps) {
+function DialogCloseButton({ className, ...rest }: DialogCloseProps) {
+  const classes = [buttonStyles.root, buttonStyles.secondary, className]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <BaseDialog.Close
-      data-slot="dialog-close"
-      className={`${buttonStyles.root} ${buttonStyles.secondary}`}
-      {...props}
-    />
+    <BaseDialog.Close data-slot="dialog-close" className={classes} {...rest} />
   );
 }
 

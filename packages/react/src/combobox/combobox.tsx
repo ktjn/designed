@@ -1,6 +1,7 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import type { ReactNode } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./combobox.module.css";
 
 export interface ComboboxItem<Value> {
@@ -17,15 +18,6 @@ export interface ComboboxRootProps<Value = unknown> {
   disabled?: boolean;
   readOnly?: boolean;
   name?: string;
-  /**
-   * The full list of selectable items. Base UI's filtering-as-you-type and
-   * its built-in empty state (`Combobox.Content`'s "no results" message)
-   * are entirely items-array driven -- without this, every item is treated
-   * as filtered out regardless of what's typed, and the empty message
-   * shows permanently. Found via a real-browser Storybook review: the
-   * input never filtered anything and "No results" rendered even when
-   * matching items existed.
-   */
   items: ReadonlyArray<ComboboxItem<Value>>;
   children?: ReactNode;
 }
@@ -35,15 +27,18 @@ function ComboboxRoot<Value = unknown>({
   defaultValue,
   onValueChange,
   onInputValueChange,
+  disabled,
   items,
   ...rest
 }: ComboboxRootProps<Value>) {
+  const field = useFieldContext();
   const findItem = (itemValue: Value | undefined) =>
     items.find((item) => item.value === itemValue) ?? null;
 
   return (
     <BaseCombobox.Root
       items={items}
+      disabled={disabled ?? field?.disabled}
       itemToStringLabel={(item: ComboboxItem<Value>) => item.label}
       itemToStringValue={(item: ComboboxItem<Value>) => String(item.value)}
       isItemEqualToValue={(
@@ -65,6 +60,7 @@ function ComboboxRoot<Value = unknown>({
 
 export interface ComboboxInputProps {
   id?: string;
+  className?: string;
   placeholder?: string;
   "aria-describedby"?: string;
   "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
@@ -72,55 +68,65 @@ export interface ComboboxInputProps {
 
 function ComboboxInput({
   id,
+  className,
   "aria-describedby": ariaDescribedBy,
   "aria-invalid": ariaInvalid,
   ...rest
 }: ComboboxInputProps) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   return (
     <BaseCombobox.Input
       data-slot="combobox-input"
-      id={id ?? field?.controlId}
+      id={resolvedId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
-      className={styles.input}
+      className={className ? `${styles.input} ${className}` : styles.input}
       {...rest}
     />
   );
 }
 
 export interface ComboboxContentProps {
+  className?: string;
   emptyMessage?: ReactNode;
 }
 
 function ComboboxContent({
+  className,
   emptyMessage = "No results",
 }: ComboboxContentProps) {
+  const { container, scopeRef } = useDialogPortalContainer();
   return (
-    <BaseCombobox.Portal>
-      <BaseCombobox.Positioner sideOffset={4}>
-        <BaseCombobox.Popup
-          data-slot="combobox-content"
-          className={styles.popup}
-        >
-          <BaseCombobox.Empty className={styles.empty}>
-            {emptyMessage}
-          </BaseCombobox.Empty>
-          <BaseCombobox.List>
-            {(item: ComboboxItem<unknown>) => (
-              <BaseCombobox.Item
-                key={String(item.value)}
-                value={item}
-                data-slot="combobox-item"
-                className={styles.item}
-              >
-                {item.label}
-              </BaseCombobox.Item>
-            )}
-          </BaseCombobox.List>
-        </BaseCombobox.Popup>
-      </BaseCombobox.Positioner>
-    </BaseCombobox.Portal>
+    <>
+      <span hidden ref={scopeRef} />
+      <BaseCombobox.Portal container={container}>
+        <BaseCombobox.Positioner sideOffset={4}>
+          <BaseCombobox.Popup
+            data-slot="combobox-content"
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+          >
+            <BaseCombobox.Empty className={styles.empty}>
+              {emptyMessage}
+            </BaseCombobox.Empty>
+            <BaseCombobox.List>
+              {(item: ComboboxItem<unknown>) => (
+                <BaseCombobox.Item
+                  key={String(item.value)}
+                  value={item}
+                  data-slot="combobox-item"
+                  className={styles.item}
+                >
+                  {item.label}
+                </BaseCombobox.Item>
+              )}
+            </BaseCombobox.List>
+          </BaseCombobox.Popup>
+        </BaseCombobox.Positioner>
+      </BaseCombobox.Portal>
+    </>
   );
 }
 

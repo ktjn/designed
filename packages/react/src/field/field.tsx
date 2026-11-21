@@ -1,26 +1,39 @@
-import type { ReactNode } from "react";
-import { useId, useMemo } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import styles from "./field.module.css";
 import { FieldContext, type FieldContextValue } from "./field-context.js";
 import { FieldDescription } from "./field-description.js";
 import { FieldError } from "./field-error.js";
 import { FieldLabel } from "./field-label.js";
 
-export interface FieldRootProps {
+export interface FieldRootProps extends HTMLAttributes<HTMLDivElement> {
+  controlId?: string;
   invalid?: boolean;
   disabled?: boolean;
   children?: ReactNode;
 }
 
-function FieldRoot({ invalid = false, disabled, children }: FieldRootProps) {
-  const controlId = useId();
+function FieldRoot({
+  controlId: explicitControlId,
+  invalid = false,
+  disabled = false,
+  className,
+  children,
+  ...rest
+}: FieldRootProps) {
+  const generatedControlId = useId();
+  const [registeredControlId, setRegisteredControlId] = useState<
+    string | undefined
+  >(undefined);
   const descriptionId = useId();
   const errorId = useId();
-  // Referencing both ids unconditionally is a deliberate simplification: if a
-  // consumer omits Field.Description or Field.Error, the control's
-  // aria-describedby points at an id that doesn't exist in the DOM. Assistive
-  // tech ignores dangling id references, so this is harmless in practice and
-  // avoids a mount-order presence-tracking registry for a static composition.
+  const controlId =
+    explicitControlId ?? registeredControlId ?? generatedControlId;
+
+  const registerControlId = useCallback((id: string | undefined) => {
+    setRegisteredControlId(id);
+  }, []);
+
   const value = useMemo<FieldContextValue>(
     () => ({
       controlId,
@@ -28,16 +41,19 @@ function FieldRoot({ invalid = false, disabled, children }: FieldRootProps) {
       errorId,
       describedBy: `${descriptionId} ${errorId}`,
       invalid,
+      disabled,
+      registerControlId,
     }),
-    [controlId, descriptionId, errorId, invalid],
+    [controlId, descriptionId, errorId, invalid, disabled, registerControlId],
   );
 
   return (
     <div
       data-slot="field"
-      className={styles.root}
+      className={className ? `${styles.root} ${className}` : styles.root}
       data-disabled={disabled || undefined}
       data-invalid={invalid || undefined}
+      {...rest}
     >
       <FieldContext.Provider value={value}>{children}</FieldContext.Provider>
     </div>

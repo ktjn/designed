@@ -58,13 +58,37 @@ describe("Field", () => {
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
-  it("lets an explicit id override the generated one", () => {
+  it("keeps Field.Label linked when a child control supplies an explicit id", () => {
     render(
       <Field>
+        <Field.Label>Email</Field.Label>
         <Input name="email" id="custom-id" />
       </Field>,
     );
-    expect(screen.getByRole("textbox").id).toBe("custom-id");
+    const input = screen.getByRole("textbox", {
+      name: "Email",
+    }) as HTMLInputElement;
+    expect(input.id).toBe("custom-id");
+    expect(screen.getByText("Email").getAttribute("for")).toBe("custom-id");
+  });
+
+  it("supports Field controlId and propagates disabled to controls and FormData", () => {
+    render(
+      <form data-testid="disabled-form">
+        <Field controlId="account-email" disabled>
+          <Field.Label>Account email</Field.Label>
+          <Input name="email" defaultValue="user@example.com" />
+        </Field>
+      </form>,
+    );
+
+    const input = screen.getByRole("textbox", {
+      name: "Account email",
+    }) as HTMLInputElement;
+    expect(input.id).toBe("account-email");
+    expect(input.disabled).toBe(true);
+    const form = screen.getByTestId("disabled-form") as HTMLFormElement;
+    expect(new FormData(form).get("email")).toBeNull();
   });
 
   it("has no automatically detectable accessibility violations", async () => {

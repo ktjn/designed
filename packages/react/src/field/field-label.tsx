@@ -2,17 +2,21 @@ import type { LabelHTMLAttributes, ReactNode } from "react";
 import styles from "./field.module.css";
 import { useFieldContext } from "./field-context.js";
 
-export interface FieldLabelProps
-  extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "htmlFor"> {
+export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   children?: ReactNode;
 }
 
-export function FieldLabel({ children, className, ...rest }: FieldLabelProps) {
+export function FieldLabel({
+  htmlFor,
+  children,
+  className,
+  ...rest
+}: FieldLabelProps) {
   const field = useFieldContext();
   return (
     <label
       data-slot="field-label"
-      htmlFor={field?.controlId}
+      htmlFor={htmlFor ?? field?.controlId}
       className={className ? `${styles.label} ${className}` : styles.label}
       {...rest}
     >

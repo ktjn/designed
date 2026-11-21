@@ -36,11 +36,16 @@ function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps) {
   );
 }
 
-export interface ContextMenuContentProps {
+export interface ContextMenuContentProps
+  extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function ContextMenuContent({ children }: ContextMenuContentProps) {
+function ContextMenuContent({
+  className,
+  children,
+  ...rest
+}: ContextMenuContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
@@ -49,7 +54,10 @@ function ContextMenuContent({ children }: ContextMenuContentProps) {
         <BaseContextMenu.Positioner>
           <BaseContextMenu.Popup
             data-slot="context-menu-content"
-            className={styles.popup}
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+            {...rest}
           >
             {children}
           </BaseContextMenu.Popup>

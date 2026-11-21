@@ -31,6 +31,55 @@ describe("Calendar", () => {
     expect(screen.getByRole("button", { name: /2026-06-01/ })).toBeTruthy();
   });
 
+  it("keeps an enabled day tabbable after navigating to another month", async () => {
+    const user = userEvent.setup();
+    render(<Calendar defaultValue="2026-05-15" />);
+
+    await user.click(screen.getByRole("button", { name: "Next month" }));
+
+    const tabbableDays = screen
+      .getAllByRole("button", { name: /^\d{4}-\d{2}-\d{2}$/ })
+      .filter((btn) => btn.getAttribute("tabindex") === "0");
+    expect(tabbableDays).toHaveLength(1);
+    expect((tabbableDays[0] as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("clamps PageDown across month-end boundaries without skipping February", async () => {
+    const user = userEvent.setup();
+    render(<Calendar defaultValue="2026-01-31" />);
+
+    const jan31 = screen.getByRole("button", { name: "2026-01-31" });
+    jan31.focus();
+    await user.keyboard("{PageDown}");
+
+    const feb28 = screen.getByRole("button", { name: "2026-02-28" });
+    expect(feb28.getAttribute("tabindex")).toBe("0");
+  });
+
+  it("starts weeks on Monday for sv-SE locale and aligns Home/End to Monday-Sunday", async () => {
+    const user = userEvent.setup();
+    render(<Calendar defaultValue="2026-06-17" locale="sv-SE" />);
+
+    const headers = screen.getAllByRole("columnheader");
+    expect(headers[0]?.textContent?.toLowerCase()).toMatch(/^m/);
+
+    const wed = screen.getByRole("button", { name: "2026-06-17" });
+    wed.focus();
+    await user.keyboard("{Home}");
+    expect(
+      screen
+        .getByRole("button", { name: "2026-06-15" })
+        .getAttribute("tabindex"),
+    ).toBe("0");
+
+    await user.keyboard("{End}");
+    expect(
+      screen
+        .getByRole("button", { name: "2026-06-21" })
+        .getAttribute("tabindex"),
+    ).toBe("0");
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<Calendar defaultValue="2026-05-15" />);
     expect(await axe(container)).toHaveNoViolations();

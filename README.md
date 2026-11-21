@@ -867,7 +867,7 @@ Implement vertically. Each phase should leave the repository buildable and usabl
 - [x] Add Changesets with independent package versions.
 - [x] Add GitHub Actions for install, typecheck, test, and build.
 - [x] Add release workflow using trusted publishing where supported.
-- [x] Add Renovate for dependency update automation.
+- [x] Add Dependabot for dependency update automation.
 
 Exit criteria:
 
@@ -1073,57 +1073,18 @@ Exit criteria
 
 Local CI checks the committed API and token baselines before push.
 
-# Component backlog
+# Component catalog
 
-Build only when backed by a concrete use case.
+Every public component exported from `@ktjn/design-react` links to its live Storybook page (verified by `packages/react/tests/readme-catalog.test.ts`):
 
-## Foundation
+- **Layout**: [AspectRatio](https://ktjn.github.io/design/?path=/story/aspectratio--sixteen-by-nine), [Container](https://ktjn.github.io/design/?path=/story/container--default), [Grid](https://ktjn.github.io/design/?path=/story/grid--three-columns), [ScrollArea](https://ktjn.github.io/design/?path=/story/scrollarea--default), [Separator](https://ktjn.github.io/design/?path=/story/separator--horizontal), [Sidebar](https://ktjn.github.io/design/?path=/story/sidebar--default), [Stack](https://ktjn.github.io/design/?path=/story/stack--vertical)
+- **Actions & Forms**: [Autocomplete](https://ktjn.github.io/design/?path=/story/autocomplete--default), [Button](https://ktjn.github.io/design/?path=/story/button--primary), [ButtonGroup](https://ktjn.github.io/design/?path=/story/buttongroup--horizontal), [Calendar](https://ktjn.github.io/design/?path=/story/calendar--default), [Checkbox](https://ktjn.github.io/design/?path=/story/checkbox--unchecked), [Combobox](https://ktjn.github.io/design/?path=/story/combobox--default), [DatePicker](https://ktjn.github.io/design/?path=/story/datepicker--default), [Field](https://ktjn.github.io/design/?path=/story/field--default), [Fieldset](https://ktjn.github.io/design/?path=/story/fieldset--default), [FileUpload](https://ktjn.github.io/design/?path=/story/fileupload--default), [Input](https://ktjn.github.io/design/?path=/story/input--default), [InputGroup](https://ktjn.github.io/design/?path=/story/inputgroup--default), [Link](https://ktjn.github.io/design/?path=/story/link--default), [NumberField](https://ktjn.github.io/design/?path=/story/numberfield--default), [OTPField](https://ktjn.github.io/design/?path=/story/otpfield--default), [RadioGroup](https://ktjn.github.io/design/?path=/story/radiogroup--default), [Select](https://ktjn.github.io/design/?path=/story/select--default), [Slider](https://ktjn.github.io/design/?path=/story/slider--default), [Switch](https://ktjn.github.io/design/?path=/story/switch--off), [Textarea](https://ktjn.github.io/design/?path=/story/textarea--default), [Toggle](https://ktjn.github.io/design/?path=/story/toggle--default), [ToggleGroup](https://ktjn.github.io/design/?path=/story/togglegroup--single), [Toolbar](https://ktjn.github.io/design/?path=/story/toolbar--default)
+- **Overlays & Disclosure**: [Accordion](https://ktjn.github.io/design/?path=/story/accordion--default), [AlertDialog](https://ktjn.github.io/design/?path=/story/alertdialog--default), [Collapsible](https://ktjn.github.io/design/?path=/story/collapsible--default), [CommandPalette](https://ktjn.github.io/design/?path=/story/commandpalette--default), [ContextMenu](https://ktjn.github.io/design/?path=/story/contextmenu--default), [Dialog](https://ktjn.github.io/design/?path=/story/dialog--default), [Drawer](https://ktjn.github.io/design/?path=/story/drawer--right), [Menu](https://ktjn.github.io/design/?path=/story/menu--default), [Popover](https://ktjn.github.io/design/?path=/story/popover--default), [PreviewCard](https://ktjn.github.io/design/?path=/story/previewcard--default), [Tabs](https://ktjn.github.io/design/?path=/story/tabs--default), [Tooltip](https://ktjn.github.io/design/?path=/story/tooltip--default)
+- **Navigation, Feedback & Display**: [Alert](https://ktjn.github.io/design/?path=/story/alert--info), [Avatar](https://ktjn.github.io/design/?path=/story/avatar--sizes), [Badge](https://ktjn.github.io/design/?path=/story/badge--all-variants), [Breadcrumb](https://ktjn.github.io/design/?path=/story/breadcrumb--default), [Card](https://ktjn.github.io/design/?path=/story/card--default), [EmptyState](https://ktjn.github.io/design/?path=/story/emptystate--default), [Kbd](https://ktjn.github.io/design/?path=/story/kbd--default), [Meter](https://ktjn.github.io/design/?path=/story/meter--default), [Pagination](https://ktjn.github.io/design/?path=/story/pagination--default), [Progress](https://ktjn.github.io/design/?path=/story/progress--determinate), [Skeleton](https://ktjn.github.io/design/?path=/story/skeleton--card-placeholder), [Spinner](https://ktjn.github.io/design/?path=/story/spinner--sizes), [Stepper](https://ktjn.github.io/design/?path=/story/stepper--horizontal), [Table](https://ktjn.github.io/design/?path=/story/table--default), [Tag](https://ktjn.github.io/design/?path=/story/tag--variants), [Toast](https://ktjn.github.io/design/?path=/story/toast--default), [VisuallyHidden](https://ktjn.github.io/design/?path=/story/visuallyhidden--icon-only-button)
 
-```text
-Button
-Link
-Input
-Textarea
-Field
-Checkbox
-RadioGroup
-Switch
-```
+Additional Storybook guides: [Overview](https://ktjn.github.io/design/?path=/story/overview--getting-started), [Tokens](https://ktjn.github.io/design/?path=/story/tokens--specimen), [Icons](https://ktjn.github.io/design/?path=/story/icons--gallery), [Blocks](https://ktjn.github.io/design/?path=/story/blocks--login-form).
 
-## Overlay
-
-```text
-Dialog
-AlertDialog
-Popover
-Tooltip
-Menu
-```
-
-## Selection and disclosure
-
-```text
-Select
-Combobox
-Tabs
-Accordion
-```
-
-## Later candidates
-
-```text
-Toast
-Breadcrumb
-Pagination
-Table
-Slider
-Progress
-Skeleton
-FileUpload
-DatePicker
-```
-
-Treat `DataGrid`, rich text editing, advanced date/time selection, charts, and application navigation shells as separate design efforts rather than inevitable core components.
+Treat `DataGrid`, rich text editing, and charting as separate design efforts rather than inevitable core components.
 
 # Explicit constraints
 

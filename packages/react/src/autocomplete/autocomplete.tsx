@@ -1,7 +1,7 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 import type { InputHTMLAttributes } from "react";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./autocomplete.module.css";
 
 export interface AutocompleteProps
@@ -36,7 +36,9 @@ export function Autocomplete({
   ...rest
 }: AutocompleteProps) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const { container, scopeRef } = useDialogPortalContainer();
   const inputClasses = [styles.input, className].filter(Boolean).join(" ");
 
@@ -46,12 +48,12 @@ export function Autocomplete({
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange ? (next) => onValueChange(next) : undefined}
-      disabled={disabled}
+      disabled={resolvedDisabled}
       name={name}
     >
       <BaseAutocomplete.Input
         data-slot="autocomplete-input"
-        id={id ?? field?.controlId}
+        id={resolvedId}
         placeholder={placeholder}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}

@@ -112,3 +112,44 @@ export const SelectInteraction: Story = {
     );
   },
 };
+
+export const ScopedDarkThemeInteraction: Story = {
+  render: () => (
+    <div
+      data-color-scheme="dark"
+      data-testid="dark-panel"
+      style={{
+        padding: "1rem",
+        background: "var(--ds-color-background-default)",
+        color: "var(--ds-color-foreground-default)",
+      }}
+    >
+      <Select items={items} defaultValue="pro">
+        <Select.Trigger aria-label="Dark panel plan">
+          <Select.Value placeholder="Choose a plan" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Content>
+      </Select>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const panel = canvas.getByTestId("dark-panel");
+    const trigger = canvas.getByRole("combobox", { name: "Dark panel plan" });
+    await userEvent.click(trigger);
+    const popup = (await within(document.body).findByRole("listbox")).closest(
+      '[data-slot="select-content"]',
+    ) as HTMLElement;
+    await expect(panel.contains(popup)).toBe(true);
+    await expect(getComputedStyle(popup).backgroundColor).toBe(
+      getComputedStyle(panel).backgroundColor,
+    );
+    await userEvent.keyboard("{Escape}");
+    await expectEventuallyRemoved(() =>
+      within(document.body).queryByRole("listbox"),
+    );
+  },
+};

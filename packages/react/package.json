@@ -27,7 +27,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@ktjn/design-tokens": "workspace:*",
+    "@ktjn/design-tokens": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

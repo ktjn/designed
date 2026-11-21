@@ -5,7 +5,7 @@ import type {
   ReactNode,
 } from "react";
 import { forwardRef } from "react";
-import { useFieldContext } from "../field/field-context.js";
+import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./input-group.module.css";
 
 export interface InputGroupRootProps extends HTMLAttributes<HTMLDivElement> {
@@ -70,6 +70,7 @@ export interface InputGroupInputProps
 function InputGroupInputImpl(
   {
     invalid,
+    disabled,
     id,
     className,
     "aria-describedby": ariaDescribedBy,
@@ -79,14 +80,17 @@ function InputGroupInputImpl(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const field = useFieldContext();
+  const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
+  const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const classes = [styles.input, className].filter(Boolean).join(" ");
 
   return (
     <input
       ref={ref}
       data-slot="input-group-input"
-      id={id ?? field?.controlId}
+      id={resolvedId}
+      disabled={resolvedDisabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
       className={classes}
