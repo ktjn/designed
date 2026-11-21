@@ -7,6 +7,7 @@
   },
   "packageManager": "pnpm@12.4.1",
   "scripts": {
+    "ci": "pnpm install --frozen-lockfile && pnpm run lint && pnpm --filter \"./packages/*\" run build && pnpm run typecheck && pnpm --filter @ktjn/storybook exec playwright install chromium && pnpm run test && pnpm run check:packages && pnpm run check:size && pnpm run check:tarballs",
     "build": "pnpm -r --if-present run build",
     "test": "pnpm -r --if-present run test",
     "typecheck": "tsc -p tsconfig.json --noEmit && pnpm -r --if-present run typecheck",

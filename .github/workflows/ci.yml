@@ -19,19 +19,4 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      # Build before typecheck/test: packages/react imports packages/icons at
-      # the source level (Dialog uses CloseIcon), and apps/storybook and
-      # examples/react resolve @ktjn/design-react/@ktjn/design-tokens through
-      # their package exports maps, which point at dist. pnpm -r runs in
-      # topological order, so build first is required, not just conventional.
       - run: pnpm build
-      - run: pnpm typecheck
-      # apps/storybook's test script runs Storybook's play() functions via
-      # @storybook/addon-vitest in a real Chromium browser (Popover/Menu/
-      # Select/Combobox/Tooltip can't run under jsdom -- see README Phase 5).
-      - run: pnpm --filter @ktjn/storybook exec playwright install --with-deps chromium
-      - run: pnpm test
-      - run: pnpm run check:packages
-      - run: pnpm run check:size
-      - run: pnpm run check:tarballs

@@ -2,6 +2,15 @@
 
 A small, framework-aware design system with framework-independent design tokens and a React component library built on Base UI.
 
+## Local validation before push
+
+Run `pnpm run ci` from the repository root before every push. Push only after it passes for the changes being pushed. This is a documented requirement.
+
+- Use Node.js 24 or later and the pnpm version pinned in `package.json`.
+- On Linux, if Chromium reports missing system libraries, run `pnpm --filter @ktjn/storybook exec playwright install-deps chromium` after installing workspace dependencies, then rerun local CI.
+- Local CI installs locked dependencies, lints, builds the packages needed by the checks, type-checks, runs unit and browser tests, and validates packages, bundle sizes, and tarball installs.
+- GitHub Actions runs the full workspace build, release publishing, Storybook deployment, and Chromatic visual regression.
+
 ## Goals
 
 - Publish design tokens independently from components.
@@ -98,7 +107,8 @@ Use a pnpm workspace and Changesets.
 | Bundle-size budgets | size-limit |
 | Lint/format | Biome |
 | Releases | Changesets |
-| CI | GitHub Actions |
+| Validation | Local CI before push |
+| Builds and deployment | GitHub Actions |
 
 Tools are replaceable implementation details. Package contracts and token semantics are not.
 
@@ -921,8 +931,8 @@ Form components work with native form submission and at least one external form-
 - [x] Create Storybook application.
 - [x] Document current components. (Button, Link, Input, Textarea, Field, Checkbox, RadioGroup, Switch)
 - [x] Cover major visual and interaction states with stories.
-- [x] Run accessibility checks against stories. (`@storybook/addon-a11y`, `parameters.a11y.test: "error"`; actually executed in CI via `@storybook/addon-vitest` + real Chromium, not just the manual Storybook UI panel — see Phase 5 for what this caught)
-- [x] Add interaction tests for complex states. (`play` functions across all 17 story files; run in CI in a real browser via `@storybook/addon-vitest`, not just locally)
+- [x] Run accessibility checks against stories. (`@storybook/addon-a11y`, `parameters.a11y.test: "error"`; run in local CI with Chromium)
+- [x] Add interaction tests for complex states. (Story `play` functions run in local CI via `@storybook/addon-vitest`)
 - [x] Add Chromatic visual regression. (wired in CI; publish step needs a `CHROMATIC_PROJECT_TOKEN` secret to actually run — skips cleanly without one)
 - [x] Test stories across light/dark and default/compact themes. (toolbar globals in `.storybook/preview.tsx` switch `data-color-scheme`/`data-density`/`data-contrast`)
 
@@ -957,7 +967,7 @@ For each component:
 
 **Second finding, from Chromatic's hosted test runner rather than local CI**: the `HoverInteraction` story's `play` function passed consistently locally but failed intermittently in Chromatic's environment with "Unable to find role=\"tooltip\"". Root cause: Base UI's hover-open goes through floating-ui-react's `useHover`, whose open-delay ("rest") timer only starts on a `mousemove` event whose movement delta clears a tremor filter (`movementX**2 + movementY**2 < 2` is ignored as noise). `userEvent.hover`'s implicit pointer move computes its delta from wherever the pointer already was; if that start position happened to be close to the trigger (environment- and test-order-dependent — this is why it passed locally but not in Chromatic's runner), the delta fell under the threshold and the rest timer never started, so the tooltip never opened. Fixed in `apps/storybook/stories/tooltip.stories.tsx` by explicitly moving the pointer to a far corner of the canvas before hovering, guaranteeing a large enough delta regardless of prior pointer position; also widened the `findByRole` timeout from 3s to 5s to give the real 600ms open-delay more margin on slower CI hardware.
 
-**Storybook interaction tests now run in CI, in a real browser, not just manually.** Wired via `npx storybook add @storybook/addon-vitest`, which configures `@vitest/browser-playwright` (headless Chromium) in `apps/storybook/vitest.config.ts`. `apps/storybook`'s `test` script is picked up automatically by the root `pnpm test`, and CI installs Playwright's Chromium binary first (`playwright install --with-deps chromium`). This closed the single biggest gap in the whole testing story: every `play()` function and every `parameters.a11y` check across all 17 story files (47 tests) now actually executes in CI, in a real browser, on every push — not just when someone happens to open Storybook or run an ad-hoc script by hand.
+**Storybook interaction and accessibility checks run in headless Chromium.** `pnpm run ci` installs Chromium and runs the Storybook test suite through `@storybook/addon-vitest`.
 
 That real-browser run immediately found three genuine, previously undetected bugs that no amount of jsdom-based testing could have caught, because jsdom doesn't compute real layout or color contrast:
 - **`color.blue.500` (#3b82f6) and `color.red.500` (#ef4444) both fail WCAG AA text contrast against white** (3.67:1 and 3.76:1; need 4.5:1) — affecting Button primary/danger text, Link text, and Field error text. This was a systemic primitive-palette gap: nothing had ever contrast-checked these values against real rendering. Fixed by shifting `color.action.primary.*` and `color.action.danger.*` one step darker (default now uses `blue.600`/`red.600` instead of `blue.500`/`red.500`; added `blue.800`/`red.800` primitives for the `active` state) — a patch-level "accessibility correction to existing values" per this doc's own SemVer policy above.
@@ -1037,11 +1047,9 @@ This phase may be moved earlier if components need a shared icon set sooner.
 - [x] Document SemVer policy. (new "SemVer policy" subsection under Versioning and release)
 - [x] Document deprecation policy. (new "Deprecation policy" subsection under Versioning and release)
 
-Also fixed as part of this phase: `release.yml` built and published without ever running lint/typecheck/test/package-checks first — a real gap where a broken build could have been published. It now runs the full `lint → build → typecheck → test → check:packages → check:size → check:tarballs` sequence before the publish step.
+Exit criteria
 
-Exit criteria:
-
-Breaking API and token-surface changes cannot be published accidentally through the normal release workflow. Verified: both snapshot tests (`api-surface.test.ts`, tokens `build.test.ts`) are part of `pnpm test`, which now gates `release.yml` before `changesets/action` ever runs `pnpm release`.
+Local CI checks the committed API and token baselines before push.
 
 # Component backlog
 
