@@ -5,6 +5,7 @@ import type {
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -42,6 +43,7 @@ function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps) {
 
 export interface MenuTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }
@@ -63,6 +65,7 @@ function MenuTrigger({ render, className, ...rest }: MenuTriggerProps) {
 }
 
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
@@ -90,6 +93,7 @@ function MenuContent({ className, children, ...rest }: MenuContentProps) {
 }
 
 export interface MenuGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -98,6 +102,7 @@ function MenuGroup(props: MenuGroupProps) {
 }
 
 export interface MenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -114,6 +119,7 @@ function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps) {
 }
 
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -130,6 +136,7 @@ function MenuItem({ className, ...rest }: MenuItemProps) {
 
 export interface MenuCheckboxItemProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -172,6 +179,7 @@ function MenuCheckboxItem({
 
 export interface MenuRadioGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -201,6 +209,7 @@ function MenuRadioGroup({
 }
 
 export interface MenuRadioItemProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   value: string;
   disabled?: boolean;
   children?: ReactNode;
@@ -233,7 +242,9 @@ function MenuRadioItem({
   );
 }
 
-export interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+export interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+}
 
 function MenuSeparator({ className, ...rest }: MenuSeparatorProps) {
   return (
@@ -248,6 +259,7 @@ function MenuSeparator({ className, ...rest }: MenuSeparatorProps) {
 }
 
 export interface MenuShortcutProps extends HTMLAttributes<HTMLSpanElement> {
+  ref?: Ref<HTMLSpanElement>;
   children?: ReactNode;
 }
 

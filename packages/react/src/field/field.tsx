@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { useCallback, useId, useMemo, useState } from "react";
 import styles from "./field.module.css";
 import { FieldContext, type FieldContextValue } from "./field-context.js";
@@ -7,6 +7,7 @@ import { FieldError } from "./field-error.js";
 import { FieldLabel } from "./field-label.js";
 
 export interface FieldRootProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   controlId?: string;
   invalid?: boolean;
   disabled?: boolean;

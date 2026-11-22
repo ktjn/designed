@@ -1,13 +1,20 @@
 import { Fieldset as BaseFieldset } from "@base-ui/react/fieldset";
-import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  FieldsetHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import styles from "./fieldset.module.css";
 
 export interface FieldsetRootProps
   extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
+  ref?: Ref<HTMLFieldSetElement>;
   children?: ReactNode;
 }
 
 export interface FieldsetLegendProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 

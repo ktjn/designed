@@ -1,6 +1,6 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -42,6 +42,7 @@ function ContextMenuRoot({
 
 export interface ContextMenuTriggerProps
   extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -57,6 +58,7 @@ function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps) {
 
 export interface ContextMenuContentProps
   extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
@@ -88,6 +90,7 @@ function ContextMenuContent({
 }
 
 export interface ContextMenuGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -97,6 +100,7 @@ function ContextMenuGroup(props: ContextMenuGroupProps) {
 
 export interface ContextMenuGroupLabelProps
   extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -116,6 +120,7 @@ function ContextMenuGroupLabel({
 }
 
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -132,6 +137,7 @@ function ContextMenuItem({ className, ...rest }: ContextMenuItemProps) {
 
 export interface ContextMenuCheckboxItemProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -174,6 +180,7 @@ function ContextMenuCheckboxItem({
 
 export interface ContextMenuRadioGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -204,6 +211,7 @@ function ContextMenuRadioGroup({
 
 export interface ContextMenuRadioItemProps
   extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   value: string;
   disabled?: boolean;
   children?: ReactNode;
@@ -237,7 +245,9 @@ function ContextMenuRadioItem({
 }
 
 export interface ContextMenuSeparatorProps
-  extends HTMLAttributes<HTMLDivElement> {}
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+}
 
 function ContextMenuSeparator({
   className,
@@ -256,6 +266,7 @@ function ContextMenuSeparator({
 
 export interface ContextMenuShortcutProps
   extends HTMLAttributes<HTMLSpanElement> {
+  ref?: Ref<HTMLSpanElement>;
   children?: ReactNode;
 }
 

@@ -1,7 +1,9 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
 import {
+  type HTMLAttributes,
   type KeyboardEvent,
+  type Ref,
   useCallback,
   useEffect,
   useId,
@@ -24,7 +26,12 @@ export interface CommandPaletteItem {
   disabled?: boolean;
 }
 
-export interface CommandPaletteProps {
+export interface CommandPaletteProps
+  extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    "title" | "onSelect" | "children"
+  > {
+  ref?: Ref<HTMLDivElement>;
   items: readonly CommandPaletteItem[];
   open?: boolean;
   defaultOpen?: boolean;
@@ -67,6 +74,8 @@ export function CommandPalette({
   emptyMessage = "No matching commands",
   closeLabel = "Close",
   enableGlobalShortcut = false,
+  className,
+  ...rest
 }: CommandPaletteProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
@@ -216,7 +225,10 @@ export function CommandPalette({
           <BaseDialog.Backdrop className={styles.backdrop} />
           <BaseDialog.Popup
             data-slot="command-palette"
-            className={styles.popup}
+            className={
+              className ? `${styles.popup} ${className}` : styles.popup
+            }
+            {...rest}
           >
             <VisuallyHidden>
               <BaseDialog.Title>{title}</BaseDialog.Title>

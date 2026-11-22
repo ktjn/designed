@@ -1,58 +1,82 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-import type { ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import styles from "./tabs.module.css";
 
-export interface TabsRootProps {
+export interface TabsRootProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+  ref?: Ref<HTMLDivElement>;
   value?: unknown;
   defaultValue?: unknown;
   onValueChange?: (value: unknown) => void;
   children?: ReactNode;
 }
 
-function TabsRoot({ onValueChange, ...rest }: TabsRootProps) {
+function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps) {
   return (
     <BaseTabs.Root
       data-slot="tabs"
+      className={className}
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />
   );
 }
 
-export interface TabsListProps {
+export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
-function TabsList({ children }: TabsListProps) {
+function TabsList({ className, children, ...rest }: TabsListProps) {
   return (
-    <BaseTabs.List data-slot="tabs-list" className={styles.list}>
+    <BaseTabs.List
+      data-slot="tabs-list"
+      className={className ? `${styles.list} ${className}` : styles.list}
+      {...rest}
+    >
       {children}
     </BaseTabs.List>
   );
 }
 
-export interface TabsTabProps {
+export interface TabsTabProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+  ref?: Ref<HTMLButtonElement>;
   value: unknown;
   disabled?: boolean;
   children?: ReactNode;
 }
 
-function TabsTab({ children, ...rest }: TabsTabProps) {
+function TabsTab({ className, children, ...rest }: TabsTabProps) {
   return (
-    <BaseTabs.Tab data-slot="tabs-tab" className={styles.tab} {...rest}>
+    <BaseTabs.Tab
+      data-slot="tabs-tab"
+      className={className ? `${styles.tab} ${className}` : styles.tab}
+      {...rest}
+    >
       {children}
     </BaseTabs.Tab>
   );
 }
 
-export interface TabsPanelProps {
+export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   value: unknown;
   children?: ReactNode;
 }
 
-function TabsPanel({ children, ...rest }: TabsPanelProps) {
+function TabsPanel({ className, children, ...rest }: TabsPanelProps) {
   return (
-    <BaseTabs.Panel data-slot="tabs-panel" className={styles.panel} {...rest}>
+    <BaseTabs.Panel
+      data-slot="tabs-panel"
+      className={className ? `${styles.panel} ${className}` : styles.panel}
+      {...rest}
+    >
       {children}
     </BaseTabs.Panel>
   );

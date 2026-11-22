@@ -4,13 +4,9 @@ import type {
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
-import type {
-  DialogCloseProps,
-  DialogDescriptionProps,
-  DialogTitleProps,
-} from "../dialog/dialog.js";
 import styles from "../dialog/dialog.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
@@ -51,6 +47,7 @@ function AlertDialogRoot({
 
 export interface AlertDialogTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }
@@ -77,6 +74,7 @@ function AlertDialogTrigger({
 
 export interface AlertDialogContentProps
   extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
@@ -105,7 +103,13 @@ function AlertDialogContent({
   );
 }
 
-function AlertDialogTitle({ className, ...rest }: DialogTitleProps) {
+export interface AlertDialogTitleProps
+  extends HTMLAttributes<HTMLHeadingElement> {
+  ref?: Ref<HTMLHeadingElement>;
+  children?: ReactNode;
+}
+
+function AlertDialogTitle({ className, ...rest }: AlertDialogTitleProps) {
   return (
     <BaseAlertDialog.Title
       data-slot="alert-dialog-title"
@@ -115,10 +119,16 @@ function AlertDialogTitle({ className, ...rest }: DialogTitleProps) {
   );
 }
 
+export interface AlertDialogDescriptionProps
+  extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
+  children?: ReactNode;
+}
+
 function AlertDialogDescription({
   className,
   ...rest
-}: DialogDescriptionProps) {
+}: AlertDialogDescriptionProps) {
   return (
     <BaseAlertDialog.Description
       data-slot="alert-dialog-description"
@@ -130,7 +140,18 @@ function AlertDialogDescription({
   );
 }
 
-function AlertDialogClose({ render, className, ...rest }: DialogCloseProps) {
+export interface AlertDialogCloseProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  children?: ReactNode;
+}
+
+function AlertDialogClose({
+  render,
+  className,
+  ...rest
+}: AlertDialogCloseProps) {
   const classes = render
     ? className
     : [buttonStyles.root, buttonStyles.secondary, className]

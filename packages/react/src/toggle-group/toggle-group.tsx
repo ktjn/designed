@@ -1,5 +1,5 @@
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { Toggle } from "../toggle/toggle.js";
 import styles from "./toggle-group.module.css";
 
@@ -7,6 +7,7 @@ export type ToggleGroupOrientation = "horizontal" | "vertical";
 
 export interface ToggleGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+  ref?: Ref<HTMLDivElement>;
   value?: readonly string[];
   defaultValue?: readonly string[];
   onValueChange?: (value: string[]) => void;

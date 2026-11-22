@@ -1,5 +1,5 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -12,6 +12,7 @@ export interface AutocompleteProps
     InputHTMLAttributes<HTMLInputElement>,
     "value" | "defaultValue" | "onChange"
   > {
+  ref?: Ref<HTMLInputElement>;
   items: readonly string[];
   value?: string;
   defaultValue?: string;

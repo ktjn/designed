@@ -1,41 +1,50 @@
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-import type { ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import styles from "./accordion.module.css";
 
-export interface AccordionRootProps {
+export interface AccordionRootProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+  ref?: Ref<HTMLDivElement>;
   value?: unknown[];
   defaultValue?: unknown[];
   onValueChange?: (value: unknown[]) => void;
   disabled?: boolean;
-  /**
-   * Whether multiple items can be open at the same time.
-   * @default false
-   */
   multiple?: boolean;
   children?: ReactNode;
 }
 
-function AccordionRoot({ onValueChange, ...rest }: AccordionRootProps) {
+function AccordionRoot({
+  onValueChange,
+  className,
+  ...rest
+}: AccordionRootProps) {
   return (
     <BaseAccordion.Root
       data-slot="accordion"
+      className={className}
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}
     />
   );
 }
 
-export interface AccordionItemProps {
+export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   value: unknown;
   disabled?: boolean;
   children?: ReactNode;
 }
 
-function AccordionItem({ children, ...rest }: AccordionItemProps) {
+function AccordionItem({ className, children, ...rest }: AccordionItemProps) {
   return (
     <BaseAccordion.Item
       data-slot="accordion-item"
-      className={styles.item}
+      className={className ? `${styles.item} ${className}` : styles.item}
       {...rest}
     >
       {children}
@@ -43,16 +52,25 @@ function AccordionItem({ children, ...rest }: AccordionItemProps) {
   );
 }
 
-export interface AccordionTriggerProps {
+export interface AccordionTriggerProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   children?: ReactNode;
 }
 
-function AccordionTrigger({ children }: AccordionTriggerProps) {
+function AccordionTrigger({
+  className,
+  children,
+  ...rest
+}: AccordionTriggerProps) {
   return (
     <BaseAccordion.Header>
       <BaseAccordion.Trigger
         data-slot="accordion-trigger"
-        className={styles.trigger}
+        className={
+          className ? `${styles.trigger} ${className}` : styles.trigger
+        }
+        {...rest}
       >
         {children}
       </BaseAccordion.Trigger>
@@ -60,13 +78,18 @@ function AccordionTrigger({ children }: AccordionTriggerProps) {
   );
 }
 
-export interface AccordionPanelProps {
+export interface AccordionPanelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
-function AccordionPanel({ children }: AccordionPanelProps) {
+function AccordionPanel({ className, children, ...rest }: AccordionPanelProps) {
   return (
-    <BaseAccordion.Panel data-slot="accordion-panel" className={styles.panel}>
+    <BaseAccordion.Panel
+      data-slot="accordion-panel"
+      className={className ? `${styles.panel} ${className}` : styles.panel}
+      {...rest}
+    >
       {children}
     </BaseAccordion.Panel>
   );

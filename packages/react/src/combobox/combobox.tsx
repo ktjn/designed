@@ -1,5 +1,10 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import type { ReactNode } from "react";
+import type {
+  HTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -68,12 +73,9 @@ function ComboboxRoot<Value = unknown>({
   );
 }
 
-export interface ComboboxInputProps {
-  id?: string;
-  className?: string;
-  placeholder?: string;
-  "aria-describedby"?: string;
-  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
+export interface ComboboxInputProps
+  extends InputHTMLAttributes<HTMLInputElement> {
+  ref?: Ref<HTMLInputElement>;
 }
 
 function ComboboxInput({
@@ -97,8 +99,8 @@ function ComboboxInput({
   );
 }
 
-export interface ComboboxContentProps {
-  className?: string;
+export interface ComboboxContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   emptyMessage?: ReactNode;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
@@ -109,6 +111,7 @@ function ComboboxContent({
   emptyMessage = "No results",
   initialFocus,
   finalFocus,
+  ...rest
 }: ComboboxContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
@@ -123,6 +126,7 @@ function ComboboxContent({
             className={
               className ? `${styles.popup} ${className}` : styles.popup
             }
+            {...rest}
           >
             <BaseCombobox.Empty className={styles.empty}>
               {emptyMessage}

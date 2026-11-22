@@ -1,5 +1,10 @@
 import { PreviewCard as BasePreviewCard } from "@base-ui/react/preview-card";
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type {
+  AnchorHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import {
   PortalActivityContext,
   useDialogPortalContainer,
@@ -39,6 +44,7 @@ function PreviewCardRoot({
 
 export interface PreviewCardTriggerProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: Ref<HTMLAnchorElement>;
   delay?: number;
   closeDelay?: number;
   children?: ReactNode;
@@ -56,10 +62,11 @@ function PreviewCardTrigger({ className, ...rest }: PreviewCardTriggerProps) {
 
 export type PreviewCardSide = "top" | "right" | "bottom" | "left";
 
-export interface PreviewCardContentProps {
+export interface PreviewCardContentProps
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   side?: PreviewCardSide;
   sideOffset?: number;
-  className?: string;
   children?: ReactNode;
 }
 
@@ -68,6 +75,7 @@ function PreviewCardContent({
   sideOffset = 8,
   className,
   children,
+  ...rest
 }: PreviewCardContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
@@ -84,6 +92,7 @@ function PreviewCardContent({
             className={
               className ? `${styles.popup} ${className}` : styles.popup
             }
+            {...rest}
           >
             {children}
           </BasePreviewCard.Popup>

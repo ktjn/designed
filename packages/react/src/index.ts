@@ -8,8 +8,11 @@ export { Accordion } from "./accordion/accordion.js";
 export type { AlertProps, AlertVariant } from "./alert/alert.js";
 export { Alert } from "./alert/alert.js";
 export type {
+  AlertDialogCloseProps,
   AlertDialogContentProps,
+  AlertDialogDescriptionProps,
   AlertDialogRootProps,
+  AlertDialogTitleProps,
   AlertDialogTriggerProps,
 } from "./alert-dialog/alert-dialog.js";
 export { AlertDialog } from "./alert-dialog/alert-dialog.js";
@@ -173,6 +176,7 @@ export { OTPField } from "./otp-field/otp-field.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
 export type {
+  PopoverCloseProps,
   PopoverContentProps,
   PopoverDescriptionProps,
   PopoverRootProps,

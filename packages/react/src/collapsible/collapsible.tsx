@@ -1,10 +1,16 @@
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
 import { ChevronDownIcon } from "@ktjn/designed-icons";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import styles from "./collapsible.module.css";
 
 export interface CollapsibleRootProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+  ref?: Ref<HTMLDivElement>;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -29,6 +35,7 @@ function CollapsibleRoot({
 
 export interface CollapsibleTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   children?: ReactNode;
 }
 
@@ -50,6 +57,7 @@ function CollapsibleTrigger({
 }
 
 export interface CollapsiblePanelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   keepMounted?: boolean;
   children?: ReactNode;
 }
