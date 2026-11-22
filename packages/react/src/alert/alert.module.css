@@ -1,5 +1,6 @@
 .root {
-  display: grid;
+  display: flex;
+  align-items: flex-start;
   gap: var(--ds-space-stack-sm);
   box-sizing: border-box;
   padding-block: var(--ds-space-control-block);
@@ -9,6 +10,18 @@
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
   line-height: var(--ds-font-line-height-100);
+}
+
+.icon,
+.action {
+  flex: none;
+}
+
+.body {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  flex: 1;
+  min-width: 0;
 }
 
 .info {

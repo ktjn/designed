@@ -55,7 +55,7 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
           toast={toast}
           className={styles.toast}
         >
-          <BaseToast.Content className={styles.body}>
+          <BaseToast.Content data-slot="toast-body" className={styles.body}>
             {toast.title ? (
               <BaseToast.Title
                 data-slot="toast-title"
@@ -69,9 +69,10 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
               />
             ) : null}
           </BaseToast.Content>
-          <div className={styles.actions}>
+          <div data-slot="toast-actions" className={styles.actions}>
             {toast.data?.action ? (
               <BaseToast.Action
+                data-slot="toast-action"
                 className={styles.action}
                 onClick={toast.data.action.onClick}
               >

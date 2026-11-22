@@ -96,9 +96,11 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
     ref?: Ref<HTMLDivElement>;
     variant?: AlertVariant;
     title?: ReactNode;
+    icon?: ReactNode;
+    action?: ReactNode;
     children?: ReactNode;
 }
-export declare function Alert({ ref, variant, title, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
+export declare function Alert({ ref, variant, title, icon, action, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
 
 
 // ---- aspect-ratio/aspect-ratio.d.ts ----
@@ -1603,6 +1605,7 @@ export declare function Switch({ ref, onCheckedChange, disabled, id, className, 
 import type { HTMLAttributes, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
     ref?: Ref<HTMLTableElement>;
+    wrapperClassName?: string;
 }
 export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
     ref?: Ref<HTMLTableSectionElement>;
@@ -1625,7 +1628,7 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
 export interface TableCaptionProps extends HTMLAttributes<HTMLTableCaptionElement> {
     ref?: Ref<HTMLTableCaptionElement>;
 }
-declare function TableRoot({ ref, className, ...rest }: TableRootProps): import("react").JSX.Element;
+declare function TableRoot({ ref, className, wrapperClassName, ...rest }: TableRootProps): import("react").JSX.Element;
 declare function TableHeader({ className, ...rest }: TableHeaderProps): import("react").JSX.Element;
 declare function TableBody({ className, ...rest }: TableBodyProps): import("react").JSX.Element;
 declare function TableFooter({ className, ...rest }: TableFooterProps): import("react").JSX.Element;

@@ -9,6 +9,7 @@ import styles from "./table.module.css";
 
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
   ref?: Ref<HTMLTableElement>;
+  wrapperClassName?: string;
 }
 export interface TableHeaderProps
   extends HTMLAttributes<HTMLTableSectionElement> {
@@ -36,10 +37,18 @@ export interface TableCaptionProps
   ref?: Ref<HTMLTableCaptionElement>;
 }
 
-function TableRoot({ ref, className, ...rest }: TableRootProps) {
+function TableRoot({
+  ref,
+  className,
+  wrapperClassName,
+  ...rest
+}: TableRootProps) {
   const classes = [styles.table, className].filter(Boolean).join(" ");
+  const wrapperClasses = [styles.wrapper, wrapperClassName]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <div className={styles.wrapper}>
+    <div data-slot="table-wrapper" className={wrapperClasses}>
       <table ref={ref} data-slot="table" className={classes} {...rest} />
     </div>
   );

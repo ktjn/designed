@@ -77,9 +77,12 @@ export function Slider({
       className={classes}
       {...rest}
     >
-      <BaseSlider.Control className={styles.control}>
+      <BaseSlider.Control data-slot="slider-control" className={styles.control}>
         <BaseSlider.Track data-slot="slider-track" className={styles.track}>
-          <BaseSlider.Indicator className={styles.indicator} />
+          <BaseSlider.Indicator
+            data-slot="slider-indicator"
+            className={styles.indicator}
+          />
           {thumbIndices.map((thumbIndex) => (
             <BaseSlider.Thumb
               key={`thumb-${thumbIndex}`}

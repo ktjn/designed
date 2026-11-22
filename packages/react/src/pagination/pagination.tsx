@@ -84,10 +84,11 @@ export function Pagination({
       className={classes}
       {...rest}
     >
-      <ul className={styles.list}>
+      <ul data-slot="pagination-list" className={styles.list}>
         <li>
           <button
             type="button"
+            data-slot="pagination-previous"
             className={styles.button}
             disabled={current <= 1}
             onClick={() => onPageChange(current - 1)}
@@ -101,6 +102,7 @@ export function Pagination({
             <li key={item}>
               <button
                 type="button"
+                data-slot="pagination-item"
                 className={styles.button}
                 aria-current={item === current ? "page" : undefined}
                 onClick={() => onPageChange(item)}
@@ -109,7 +111,12 @@ export function Pagination({
               </button>
             </li>
           ) : (
-            <li key={item} aria-hidden="true" className={styles.ellipsis}>
+            <li
+              key={item}
+              aria-hidden="true"
+              data-slot="pagination-ellipsis"
+              className={styles.ellipsis}
+            >
               …
             </li>
           ),
@@ -117,6 +124,7 @@ export function Pagination({
         <li>
           <button
             type="button"
+            data-slot="pagination-next"
             className={styles.button}
             disabled={current >= safeTotal}
             onClick={() => onPageChange(current + 1)}

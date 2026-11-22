@@ -298,9 +298,10 @@ export function Calendar({
 
   return (
     <div ref={ref} data-slot="calendar" className={classes} {...rest}>
-      <div className={styles.header}>
+      <div data-slot="calendar-header" className={styles.header}>
         <button
           type="button"
+          data-slot="calendar-previous"
           className={styles.navButton}
           aria-label={previousMonthLabel}
           disabled={disabled}
@@ -308,11 +309,16 @@ export function Calendar({
         >
           <ChevronLeftIcon aria-hidden />
         </button>
-        <span className={styles.monthLabel} aria-live="polite">
+        <span
+          data-slot="calendar-month-label"
+          className={styles.monthLabel}
+          aria-live="polite"
+        >
           {monthTitle}
         </span>
         <button
           type="button"
+          data-slot="calendar-next"
           className={styles.navButton}
           aria-label={nextMonthLabel}
           disabled={disabled}
@@ -321,11 +327,20 @@ export function Calendar({
           <ChevronRightIcon aria-hidden />
         </button>
       </div>
-      <table className={styles.grid} aria-label={monthTitle}>
+      <table
+        data-slot="calendar-grid"
+        className={styles.grid}
+        aria-label={monthTitle}
+      >
         <thead>
           <tr>
             {weekdayLabels.map((label) => (
-              <th key={label} scope="col" className={styles.weekday}>
+              <th
+                key={label}
+                scope="col"
+                data-slot="calendar-weekday"
+                className={styles.weekday}
+              >
                 {label}
               </th>
             ))}
@@ -343,7 +358,11 @@ export function Calendar({
                   !dayDisabled && iso === effectiveFocusedIso ? 0 : -1;
 
                 return (
-                  <td key={iso} className={styles.cell}>
+                  <td
+                    key={iso}
+                    data-slot="calendar-cell"
+                    className={styles.cell}
+                  >
                     <button
                       ref={(node) => {
                         if (node) {
@@ -353,6 +372,7 @@ export function Calendar({
                         }
                       }}
                       type="button"
+                      data-slot="calendar-day"
                       className={styles.day}
                       aria-label={iso}
                       aria-pressed={selected}

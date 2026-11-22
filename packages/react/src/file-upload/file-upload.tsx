@@ -173,24 +173,40 @@ export function FileUpload({
           {...rest}
         />
         <UploadIcon aria-hidden className={styles.uploadIcon} />
-        <p className={styles.prompt}>{prompt}</p>
-        {hint ? <p className={styles.hint}>{hint}</p> : null}
+        <p data-slot="file-upload-prompt" className={styles.prompt}>
+          {prompt}
+        </p>
+        {hint ? (
+          <p data-slot="file-upload-hint" className={styles.hint}>
+            {hint}
+          </p>
+        ) : null}
       </div>
       {currentFiles.length > 0 ? (
-        <ul className={styles.list}>
+        <ul data-slot="file-upload-list" className={styles.list}>
           {currentFiles.map((file, index) => (
             <li
               key={`${file.name}-${file.size}-${file.lastModified}`}
+              data-slot="file-upload-item"
               className={styles.item}
             >
-              <span className={styles.meta}>
-                <span className={styles.fileName}>{file.name}</span>
-                <span className={styles.fileSize}>
+              <span data-slot="file-upload-item-meta" className={styles.meta}>
+                <span
+                  data-slot="file-upload-item-name"
+                  className={styles.fileName}
+                >
+                  {file.name}
+                </span>
+                <span
+                  data-slot="file-upload-item-size"
+                  className={styles.fileSize}
+                >
                   {formatBytes(file.size)}
                 </span>
               </span>
               <button
                 type="button"
+                data-slot="file-upload-item-remove"
                 disabled={resolvedDisabled}
                 aria-label={getRemoveLabel(file)}
                 onClick={() => removeFile(index)}

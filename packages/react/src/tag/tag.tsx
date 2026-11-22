@@ -27,10 +27,11 @@ export function Tag({
 
   return (
     <span ref={ref} data-slot="tag" className={classes} {...rest}>
-      <span>{children}</span>
+      <span data-slot="tag-label">{children}</span>
       {onRemove ? (
         <button
           type="button"
+          data-slot="tag-remove"
           className={styles.remove}
           aria-label={removeLabel}
           onClick={onRemove}
