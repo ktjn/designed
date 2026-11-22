@@ -109,7 +109,7 @@ function SidebarRoot({
   ...rest
 }: SidebarRootProps) {
   const { open, mobileOpen, setMobileOpen } = useSidebar();
-  const { container, scopeRef } = useDialogPortalContainer();
+  const { container, scopeRef } = useDialogPortalContainer(mobileOpen);
   const classes = [styles.sidebar, className].filter(Boolean).join(" ");
 
   return (

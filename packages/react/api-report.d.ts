@@ -516,7 +516,7 @@ boolean | HTMLElement | null | void);
 
 
 // ---- dialog/use-dialog-portal-container.d.ts ----
-export declare function useDialogPortalContainer(): {
+export declare function useDialogPortalContainer(enabled?: boolean): {
     container: HTMLElement | undefined;
     scopeRef: (node: HTMLSpanElement | null) => void;
 };

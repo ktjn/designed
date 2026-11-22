@@ -77,7 +77,7 @@ export function DatePicker({
   const [validationFailed, setValidationFailed] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { container, scopeRef } = useDialogPortalContainer();
+  const { container, scopeRef } = useDialogPortalContainer(open);
 
   useEffect(() => {
     if (value !== undefined) {

@@ -62,10 +62,10 @@ export function CommandPalette({
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const listboxId = useId();
-  const { container, scopeRef } = useDialogPortalContainer();
 
   const isControlled = open !== undefined;
   const currentOpen = isControlled ? open : uncontrolledOpen;
+  const { container, scopeRef } = useDialogPortalContainer(currentOpen);
 
   const setOpen = (next: boolean) => {
     if (!isControlled) {
