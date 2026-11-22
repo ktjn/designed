@@ -285,15 +285,66 @@ function ContextMenuShortcut({ className, ...rest }: ContextMenuShortcutProps) {
   );
 }
 
+export interface ContextMenuSubmenuProps {
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuSubmenu(props: ContextMenuSubmenuProps) {
+  return <BaseContextMenu.SubmenuRoot {...props} />;
+}
+
+export interface ContextMenuSubmenuTriggerProps
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuSubmenuTrigger({
+  className,
+  ...rest
+}: ContextMenuSubmenuTriggerProps) {
+  return (
+    <BaseContextMenu.SubmenuTrigger
+      data-slot="context-menu-submenu-trigger"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
+export interface ContextMenuLinkItemProps
+  extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+  ref?: Ref<HTMLAnchorElement>;
+  href?: string;
+  closeOnClick?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuLinkItem({ className, ...rest }: ContextMenuLinkItemProps) {
+  return (
+    <BaseContextMenu.LinkItem
+      data-slot="context-menu-link-item"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
 export const ContextMenu = Object.assign(ContextMenuRoot, {
   Trigger: ContextMenuTrigger,
   Content: ContextMenuContent,
   Group: ContextMenuGroup,
   GroupLabel: ContextMenuGroupLabel,
   Item: ContextMenuItem,
+  LinkItem: ContextMenuLinkItem,
   CheckboxItem: ContextMenuCheckboxItem,
   RadioGroup: ContextMenuRadioGroup,
   RadioItem: ContextMenuRadioItem,
   Separator: ContextMenuSeparator,
   Shortcut: ContextMenuShortcut,
+  Submenu: ContextMenuSubmenu,
+  SubmenuTrigger: ContextMenuSubmenuTrigger,
 });

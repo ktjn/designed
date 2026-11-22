@@ -12,6 +12,12 @@ export type ToastVariant =
   | "warning"
   | "danger";
 
+export type ToastPosition =
+  | "top-start"
+  | "top-end"
+  | "bottom-start"
+  | "bottom-end";
+
 export interface ToastActionOptions {
   label: string;
   onClick: () => void;
@@ -25,11 +31,32 @@ export interface ToastOptions {
   timeout?: number;
   priority?: "low" | "high";
   action?: ToastActionOptions;
+  icon?: ReactNode;
+  onClose?: () => void;
+}
+
+export type ToastUpdateOptions = Partial<Omit<ToastOptions, "id">>;
+
+export interface ToastPromiseOptions<Value> {
+  loading: string | ToastUpdateOptions;
+  success:
+    | string
+    | ToastUpdateOptions
+    | ((result: Value) => string | ToastUpdateOptions);
+  error:
+    | string
+    | ToastUpdateOptions
+    | ((error: unknown) => string | ToastUpdateOptions);
 }
 
 export interface UseToastResult {
   add: (options: ToastOptions) => string;
+  update: (id: string, options: ToastUpdateOptions) => void;
   close: (id?: string) => void;
+  promise: <Value>(
+    promise: Promise<Value>,
+    options: ToastPromiseOptions<Value>,
+  ) => Promise<Value>;
 }
 
 export interface ToastProviderProps {
@@ -37,10 +64,27 @@ export interface ToastProviderProps {
   timeout?: number;
   limit?: number;
   dismissLabel?: string;
+  position?: ToastPosition;
+  className?: string;
 }
 
 interface ToastItemData {
   action?: ToastActionOptions;
+  icon?: ReactNode;
+}
+
+function toToastManagerOptions<
+  T extends {
+    variant?: ToastVariant;
+    icon?: ReactNode;
+    action?: ToastActionOptions;
+  },
+>({ variant, icon, action, ...rest }: T) {
+  return {
+    ...rest,
+    type: variant,
+    data: action || icon ? { action, icon } : undefined,
+  };
 }
 
 function ToastList({ dismissLabel }: { dismissLabel: string }) {
@@ -55,20 +99,27 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
           toast={toast}
           className={styles.toast}
         >
-          <BaseToast.Content data-slot="toast-body" className={styles.body}>
-            {toast.title ? (
-              <BaseToast.Title
-                data-slot="toast-title"
-                className={styles.title}
-              />
+          <div data-slot="toast-main" className={styles.main}>
+            {toast.data?.icon ? (
+              <div data-slot="toast-icon" className={styles.icon}>
+                {toast.data.icon}
+              </div>
             ) : null}
-            {toast.description ? (
-              <BaseToast.Description
-                data-slot="toast-description"
-                className={styles.description}
-              />
-            ) : null}
-          </BaseToast.Content>
+            <BaseToast.Content data-slot="toast-body" className={styles.body}>
+              {toast.title ? (
+                <BaseToast.Title
+                  data-slot="toast-title"
+                  className={styles.title}
+                />
+              ) : null}
+              {toast.description ? (
+                <BaseToast.Description
+                  data-slot="toast-description"
+                  className={styles.description}
+                />
+              ) : null}
+            </BaseToast.Content>
+          </div>
           <div data-slot="toast-actions" className={styles.actions}>
             {toast.data?.action ? (
               <BaseToast.Action
@@ -94,7 +145,15 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
   );
 }
 
-function ToastPortal({ dismissLabel }: { dismissLabel: string }) {
+function ToastPortal({
+  dismissLabel,
+  position,
+  className,
+}: {
+  dismissLabel: string;
+  position: ToastPosition;
+  className?: string;
+}) {
   const { toasts } = BaseToast.useToastManager<ToastItemData>();
   const { container, scopeRef } = useDialogPortalContainer(toasts.length > 0);
 
@@ -104,7 +163,10 @@ function ToastPortal({ dismissLabel }: { dismissLabel: string }) {
       <BaseToast.Portal container={container}>
         <BaseToast.Viewport
           data-slot="toast-viewport"
-          className={styles.viewport}
+          data-position={position}
+          className={
+            className ? `${styles.viewport} ${className}` : styles.viewport
+          }
         >
           <ToastList dismissLabel={dismissLabel} />
         </BaseToast.Viewport>
@@ -118,11 +180,17 @@ function ToastProvider({
   timeout = 5000,
   limit = 3,
   dismissLabel = "Dismiss",
+  position = "bottom-end",
+  className,
 }: ToastProviderProps) {
   return (
     <BaseToast.Provider timeout={timeout} limit={limit}>
       {children}
-      <ToastPortal dismissLabel={dismissLabel} />
+      <ToastPortal
+        dismissLabel={dismissLabel}
+        position={position}
+        className={className}
+      />
     </BaseToast.Provider>
   );
 }
@@ -131,12 +199,14 @@ export function useToast(): UseToastResult {
   const manager = BaseToast.useToastManager<ToastItemData>();
 
   const add = useCallback(
-    ({ variant = "neutral", action, ...rest }: ToastOptions) =>
-      manager.add({
-        ...rest,
-        type: variant,
-        data: action ? { action } : undefined,
-      }),
+    (options: ToastOptions) => manager.add(toToastManagerOptions(options)),
+    [manager],
+  );
+
+  const update = useCallback(
+    (id: string, options: ToastUpdateOptions) => {
+      manager.update(id, toToastManagerOptions(options));
+    },
     [manager],
   );
 
@@ -147,7 +217,42 @@ export function useToast(): UseToastResult {
     [manager],
   );
 
-  return useMemo(() => ({ add, close }), [add, close]);
+  const promise = useCallback(
+    <Value,>(
+      toastPromise: Promise<Value>,
+      options: ToastPromiseOptions<Value>,
+    ) =>
+      manager.promise(toastPromise, {
+        loading:
+          typeof options.loading === "string"
+            ? options.loading
+            : toToastManagerOptions(options.loading),
+        success: (result: Value) => {
+          const resolved =
+            typeof options.success === "function"
+              ? options.success(result)
+              : options.success;
+          return typeof resolved === "string"
+            ? resolved
+            : toToastManagerOptions(resolved);
+        },
+        error: (error: unknown) => {
+          const resolved =
+            typeof options.error === "function"
+              ? options.error(error)
+              : options.error;
+          return typeof resolved === "string"
+            ? resolved
+            : toToastManagerOptions(resolved);
+        },
+      }),
+    [manager],
+  );
+
+  return useMemo(
+    () => ({ add, update, close, promise }),
+    [add, update, close, promise],
+  );
 }
 
 export const Toast = {

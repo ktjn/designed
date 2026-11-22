@@ -83,11 +83,14 @@ export type {
   ContextMenuGroupLabelProps,
   ContextMenuGroupProps,
   ContextMenuItemProps,
+  ContextMenuLinkItemProps,
   ContextMenuRadioGroupProps,
   ContextMenuRadioItemProps,
   ContextMenuRootProps,
   ContextMenuSeparatorProps,
   ContextMenuShortcutProps,
+  ContextMenuSubmenuProps,
+  ContextMenuSubmenuTriggerProps,
   ContextMenuTriggerProps,
 } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
@@ -169,11 +172,14 @@ export type {
   MenuGroupLabelProps,
   MenuGroupProps,
   MenuItemProps,
+  MenuLinkItemProps,
   MenuRadioGroupProps,
   MenuRadioItemProps,
   MenuRootProps,
   MenuSeparatorProps,
   MenuShortcutProps,
+  MenuSubmenuProps,
+  MenuSubmenuTriggerProps,
   MenuTriggerProps,
 } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
@@ -216,8 +222,11 @@ export type {
 export { ScrollArea } from "./scroll-area/scroll-area.js";
 export type {
   SelectContentProps,
+  SelectGroupLabelProps,
+  SelectGroupProps,
   SelectItemProps,
   SelectRootProps,
+  SelectSeparatorProps,
   SelectTriggerProps,
   SelectValueProps,
 } from "./select/select.js";

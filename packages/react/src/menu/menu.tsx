@@ -301,15 +301,63 @@ function MenuShortcut({ className, ...rest }: MenuShortcutProps) {
   );
 }
 
+export interface MenuSubmenuProps {
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function MenuSubmenu(props: MenuSubmenuProps) {
+  return <BaseMenu.SubmenuRoot {...props} />;
+}
+
+export interface MenuSubmenuTriggerProps
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function MenuSubmenuTrigger({ className, ...rest }: MenuSubmenuTriggerProps) {
+  return (
+    <BaseMenu.SubmenuTrigger
+      data-slot="menu-submenu-trigger"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
+export interface MenuLinkItemProps
+  extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+  ref?: Ref<HTMLAnchorElement>;
+  href?: string;
+  closeOnClick?: boolean;
+  children?: ReactNode;
+}
+
+function MenuLinkItem({ className, ...rest }: MenuLinkItemProps) {
+  return (
+    <BaseMenu.LinkItem
+      data-slot="menu-link-item"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
 export const Menu = Object.assign(MenuRoot, {
   Trigger: MenuTrigger,
   Content: MenuContent,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
   Item: MenuItem,
+  LinkItem: MenuLinkItem,
   CheckboxItem: MenuCheckboxItem,
   RadioGroup: MenuRadioGroup,
   RadioItem: MenuRadioItem,
   Separator: MenuSeparator,
   Shortcut: MenuShortcut,
+  Submenu: MenuSubmenu,
+  SubmenuTrigger: MenuSubmenuTrigger,
 });

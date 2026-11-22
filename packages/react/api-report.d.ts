@@ -513,17 +513,39 @@ export interface ContextMenuShortcutProps extends HTMLAttributes<HTMLSpanElement
     children?: ReactNode;
 }
 declare function ContextMenuShortcut({ className, ...rest }: ContextMenuShortcutProps): import("react").JSX.Element;
+export interface ContextMenuSubmenuProps {
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuSubmenu(props: ContextMenuSubmenuProps): import("react").JSX.Element;
+export interface ContextMenuSubmenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuSubmenuTrigger({ className, ...rest }: ContextMenuSubmenuTriggerProps): import("react").JSX.Element;
+export interface ContextMenuLinkItemProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    href?: string;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuLinkItem({ className, ...rest }: ContextMenuLinkItemProps): import("react").JSX.Element;
 export declare const ContextMenu: typeof ContextMenuRoot & {
     Trigger: typeof ContextMenuTrigger;
     Content: typeof ContextMenuContent;
     Group: typeof ContextMenuGroup;
     GroupLabel: typeof ContextMenuGroupLabel;
     Item: typeof ContextMenuItem;
+    LinkItem: typeof ContextMenuLinkItem;
     CheckboxItem: typeof ContextMenuCheckboxItem;
     RadioGroup: typeof ContextMenuRadioGroup;
     RadioItem: typeof ContextMenuRadioItem;
     Separator: typeof ContextMenuSeparator;
     Shortcut: typeof ContextMenuShortcut;
+    Submenu: typeof ContextMenuSubmenu;
+    SubmenuTrigger: typeof ContextMenuSubmenuTrigger;
 };
 export {};
 
@@ -872,7 +894,7 @@ export type { CommandPaletteItem, CommandPaletteProps, } from "./command-palette
 export { CommandPalette } from "./command-palette/command-palette.js";
 export type { ContainerProps, ContainerSize } from "./container/container.js";
 export { Container } from "./container/container.js";
-export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
+export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuLinkItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuSubmenuProps, ContextMenuSubmenuTriggerProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
@@ -909,7 +931,7 @@ export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
 export type { LiveRegionProps } from "./live-region/live-region.js";
 export { LiveRegion } from "./live-region/live-region.js";
-export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuTriggerProps, } from "./menu/menu.js";
+export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuLinkItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuSubmenuProps, MenuSubmenuTriggerProps, MenuTriggerProps, } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
 export type { MeterProps, MeterVariant } from "./meter/meter.js";
 export { Meter } from "./meter/meter.js";
@@ -929,7 +951,7 @@ export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-
 export { RadioGroup } from "./radio-group/radio-group.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
 export { ScrollArea } from "./scroll-area/scroll-area.js";
-export type { SelectContentProps, SelectItemProps, SelectRootProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
+export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
@@ -1119,17 +1141,39 @@ export interface MenuShortcutProps extends HTMLAttributes<HTMLSpanElement> {
     children?: ReactNode;
 }
 declare function MenuShortcut({ className, ...rest }: MenuShortcutProps): import("react").JSX.Element;
+export interface MenuSubmenuProps {
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function MenuSubmenu(props: MenuSubmenuProps): import("react").JSX.Element;
+export interface MenuSubmenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function MenuSubmenuTrigger({ className, ...rest }: MenuSubmenuTriggerProps): import("react").JSX.Element;
+export interface MenuLinkItemProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    href?: string;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function MenuLinkItem({ className, ...rest }: MenuLinkItemProps): import("react").JSX.Element;
 export declare const Menu: typeof MenuRoot & {
     Trigger: typeof MenuTrigger;
     Content: typeof MenuContent;
     Group: typeof MenuGroup;
     GroupLabel: typeof MenuGroupLabel;
     Item: typeof MenuItem;
+    LinkItem: typeof MenuLinkItem;
     CheckboxItem: typeof MenuCheckboxItem;
     RadioGroup: typeof MenuRadioGroup;
     RadioItem: typeof MenuRadioItem;
     Separator: typeof MenuSeparator;
     Shortcut: typeof MenuShortcut;
+    Submenu: typeof MenuSubmenu;
+    SubmenuTrigger: typeof MenuSubmenuTrigger;
 };
 export {};
 
@@ -1351,10 +1395,12 @@ export declare function ScrollArea({ ref, orientation, maxHeight, className, sty
 // ---- select/select.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-export interface SelectRootProps<Value = unknown> {
-    value?: Value;
-    defaultValue?: Value;
-    onValueChange?: (value: Value | null) => void;
+type SelectValueType<Value, Multiple extends boolean | undefined> = Multiple extends true ? Value[] : Value;
+export interface SelectRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
+    value?: SelectValueType<Value, Multiple>;
+    defaultValue?: SelectValueType<Value, Multiple>;
+    onValueChange?: (value: SelectValueType<Value, Multiple> | (Multiple extends true ? never : null)) => void;
+    multiple?: Multiple;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
@@ -1368,7 +1414,7 @@ export interface SelectRootProps<Value = unknown> {
     }>;
     children?: ReactNode;
 }
-declare function SelectRoot<Value = unknown>({ disabled, onValueChange, open, defaultOpen, onOpenChange, ...rest }: SelectRootProps<Value>): import("react").JSX.Element;
+declare function SelectRoot<Value = unknown, Multiple extends boolean | undefined = false>({ disabled, onValueChange, open, defaultOpen, onOpenChange, ...rest }: SelectRootProps<Value, Multiple>): import("react").JSX.Element;
 export interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
@@ -1401,11 +1447,28 @@ export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 declare function SelectItem({ className, children, ...rest }: SelectItemProps): import("react").JSX.Element;
+export interface SelectGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function SelectGroup(props: SelectGroupProps): import("react").JSX.Element;
+export interface SelectGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function SelectGroupLabel({ className, ...rest }: SelectGroupLabelProps): import("react").JSX.Element;
+export interface SelectSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+}
+declare function SelectSeparator({ className, ...rest }: SelectSeparatorProps): import("react").JSX.Element;
 export declare const Select: typeof SelectRoot & {
     Trigger: typeof SelectTrigger;
     Value: typeof SelectValue;
     Content: typeof SelectContent;
     Item: typeof SelectItem;
+    Group: typeof SelectGroup;
+    GroupLabel: typeof SelectGroupLabel;
+    Separator: typeof SelectSeparator;
 };
 export {};
 
@@ -1731,6 +1794,7 @@ export declare function Theme({ brand, colorScheme, density, contrast, children,
 // ---- toast/toast.d.ts ----
 import type { ReactNode } from "react";
 export type ToastVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export type ToastPosition = "top-start" | "top-end" | "bottom-start" | "bottom-end";
 export interface ToastActionOptions {
     label: string;
     onClick: () => void;
@@ -1743,18 +1807,30 @@ export interface ToastOptions {
     timeout?: number;
     priority?: "low" | "high";
     action?: ToastActionOptions;
+    icon?: ReactNode;
+    onClose?: () => void;
+}
+export type ToastUpdateOptions = Partial<Omit<ToastOptions, "id">>;
+export interface ToastPromiseOptions<Value> {
+    loading: string | ToastUpdateOptions;
+    success: string | ToastUpdateOptions | ((result: Value) => string | ToastUpdateOptions);
+    error: string | ToastUpdateOptions | ((error: unknown) => string | ToastUpdateOptions);
 }
 export interface UseToastResult {
     add: (options: ToastOptions) => string;
+    update: (id: string, options: ToastUpdateOptions) => void;
     close: (id?: string) => void;
+    promise: <Value>(promise: Promise<Value>, options: ToastPromiseOptions<Value>) => Promise<Value>;
 }
 export interface ToastProviderProps {
     children: ReactNode;
     timeout?: number;
     limit?: number;
     dismissLabel?: string;
+    position?: ToastPosition;
+    className?: string;
 }
-declare function ToastProvider({ children, timeout, limit, dismissLabel, }: ToastProviderProps): import("react").JSX.Element;
+declare function ToastProvider({ children, timeout, limit, dismissLabel, position, className, }: ToastProviderProps): import("react").JSX.Element;
 export declare function useToast(): UseToastResult;
 export declare const Toast: {
     Provider: typeof ToastProvider;
