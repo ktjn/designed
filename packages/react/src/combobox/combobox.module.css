@@ -87,7 +87,12 @@
     border-color: CanvasText;
   }
 
-  .item[data-highlighted] {
+  .input:focus-visible {
     outline-color: Highlight;
+  }
+
+  .item[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }

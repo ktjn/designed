@@ -11,6 +11,7 @@ const srcDir = path.join(
 const stylesheetsWithForcedColors = [
   "accordion/accordion.module.css",
   "autocomplete/autocomplete.module.css",
+  "breadcrumb/breadcrumb.module.css",
   "button/button.module.css",
   "button-group/button-group.module.css",
   "calendar/calendar.module.css",
