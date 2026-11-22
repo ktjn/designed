@@ -153,6 +153,8 @@ export type { KbdProps, KbdSize } from "./kbd/kbd.js";
 export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
+export type { LiveRegionProps } from "./live-region/live-region.js";
+export { LiveRegion } from "./live-region/live-region.js";
 export type {
   MenuCheckboxItemProps,
   MenuContentProps,

@@ -821,6 +821,8 @@ export type { KbdProps, KbdSize } from "./kbd/kbd.js";
 export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
+export type { LiveRegionProps } from "./live-region/live-region.js";
+export { LiveRegion } from "./live-region/live-region.js";
 export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuTriggerProps, } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
 export type { MeterProps, MeterVariant } from "./meter/meter.js";
@@ -935,6 +937,15 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     children?: ReactNode;
 }
 export declare function Link({ ref, className, ...rest }: LinkProps): import("react").JSX.Element;
+
+
+// ---- live-region/live-region.d.ts ----
+import { type VisuallyHiddenProps } from "../visually-hidden/visually-hidden.js";
+export interface LiveRegionProps extends Omit<VisuallyHiddenProps, "aria-atomic" | "aria-live"> {
+    politeness?: "polite" | "assertive";
+    atomic?: boolean;
+}
+export declare function LiveRegion({ politeness, atomic, ...rest }: LiveRegionProps): import("react").JSX.Element;
 
 
 // ---- menu/menu.d.ts ----
