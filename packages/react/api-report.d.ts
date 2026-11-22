@@ -299,6 +299,23 @@ export declare const Card: typeof CardRoot & {
 export {};
 
 
+// ---- checkbox-group/checkbox-group.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type CheckboxGroupOrientation = "horizontal" | "vertical";
+export interface CheckboxGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
+    value?: string[];
+    defaultValue?: string[];
+    onValueChange?: (value: string[], eventDetails?: ChangeEventDetails) => void;
+    allValues?: string[];
+    disabled?: boolean;
+    orientation?: CheckboxGroupOrientation;
+    children?: ReactNode;
+}
+export declare function CheckboxGroup({ disabled, orientation, onValueChange, className, ...rest }: CheckboxGroupProps): import("react").JSX.Element;
+
+
 // ---- checkbox/checkbox.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
@@ -313,6 +330,7 @@ export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaul
     indeterminate?: boolean;
     name?: string;
     value?: string;
+    parent?: boolean;
 }
 export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
@@ -935,6 +953,8 @@ export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeade
 export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
+export type { CheckboxGroupOrientation, CheckboxGroupProps, } from "./checkbox-group/checkbox-group.js";
+export { CheckboxGroup } from "./checkbox-group/checkbox-group.js";
 export type { CodeSnippetProps, CodeSnippetVariant, } from "./code-snippet/code-snippet.js";
 export { CodeSnippet } from "./code-snippet/code-snippet.js";
 export type { CollapsiblePanelProps, CollapsibleRootProps, CollapsibleTriggerProps, } from "./collapsible/collapsible.js";

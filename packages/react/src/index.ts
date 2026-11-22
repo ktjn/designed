@@ -58,6 +58,11 @@ export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
 export type {
+  CheckboxGroupOrientation,
+  CheckboxGroupProps,
+} from "./checkbox-group/checkbox-group.js";
+export { CheckboxGroup } from "./checkbox-group/checkbox-group.js";
+export type {
   CodeSnippetProps,
   CodeSnippetVariant,
 } from "./code-snippet/code-snippet.js";

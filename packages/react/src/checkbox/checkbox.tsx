@@ -19,6 +19,7 @@ export interface CheckboxProps
   indeterminate?: boolean;
   name?: string;
   value?: string;
+  parent?: boolean;
 }
 
 export function Checkbox({

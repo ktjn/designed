@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-stack-sm);
+}
+
+.root[data-orientation="horizontal"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ds-space-stack-md);
+}
