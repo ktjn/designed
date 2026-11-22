@@ -8,6 +8,8 @@ Accessible client-side React 19 component library styled with `@ktjn/designed-to
 pnpm add @ktjn/designed-tokens @ktjn/designed-react
 ```
 
+`@ktjn/designed-react` declares `@base-ui/react` as `^1.9.0` in `dependencies`, so apps that also depend directly on a compatible `@base-ui/react` `1.x` version (`>=1.9.0 <2.0.0`) share a single installation without version skew.
+
 ## Usage
 
 ```tsx
