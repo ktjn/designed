@@ -1088,6 +1088,8 @@ export type { ToolbarButtonProps, ToolbarGroupProps, ToolbarLinkProps, ToolbarOr
 export { Toolbar } from "./toolbar/toolbar.js";
 export type { TooltipProps, TooltipProviderProps, TooltipSide, } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
+export type { TreeViewNode, TreeViewProps, } from "./tree-view/tree-view.js";
+export { TreeView } from "./tree-view/tree-view.js";
 export type { TruncatedTextProps } from "./truncated-text/truncated-text.js";
 export { TruncatedText } from "./truncated-text/truncated-text.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
@@ -2208,6 +2210,34 @@ export declare const Tooltip: typeof TooltipRoot & {
     Provider: typeof TooltipProvider;
 };
 export {};
+
+
+// ---- tree-view/tree-view.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TreeViewNode<T = unknown> {
+    id: string;
+    label: ReactNode;
+    icon?: ReactNode;
+    disabled?: boolean;
+    children?: readonly TreeViewNode<T>[];
+    hasChildren?: boolean;
+    data?: T;
+}
+export interface TreeViewProps<T = unknown> extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    ref?: Ref<HTMLDivElement>;
+    items: readonly TreeViewNode<T>[];
+    multiple?: boolean;
+    selected?: readonly string[];
+    defaultSelected?: readonly string[];
+    onSelectedChange?: (selected: string[]) => void;
+    expanded?: readonly string[];
+    defaultExpanded?: readonly string[];
+    onExpandedChange?: (expanded: string[]) => void;
+    onLoadChildren?: (node: TreeViewNode<T>) => void;
+    renderItem?: (node: TreeViewNode<T>) => ReactNode;
+    getItemLabel?: (node: TreeViewNode<T>) => string;
+}
+export declare function TreeView<T = unknown>({ ref, items, multiple, selected, defaultSelected, onSelectedChange, expanded, defaultExpanded, onExpandedChange, onLoadChildren, renderItem, getItemLabel, className, ...rest }: TreeViewProps<T>): import("react").JSX.Element;
 
 
 // ---- truncated-text/truncated-text.d.ts ----

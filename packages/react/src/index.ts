@@ -379,6 +379,11 @@ export type {
   TooltipSide,
 } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
+export type {
+  TreeViewNode,
+  TreeViewProps,
+} from "./tree-view/tree-view.js";
+export { TreeView } from "./tree-view/tree-view.js";
 export type { TruncatedTextProps } from "./truncated-text/truncated-text.js";
 export { TruncatedText } from "./truncated-text/truncated-text.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
