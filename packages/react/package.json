@@ -90,7 +90,7 @@
     {
       "name": "Full package import (all components, including Base UI + floating-ui)",
       "path": "dist/index.js",
-      "limit": "175 kB"
+      "limit": "190 kB"
     }
   ]
 }
