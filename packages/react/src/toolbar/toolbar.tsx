@@ -4,12 +4,14 @@ import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
   ReactNode,
+  Ref,
 } from "react";
 import styles from "./toolbar.module.css";
 
 export type ToolbarOrientation = "horizontal" | "vertical";
 
 export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   orientation?: ToolbarOrientation;
   disabled?: boolean;
   loopFocus?: boolean;
@@ -27,6 +29,7 @@ function ToolbarRoot({ className, ...rest }: ToolbarRootProps) {
 }
 
 export interface ToolbarGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -43,6 +46,7 @@ function ToolbarGroup({ className, ...rest }: ToolbarGroupProps) {
 
 export interface ToolbarButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   focusableWhenDisabled?: boolean;
   children?: ReactNode;
 }
@@ -59,6 +63,7 @@ function ToolbarButton({ className, ...rest }: ToolbarButtonProps) {
 
 export interface ToolbarLinkProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: Ref<HTMLAnchorElement>;
   children?: ReactNode;
 }
 
@@ -72,7 +77,9 @@ function ToolbarLink({ className, ...rest }: ToolbarLinkProps) {
   );
 }
 
-export interface ToolbarSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+export interface ToolbarSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+}
 
 function ToolbarSeparator({ className, ...rest }: ToolbarSeparatorProps) {
   return (

@@ -5,7 +5,9 @@ import {
   type ButtonHTMLAttributes,
   createContext,
   type HTMLAttributes,
+  type MouseEventHandler,
   type ReactNode,
+  type Ref,
   useContext,
   useState,
 } from "react";
@@ -35,6 +37,7 @@ export function useSidebar(): UseSidebarResult {
 }
 
 export interface SidebarProviderProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -101,6 +104,7 @@ function SidebarProvider({
 }
 
 export interface SidebarRootProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
   mobileTitle?: string;
   children?: ReactNode;
 }
@@ -154,6 +158,7 @@ function SidebarRoot({
 }
 
 export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -167,7 +172,8 @@ function SidebarHeader({ className, ...rest }: SidebarHeaderProps) {
   );
 }
 
-export interface SidebarContentProps extends HTMLAttributes<HTMLDivElement> {
+export interface SidebarContentProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
   children?: ReactNode;
 }
 
@@ -182,6 +188,7 @@ function SidebarContent({ className, ...rest }: SidebarContentProps) {
 }
 
 export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -196,6 +203,7 @@ function SidebarFooter({ className, ...rest }: SidebarFooterProps) {
 }
 
 export interface SidebarGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -210,6 +218,7 @@ function SidebarGroup({ className, ...rest }: SidebarGroupProps) {
 }
 
 export interface SidebarGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -225,24 +234,33 @@ function SidebarGroupLabel({ className, ...rest }: SidebarGroupLabelProps) {
   );
 }
 
-export interface SidebarItemProps {
+export interface SidebarItemProps
+  extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
+  ref?: Ref<HTMLAnchorElement> | Ref<HTMLButtonElement> | Ref<HTMLElement>;
   active?: boolean;
   icon?: ReactNode;
   href?: string;
-  className?: string;
+  target?: string;
+  rel?: string;
+  disabled?: boolean;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  onClick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
   children?: ReactNode;
-  onClick?: () => void;
-  "aria-label"?: string;
 }
 
 function SidebarItem({
+  ref,
   active = false,
   icon,
   href,
+  target,
+  rel,
+  disabled,
+  type = "button",
   className,
   children,
   onClick,
-  "aria-label": ariaLabel,
+  ...rest
 }: SidebarItemProps) {
   const classes = [styles.item, className].filter(Boolean).join(" ");
   const content = (
@@ -258,14 +276,17 @@ function SidebarItem({
 
   if (href !== undefined) {
     const linkProps: AnchorHTMLAttributes<HTMLAnchorElement> = {
+      ...(rest as AnchorHTMLAttributes<HTMLAnchorElement>),
       href,
-      onClick,
-      "aria-label": ariaLabel,
-      "aria-current": active ? "page" : undefined,
+      target,
+      rel,
+      onClick: onClick as MouseEventHandler<HTMLAnchorElement> | undefined,
+      "aria-current": active ? "page" : rest["aria-current"],
       className: classes,
     };
     return (
       <a
+        ref={ref as Ref<HTMLAnchorElement> | undefined}
         data-slot="sidebar-item"
         data-active={active ? "true" : undefined}
         {...linkProps}
@@ -276,14 +297,16 @@ function SidebarItem({
   }
 
   const buttonProps: ButtonHTMLAttributes<HTMLButtonElement> = {
-    type: "button",
-    onClick,
-    "aria-label": ariaLabel,
-    "aria-current": active ? "page" : undefined,
+    ...(rest as ButtonHTMLAttributes<HTMLButtonElement>),
+    type,
+    disabled,
+    onClick: onClick as MouseEventHandler<HTMLButtonElement> | undefined,
+    "aria-current": active ? "page" : rest["aria-current"],
     className: classes,
   };
   return (
     <button
+      ref={ref as Ref<HTMLButtonElement> | undefined}
       data-slot="sidebar-item"
       data-active={active ? "true" : undefined}
       {...buttonProps}
@@ -294,6 +317,7 @@ function SidebarItem({
 }
 
 export interface SidebarInsetProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
@@ -309,6 +333,7 @@ function SidebarInset({ className, ...rest }: SidebarInsetProps) {
 
 export interface SidebarTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   mobile?: boolean;
 }
 

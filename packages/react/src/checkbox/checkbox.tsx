@@ -1,9 +1,10 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-import type { Ref } from "react";
+import type { HTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./checkbox.module.css";
 
-export interface CheckboxProps {
+export interface CheckboxProps
+  extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
   ref?: Ref<HTMLElement>;
   checked?: boolean;
   defaultChecked?: boolean;
@@ -14,12 +15,6 @@ export interface CheckboxProps {
   indeterminate?: boolean;
   name?: string;
   value?: string;
-  id?: string;
-  className?: string;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-describedby"?: string;
-  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
 
 export function Checkbox({

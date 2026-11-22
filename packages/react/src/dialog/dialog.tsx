@@ -5,6 +5,7 @@ import type {
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
@@ -48,6 +49,7 @@ function DialogRoot({
 
 export interface DialogTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }
@@ -69,6 +71,7 @@ function DialogTrigger({ render, className, ...rest }: DialogTriggerProps) {
 }
 
 export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
   closeLabel?: string;
   initialFocus?: OverlayFocusTarget;
@@ -106,6 +109,7 @@ function DialogContent({
 }
 
 export interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  ref?: Ref<HTMLHeadingElement>;
   children?: ReactNode;
 }
 
@@ -121,6 +125,7 @@ function DialogTitle({ className, ...rest }: DialogTitleProps) {
 
 export interface DialogDescriptionProps
   extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
   children?: ReactNode;
 }
 
@@ -138,6 +143,7 @@ function DialogDescription({ className, ...rest }: DialogDescriptionProps) {
 
 export interface DialogCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }

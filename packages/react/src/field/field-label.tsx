@@ -1,8 +1,9 @@
-import type { LabelHTMLAttributes, ReactNode } from "react";
+import type { LabelHTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./field.module.css";
 import { useFieldContext } from "./field-context.js";
 
 export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  ref?: Ref<HTMLLabelElement>;
   children?: ReactNode;
 }
 

@@ -1,5 +1,5 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import type { ReactElement, ReactNode } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import { cloneElement, useId } from "react";
 import {
   useDialogPortalContainer,
@@ -9,11 +9,12 @@ import styles from "./tooltip.module.css";
 
 export type TooltipSide = "top" | "right" | "bottom" | "left";
 
-export interface TooltipProps {
+export interface TooltipProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "content" | "children"> {
+  ref?: Ref<HTMLDivElement>;
   content: ReactNode;
   side?: TooltipSide;
   sideOffset?: number;
-  className?: string;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -21,6 +22,7 @@ export interface TooltipProps {
 }
 
 export function Tooltip({
+  id,
   content,
   side = "top",
   sideOffset = 8,
@@ -31,7 +33,8 @@ export function Tooltip({
   children,
   ...rest
 }: TooltipProps) {
-  const popupId = useId();
+  const generatedPopupId = useId();
+  const popupId = id ?? generatedPopupId;
   const activity = usePortalActivity(open, defaultOpen);
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
   const childDescribedBy = (
@@ -58,7 +61,6 @@ export function Tooltip({
           onOpenChange?.(next);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
-        {...rest}
       >
         <BaseTooltip.Trigger
           render={triggerElement}
@@ -77,6 +79,7 @@ export function Tooltip({
               className={
                 className ? `${styles.popup} ${className}` : styles.popup
               }
+              {...rest}
             >
               {content}
             </BaseTooltip.Popup>

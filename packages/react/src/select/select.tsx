@@ -1,6 +1,11 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronDownIcon } from "@ktjn/designed-icons";
-import type { ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -44,24 +49,19 @@ function SelectRoot<Value = unknown>({
   );
 }
 
-export interface SelectTriggerProps {
-  id?: string;
-  className?: string;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-describedby"?: string;
-  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
+export interface SelectTriggerProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   children?: ReactNode;
 }
 
 function SelectTrigger({
   id,
   className,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   "aria-invalid": ariaInvalid,
   children,
+  ...rest
 }: SelectTriggerProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
@@ -69,11 +69,10 @@ function SelectTrigger({
     <BaseSelect.Trigger
       data-slot="select-trigger"
       id={resolvedId}
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
       className={className ? `${styles.trigger} ${className}` : styles.trigger}
+      {...rest}
     >
       {children}
       <BaseSelect.Icon className={styles.icon}>
@@ -83,16 +82,23 @@ function SelectTrigger({
   );
 }
 
-export interface SelectValueProps {
+export interface SelectValueProps extends HTMLAttributes<HTMLSpanElement> {
+  ref?: Ref<HTMLSpanElement>;
   placeholder?: string;
 }
 
-function SelectValue({ placeholder }: SelectValueProps) {
-  return <BaseSelect.Value placeholder={placeholder} />;
+function SelectValue({ placeholder, ...rest }: SelectValueProps) {
+  return (
+    <BaseSelect.Value
+      data-slot="select-value"
+      placeholder={placeholder}
+      {...rest}
+    />
+  );
 }
 
-export interface SelectContentProps {
-  className?: string;
+export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
@@ -101,6 +107,7 @@ function SelectContent({
   className,
   finalFocus,
   children,
+  ...rest
 }: SelectContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
@@ -114,6 +121,7 @@ function SelectContent({
             className={
               className ? `${styles.popup} ${className}` : styles.popup
             }
+            {...rest}
           >
             <BaseSelect.List>{children}</BaseSelect.List>
           </BaseSelect.Popup>
@@ -123,10 +131,10 @@ function SelectContent({
   );
 }
 
-export interface SelectItemProps {
+export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   value: unknown;
   disabled?: boolean;
-  className?: string;
   children?: ReactNode;
 }
 

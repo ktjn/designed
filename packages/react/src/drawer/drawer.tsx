@@ -5,6 +5,7 @@ import type {
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  Ref,
 } from "react";
 import { createContext, useContext } from "react";
 import buttonStyles from "../button/button.module.css";
@@ -28,11 +29,13 @@ export interface DrawerRootProps {
 
 export interface DrawerTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }
 
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   side?: DrawerSide;
   closeLabel?: string;
   initialFocus?: OverlayFocusTarget;
@@ -41,16 +44,19 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface DrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  ref?: Ref<HTMLHeadingElement>;
   children: ReactNode;
 }
 
 export interface DrawerDescriptionProps
   extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
   children: ReactNode;
 }
 
 export interface DrawerCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }

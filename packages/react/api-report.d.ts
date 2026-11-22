@@ -1,32 +1,32 @@
 // ---- accordion/accordion.d.ts ----
-import type { ReactNode } from "react";
-export interface AccordionRootProps {
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+export interface AccordionRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
     value?: unknown[];
     defaultValue?: unknown[];
     onValueChange?: (value: unknown[]) => void;
     disabled?: boolean;
-    /**
-     * Whether multiple items can be open at the same time.
-     * @default false
-     */
     multiple?: boolean;
     children?: ReactNode;
 }
-declare function AccordionRoot({ onValueChange, ...rest }: AccordionRootProps): import("react").JSX.Element;
-export interface AccordionItemProps {
+declare function AccordionRoot({ onValueChange, className, ...rest }: AccordionRootProps): import("react").JSX.Element;
+export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     value: unknown;
     disabled?: boolean;
     children?: ReactNode;
 }
-declare function AccordionItem({ children, ...rest }: AccordionItemProps): import("react").JSX.Element;
-export interface AccordionTriggerProps {
+declare function AccordionItem({ className, children, ...rest }: AccordionItemProps): import("react").JSX.Element;
+export interface AccordionTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     children?: ReactNode;
 }
-declare function AccordionTrigger({ children }: AccordionTriggerProps): import("react").JSX.Element;
-export interface AccordionPanelProps {
+declare function AccordionTrigger({ className, children, ...rest }: AccordionTriggerProps): import("react").JSX.Element;
+export interface AccordionPanelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
-declare function AccordionPanel({ children }: AccordionPanelProps): import("react").JSX.Element;
+declare function AccordionPanel({ className, children, ...rest }: AccordionPanelProps): import("react").JSX.Element;
 export declare const Accordion: typeof AccordionRoot & {
     Item: typeof AccordionItem;
     Trigger: typeof AccordionTrigger;
@@ -36,8 +36,7 @@ export {};
 
 
 // ---- alert-dialog/alert-dialog.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
-import type { DialogCloseProps, DialogDescriptionProps, DialogTitleProps } from "../dialog/dialog.js";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface AlertDialogRootProps {
     open?: boolean;
@@ -47,19 +46,34 @@ export interface AlertDialogRootProps {
 }
 declare function AlertDialogRoot({ open, defaultOpen, onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
 export interface AlertDialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
 declare function AlertDialogTrigger({ render, className, ...rest }: AlertDialogTriggerProps): import("react").JSX.Element;
 export interface AlertDialogContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
 }
 declare function AlertDialogContent({ className, children, ...rest }: AlertDialogContentProps): import("react").JSX.Element;
-declare function AlertDialogTitle({ className, ...rest }: DialogTitleProps): import("react").JSX.Element;
-declare function AlertDialogDescription({ className, ...rest }: DialogDescriptionProps): import("react").JSX.Element;
-declare function AlertDialogClose({ render, className, ...rest }: DialogCloseProps): import("react").JSX.Element;
+export interface AlertDialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
+    children?: ReactNode;
+}
+declare function AlertDialogTitle({ className, ...rest }: AlertDialogTitleProps): import("react").JSX.Element;
+export interface AlertDialogDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
+    children?: ReactNode;
+}
+declare function AlertDialogDescription({ className, ...rest }: AlertDialogDescriptionProps): import("react").JSX.Element;
+export interface AlertDialogCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    children?: ReactNode;
+}
+declare function AlertDialogClose({ render, className, ...rest }: AlertDialogCloseProps): import("react").JSX.Element;
 export declare const AlertDialog: typeof AlertDialogRoot & {
     Trigger: typeof AlertDialogTrigger;
     Content: typeof AlertDialogContent;
@@ -93,8 +107,9 @@ export declare function AspectRatio({ ref, ratio, className, style, ...rest }: A
 
 
 // ---- autocomplete/autocomplete.d.ts ----
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 export interface AutocompleteProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
     items: readonly string[];
     value?: string;
     defaultValue?: string;
@@ -134,11 +149,20 @@ import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttr
 export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
     ref?: Ref<HTMLElement>;
 }
-export type BreadcrumbListProps = OlHTMLAttributes<HTMLOListElement>;
-export type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
-export type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
-export type BreadcrumbPageProps = HTMLAttributes<HTMLSpanElement>;
+export interface BreadcrumbListProps extends OlHTMLAttributes<HTMLOListElement> {
+    ref?: Ref<HTMLOListElement>;
+}
+export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+}
+export interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    ref?: Ref<HTMLAnchorElement>;
+}
+export interface BreadcrumbPageProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
+}
 export interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
     children?: ReactNode;
 }
 declare function BreadcrumbRoot({ ref, "aria-label": ariaLabel, className, ...rest }: BreadcrumbRootProps): import("react").JSX.Element;
@@ -209,18 +233,23 @@ export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
 }
 export interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children?: ReactNode;
 }
 export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function CardRoot({ ref, className, ...rest }: CardRootProps): import("react").JSX.Element;
@@ -240,8 +269,8 @@ export {};
 
 
 // ---- checkbox/checkbox.d.ts ----
-import type { Ref } from "react";
-export interface CheckboxProps {
+import type { HTMLAttributes, Ref } from "react";
+export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
@@ -252,19 +281,14 @@ export interface CheckboxProps {
     indeterminate?: boolean;
     name?: string;
     value?: string;
-    id?: string;
-    className?: string;
-    "aria-label"?: string;
-    "aria-labelledby"?: string;
-    "aria-describedby"?: string;
-    "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
 export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
 
 // ---- collapsible/collapsible.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
@@ -273,10 +297,12 @@ export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement
 }
 declare function CollapsibleRoot({ onOpenChange, className, ...rest }: CollapsibleRootProps): import("react").JSX.Element;
 export interface CollapsibleTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     children?: ReactNode;
 }
 declare function CollapsibleTrigger({ className, children, ...rest }: CollapsibleTriggerProps): import("react").JSX.Element;
 export interface CollapsiblePanelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     keepMounted?: boolean;
     children?: ReactNode;
 }
@@ -289,7 +315,7 @@ export {};
 
 
 // ---- combobox/combobox.d.ts ----
-import type { ReactNode } from "react";
+import type { HTMLAttributes, InputHTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ComboboxItem<Value> {
     label: string;
@@ -308,21 +334,17 @@ export interface ComboboxRootProps<Value = unknown> {
     children?: ReactNode;
 }
 declare function ComboboxRoot<Value = unknown>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, ...rest }: ComboboxRootProps<Value>): import("react").JSX.Element;
-export interface ComboboxInputProps {
-    id?: string;
-    className?: string;
-    placeholder?: string;
-    "aria-describedby"?: string;
-    "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
+export interface ComboboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
+    ref?: Ref<HTMLInputElement>;
 }
 declare function ComboboxInput({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): import("react").JSX.Element;
-export interface ComboboxContentProps {
-    className?: string;
+export interface ComboboxContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     emptyMessage?: ReactNode;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
 }
-declare function ComboboxContent({ className, emptyMessage, initialFocus, finalFocus, }: ComboboxContentProps): import("react").JSX.Element;
+declare function ComboboxContent({ className, emptyMessage, initialFocus, finalFocus, ...rest }: ComboboxContentProps): import("react").JSX.Element;
 export declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
@@ -331,6 +353,7 @@ export {};
 
 
 // ---- command-palette/command-palette.d.ts ----
+import { type HTMLAttributes, type Ref } from "react";
 export interface CommandPaletteItem {
     id: string;
     label: string;
@@ -339,7 +362,8 @@ export interface CommandPaletteItem {
     shortcut?: string;
     disabled?: boolean;
 }
-export interface CommandPaletteProps {
+export interface CommandPaletteProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "onSelect" | "children"> {
+    ref?: Ref<HTMLDivElement>;
     items: readonly CommandPaletteItem[];
     open?: boolean;
     defaultOpen?: boolean;
@@ -352,7 +376,7 @@ export interface CommandPaletteProps {
     closeLabel?: string;
     enableGlobalShortcut?: boolean;
 }
-export declare function CommandPalette({ items, open, defaultOpen, onOpenChange, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, }: CommandPaletteProps): import("react").JSX.Element;
+export declare function CommandPalette({ items, open, defaultOpen, onOpenChange, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps): import("react").JSX.Element;
 
 
 // ---- container/container.d.ts ----
@@ -368,7 +392,7 @@ export declare function Container({ ref, size, padded, className, ...rest }: Con
 
 
 // ---- context-menu/context-menu.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ContextMenuRootProps {
     open?: boolean;
@@ -379,28 +403,34 @@ export interface ContextMenuRootProps {
 }
 declare function ContextMenuRoot({ open, defaultOpen, onOpenChange, ...rest }: ContextMenuRootProps): import("react").JSX.Element;
 export interface ContextMenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps): import("react").JSX.Element;
 export interface ContextMenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
 declare function ContextMenuContent({ className, children, ...rest }: ContextMenuContentProps): import("react").JSX.Element;
 export interface ContextMenuGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function ContextMenuGroup(props: ContextMenuGroupProps): import("react").JSX.Element;
 export interface ContextMenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function ContextMenuGroupLabel({ className, ...rest }: ContextMenuGroupLabelProps): import("react").JSX.Element;
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function ContextMenuItem({ className, ...rest }: ContextMenuItemProps): import("react").JSX.Element;
 export interface ContextMenuCheckboxItemProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     checked?: boolean;
     defaultChecked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
@@ -409,6 +439,7 @@ export interface ContextMenuCheckboxItemProps extends Omit<HTMLAttributes<HTMLDi
 }
 declare function ContextMenuCheckboxItem({ checked, defaultChecked, onCheckedChange, disabled, className, children, ...rest }: ContextMenuCheckboxItemProps): import("react").JSX.Element;
 export interface ContextMenuRadioGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
@@ -417,15 +448,18 @@ export interface ContextMenuRadioGroupProps extends Omit<HTMLAttributes<HTMLDivE
 }
 declare function ContextMenuRadioGroup({ value, defaultValue, onValueChange, disabled, ...rest }: ContextMenuRadioGroupProps): import("react").JSX.Element;
 export interface ContextMenuRadioItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     value: string;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function ContextMenuRadioItem({ value, disabled, className, children, ...rest }: ContextMenuRadioItemProps): import("react").JSX.Element;
 export interface ContextMenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
 }
 declare function ContextMenuSeparator({ className, ...rest }: ContextMenuSeparatorProps): import("react").JSX.Element;
 export interface ContextMenuShortcutProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     children?: ReactNode;
 }
 declare function ContextMenuShortcut({ className, ...rest }: ContextMenuShortcutProps): import("react").JSX.Element;
@@ -463,7 +497,7 @@ export declare function DatePicker({ ref, value, defaultValue, onValueChange, mi
 
 
 // ---- dialog/dialog.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
 export interface DialogRootProps {
     open?: boolean;
@@ -474,11 +508,13 @@ export interface DialogRootProps {
 }
 declare function DialogRoot({ open, defaultOpen, onOpenChange, ...rest }: DialogRootProps): import("react").JSX.Element;
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
 declare function DialogTrigger({ render, className, ...rest }: DialogTriggerProps): import("react").JSX.Element;
 export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
     closeLabel?: string;
     initialFocus?: OverlayFocusTarget;
@@ -486,14 +522,17 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function DialogContent({ children, closeLabel, className, ...rest }: DialogContentProps): import("react").JSX.Element;
 export interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
 }
 declare function DialogTitle({ className, ...rest }: DialogTitleProps): import("react").JSX.Element;
 export interface DialogDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children?: ReactNode;
 }
 declare function DialogDescription({ className, ...rest }: DialogDescriptionProps): import("react").JSX.Element;
 export interface DialogCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
@@ -529,7 +568,7 @@ export declare function useDialogPortalContainer(enabled?: boolean): {
 
 
 // ---- drawer/drawer.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
@@ -540,10 +579,12 @@ export interface DrawerRootProps {
     children: ReactNode;
 }
 export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     side?: DrawerSide;
     closeLabel?: string;
     initialFocus?: OverlayFocusTarget;
@@ -551,12 +592,15 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
 }
 export interface DrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
     children: ReactNode;
 }
 export interface DrawerDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children: ReactNode;
 }
 export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
@@ -632,19 +676,21 @@ export declare function FieldError({ ref, id, className, children, ...rest }: Fi
 
 
 // ---- field/field-label.d.ts ----
-import type { LabelHTMLAttributes, ReactNode } from "react";
+import type { LabelHTMLAttributes, ReactNode, Ref } from "react";
 export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+    ref?: Ref<HTMLLabelElement>;
     children?: ReactNode;
 }
 export declare function FieldLabel({ htmlFor, children, className, ...rest }: FieldLabelProps): import("react").JSX.Element;
 
 
 // ---- field/field.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { FieldDescription } from "./field-description.js";
 import { FieldError } from "./field-error.js";
 import { FieldLabel } from "./field-label.js";
 export interface FieldRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     controlId?: string;
     invalid?: boolean;
     disabled?: boolean;
@@ -660,11 +706,13 @@ export {};
 
 
 // ---- fieldset/fieldset.d.ts ----
-import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 export interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
+    ref?: Ref<HTMLFieldSetElement>;
     children?: ReactNode;
 }
 export interface FieldsetLegendProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function FieldsetRoot({ disabled, className, children, ...rest }: FieldsetRootProps): import("react").JSX.Element;
@@ -711,7 +759,7 @@ export type { AccordionItemProps, AccordionPanelProps, AccordionRootProps, Accor
 export { Accordion } from "./accordion/accordion.js";
 export type { AlertProps, AlertVariant } from "./alert/alert.js";
 export { Alert } from "./alert/alert.js";
-export type { AlertDialogContentProps, AlertDialogRootProps, AlertDialogTriggerProps, } from "./alert-dialog/alert-dialog.js";
+export type { AlertDialogCloseProps, AlertDialogContentProps, AlertDialogDescriptionProps, AlertDialogRootProps, AlertDialogTitleProps, AlertDialogTriggerProps, } from "./alert-dialog/alert-dialog.js";
 export { AlertDialog } from "./alert-dialog/alert-dialog.js";
 export type { AspectRatioProps } from "./aspect-ratio/aspect-ratio.js";
 export { AspectRatio } from "./aspect-ratio/aspect-ratio.js";
@@ -781,7 +829,7 @@ export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
-export type { PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps, } from "./popover/popover.js";
+export type { PopoverCloseProps, PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps, } from "./popover/popover.js";
 export { Popover } from "./popover/popover.js";
 export type { PreviewCardContentProps, PreviewCardRootProps, PreviewCardSide, PreviewCardTriggerProps, } from "./preview-card/preview-card.js";
 export { PreviewCard } from "./preview-card/preview-card.js";
@@ -888,7 +936,7 @@ export declare function Link({ ref, className, ...rest }: LinkProps): import("re
 
 
 // ---- menu/menu.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface MenuRootProps {
     open?: boolean;
@@ -898,29 +946,35 @@ export interface MenuRootProps {
 }
 declare function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
 export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
 declare function MenuTrigger({ render, className, ...rest }: MenuTriggerProps): import("react").JSX.Element;
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
 declare function MenuContent({ className, children, ...rest }: MenuContentProps): import("react").JSX.Element;
 export interface MenuGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function MenuGroup(props: MenuGroupProps): import("react").JSX.Element;
 export interface MenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps): import("react").JSX.Element;
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function MenuItem({ className, ...rest }: MenuItemProps): import("react").JSX.Element;
 export interface MenuCheckboxItemProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     checked?: boolean;
     defaultChecked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
@@ -929,6 +983,7 @@ export interface MenuCheckboxItemProps extends Omit<HTMLAttributes<HTMLDivElemen
 }
 declare function MenuCheckboxItem({ checked, defaultChecked, onCheckedChange, disabled, className, children, ...rest }: MenuCheckboxItemProps): import("react").JSX.Element;
 export interface MenuRadioGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
@@ -937,15 +992,18 @@ export interface MenuRadioGroupProps extends Omit<HTMLAttributes<HTMLDivElement>
 }
 declare function MenuRadioGroup({ value, defaultValue, onValueChange, disabled, ...rest }: MenuRadioGroupProps): import("react").JSX.Element;
 export interface MenuRadioItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     value: string;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function MenuRadioItem({ value, disabled, className, children, ...rest }: MenuRadioItemProps): import("react").JSX.Element;
 export interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
 }
 declare function MenuSeparator({ className, ...rest }: MenuSeparatorProps): import("react").JSX.Element;
 export interface MenuShortcutProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     children?: ReactNode;
 }
 declare function MenuShortcut({ className, ...rest }: MenuShortcutProps): import("react").JSX.Element;
@@ -1035,7 +1093,7 @@ export declare function Pagination({ ref, page, totalPages, onPageChange, siblin
 
 
 // ---- popover/popover.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface PopoverRootProps {
     open?: boolean;
@@ -1045,12 +1103,14 @@ export interface PopoverRootProps {
 }
 declare function PopoverRoot({ open, defaultOpen, onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
 declare function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps): import("react").JSX.Element;
 export type PopoverSide = "top" | "right" | "bottom" | "left";
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     side?: PopoverSide;
     sideOffset?: number;
     initialFocus?: OverlayFocusTarget;
@@ -1059,14 +1119,17 @@ export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function PopoverContent({ side, sideOffset, className, children, ...rest }: PopoverContentProps): import("react").JSX.Element;
 export interface PopoverTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
 }
 declare function PopoverTitle({ className, ...rest }: PopoverTitleProps): import("react").JSX.Element;
 export interface PopoverDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
     children?: ReactNode;
 }
 declare function PopoverDescription({ className, ...rest }: PopoverDescriptionProps): import("react").JSX.Element;
 export interface PopoverCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     children?: ReactNode;
 }
@@ -1082,7 +1145,7 @@ export {};
 
 
 // ---- preview-card/preview-card.d.ts ----
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 export interface PreviewCardRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -1091,19 +1154,20 @@ export interface PreviewCardRootProps {
 }
 declare function PreviewCardRoot({ open, defaultOpen, onOpenChange, ...rest }: PreviewCardRootProps): import("react").JSX.Element;
 export interface PreviewCardTriggerProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    ref?: Ref<HTMLAnchorElement>;
     delay?: number;
     closeDelay?: number;
     children?: ReactNode;
 }
 declare function PreviewCardTrigger({ className, ...rest }: PreviewCardTriggerProps): import("react").JSX.Element;
 export type PreviewCardSide = "top" | "right" | "bottom" | "left";
-export interface PreviewCardContentProps {
+export interface PreviewCardContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     side?: PreviewCardSide;
     sideOffset?: number;
-    className?: string;
     children?: ReactNode;
 }
-declare function PreviewCardContent({ side, sideOffset, className, children, }: PreviewCardContentProps): import("react").JSX.Element;
+declare function PreviewCardContent({ side, sideOffset, className, children, ...rest }: PreviewCardContentProps): import("react").JSX.Element;
 export declare const PreviewCard: typeof PreviewCardRoot & {
     Trigger: typeof PreviewCardTrigger;
     Content: typeof PreviewCardContent;
@@ -1125,8 +1189,9 @@ export declare function Progress({ ref, value, min, max, label, showValue, class
 
 
 // ---- radio-group/radio-group.d.ts ----
-import type { ReactNode } from "react";
-export interface RadioGroupProps<Value = string> {
+import type { HTMLAttributes, LabelHTMLAttributes, ReactNode, Ref } from "react";
+export interface RadioGroupProps<Value = string> extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
     name?: string;
     value?: Value;
     defaultValue?: Value;
@@ -1134,19 +1199,16 @@ export interface RadioGroupProps<Value = string> {
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
-    className?: string;
-    "aria-label"?: string;
-    "aria-labelledby"?: string;
-    "aria-describedby"?: string;
     children?: ReactNode;
 }
 declare function RadioGroupRoot<Value = string>({ disabled, className, onValueChange, "aria-describedby": ariaDescribedBy, ...rest }: RadioGroupProps<Value>): import("react").JSX.Element;
-export interface RadioGroupItemProps<Value = string> {
+export interface RadioGroupItemProps<Value = string> extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "value"> {
+    ref?: Ref<HTMLLabelElement>;
     value: Value;
     disabled?: boolean;
     children?: ReactNode;
 }
-declare function RadioGroupItem<Value = string>({ value, disabled, children, }: RadioGroupItemProps<Value>): import("react").JSX.Element;
+declare function RadioGroupItem<Value = string>({ value, disabled, className, children, ...rest }: RadioGroupItemProps<Value>): import("react").JSX.Element;
 export declare const RadioGroup: typeof RadioGroupRoot & {
     Item: typeof RadioGroupItem;
 };
@@ -1166,7 +1228,7 @@ export declare function ScrollArea({ ref, orientation, maxHeight, className, sty
 
 
 // ---- select/select.d.ts ----
-import type { ReactNode } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface SelectRootProps<Value = unknown> {
     value?: Value;
@@ -1183,30 +1245,26 @@ export interface SelectRootProps<Value = unknown> {
     children?: ReactNode;
 }
 declare function SelectRoot<Value = unknown>({ disabled, onValueChange, ...rest }: SelectRootProps<Value>): import("react").JSX.Element;
-export interface SelectTriggerProps {
-    id?: string;
-    className?: string;
-    "aria-label"?: string;
-    "aria-labelledby"?: string;
-    "aria-describedby"?: string;
-    "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
+export interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     children?: ReactNode;
 }
-declare function SelectTrigger({ id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, }: SelectTriggerProps): import("react").JSX.Element;
-export interface SelectValueProps {
+declare function SelectTrigger({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, ...rest }: SelectTriggerProps): import("react").JSX.Element;
+export interface SelectValueProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
     placeholder?: string;
 }
-declare function SelectValue({ placeholder }: SelectValueProps): import("react").JSX.Element;
-export interface SelectContentProps {
-    className?: string;
+declare function SelectValue({ placeholder, ...rest }: SelectValueProps): import("react").JSX.Element;
+export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
-declare function SelectContent({ className, finalFocus, children, }: SelectContentProps): import("react").JSX.Element;
-export interface SelectItemProps {
+declare function SelectContent({ className, finalFocus, children, ...rest }: SelectContentProps): import("react").JSX.Element;
+export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     value: unknown;
     disabled?: boolean;
-    className?: string;
     children?: ReactNode;
 }
 declare function SelectItem({ className, children, ...rest }: SelectItemProps): import("react").JSX.Element;
@@ -1230,7 +1288,7 @@ export declare function Separator({ ref, orientation, className, ...rest }: Sepa
 
 
 // ---- sidebar/sidebar.d.ts ----
-import { type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, type HTMLAttributes, type MouseEventHandler, type ReactNode, type Ref } from "react";
 export interface UseSidebarResult {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -1240,6 +1298,7 @@ export interface UseSidebarResult {
 }
 export declare function useSidebar(): UseSidebarResult;
 export interface SidebarProviderProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
@@ -1250,45 +1309,56 @@ export interface SidebarProviderProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function SidebarProvider({ open, defaultOpen, onOpenChange, mobileOpen, defaultMobileOpen, onMobileOpenChange, className, children, ...rest }: SidebarProviderProps): import("react").JSX.Element;
 export interface SidebarRootProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
     mobileTitle?: string;
     children?: ReactNode;
 }
 declare function SidebarRoot({ mobileTitle, className, children, ...rest }: SidebarRootProps): import("react").JSX.Element;
 export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function SidebarHeader({ className, ...rest }: SidebarHeaderProps): import("react").JSX.Element;
-export interface SidebarContentProps extends HTMLAttributes<HTMLDivElement> {
+export interface SidebarContentProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
     children?: ReactNode;
 }
 declare function SidebarContent({ className, ...rest }: SidebarContentProps): import("react").JSX.Element;
 export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function SidebarFooter({ className, ...rest }: SidebarFooterProps): import("react").JSX.Element;
 export interface SidebarGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function SidebarGroup({ className, ...rest }: SidebarGroupProps): import("react").JSX.Element;
 export interface SidebarGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function SidebarGroupLabel({ className, ...rest }: SidebarGroupLabelProps): import("react").JSX.Element;
-export interface SidebarItemProps {
+export interface SidebarItemProps extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
+    ref?: Ref<HTMLAnchorElement> | Ref<HTMLButtonElement> | Ref<HTMLElement>;
     active?: boolean;
     icon?: ReactNode;
     href?: string;
-    className?: string;
+    target?: string;
+    rel?: string;
+    disabled?: boolean;
+    type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    onClick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
     children?: ReactNode;
-    onClick?: () => void;
-    "aria-label"?: string;
 }
-declare function SidebarItem({ active, icon, href, className, children, onClick, "aria-label": ariaLabel, }: SidebarItemProps): import("react").JSX.Element;
+declare function SidebarItem({ ref, active, icon, href, target, rel, disabled, type, className, children, onClick, ...rest }: SidebarItemProps): import("react").JSX.Element;
 export interface SidebarInsetProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
 declare function SidebarInset({ className, ...rest }: SidebarInsetProps): import("react").JSX.Element;
 export interface SidebarTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     mobile?: boolean;
 }
 declare function SidebarTrigger({ mobile, className, onClick, "aria-label": ariaLabel, children, ...rest }: SidebarTriggerProps): import("react").JSX.Element;
@@ -1382,8 +1452,8 @@ export declare function Stepper({ ref, steps, currentStep, orientation, classNam
 
 
 // ---- switch/switch.d.ts ----
-import type { Ref } from "react";
-export interface SwitchProps {
+import type { HTMLAttributes, Ref } from "react";
+export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
@@ -1392,12 +1462,6 @@ export interface SwitchProps {
     required?: boolean;
     readOnly?: boolean;
     name?: string;
-    id?: string;
-    className?: string;
-    "aria-label"?: string;
-    "aria-labelledby"?: string;
-    "aria-describedby"?: string;
-    "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
 }
 export declare function Switch({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SwitchProps): import("react").JSX.Element;
 
@@ -1407,13 +1471,27 @@ import type { HTMLAttributes, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTML
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
     ref?: Ref<HTMLTableElement>;
 }
-export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableRowProps = HTMLAttributes<HTMLTableRowElement>;
-export type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
-export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
-export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
+export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
+    ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableBodyProps extends HTMLAttributes<HTMLTableSectionElement> {
+    ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableFooterProps extends HTMLAttributes<HTMLTableSectionElement> {
+    ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
+    ref?: Ref<HTMLTableRowElement>;
+}
+export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
+    ref?: Ref<HTMLTableCellElement>;
+}
+export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+    ref?: Ref<HTMLTableCellElement>;
+}
+export interface TableCaptionProps extends HTMLAttributes<HTMLTableCaptionElement> {
+    ref?: Ref<HTMLTableCaptionElement>;
+}
 declare function TableRoot({ ref, className, ...rest }: TableRootProps): import("react").JSX.Element;
 declare function TableHeader({ className, ...rest }: TableHeaderProps): import("react").JSX.Element;
 declare function TableBody({ className, ...rest }: TableBodyProps): import("react").JSX.Element;
@@ -1435,29 +1513,33 @@ export {};
 
 
 // ---- tabs/tabs.d.ts ----
-import type { ReactNode } from "react";
-export interface TabsRootProps {
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+export interface TabsRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
     value?: unknown;
     defaultValue?: unknown;
     onValueChange?: (value: unknown) => void;
     children?: ReactNode;
 }
-declare function TabsRoot({ onValueChange, ...rest }: TabsRootProps): import("react").JSX.Element;
-export interface TabsListProps {
+declare function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps): import("react").JSX.Element;
+export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
-declare function TabsList({ children }: TabsListProps): import("react").JSX.Element;
-export interface TabsTabProps {
+declare function TabsList({ className, children, ...rest }: TabsListProps): import("react").JSX.Element;
+export interface TabsTabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+    ref?: Ref<HTMLButtonElement>;
     value: unknown;
     disabled?: boolean;
     children?: ReactNode;
 }
-declare function TabsTab({ children, ...rest }: TabsTabProps): import("react").JSX.Element;
-export interface TabsPanelProps {
+declare function TabsTab({ className, children, ...rest }: TabsTabProps): import("react").JSX.Element;
+export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     value: unknown;
     children?: ReactNode;
 }
-declare function TabsPanel({ children, ...rest }: TabsPanelProps): import("react").JSX.Element;
+declare function TabsPanel({ className, children, ...rest }: TabsPanelProps): import("react").JSX.Element;
 export declare const Tabs: typeof TabsRoot & {
     List: typeof TabsList;
     Tab: typeof TabsTab;
@@ -1523,10 +1605,11 @@ export {};
 
 
 // ---- toggle-group/toggle-group.d.ts ----
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { Toggle } from "../toggle/toggle.js";
 export type ToggleGroupOrientation = "horizontal" | "vertical";
 export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLDivElement>;
     value?: readonly string[];
     defaultValue?: readonly string[];
     onValueChange?: (value: string[]) => void;
@@ -1557,9 +1640,10 @@ export declare function Toggle({ ref, pressed, defaultPressed, onPressedChange, 
 
 
 // ---- toolbar/toolbar.d.ts ----
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 export type ToolbarOrientation = "horizontal" | "vertical";
 export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     orientation?: ToolbarOrientation;
     disabled?: boolean;
     loopFocus?: boolean;
@@ -1567,20 +1651,24 @@ export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function ToolbarRoot({ className, ...rest }: ToolbarRootProps): import("react").JSX.Element;
 export interface ToolbarGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function ToolbarGroup({ className, ...rest }: ToolbarGroupProps): import("react").JSX.Element;
 export interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
     focusableWhenDisabled?: boolean;
     children?: ReactNode;
 }
 declare function ToolbarButton({ className, ...rest }: ToolbarButtonProps): import("react").JSX.Element;
 export interface ToolbarLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    ref?: Ref<HTMLAnchorElement>;
     children?: ReactNode;
 }
 declare function ToolbarLink({ className, ...rest }: ToolbarLinkProps): import("react").JSX.Element;
 export interface ToolbarSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
 }
 declare function ToolbarSeparator({ className, ...rest }: ToolbarSeparatorProps): import("react").JSX.Element;
 export declare const Toolbar: typeof ToolbarRoot & {
@@ -1593,13 +1681,13 @@ export {};
 
 
 // ---- tooltip/tooltip.d.ts ----
-import type { ReactElement, ReactNode } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export type TooltipSide = "top" | "right" | "bottom" | "left";
-export interface TooltipProps {
+export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, "content" | "children"> {
+    ref?: Ref<HTMLDivElement>;
     content: ReactNode;
     side?: TooltipSide;
     sideOffset?: number;
-    className?: string;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;

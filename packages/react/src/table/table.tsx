@@ -10,13 +10,31 @@ import styles from "./table.module.css";
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
   ref?: Ref<HTMLTableElement>;
 }
-export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
-export type TableRowProps = HTMLAttributes<HTMLTableRowElement>;
-export type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
-export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
-export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
+export interface TableHeaderProps
+  extends HTMLAttributes<HTMLTableSectionElement> {
+  ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableBodyProps
+  extends HTMLAttributes<HTMLTableSectionElement> {
+  ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableFooterProps
+  extends HTMLAttributes<HTMLTableSectionElement> {
+  ref?: Ref<HTMLTableSectionElement>;
+}
+export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
+  ref?: Ref<HTMLTableRowElement>;
+}
+export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
+  ref?: Ref<HTMLTableCellElement>;
+}
+export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+  ref?: Ref<HTMLTableCellElement>;
+}
+export interface TableCaptionProps
+  extends HTMLAttributes<HTMLTableCaptionElement> {
+  ref?: Ref<HTMLTableCaptionElement>;
+}
 
 function TableRoot({ ref, className, ...rest }: TableRootProps) {
   const classes = [styles.table, className].filter(Boolean).join(" ");

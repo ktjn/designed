@@ -11,12 +11,23 @@ import styles from "./breadcrumb.module.css";
 export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
   ref?: Ref<HTMLElement>;
 }
-export type BreadcrumbListProps = OlHTMLAttributes<HTMLOListElement>;
-export type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
-export type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
-export type BreadcrumbPageProps = HTMLAttributes<HTMLSpanElement>;
+export interface BreadcrumbListProps
+  extends OlHTMLAttributes<HTMLOListElement> {
+  ref?: Ref<HTMLOListElement>;
+}
+export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
+  ref?: Ref<HTMLLIElement>;
+}
+export interface BreadcrumbLinkProps
+  extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: Ref<HTMLAnchorElement>;
+}
+export interface BreadcrumbPageProps extends HTMLAttributes<HTMLSpanElement> {
+  ref?: Ref<HTMLSpanElement>;
+}
 export interface BreadcrumbSeparatorProps
   extends LiHTMLAttributes<HTMLLIElement> {
+  ref?: Ref<HTMLLIElement>;
   children?: ReactNode;
 }
 

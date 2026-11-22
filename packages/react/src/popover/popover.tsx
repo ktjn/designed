@@ -4,6 +4,7 @@ import type {
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -46,6 +47,7 @@ function PopoverRoot({
 
 export interface PopoverTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }
@@ -69,6 +71,7 @@ function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps) {
 export type PopoverSide = "top" | "right" | "bottom" | "left";
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   side?: PopoverSide;
   sideOffset?: number;
   initialFocus?: OverlayFocusTarget;
@@ -109,6 +112,7 @@ function PopoverContent({
 }
 
 export interface PopoverTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  ref?: Ref<HTMLHeadingElement>;
   children?: ReactNode;
 }
 
@@ -124,6 +128,7 @@ function PopoverTitle({ className, ...rest }: PopoverTitleProps) {
 
 export interface PopoverDescriptionProps
   extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
   children?: ReactNode;
 }
 
@@ -141,6 +146,7 @@ function PopoverDescription({ className, ...rest }: PopoverDescriptionProps) {
 
 export interface PopoverCloseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   children?: ReactNode;
 }

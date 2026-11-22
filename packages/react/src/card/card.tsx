@@ -7,23 +7,28 @@ export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  ref?: Ref<HTMLHeadingElement>;
   children?: ReactNode;
 }
 
 export interface CardDescriptionProps
   extends HTMLAttributes<HTMLParagraphElement> {
+  ref?: Ref<HTMLParagraphElement>;
   children?: ReactNode;
 }
 
 export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
 }
 
