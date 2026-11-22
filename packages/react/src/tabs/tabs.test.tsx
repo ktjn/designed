@@ -57,6 +57,37 @@ describe("Tabs", () => {
     expect(value).toBe("password");
   });
 
+  it("exposes the vertical orientation on the tablist", () => {
+    render(
+      <Tabs defaultValue="account" orientation="vertical">
+        <Tabs.List>
+          <Tabs.Tab value="account">Account</Tabs.Tab>
+          <Tabs.Tab value="password">Password</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="account">Account settings</Tabs.Panel>
+      </Tabs>,
+    );
+    expect(screen.getByRole("tablist").getAttribute("aria-orientation")).toBe(
+      "vertical",
+    );
+  });
+
+  it("keeps an inactive panel's DOM mounted when keepMounted is set", () => {
+    render(
+      <Tabs defaultValue="account">
+        <Tabs.List>
+          <Tabs.Tab value="account">Account</Tabs.Tab>
+          <Tabs.Tab value="password">Password</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="account">Account settings</Tabs.Panel>
+        <Tabs.Panel value="password" keepMounted>
+          Password settings
+        </Tabs.Panel>
+      </Tabs>,
+    );
+    expect(screen.getByText("Password settings")).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<BasicTabs />);
     expect(await axe(container)).toHaveNoViolations();

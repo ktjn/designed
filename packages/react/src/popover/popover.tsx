@@ -69,11 +69,15 @@ function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps) {
 }
 
 export type PopoverSide = "top" | "right" | "bottom" | "left";
+export type PopoverAlign = "start" | "center" | "end";
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   side?: PopoverSide;
   sideOffset?: number;
+  align?: PopoverAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<PopoverSide, number>>;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
@@ -82,6 +86,9 @@ export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
 function PopoverContent({
   side = "bottom",
   sideOffset = 8,
+  align,
+  alignOffset,
+  collisionPadding,
   className,
   children,
   ...rest
@@ -94,6 +101,9 @@ function PopoverContent({
         <BasePopover.Positioner
           side={side}
           sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
           className={styles.positioner}
         >
           <BasePopover.Popup

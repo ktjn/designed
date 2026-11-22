@@ -64,19 +64,43 @@ function MenuTrigger({ render, className, ...rest }: MenuTriggerProps) {
   );
 }
 
+export type MenuSide = "top" | "right" | "bottom" | "left";
+export type MenuAlign = "start" | "center" | "end";
+
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
+  side?: MenuSide;
+  sideOffset?: number;
+  align?: MenuAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<MenuSide, number>>;
   children?: ReactNode;
 }
 
-function MenuContent({ className, children, ...rest }: MenuContentProps) {
+function MenuContent({
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
+  className,
+  children,
+  ...rest
+}: MenuContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
       <span hidden ref={scopeRef} />
       <BaseMenu.Portal container={container}>
-        <BaseMenu.Positioner sideOffset={4} className={styles.positioner}>
+        <BaseMenu.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+          className={styles.positioner}
+        >
           <BaseMenu.Popup
             data-slot="menu-content"
             className={

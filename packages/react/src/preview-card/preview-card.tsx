@@ -63,18 +63,25 @@ function PreviewCardTrigger({ className, ...rest }: PreviewCardTriggerProps) {
 }
 
 export type PreviewCardSide = "top" | "right" | "bottom" | "left";
+export type PreviewCardAlign = "start" | "center" | "end";
 
 export interface PreviewCardContentProps
   extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   side?: PreviewCardSide;
   sideOffset?: number;
+  align?: PreviewCardAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<PreviewCardSide, number>>;
   children?: ReactNode;
 }
 
 function PreviewCardContent({
   side = "bottom",
   sideOffset = 8,
+  align,
+  alignOffset,
+  collisionPadding,
   className,
   children,
   ...rest
@@ -87,6 +94,9 @@ function PreviewCardContent({
         <BasePreviewCard.Positioner
           side={side}
           sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
           className={styles.positioner}
         >
           <BasePreviewCard.Popup

@@ -8,6 +8,8 @@ import type {
 } from "react";
 import styles from "./accordion.module.css";
 
+export type AccordionOrientation = "horizontal" | "vertical";
+
 export interface AccordionRootProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   ref?: Ref<HTMLDivElement>;
@@ -16,6 +18,7 @@ export interface AccordionRootProps
   onValueChange?: (value: unknown[]) => void;
   disabled?: boolean;
   multiple?: boolean;
+  orientation?: AccordionOrientation;
   children?: ReactNode;
 }
 
@@ -83,6 +86,7 @@ function AccordionTrigger({
 
 export interface AccordionPanelProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  keepMounted?: boolean;
   children?: ReactNode;
 }
 

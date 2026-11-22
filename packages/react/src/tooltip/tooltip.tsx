@@ -8,6 +8,7 @@ import {
 import styles from "./tooltip.module.css";
 
 export type TooltipSide = "top" | "right" | "bottom" | "left";
+export type TooltipAlign = "start" | "center" | "end";
 
 export interface TooltipProviderProps {
   delay?: number;
@@ -26,6 +27,9 @@ export interface TooltipProps
   content: ReactNode;
   side?: TooltipSide;
   sideOffset?: number;
+  align?: TooltipAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<TooltipSide, number>>;
   disabled?: boolean;
   delay?: number;
   closeDelay?: number;
@@ -40,6 +44,9 @@ function TooltipRoot({
   content,
   side = "top",
   sideOffset = 8,
+  align,
+  alignOffset,
+  collisionPadding,
   disabled,
   delay,
   closeDelay,
@@ -91,6 +98,9 @@ function TooltipRoot({
           <BaseTooltip.Positioner
             side={side}
             sideOffset={sideOffset}
+            align={align}
+            alignOffset={alignOffset}
+            collisionPadding={collisionPadding}
             className={styles.positioner}
           >
             <BaseTooltip.Popup

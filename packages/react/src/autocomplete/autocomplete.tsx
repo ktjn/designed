@@ -7,6 +7,9 @@ import {
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./autocomplete.module.css";
 
+export type AutocompleteSide = "top" | "right" | "bottom" | "left";
+export type AutocompleteAlign = "start" | "center" | "end";
+
 export interface AutocompleteProps<Value = string>
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -26,6 +29,11 @@ export interface AutocompleteProps<Value = string>
   itemToStringValue?: (item: Value) => string;
   renderItem?: (item: Value) => ReactNode;
   popupClassName?: string;
+  side?: AutocompleteSide;
+  sideOffset?: number;
+  align?: AutocompleteAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<AutocompleteSide, number>>;
 }
 
 function defaultItemLabel(item: unknown): ReactNode {
@@ -54,6 +62,11 @@ export function Autocomplete<Value = string>({
   itemToStringValue,
   renderItem,
   popupClassName,
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
@@ -107,7 +120,11 @@ export function Autocomplete<Value = string>({
       <span hidden ref={scopeRef} />
       <BaseAutocomplete.Portal container={container}>
         <BaseAutocomplete.Positioner
-          sideOffset={4}
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
           className={styles.positioner}
         >
           <BaseAutocomplete.Popup

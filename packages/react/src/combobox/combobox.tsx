@@ -170,12 +170,20 @@ function ComboboxInput({
   );
 }
 
+export type ComboboxSide = "top" | "right" | "bottom" | "left";
+export type ComboboxAlign = "start" | "center" | "end";
+
 export interface ComboboxContentProps<Value = unknown>
   extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   emptyMessage?: ReactNode;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
+  side?: ComboboxSide;
+  sideOffset?: number;
+  align?: ComboboxAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<ComboboxSide, number>>;
   renderItem?: (item: ComboboxItem<Value>) => ReactNode;
 }
 
@@ -184,6 +192,11 @@ function ComboboxContent<Value = unknown>({
   emptyMessage = "No results",
   initialFocus,
   finalFocus,
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
   renderItem,
   ...rest
 }: ComboboxContentProps<Value>) {
@@ -192,7 +205,14 @@ function ComboboxContent<Value = unknown>({
     <>
       <span hidden ref={scopeRef} />
       <BaseCombobox.Portal container={container}>
-        <BaseCombobox.Positioner sideOffset={4} className={styles.positioner}>
+        <BaseCombobox.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+          className={styles.positioner}
+        >
           <BaseCombobox.Popup
             data-slot="combobox-content"
             initialFocus={initialFocus}

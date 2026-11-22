@@ -20,6 +20,9 @@ export interface SelectRootProps<Value = unknown> {
   value?: Value;
   defaultValue?: Value;
   onValueChange?: (value: Value | null) => void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
@@ -33,16 +36,24 @@ export interface SelectRootProps<Value = unknown> {
 function SelectRoot<Value = unknown>({
   disabled,
   onValueChange,
+  open,
+  defaultOpen,
+  onOpenChange,
   ...rest
 }: SelectRootProps<Value>) {
   const field = useFieldContext();
-  const activity = usePortalActivity();
+  const activity = usePortalActivity(open, defaultOpen);
   return (
     <PortalActivityContext.Provider value={activity.active}>
       <BaseSelect.Root
         disabled={disabled ?? field?.disabled}
         onValueChange={(value) => onValueChange?.(value)}
-        onOpenChange={activity.onOpenChange}
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
       />
@@ -100,15 +111,28 @@ function SelectValue({ placeholder, ...rest }: SelectValueProps) {
   );
 }
 
+export type SelectSide = "top" | "right" | "bottom" | "left";
+export type SelectAlign = "start" | "center" | "end";
+
 export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
+  side?: SelectSide;
+  sideOffset?: number;
+  align?: SelectAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<SelectSide, number>>;
   children?: ReactNode;
 }
 
 function SelectContent({
   className,
   finalFocus,
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
   children,
   ...rest
 }: SelectContentProps) {
@@ -117,7 +141,14 @@ function SelectContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseSelect.Portal container={container}>
-        <BaseSelect.Positioner sideOffset={4} className={styles.positioner}>
+        <BaseSelect.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+          className={styles.positioner}
+        >
           <BaseSelect.Popup
             data-slot="select-content"
             finalFocus={finalFocus}

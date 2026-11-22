@@ -19,6 +19,9 @@ import {
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./date-picker.module.css";
 
+export type DatePickerSide = "top" | "right" | "bottom" | "left";
+export type DatePickerAlign = "start" | "center" | "end";
+
 export interface DatePickerProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -34,6 +37,11 @@ export interface DatePickerProps
   weekStartsOn?: WeekdayIndex;
   invalid?: boolean;
   openCalendarLabel?: string;
+  side?: DatePickerSide;
+  sideOffset?: number;
+  align?: DatePickerAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
 
 function validateDateText(text: string, min?: string, max?: string): string {
@@ -64,6 +72,11 @@ export function DatePicker({
   readOnly,
   placeholder = "YYYY-MM-DD",
   openCalendarLabel = "Choose date",
+  side = "bottom",
+  sideOffset = 6,
+  align = "end",
+  alignOffset,
+  collisionPadding,
   id,
   className,
   onBlur,
@@ -205,9 +218,11 @@ export function DatePicker({
       <span hidden ref={scopeRef} />
       <BasePopover.Portal container={container}>
         <BasePopover.Positioner
-          side="bottom"
-          align="end"
-          sideOffset={6}
+          side={side}
+          align={align}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
           className={styles.positioner}
         >
           <BasePopover.Popup

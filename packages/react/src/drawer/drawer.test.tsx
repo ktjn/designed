@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { Button } from "../button/button";
 import { Drawer } from "./drawer";
@@ -83,6 +83,41 @@ describe("Drawer", () => {
       expect(document.activeElement).toBe(
         screen.getByRole("button", { name: "After drawer" }),
       );
+    });
+  });
+
+  it("hides the corner close button when showCloseButton is false", async () => {
+    const user = userEvent.setup();
+    render(
+      <Drawer>
+        <Drawer.Trigger>Open drawer</Drawer.Trigger>
+        <Drawer.Content showCloseButton={false}>
+          <Drawer.Title>Filters</Drawer.Title>
+          <Drawer.Close>Done</Drawer.Close>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open drawer" }));
+    await screen.findByRole("dialog", { name: "Filters" });
+    expect(screen.queryByRole("button", { name: "Close" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Done" })).toBeTruthy();
+  });
+
+  it("calls onOpenChangeComplete after the open transition finishes", async () => {
+    const user = userEvent.setup();
+    const onOpenChangeComplete = vi.fn();
+    render(
+      <Drawer onOpenChangeComplete={onOpenChangeComplete}>
+        <Drawer.Trigger>Open drawer</Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Title>Filters</Drawer.Title>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open drawer" }));
+    await screen.findByRole("dialog", { name: "Filters" });
+    await waitFor(() => {
+      expect(onOpenChangeComplete).toHaveBeenCalledWith(true);
     });
   });
 

@@ -20,7 +20,9 @@ export interface DialogRootProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
   modal?: boolean | "trap-focus";
+  disablePointerDismissal?: boolean;
   children?: ReactNode;
 }
 
@@ -28,6 +30,7 @@ function DialogRoot({
   open,
   defaultOpen,
   onOpenChange,
+  onOpenChangeComplete,
   ...rest
 }: DialogRootProps) {
   const activity = usePortalActivity(open, defaultOpen);
@@ -40,7 +43,10 @@ function DialogRoot({
           activity.onOpenChange(next);
           onOpenChange?.(next);
         }}
-        onOpenChangeComplete={activity.onOpenChangeComplete}
+        onOpenChangeComplete={(next) => {
+          activity.onOpenChangeComplete(next);
+          onOpenChangeComplete?.(next);
+        }}
         {...rest}
       />
     </PortalActivityContext.Provider>
@@ -74,6 +80,8 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
   closeLabel?: string;
+  showCloseButton?: boolean;
+  backdropClassName?: string;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
 }
@@ -81,6 +89,8 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
 function DialogContent({
   children,
   closeLabel = "Close",
+  showCloseButton = true,
+  backdropClassName,
   className,
   ...rest
 }: DialogContentProps) {
@@ -89,18 +99,26 @@ function DialogContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseDialog.Portal container={container}>
-        <BaseDialog.Backdrop className={styles.backdrop} />
+        <BaseDialog.Backdrop
+          className={
+            backdropClassName
+              ? `${styles.backdrop} ${backdropClassName}`
+              : styles.backdrop
+          }
+        />
         <BaseDialog.Popup
           data-slot="dialog-content"
           className={className ? `${styles.popup} ${className}` : styles.popup}
           {...rest}
         >
-          <BaseDialog.Close
-            aria-label={closeLabel}
-            className={styles.iconClose}
-          >
-            <CloseIcon aria-hidden />
-          </BaseDialog.Close>
+          {showCloseButton ? (
+            <BaseDialog.Close
+              aria-label={closeLabel}
+              className={styles.iconClose}
+            >
+              <CloseIcon aria-hidden />
+            </BaseDialog.Close>
+          ) : null}
           {children}
         </BaseDialog.Popup>
       </BaseDialog.Portal>

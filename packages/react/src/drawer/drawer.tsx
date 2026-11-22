@@ -23,6 +23,9 @@ export interface DrawerRootProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
+  modal?: boolean | "trap-focus";
+  disablePointerDismissal?: boolean;
   side?: DrawerSide;
   children: ReactNode;
 }
@@ -38,6 +41,8 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   side?: DrawerSide;
   closeLabel?: string;
+  showCloseButton?: boolean;
+  backdropClassName?: string;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
   children: ReactNode;
@@ -72,8 +77,10 @@ function DrawerRoot({
   open,
   defaultOpen,
   onOpenChange,
+  onOpenChangeComplete,
   side = "right",
   children,
+  ...rest
 }: DrawerRootProps) {
   const activity = usePortalActivity(open, defaultOpen);
   return (
@@ -87,7 +94,11 @@ function DrawerRoot({
             activity.onOpenChange(next);
             onOpenChange?.(next);
           }}
-          onOpenChangeComplete={activity.onOpenChangeComplete}
+          onOpenChangeComplete={(next) => {
+            activity.onOpenChangeComplete(next);
+            onOpenChangeComplete?.(next);
+          }}
+          {...rest}
         >
           {children}
         </BaseDrawer.Root>
@@ -122,6 +133,8 @@ function DrawerTrigger({
 function DrawerContent({
   side,
   closeLabel = "Close",
+  showCloseButton = true,
+  backdropClassName,
   className,
   children,
   ...rest
@@ -134,7 +147,13 @@ function DrawerContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseDrawer.Portal container={container}>
-        <BaseDrawer.Backdrop className={styles.backdrop} />
+        <BaseDrawer.Backdrop
+          className={
+            backdropClassName
+              ? `${styles.backdrop} ${backdropClassName}`
+              : styles.backdrop
+          }
+        />
         <BaseDrawer.Viewport className={styles.viewport}>
           <BaseDrawer.Popup
             data-slot="drawer-content"
@@ -144,12 +163,14 @@ function DrawerContent({
             }
             {...rest}
           >
-            <BaseDrawer.Close
-              aria-label={closeLabel}
-              className={styles.iconClose}
-            >
-              <CloseIcon aria-hidden />
-            </BaseDrawer.Close>
+            {showCloseButton ? (
+              <BaseDrawer.Close
+                aria-label={closeLabel}
+                className={styles.iconClose}
+              >
+                <CloseIcon aria-hidden />
+              </BaseDrawer.Close>
+            ) : null}
             {children}
           </BaseDrawer.Popup>
         </BaseDrawer.Viewport>
