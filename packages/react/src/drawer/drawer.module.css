@@ -51,6 +51,11 @@
   translate: 100% 0;
 }
 
+.popup[data-side="right"]:dir(rtl)[data-starting-style],
+.popup[data-side="right"]:dir(rtl)[data-ending-style] {
+  translate: -100% 0;
+}
+
 .popup[data-side="left"] {
   inset-block: 0;
   inset-inline-start: 0;
@@ -63,6 +68,11 @@
 .popup[data-side="left"][data-ending-style] {
   opacity: 0;
   translate: -100% 0;
+}
+
+.popup[data-side="left"]:dir(rtl)[data-starting-style],
+.popup[data-side="left"]:dir(rtl)[data-ending-style] {
+  translate: 100% 0;
 }
 
 .popup[data-side="bottom"] {

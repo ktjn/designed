@@ -44,7 +44,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .backdrop,
-  .popup {
+  .popup,
+  .iconClose {
     transition: none;
   }
 }

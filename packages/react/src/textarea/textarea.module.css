@@ -44,6 +44,12 @@
   border-color: var(--ds-color-action-danger-default);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
   .root {
     border-color: ButtonText;

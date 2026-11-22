@@ -14,7 +14,7 @@
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
   line-height: var(--ds-font-line-height-100);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: border-color 120ms ease;
 }
@@ -92,6 +92,12 @@
 .item[data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger {
+    transition: none;
+  }
 }
 
 @media (forced-colors: active) {

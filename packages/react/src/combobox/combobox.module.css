@@ -75,6 +75,12 @@
   padding-inline: var(--ds-space-control-inline);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
   .input,
   .popup {

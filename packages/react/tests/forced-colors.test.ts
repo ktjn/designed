@@ -9,6 +9,7 @@ const srcDir = path.join(
 );
 
 const stylesheetsWithForcedColors = [
+  "accordion/accordion.module.css",
   "autocomplete/autocomplete.module.css",
   "button/button.module.css",
   "button-group/button-group.module.css",
@@ -25,10 +26,12 @@ const stylesheetsWithForcedColors = [
   "input/input.module.css",
   "input-group/input-group.module.css",
   "kbd/kbd.module.css",
+  "link/link.module.css",
   "menu/menu.module.css",
   "meter/meter.module.css",
   "number-field/number-field.module.css",
   "otp-field/otp-field.module.css",
+  "pagination/pagination.module.css",
   "popover/popover.module.css",
   "preview-card/preview-card.module.css",
   "progress/progress.module.css",
@@ -39,10 +42,12 @@ const stylesheetsWithForcedColors = [
   "slider/slider.module.css",
   "stepper/stepper.module.css",
   "switch/switch.module.css",
+  "tabs/tabs.module.css",
   "tag/tag.module.css",
   "textarea/textarea.module.css",
   "toast/toast.module.css",
   "toggle/toggle.module.css",
+  "toggle-group/toggle-group.module.css",
   "toolbar/toolbar.module.css",
   "tooltip/tooltip.module.css",
 ];
