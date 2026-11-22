@@ -26,7 +26,7 @@ describe("Switch", () => {
       />,
     );
     await user.click(screen.getByRole("switch"));
-    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
   });
 
   it("toggles via keyboard when focused", async () => {
@@ -40,7 +40,7 @@ describe("Switch", () => {
     );
     await user.tab();
     await user.keyboard(" ");
-    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
   });
 
   it("has no automatically detectable accessibility violations", async () => {

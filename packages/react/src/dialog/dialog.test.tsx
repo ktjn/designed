@@ -234,6 +234,49 @@ describe("Dialog", () => {
     });
   });
 
+  it("exposes the change reason and a cancel() escape hatch on onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Dialog onOpenChange={onOpenChange}>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+    const [, closeDetails] = onOpenChange.mock.calls.at(-1) ?? [];
+    expect(closeDetails?.reason).toBe("escape-key");
+    expect(typeof closeDetails?.cancel).toBe("function");
+  });
+
+  it("cancels the close when onOpenChange calls eventDetails.cancel()", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog
+        onOpenChange={(next, eventDetails) => {
+          if (!next) {
+            eventDetails?.cancel();
+          }
+        }}
+      >
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("dialog")).toBeTruthy();
+  });
+
   it("hides the corner close button when showCloseButton is false", async () => {
     const user = userEvent.setup();
     render(

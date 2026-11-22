@@ -12,6 +12,7 @@ import {
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./combobox.module.css";
 
 export interface ComboboxItem<Value> {
@@ -35,6 +36,7 @@ export interface ComboboxRootProps<
     value:
       | ComboboxValue<Value, Multiple>
       | (Multiple extends true ? never : null),
+    eventDetails?: ChangeEventDetails,
   ) => void;
   multiple?: Multiple;
   inputValue?: string;
@@ -47,7 +49,7 @@ export interface ComboboxRootProps<
   filter?: ((item: ComboboxItem<Value>, query: string) => boolean) | null;
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   children?: ReactNode;
 }
 
@@ -116,12 +118,14 @@ function ComboboxRoot<
         defaultValue={resolveValue(defaultValue) as never}
         onValueChange={(
           next: ComboboxItem<Value> | ComboboxItem<Value>[] | null,
+          eventDetails,
         ) => {
           if (multiple) {
             onValueChange?.(
               (next as ComboboxItem<Value>[]).map(
                 (item) => item.value,
               ) as ComboboxValue<Value, Multiple>,
+              eventDetails,
             );
           } else {
             const item = next as ComboboxItem<Value> | null;
@@ -129,13 +133,14 @@ function ComboboxRoot<
               (item ? item.value : null) as
                 | ComboboxValue<Value, Multiple>
                 | (Multiple extends true ? never : null),
+              eventDetails,
             );
           }
         }}
         onInputValueChange={(inputValue) => onInputValueChange?.(inputValue)}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}

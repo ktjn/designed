@@ -6,6 +6,7 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./tabs.module.css";
 
 export type TabsOrientation = "horizontal" | "vertical";
@@ -15,7 +16,7 @@ export interface TabsRootProps
   ref?: Ref<HTMLDivElement>;
   value?: unknown;
   defaultValue?: unknown;
-  onValueChange?: (value: unknown) => void;
+  onValueChange?: (value: unknown, eventDetails?: ChangeEventDetails) => void;
   orientation?: TabsOrientation;
   children?: ReactNode;
 }
@@ -25,7 +26,9 @@ function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps) {
     <BaseTabs.Root
       data-slot="tabs"
       className={className}
-      onValueChange={(value) => onValueChange?.(value)}
+      onValueChange={(value, eventDetails) =>
+        onValueChange?.(value, eventDetails)
+      }
       {...rest}
     />
   );

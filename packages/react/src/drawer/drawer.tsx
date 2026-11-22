@@ -15,6 +15,7 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./drawer.module.css";
 
 export type DrawerSide = "right" | "left" | "bottom";
@@ -22,7 +23,7 @@ export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   onOpenChangeComplete?: (open: boolean) => void;
   modal?: boolean | "trap-focus";
   disablePointerDismissal?: boolean;
@@ -90,9 +91,9 @@ function DrawerRoot({
           open={open}
           defaultOpen={defaultOpen}
           swipeDirection={toSwipeDirection(side)}
-          onOpenChange={(next) => {
+          onOpenChange={(next, eventDetails) => {
             activity.onOpenChange(next);
-            onOpenChange?.(next);
+            onOpenChange?.(next, eventDetails);
           }}
           onOpenChangeComplete={(next) => {
             activity.onOpenChangeComplete(next);

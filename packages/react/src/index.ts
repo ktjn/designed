@@ -236,6 +236,7 @@ export type {
   SeparatorProps,
 } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
+export type { ChangeEventDetails } from "./shared/change-event-details.js";
 export type {
   SidebarContentProps,
   SidebarFooterProps,

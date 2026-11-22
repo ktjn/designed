@@ -6,6 +6,7 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./accordion.module.css";
 
 export type AccordionOrientation = "horizontal" | "vertical";
@@ -15,7 +16,7 @@ export interface AccordionRootProps
   ref?: Ref<HTMLDivElement>;
   value?: unknown[];
   defaultValue?: unknown[];
-  onValueChange?: (value: unknown[]) => void;
+  onValueChange?: (value: unknown[], eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   multiple?: boolean;
   orientation?: AccordionOrientation;
@@ -31,7 +32,9 @@ function AccordionRoot({
     <BaseAccordion.Root
       data-slot="accordion"
       className={className}
-      onValueChange={(value) => onValueChange?.(value)}
+      onValueChange={(value, eventDetails) =>
+        onValueChange?.(value, eventDetails)
+      }
       {...rest}
     />
   );

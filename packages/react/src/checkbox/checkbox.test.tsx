@@ -19,7 +19,7 @@ describe("Checkbox", () => {
       <Checkbox aria-label="Accept terms" onCheckedChange={onCheckedChange} />,
     );
     await user.click(screen.getByRole("checkbox"));
-    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
   });
 
   it("toggles via keyboard (space) when focused", async () => {
@@ -31,7 +31,7 @@ describe("Checkbox", () => {
     await user.tab();
     expect(screen.getByRole("checkbox")).toHaveProperty("tagName");
     await user.keyboard(" ");
-    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
   });
 
   it("does not respond to interaction when disabled", async () => {

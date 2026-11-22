@@ -14,6 +14,7 @@ import {
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./select.module.css";
 
 type SelectValueType<
@@ -31,11 +32,12 @@ export interface SelectRootProps<
     value:
       | SelectValueType<Value, Multiple>
       | (Multiple extends true ? never : null),
+    eventDetails?: ChangeEventDetails,
   ) => void;
   multiple?: Multiple;
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
@@ -63,12 +65,14 @@ function SelectRoot<
     <PortalActivityContext.Provider value={activity.active}>
       <BaseSelect.Root
         disabled={disabled ?? field?.disabled}
-        onValueChange={(value) => onValueChange?.(value as never)}
+        onValueChange={(value, eventDetails) =>
+          onValueChange?.(value as never, eventDetails)
+        }
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}

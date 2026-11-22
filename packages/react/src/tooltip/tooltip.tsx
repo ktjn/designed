@@ -5,6 +5,7 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./tooltip.module.css";
 
 export type TooltipSide = "top" | "right" | "bottom" | "left";
@@ -35,7 +36,7 @@ export interface TooltipProps
   closeDelay?: number;
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   children: ReactElement;
 }
 
@@ -82,9 +83,9 @@ function TooltipRoot({
         disabled={disabled}
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
       >

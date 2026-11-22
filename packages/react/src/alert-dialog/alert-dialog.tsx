@@ -14,11 +14,12 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 
 export interface AlertDialogRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   children?: ReactNode;
 }
 
@@ -34,9 +35,9 @@ function AlertDialogRoot({
       <BaseAlertDialog.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}

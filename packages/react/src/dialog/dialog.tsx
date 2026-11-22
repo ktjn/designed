@@ -8,6 +8,7 @@ import type {
   Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./dialog.module.css";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
 import {
@@ -19,7 +20,7 @@ import {
 export interface DialogRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   onOpenChangeComplete?: (open: boolean) => void;
   modal?: boolean | "trap-focus";
   disablePointerDismissal?: boolean;
@@ -39,9 +40,9 @@ function DialogRoot({
       <BaseDialog.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={(next) => {
           activity.onOpenChangeComplete(next);

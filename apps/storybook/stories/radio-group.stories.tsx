@@ -44,6 +44,9 @@ export const SelectInteraction: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByText("Pro"));
-    await expect(args.onValueChange).toHaveBeenCalledWith("pro");
+    await expect(args.onValueChange).toHaveBeenCalledWith(
+      "pro",
+      expect.anything(),
+    );
   },
 };

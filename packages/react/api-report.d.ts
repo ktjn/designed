@@ -1,11 +1,12 @@
 // ---- accordion/accordion.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type AccordionOrientation = "horizontal" | "vertical";
 export interface AccordionRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown[];
     defaultValue?: unknown[];
-    onValueChange?: (value: unknown[]) => void;
+    onValueChange?: (value: unknown[], eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     multiple?: boolean;
     orientation?: AccordionOrientation;
@@ -43,10 +44,11 @@ export {};
 // ---- alert-dialog/alert-dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface AlertDialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function AlertDialogRoot({ open, defaultOpen, onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
@@ -299,11 +301,12 @@ export {};
 
 // ---- checkbox/checkbox.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
-    onCheckedChange?: (checked: boolean) => void;
+    onCheckedChange?: (checked: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -348,6 +351,7 @@ export {};
 // ---- combobox/combobox.d.ts ----
 import type { HTMLAttributes, InputHTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface ComboboxItem<Value> {
     label: string;
     value: Value;
@@ -357,7 +361,7 @@ type ComboboxValue<Value, Multiple extends boolean | undefined> = Multiple exten
 export interface ComboboxRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
     value?: ComboboxValue<Value, Multiple> | null;
     defaultValue?: ComboboxValue<Value, Multiple>;
-    onValueChange?: (value: ComboboxValue<Value, Multiple> | (Multiple extends true ? never : null)) => void;
+    onValueChange?: (value: ComboboxValue<Value, Multiple> | (Multiple extends true ? never : null), eventDetails?: ChangeEventDetails) => void;
     multiple?: Multiple;
     inputValue?: string;
     defaultInputValue?: string;
@@ -369,7 +373,7 @@ export interface ComboboxRootProps<Value = unknown, Multiple extends boolean | u
     filter?: ((item: ComboboxItem<Value>, query: string) => boolean) | null;
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function ComboboxRoot<Value = unknown, Multiple extends boolean | undefined = false>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, multiple, filter, open, defaultOpen, onOpenChange, ...rest }: ComboboxRootProps<Value, Multiple>): import("react").JSX.Element;
@@ -445,10 +449,11 @@ export declare function Container({ ref, size, padded, className, ...rest }: Con
 // ---- context-menu/context-menu.d.ts ----
 import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface ContextMenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     children?: ReactNode;
 }
@@ -588,11 +593,12 @@ export declare function DatePicker({ ref, value, defaultValue, onValueChange, mi
 
 // ---- dialog/dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
 export interface DialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     onOpenChangeComplete?: (open: boolean) => void;
     modal?: boolean | "trap-focus";
     disablePointerDismissal?: boolean;
@@ -680,11 +686,12 @@ export declare function DirectionProvider({ direction, children, ...rest }: Dire
 // ---- drawer/drawer.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     onOpenChangeComplete?: (open: boolean) => void;
     modal?: boolean | "trap-focus";
     disablePointerDismissal?: boolean;
@@ -968,6 +975,7 @@ export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, Selec
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
+export type { ChangeEventDetails } from "./shared/change-event-details.js";
 export type { SidebarContentProps, SidebarFooterProps, SidebarGroupLabelProps, SidebarGroupProps, SidebarHeaderProps, SidebarInsetProps, SidebarItemProps, SidebarProviderProps, SidebarRootProps, SidebarTriggerProps, UseSidebarResult, } from "./sidebar/sidebar.js";
 export { Sidebar, useSidebar } from "./sidebar/sidebar.js";
 export type { SkeletonProps, SkeletonVariant } from "./skeleton/skeleton.js";
@@ -1076,10 +1084,11 @@ export declare function LiveRegion({ politeness, atomic, ...rest }: LiveRegionPr
 // ---- menu/menu.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface MenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
@@ -1264,10 +1273,11 @@ export declare function Pagination({ ref, page, totalPages, onPageChange, siblin
 // ---- popover/popover.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface PopoverRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function PopoverRoot({ open, defaultOpen, onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
@@ -1368,12 +1378,13 @@ export declare function Progress({ ref, value, min, max, label, showValue, class
 
 // ---- radio-group/radio-group.d.ts ----
 import type { HTMLAttributes, LabelHTMLAttributes, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface RadioGroupProps<Value = string> extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     name?: string;
     value?: Value;
     defaultValue?: Value;
-    onValueChange?: (value: Value) => void;
+    onValueChange?: (value: Value, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -1408,15 +1419,16 @@ export declare function ScrollArea({ ref, orientation, maxHeight, className, sty
 // ---- select/select.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 type SelectValueType<Value, Multiple extends boolean | undefined> = Multiple extends true ? Value[] : Value;
 export interface SelectRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
     value?: SelectValueType<Value, Multiple>;
     defaultValue?: SelectValueType<Value, Multiple>;
-    onValueChange?: (value: SelectValueType<Value, Multiple> | (Multiple extends true ? never : null)) => void;
+    onValueChange?: (value: SelectValueType<Value, Multiple> | (Multiple extends true ? never : null), eventDetails?: ChangeEventDetails) => void;
     multiple?: Multiple;
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -1494,6 +1506,15 @@ export interface SeparatorProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
     orientation?: SeparatorOrientation;
 }
 export declare function Separator({ ref, orientation, className, ...rest }: SeparatorProps): import("react").JSX.Element;
+
+
+// ---- shared/change-event-details.d.ts ----
+export interface ChangeEventDetails {
+    reason: string;
+    event: Event;
+    cancel: () => void;
+    isCanceled: boolean;
+}
 
 
 // ---- sidebar/sidebar.d.ts ----
@@ -1664,11 +1685,12 @@ export declare function Stepper({ ref, steps, currentStep, orientation, classNam
 
 // ---- switch/switch.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
-    onCheckedChange?: (checked: boolean) => void;
+    onCheckedChange?: (checked: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -1726,12 +1748,13 @@ export {};
 
 // ---- tabs/tabs.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type TabsOrientation = "horizontal" | "vertical";
 export interface TabsRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown;
     defaultValue?: unknown;
-    onValueChange?: (value: unknown) => void;
+    onValueChange?: (value: unknown, eventDetails?: ChangeEventDetails) => void;
     orientation?: TabsOrientation;
     children?: ReactNode;
 }
@@ -1934,6 +1957,7 @@ export {};
 
 // ---- tooltip/tooltip.d.ts ----
 import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type TooltipSide = "top" | "right" | "bottom" | "left";
 export type TooltipAlign = "start" | "center" | "end";
 export interface TooltipProviderProps {
@@ -1956,7 +1980,7 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, "cont
     closeDelay?: number;
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children: ReactElement;
 }
 declare function TooltipRoot({ id, content, side, sideOffset, align, alignOffset, collisionPadding, disabled, delay, closeDelay, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;

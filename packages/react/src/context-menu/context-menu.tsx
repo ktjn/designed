@@ -7,12 +7,13 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./context-menu.module.css";
 
 export interface ContextMenuRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -29,9 +30,9 @@ function ContextMenuRoot({
       <BaseContextMenu.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
