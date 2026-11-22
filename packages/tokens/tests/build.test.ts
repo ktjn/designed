@@ -100,6 +100,15 @@ describe("token build", () => {
     ).resolves.toContain("export type TokenIdentifier");
   });
 
+  it("emits only type-level exports in tokens.d.ts because ./types has no JS runtime", async () => {
+    const dts = await readFile(path.join(distDir, "types/tokens.d.ts"), "utf8");
+    expect(dts).toContain("export type TokenIdentifier =");
+    expect(dts).toContain("export type CssVariableName =");
+    expect(dts).not.toMatch(
+      /\bexport\s+declare\s+(const|let|var|function|class)\b/,
+    );
+  });
+
   it("does not emit primitive tokens as public CSS custom properties", async () => {
     const base = await readFile(path.join(distDir, "css/base.css"), "utf8");
     expect(base).not.toMatch(/--ds-color-neutral-/);
