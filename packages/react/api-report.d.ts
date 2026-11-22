@@ -308,6 +308,24 @@ export declare const Card: typeof CardRoot & {
 export {};
 
 
+// ---- checkbox-card/checkbox-card.d.ts ----
+import type { LabelHTMLAttributes, ReactNode, Ref } from "react";
+import { type CheckboxProps } from "../checkbox/checkbox.js";
+export interface CheckboxCardProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "onChange"> {
+    ref?: Ref<HTMLLabelElement>;
+    label: ReactNode;
+    description?: ReactNode;
+    checked?: CheckboxProps["checked"];
+    defaultChecked?: CheckboxProps["defaultChecked"];
+    onCheckedChange?: CheckboxProps["onCheckedChange"];
+    disabled?: boolean;
+    name?: string;
+    value?: string;
+    children?: ReactNode;
+}
+export declare function CheckboxCard({ label, description, checked, defaultChecked, onCheckedChange, disabled, name, value, className, children, ...rest }: CheckboxCardProps): import("react").JSX.Element;
+
+
 // ---- checkbox-group/checkbox-group.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
@@ -649,6 +667,25 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
 export declare function DatePicker({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
 
 
+// ---- description-list/description-list.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface DescriptionListRootProps extends HTMLAttributes<HTMLDListElement> {
+    ref?: Ref<HTMLDListElement>;
+    children?: ReactNode;
+}
+declare function DescriptionListRoot({ className, ...rest }: DescriptionListRootProps): import("react").JSX.Element;
+export interface DescriptionListItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    term: ReactNode;
+    children?: ReactNode;
+}
+declare function DescriptionListItem({ term, className, children, ...rest }: DescriptionListItemProps): import("react").JSX.Element;
+export declare const DescriptionList: typeof DescriptionListRoot & {
+    Item: typeof DescriptionListItem;
+};
+export {};
+
+
 // ---- dialog/dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
@@ -979,6 +1016,8 @@ export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeade
 export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
+export type { CheckboxCardProps } from "./checkbox-card/checkbox-card.js";
+export { CheckboxCard } from "./checkbox-card/checkbox-card.js";
 export type { CheckboxGroupOrientation, CheckboxGroupProps, } from "./checkbox-group/checkbox-group.js";
 export { CheckboxGroup } from "./checkbox-group/checkbox-group.js";
 export type { CodeSnippetProps, CodeSnippetVariant, } from "./code-snippet/code-snippet.js";
@@ -997,6 +1036,8 @@ export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
+export type { DescriptionListItemProps, DescriptionListRootProps, } from "./description-list/description-list.js";
+export { DescriptionList } from "./description-list/description-list.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
@@ -1030,6 +1071,8 @@ export type { KbdProps, KbdSize } from "./kbd/kbd.js";
 export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
+export type { ListItemProps, ListRootProps, ListVariant } from "./list/list.js";
+export { List } from "./list/list.js";
 export type { LiveRegionProps } from "./live-region/live-region.js";
 export { LiveRegion } from "./live-region/live-region.js";
 export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuLinkItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuSubmenuProps, MenuSubmenuTriggerProps, MenuTriggerProps, } from "./menu/menu.js";
@@ -1054,6 +1097,8 @@ export type { PreviewCardContentProps, PreviewCardRootProps, PreviewCardSide, Pr
 export { PreviewCard } from "./preview-card/preview-card.js";
 export type { ProgressProps } from "./progress/progress.js";
 export { Progress } from "./progress/progress.js";
+export type { RadioCardProps } from "./radio-card/radio-card.js";
+export { RadioCard } from "./radio-card/radio-card.js";
 export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
@@ -1087,6 +1132,8 @@ export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type { TagOverflowItem, TagOverflowProps, } from "./tag-overflow/tag-overflow.js";
+export { TagOverflow } from "./tag-overflow/tag-overflow.js";
 export type { TextProps, TextSize, TextTag, TextTone, TextWeight, } from "./text/text.js";
 export { Text } from "./text/text.js";
 export type { TextareaProps } from "./textarea/textarea.js";
@@ -1168,6 +1215,28 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     children?: ReactNode;
 }
 export declare function Link({ ref, render, className, ...rest }: LinkProps): import("react").JSX.Element | null;
+
+
+// ---- list/list.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type ListVariant = "plain" | "contained";
+export interface ListRootProps extends HTMLAttributes<HTMLUListElement> {
+    ref?: Ref<HTMLUListElement>;
+    variant?: ListVariant;
+    children?: ReactNode;
+}
+declare function ListRoot({ variant, className, ...rest }: ListRootProps): import("react").JSX.Element;
+export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+    leading?: ReactNode;
+    trailing?: ReactNode;
+    children?: ReactNode;
+}
+declare function ListItem({ leading, trailing, className, children, ...rest }: ListItemProps): import("react").JSX.Element;
+export declare const List: typeof ListRoot & {
+    Item: typeof ListItem;
+};
+export {};
 
 
 // ---- live-region/live-region.d.ts ----
@@ -1567,6 +1636,16 @@ export interface ProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, "chi
     showValue?: boolean;
 }
 export declare function Progress({ ref, value, min, max, label, showValue, className, ...rest }: ProgressProps): import("react").JSX.Element;
+
+
+// ---- radio-card/radio-card.d.ts ----
+import type { ReactNode } from "react";
+import { type RadioGroupItemProps } from "../radio-group/radio-group.js";
+export interface RadioCardProps<Value = string> extends RadioGroupItemProps<Value> {
+    label: ReactNode;
+    description?: ReactNode;
+}
+export declare function RadioCard<Value = string>({ label, description, className, children, ...rest }: RadioCardProps<Value>): import("react").JSX.Element;
 
 
 // ---- radio-group/radio-group.d.ts ----
@@ -2006,6 +2085,23 @@ export declare const Tabs: typeof TabsRoot & {
     Panel: typeof TabsPanel;
 };
 export {};
+
+
+// ---- tag-overflow/tag-overflow.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TagOverflowItem {
+    id: string;
+    label: ReactNode;
+}
+export interface TagOverflowProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    items: readonly TagOverflowItem[];
+    max?: number;
+    renderItem?: (item: TagOverflowItem) => ReactNode;
+    overflowLabel?: (count: number) => string;
+    overflowAriaLabel?: (count: number) => string;
+}
+export declare function TagOverflow({ ref, items, max, renderItem, overflowLabel, overflowAriaLabel, className, ...rest }: TagOverflowProps): import("react").JSX.Element;
 
 
 // ---- tag/tag.d.ts ----

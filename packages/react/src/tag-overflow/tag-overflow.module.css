@@ -1,0 +1,60 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  overflow: hidden;
+}
+
+.item {
+  flex-shrink: 0;
+}
+
+.overflow {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding-block: 0.1875rem;
+  padding-inline: 0.5rem;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-muted);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  cursor: pointer;
+}
+
+.overflow:hover {
+  background: var(--ds-color-background-muted);
+  border-color: var(--ds-color-border-strong);
+  color: var(--ds-color-foreground-default);
+}
+
+.overflow:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: -2px;
+}
+
+.probe {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.popoverList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-stack-sm);
+}
+
+@media (forced-colors: active) {
+  .overflow {
+    border-color: ButtonText;
+  }
+
+  .overflow:focus-visible {
+    outline-color: Highlight;
+  }
+}

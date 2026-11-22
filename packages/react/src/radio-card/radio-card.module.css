@@ -1,0 +1,75 @@
+.card[data-slot="radio-card"] {
+  display: flex;
+  inline-size: 100%;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: var(--ds-space-stack-md);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  background: var(--ds-color-background-default);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.card[data-slot="radio-card"] > :first-child {
+  margin-block-start: 0.125rem;
+}
+
+.card[data-slot="radio-card"]:hover:not(:has(> [data-disabled])) {
+  border-color: var(--ds-color-border-strong);
+}
+
+.card[data-slot="radio-card"]:has(> [data-checked]) {
+  border-color: var(--ds-color-action-primary-default);
+  box-shadow: inset 0 0 0 1px var(--ds-color-action-primary-default);
+}
+
+.card[data-slot="radio-card"]:has(> :focus-visible) {
+  border-color: var(--ds-color-border-focus);
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.card[data-slot="radio-card"]:has(> [data-disabled]) {
+  cursor: not-allowed;
+}
+
+.body {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+}
+
+.card[data-slot="radio-card"]:has(> [data-disabled]) .body {
+  opacity: 0.5;
+}
+
+.label {
+  font-weight: var(--ds-font-weight-medium);
+}
+
+.description {
+  color: var(--ds-color-foreground-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card[data-slot="radio-card"] {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .card[data-slot="radio-card"] {
+    border-color: ButtonText;
+  }
+
+  .card[data-slot="radio-card"]:has(> [data-checked]) {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .card[data-slot="radio-card"]:has(> :focus-visible) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

@@ -62,6 +62,8 @@ export type {
 export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
+export type { CheckboxCardProps } from "./checkbox-card/checkbox-card.js";
+export { CheckboxCard } from "./checkbox-card/checkbox-card.js";
 export type {
   CheckboxGroupOrientation,
   CheckboxGroupProps,
@@ -113,6 +115,11 @@ export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
+export type {
+  DescriptionListItemProps,
+  DescriptionListRootProps,
+} from "./description-list/description-list.js";
+export { DescriptionList } from "./description-list/description-list.js";
 export type {
   DialogCloseProps,
   DialogContentProps,
@@ -187,6 +194,8 @@ export type { KbdProps, KbdSize } from "./kbd/kbd.js";
 export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
+export type { ListItemProps, ListRootProps, ListVariant } from "./list/list.js";
+export { List } from "./list/list.js";
 export type { LiveRegionProps } from "./live-region/live-region.js";
 export { LiveRegion } from "./live-region/live-region.js";
 export type {
@@ -252,6 +261,8 @@ export type {
 export { PreviewCard } from "./preview-card/preview-card.js";
 export type { ProgressProps } from "./progress/progress.js";
 export { Progress } from "./progress/progress.js";
+export type { RadioCardProps } from "./radio-card/radio-card.js";
+export { RadioCard } from "./radio-card/radio-card.js";
 export type {
   RadioGroupItemProps,
   RadioGroupProps,
@@ -339,6 +350,11 @@ export type {
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type {
+  TagOverflowItem,
+  TagOverflowProps,
+} from "./tag-overflow/tag-overflow.js";
+export { TagOverflow } from "./tag-overflow/tag-overflow.js";
 export type {
   TextProps,
   TextSize,

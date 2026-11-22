@@ -100,13 +100,26 @@ describe("HTML attribute, className, ref, and barrel prop-type contracts", () =>
         if (NON_DOM_ROOT_PROPS.has(name)) {
           continue;
         }
+        const extendsClause = header.trim().replace(/^<[^>]*>\s*/, "");
+        const parentPropsMatch = extendsClause.match(
+          /^extends\s+(?:Omit<)?([A-Za-z]+Props)\b/,
+        );
+        const parentPropsName = parentPropsMatch?.[1];
+        const extendsOtherLocalProps =
+          parentPropsName !== undefined &&
+          parentPropsName !== name &&
+          !NON_DOM_ROOT_PROPS.has(parentPropsName);
+        const omitsRefFromParent =
+          extendsOtherLocalProps &&
+          /^extends\s+Omit<.*,\s*[^,]*["']ref["']/.test(extendsClause);
         const extendsHtml =
-          /HTMLAttributes|SVGAttributes|ButtonHTMLAttributes|InputHTMLAttributes|TextareaHTMLAttributes|AnchorHTMLAttributes|LabelHTMLAttributes|TableHTMLAttributes|ThHTMLAttributes|TdHTMLAttributes|OlHTMLAttributes|LiHTMLAttributes|FieldsetHTMLAttributes|ComponentPropsWithRef|ComponentProps|\bButtonProps\b/.test(
+          /HTMLAttributes|SVGAttributes|ButtonHTMLAttributes|InputHTMLAttributes|TextareaHTMLAttributes|AnchorHTMLAttributes|LabelHTMLAttributes|TableHTMLAttributes|ThHTMLAttributes|TdHTMLAttributes|OlHTMLAttributes|LiHTMLAttributes|FieldsetHTMLAttributes|ComponentPropsWithRef|ComponentProps/.test(
             `${header} ${body}`,
-          );
+          ) || extendsOtherLocalProps;
         const hasRef =
           /\bref\??:/.test(body) ||
-          /ComponentPropsWithRef|\bButtonProps\b/.test(header);
+          /ComponentPropsWithRef/.test(header) ||
+          (extendsOtherLocalProps && !omitsRefFromParent);
         if (!extendsHtml) {
           missingHtmlAttributes.push(name);
         }
