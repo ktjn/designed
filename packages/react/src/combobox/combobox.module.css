@@ -75,13 +75,24 @@
   padding-inline: var(--ds-space-control-inline);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
   .input,
   .popup {
     border-color: CanvasText;
   }
 
-  .item[data-highlighted] {
+  .input:focus-visible {
     outline-color: Highlight;
+  }
+
+  .item[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }

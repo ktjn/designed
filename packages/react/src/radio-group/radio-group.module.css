@@ -54,12 +54,18 @@
   background: var(--ds-color-action-primary-default);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .radio {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
-  .control {
+  .radio {
     border-color: ButtonText;
   }
 
-  .control[data-checked] {
+  .radio[data-checked] {
     border-color: Highlight;
   }
 
@@ -67,7 +73,7 @@
     background: Highlight;
   }
 
-  .control:focus-visible {
+  .radio:focus-visible {
     outline-color: Highlight;
   }
 }

@@ -84,3 +84,19 @@
     transition: none;
   }
 }
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+  }
+
+  .button[aria-current="page"] {
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+
+  .button:focus-visible {
+    outline-color: Highlight;
+  }
+}

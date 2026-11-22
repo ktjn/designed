@@ -46,3 +46,13 @@
   color: var(--ds-color-foreground-muted);
   user-select: none;
 }
+
+@media (forced-colors: active) {
+  .link {
+    color: LinkText;
+  }
+
+  .link:focus-visible {
+    outline-color: Highlight;
+  }
+}

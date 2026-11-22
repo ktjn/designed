@@ -14,7 +14,7 @@
 .popup {
   position: fixed;
   inset-block-start: min(18vh, 8rem);
-  inset-inline-start: 50%;
+  left: 50%;
   translate: -50% 0;
   inline-size: min(36rem, calc(100dvw - 2rem));
   max-block-size: min(28rem, calc(100dvh - 4rem));

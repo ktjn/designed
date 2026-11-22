@@ -21,3 +21,13 @@
   outline-offset: 2px;
   border-radius: var(--ds-radius-control);
 }
+
+@media (forced-colors: active) {
+  .root {
+    color: LinkText;
+  }
+
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}
