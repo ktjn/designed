@@ -1,6 +1,13 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
-import { type KeyboardEvent, useEffect, useId, useMemo, useState } from "react";
+import {
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -68,19 +75,31 @@ export function CommandPalette({
 
   const isControlled = open !== undefined;
   const currentOpen = isControlled ? open : uncontrolledOpen;
-  const activity = usePortalActivity(currentOpen);
-  const { container, scopeRef } = useDialogPortalContainer(activity.active);
-
-  const setOpen = (next: boolean) => {
-    if (!isControlled) {
-      setUncontrolledOpen(next);
-    }
-    onOpenChange?.(next);
-    if (!next) {
+  const [prevOpen, setPrevOpen] = useState(currentOpen);
+  if (currentOpen !== prevOpen) {
+    setPrevOpen(currentOpen);
+    if (!currentOpen) {
       setQuery("");
       setActiveIndex(0);
     }
-  };
+  }
+  const activity = usePortalActivity(currentOpen);
+  const { container, scopeRef } = useDialogPortalContainer(activity.active);
+
+  const setOpen = useCallback(
+    (next: boolean) => {
+      activity.onOpenChange(next);
+      if (!isControlled) {
+        setUncontrolledOpen(next);
+      }
+      onOpenChange?.(next);
+      if (!next) {
+        setQuery("");
+        setActiveIndex(0);
+      }
+    },
+    [activity.onOpenChange, isControlled, onOpenChange],
+  );
 
   useEffect(() => {
     if (!enableGlobalShortcut) {
@@ -89,16 +108,12 @@ export function CommandPalette({
     const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        const next = !currentOpen;
-        if (!isControlled) {
-          setUncontrolledOpen(next);
-        }
-        onOpenChange?.(next);
+        setOpen(!currentOpen);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentOpen, enableGlobalShortcut, isControlled, onOpenChange]);
+  }, [currentOpen, enableGlobalShortcut, setOpen]);
 
   const filteredItems = useMemo(() => {
     const normalized = query.trim().toLowerCase();

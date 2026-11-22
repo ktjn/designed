@@ -57,6 +57,43 @@ describe("CommandPalette", () => {
     expect(onOpenChange).toHaveBeenCalledWith(true);
   });
 
+  it("resets query and activeIndex when closed via global Cmd/Ctrl+K shortcut", () => {
+    render(
+      <CommandPalette items={COMMANDS} defaultOpen enableGlobalShortcut />,
+    );
+
+    const input = screen.getByRole("combobox", { name: "Search commands" });
+    fireEvent.change(input, { target: { value: "config" } });
+    expect((input as HTMLInputElement).value).toBe("config");
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(screen.queryByRole("dialog")).toBeNull();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    const reopenedInput = screen.getByRole("combobox", {
+      name: "Search commands",
+    }) as HTMLInputElement;
+    expect(reopenedInput.value).toBe("");
+    const options = screen.getAllByRole("option");
+    expect(options[0]?.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("resets query and activeIndex when closed via controlled open prop", () => {
+    const { rerender } = render(<CommandPalette items={COMMANDS} open />);
+
+    const input = screen.getByRole("combobox", { name: "Search commands" });
+    fireEvent.change(input, { target: { value: "config" } });
+    expect((input as HTMLInputElement).value).toBe("config");
+
+    rerender(<CommandPalette items={COMMANDS} open={false} />);
+    rerender(<CommandPalette items={COMMANDS} open />);
+
+    const reopenedInput = screen.getByRole("combobox", {
+      name: "Search commands",
+    }) as HTMLInputElement;
+    expect(reopenedInput.value).toBe("");
+  });
+
   it("has no axe violations when open", async () => {
     const { container } = render(
       <CommandPalette open items={COMMANDS} title="Command palette" />,
