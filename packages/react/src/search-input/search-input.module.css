@@ -1,0 +1,27 @@
+.clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-radius: var(--ds-radius-control);
+  cursor: pointer;
+}
+
+.clear:hover {
+  color: var(--ds-color-foreground-default);
+}
+
+.clear:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 1px;
+}
+
+.clear svg {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+}

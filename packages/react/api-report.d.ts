@@ -1014,6 +1014,8 @@ export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
+export type { PasswordInputProps } from "./password-input/password-input.js";
+export { PasswordInput } from "./password-input/password-input.js";
 export type { PopoverCloseProps, PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps, } from "./popover/popover.js";
 export { Popover } from "./popover/popover.js";
 export type { PreviewCardContentProps, PreviewCardRootProps, PreviewCardSide, PreviewCardTriggerProps, } from "./preview-card/preview-card.js";
@@ -1024,6 +1026,8 @@ export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-
 export { RadioGroup } from "./radio-group/radio-group.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
 export { ScrollArea } from "./scroll-area/scroll-area.js";
+export type { SearchInputProps } from "./search-input/search-input.js";
+export { SearchInput } from "./search-input/search-input.js";
 export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
@@ -1327,6 +1331,20 @@ export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "chil
 export declare function Pagination({ ref, page, totalPages, onPageChange, siblingCount, previousLabel, nextLabel, "aria-label": ariaLabel, className, ...rest }: PaginationProps): import("react").JSX.Element;
 
 
+// ---- password-input/password-input.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+    ref?: Ref<HTMLInputElement>;
+    visible?: boolean;
+    defaultVisible?: boolean;
+    onVisibleChange?: (visible: boolean) => void;
+    showLabel?: string;
+    hideLabel?: string;
+    invalid?: boolean;
+}
+export declare function PasswordInput({ ref, visible, defaultVisible, onVisibleChange, showLabel, hideLabel, invalid, className, ...rest }: PasswordInputProps): import("react").JSX.Element;
+
+
 // ---- popover/popover.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -1471,6 +1489,20 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export declare function ScrollArea({ ref, orientation, maxHeight, className, style, children, ...rest }: ScrollAreaProps): import("react").JSX.Element;
+
+
+// ---- search-input/search-input.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    onClear?: () => void;
+    clearLabel?: string;
+    invalid?: boolean;
+}
+export declare function SearchInput({ ref, value, defaultValue, onValueChange, onClear, clearLabel, invalid, onKeyDown, className, ...rest }: SearchInputProps): import("react").JSX.Element;
 
 
 // ---- select/select.d.ts ----

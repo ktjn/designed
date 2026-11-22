@@ -207,6 +207,8 @@ export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
+export type { PasswordInputProps } from "./password-input/password-input.js";
+export { PasswordInput } from "./password-input/password-input.js";
 export type {
   PopoverCloseProps,
   PopoverContentProps,
@@ -236,6 +238,8 @@ export type {
   ScrollAreaProps,
 } from "./scroll-area/scroll-area.js";
 export { ScrollArea } from "./scroll-area/scroll-area.js";
+export type { SearchInputProps } from "./search-input/search-input.js";
+export { SearchInput } from "./search-input/search-input.js";
 export type {
   SelectContentProps,
   SelectGroupLabelProps,
