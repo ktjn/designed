@@ -235,11 +235,20 @@ export declare function Button({ ref, render, nativeButton, variant, size, loadi
 // ---- calendar/calendar.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type CalendarMode = "single" | "range";
+export interface CalendarRangeValue {
+    start: string;
+    end?: string;
+}
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
+    mode?: CalendarMode;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
+    rangeValue?: CalendarRangeValue | null;
+    defaultRangeValue?: CalendarRangeValue;
+    onRangeValueChange?: (value: CalendarRangeValue) => void;
     min?: string;
     max?: string;
     isDateDisabled?: (isoDate: string) => boolean;
@@ -253,7 +262,7 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "def
     onMonthChange?: (month: string) => void;
 }
 export declare function parseIsoDate(iso: string | undefined): Date | null;
-export declare function Calendar({ ref, value, defaultValue, onValueChange, min, max, isDateDisabled, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, month, defaultMonth, onMonthChange, className, ...rest }: CalendarProps): import("react").JSX.Element;
+export declare function Calendar({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, isDateDisabled, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, month, defaultMonth, onMonthChange, className, ...rest }: CalendarProps): import("react").JSX.Element;
 
 
 // ---- card/card.d.ts ----
@@ -593,14 +602,18 @@ export {};
 
 // ---- date-picker/date-picker.d.ts ----
 import type { InputHTMLAttributes, Ref } from "react";
-import { type WeekdayIndex } from "../calendar/calendar.js";
+import { type CalendarMode, type CalendarRangeValue, type WeekdayIndex } from "../calendar/calendar.js";
 export type DatePickerSide = "top" | "right" | "bottom" | "left";
 export type DatePickerAlign = "start" | "center" | "end";
 export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
+    mode?: CalendarMode;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
+    rangeValue?: CalendarRangeValue | null;
+    defaultRangeValue?: CalendarRangeValue;
+    onRangeValueChange?: (value: CalendarRangeValue) => void;
     min?: string;
     max?: string;
     locale?: string;
@@ -620,7 +633,7 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     alignOffset?: number;
     collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
-export declare function DatePicker({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
+export declare function DatePicker({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
 
 
 // ---- dialog/dialog.d.ts ----
@@ -947,7 +960,7 @@ export type { ButtonProps, ButtonSize, ButtonVariant, } from "./button/button.js
 export { Button } from "./button/button.js";
 export type { ButtonGroupOrientation, ButtonGroupProps, } from "./button-group/button-group.js";
 export { ButtonGroup } from "./button-group/button-group.js";
-export type { CalendarProps, WeekdayIndex } from "./calendar/calendar.js";
+export type { CalendarMode, CalendarProps, CalendarRangeValue, WeekdayIndex, } from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
 export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardTitleProps, } from "./card/card.js";
 export { Card } from "./card/card.js";
@@ -1059,6 +1072,8 @@ export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";
+export type { TimePickerProps } from "./time-picker/time-picker.js";
+export { TimePicker } from "./time-picker/time-picker.js";
 export type { ToastActionOptions, ToastOptions, ToastProviderProps, ToastVariant, UseToastResult, } from "./toast/toast.js";
 export { Toast, useToast } from "./toast/toast.js";
 export type { ToggleProps } from "./toggle/toggle.js";
@@ -1931,6 +1946,21 @@ export interface ThemeProps extends HTMLAttributes<HTMLDivElement>, ThemeValues 
 }
 export declare function useTheme(): Readonly<ThemeValues>;
 export declare function Theme({ brand, colorScheme, density, contrast, children, ...rest }: ThemeProps): import("react").JSX.Element;
+
+
+// ---- time-picker/time-picker.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface TimePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    min?: string;
+    max?: string;
+    step?: number;
+    invalid?: boolean;
+}
+export declare function TimePicker({ ref, value, defaultValue, onValueChange, min, max, step, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TimePickerProps): import("react").JSX.Element;
 
 
 // ---- toast/toast.d.ts ----

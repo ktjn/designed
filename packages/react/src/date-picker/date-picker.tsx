@@ -9,6 +9,8 @@ import type {
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Calendar,
+  type CalendarMode,
+  type CalendarRangeValue,
   parseIsoDate,
   type WeekdayIndex,
 } from "../calendar/calendar.js";
@@ -28,9 +30,13 @@ export interface DatePickerProps
     "type" | "value" | "defaultValue" | "onChange"
   > {
   ref?: Ref<HTMLInputElement>;
+  mode?: CalendarMode;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  rangeValue?: CalendarRangeValue | null;
+  defaultRangeValue?: CalendarRangeValue;
+  onRangeValueChange?: (value: CalendarRangeValue) => void;
   min?: string;
   max?: string;
   locale?: string;
@@ -84,9 +90,13 @@ function validateDateText(
 
 export function DatePicker({
   ref,
+  mode = "single",
   value,
   defaultValue = "",
   onValueChange,
+  rangeValue,
+  defaultRangeValue,
+  onRangeValueChange,
   min,
   max,
   locale,
@@ -116,6 +126,10 @@ export function DatePicker({
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
+  const isRangeMode = mode === "range";
+  const [internalRangeValue, setInternalRangeValue] =
+    useState<CalendarRangeValue | null>(defaultRangeValue ?? null);
+  const currentRangeValue = rangeValue ?? internalRangeValue;
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [draft, setDraft] = useState(value ?? defaultValue);
   const [validationFailed, setValidationFailed] = useState(false);
@@ -207,6 +221,22 @@ export function DatePicker({
   const currentValidValue =
     validationMessage === "" ? draft : (value ?? internalValue);
 
+  function commitRangeValue(next: CalendarRangeValue) {
+    if (rangeValue === undefined) {
+      setInternalRangeValue(next);
+    }
+    onRangeValueChange?.(next);
+    if (next.end) {
+      setOpen(false);
+    }
+  }
+
+  const rangeDisplayValue = currentRangeValue
+    ? currentRangeValue.end
+      ? `${currentRangeValue.start} – ${currentRangeValue.end}`
+      : currentRangeValue.start
+    : "";
+
   return (
     <BasePopover.Root
       open={effectiveOpen}
@@ -225,15 +255,19 @@ export function DatePicker({
           ref={assignRefs}
           data-slot="date-picker-input"
           type="text"
-          inputMode="numeric"
+          inputMode={isRangeMode ? undefined : "numeric"}
           id={resolvedId}
-          value={draft}
+          value={isRangeMode ? rangeDisplayValue : draft}
           disabled={resolvedDisabled}
-          readOnly={readOnly}
+          readOnly={isRangeMode || readOnly}
           placeholder={placeholder}
           aria-describedby={ariaDescribedBy ?? field?.describedBy}
           aria-invalid={ariaInvalid ?? (resolvedInvalid || undefined)}
-          onChange={(event) => handleTextChange(event.target.value)}
+          onChange={
+            isRangeMode
+              ? undefined
+              : (event) => handleTextChange(event.target.value)
+          }
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           className={styles.input}
@@ -262,21 +296,37 @@ export function DatePicker({
             data-slot="date-picker-content"
             className={styles.popup}
           >
-            <Calendar
-              value={currentValidValue}
-              min={min}
-              max={max}
-              isDateDisabled={isDateDisabled}
-              locale={locale}
-              weekStartsOn={weekStartsOn}
-              disabled={resolvedDisabled || Boolean(readOnly)}
-              previousMonthLabel={previousMonthLabel}
-              nextMonthLabel={nextMonthLabel}
-              onValueChange={(next) => {
-                commitValidValue(next);
-                setOpen(false);
-              }}
-            />
+            {isRangeMode ? (
+              <Calendar
+                mode="range"
+                rangeValue={currentRangeValue}
+                min={min}
+                max={max}
+                isDateDisabled={isDateDisabled}
+                locale={locale}
+                weekStartsOn={weekStartsOn}
+                disabled={resolvedDisabled || Boolean(readOnly)}
+                previousMonthLabel={previousMonthLabel}
+                nextMonthLabel={nextMonthLabel}
+                onRangeValueChange={commitRangeValue}
+              />
+            ) : (
+              <Calendar
+                value={currentValidValue}
+                min={min}
+                max={max}
+                isDateDisabled={isDateDisabled}
+                locale={locale}
+                weekStartsOn={weekStartsOn}
+                disabled={resolvedDisabled || Boolean(readOnly)}
+                previousMonthLabel={previousMonthLabel}
+                nextMonthLabel={nextMonthLabel}
+                onValueChange={(next) => {
+                  commitValidValue(next);
+                  setOpen(false);
+                }}
+              />
+            )}
           </BasePopover.Popup>
         </BasePopover.Positioner>
       </BasePopover.Portal>

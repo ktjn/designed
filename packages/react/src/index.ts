@@ -44,7 +44,12 @@ export type {
   ButtonGroupProps,
 } from "./button-group/button-group.js";
 export { ButtonGroup } from "./button-group/button-group.js";
-export type { CalendarProps, WeekdayIndex } from "./calendar/calendar.js";
+export type {
+  CalendarMode,
+  CalendarProps,
+  CalendarRangeValue,
+  WeekdayIndex,
+} from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
 export type {
   CardContentProps,
@@ -325,6 +330,8 @@ export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";
+export type { TimePickerProps } from "./time-picker/time-picker.js";
+export { TimePicker } from "./time-picker/time-picker.js";
 export type {
   ToastActionOptions,
   ToastOptions,

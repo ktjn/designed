@@ -156,6 +156,72 @@ describe("Calendar", () => {
     expect(screen.getByRole("button", { name: /2026-11-01/ })).toBeTruthy();
   });
 
+  it("selects a start then end date in range mode", async () => {
+    const user = userEvent.setup();
+    const onRangeValueChange = vi.fn();
+    render(
+      <Calendar
+        mode="range"
+        defaultMonth="2026-05"
+        onRangeValueChange={onRangeValueChange}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "2026-05-10" }));
+    expect(onRangeValueChange).toHaveBeenLastCalledWith({
+      start: "2026-05-10",
+      end: undefined,
+    });
+
+    await user.click(screen.getByRole("button", { name: "2026-05-15" }));
+    expect(onRangeValueChange).toHaveBeenLastCalledWith({
+      start: "2026-05-10",
+      end: "2026-05-15",
+    });
+
+    const start = screen.getByRole("button", { name: "2026-05-10" });
+    const end = screen.getByRole("button", { name: "2026-05-15" });
+    const between = screen.getByRole("button", { name: "2026-05-12" });
+    expect(start.hasAttribute("data-range-start")).toBe(true);
+    expect(end.hasAttribute("data-range-end")).toBe(true);
+    expect(between.hasAttribute("data-in-range")).toBe(true);
+  });
+
+  it("swaps start/end in range mode when the second click is before the first", async () => {
+    const user = userEvent.setup();
+    const onRangeValueChange = vi.fn();
+    render(
+      <Calendar
+        mode="range"
+        defaultMonth="2026-05"
+        onRangeValueChange={onRangeValueChange}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "2026-05-15" }));
+    await user.click(screen.getByRole("button", { name: "2026-05-10" }));
+    expect(onRangeValueChange).toHaveBeenLastCalledWith({
+      start: "2026-05-10",
+      end: "2026-05-15",
+    });
+  });
+
+  it("starts a new range after a complete range is clicked again", async () => {
+    const user = userEvent.setup();
+    const onRangeValueChange = vi.fn();
+    render(
+      <Calendar
+        mode="range"
+        defaultMonth="2026-05"
+        rangeValue={{ start: "2026-05-10", end: "2026-05-15" }}
+        onRangeValueChange={onRangeValueChange}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "2026-05-20" }));
+    expect(onRangeValueChange).toHaveBeenLastCalledWith({
+      start: "2026-05-20",
+      end: undefined,
+    });
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<Calendar defaultValue="2026-05-15" />);
     expect(await axe(container)).toHaveNoViolations();

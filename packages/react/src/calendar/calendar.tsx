@@ -4,6 +4,12 @@ import { useMemo, useRef, useState } from "react";
 import styles from "./calendar.module.css";
 
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type CalendarMode = "single" | "range";
+
+export interface CalendarRangeValue {
+  start: string;
+  end?: string;
+}
 
 export interface CalendarProps
   extends Omit<
@@ -11,9 +17,13 @@ export interface CalendarProps
     "defaultValue" | "onChange" | "children"
   > {
   ref?: Ref<HTMLDivElement>;
+  mode?: CalendarMode;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  rangeValue?: CalendarRangeValue | null;
+  defaultRangeValue?: CalendarRangeValue;
+  onRangeValueChange?: (value: CalendarRangeValue) => void;
   min?: string;
   max?: string;
   isDateDisabled?: (isoDate: string) => boolean;
@@ -154,9 +164,13 @@ function buildMonthGrid(
 
 export function Calendar({
   ref,
+  mode = "single",
   value,
   defaultValue,
   onValueChange,
+  rangeValue,
+  defaultRangeValue,
+  onRangeValueChange,
   min,
   max,
   isDateDisabled,
@@ -171,9 +185,16 @@ export function Calendar({
   className,
   ...rest
 }: CalendarProps) {
+  const isRangeMode = mode === "range";
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const selectedIso = value ?? internalValue;
-  const initialDate = parseIsoDate(selectedIso) ?? getTodayUtc();
+  const [internalRangeValue, setInternalRangeValue] =
+    useState<CalendarRangeValue | null>(defaultRangeValue ?? null);
+  const currentRangeValue = rangeValue ?? internalRangeValue;
+  const [hoveredIso, setHoveredIso] = useState<string | null>(null);
+  const initialDate = isRangeMode
+    ? (parseIsoDate(currentRangeValue?.start) ?? getTodayUtc())
+    : (parseIsoDate(selectedIso) ?? getTodayUtc());
   const isMonthControlled = month !== undefined;
   const [internalView, setInternalView] = useState(
     parseIsoMonth(month) ??
@@ -277,6 +298,22 @@ export function Calendar({
     }
     setFocusedIso(iso);
     onValueChange?.(iso);
+  }
+
+  function selectRangeDate(iso: string) {
+    if (isDisabledDate(iso)) return;
+    const current = currentRangeValue;
+    const next: CalendarRangeValue =
+      !current || current.end
+        ? { start: iso, end: undefined }
+        : iso < current.start
+          ? { start: iso, end: current.start }
+          : { start: current.start, end: iso };
+    if (rangeValue === undefined) {
+      setInternalRangeValue(next);
+    }
+    setFocusedIso(iso);
+    onRangeValueChange?.(next);
   }
 
   function moveFocusTo(target: Date) {
@@ -394,10 +431,42 @@ export function Calendar({
               {week.map((day) => {
                 const iso = formatIsoDate(day);
                 const outside = day.getUTCMonth() !== view.month;
-                const selected = iso === selectedIso;
                 const dayDisabled = isDisabledDate(iso);
                 const tabStop =
                   !dayDisabled && iso === effectiveFocusedIso ? 0 : -1;
+
+                const rangeStart = isRangeMode && currentRangeValue?.start;
+                const rangeEnd = isRangeMode && currentRangeValue?.end;
+                const previewEnd =
+                  isRangeMode && rangeStart && !rangeEnd ? hoveredIso : null;
+                // ISO date strings, not numbers -- Math.min/Math.max would
+                // coerce them to NaN, so an explicit string comparison is
+                // required here.
+                const rangeLow =
+                  rangeStart && previewEnd
+                    ? // biome-ignore lint/complexity/useMathMinMax: operands are ISO date strings, not numbers
+                      previewEnd < rangeStart
+                      ? previewEnd
+                      : rangeStart
+                    : rangeStart;
+                const rangeHigh =
+                  rangeStart && previewEnd
+                    ? // biome-ignore lint/complexity/useMathMinMax: operands are ISO date strings, not numbers
+                      previewEnd < rangeStart
+                      ? rangeStart
+                      : previewEnd
+                    : rangeEnd;
+                const isRangeStart = isRangeMode && iso === rangeLow;
+                const isRangeEnd = isRangeMode && iso === rangeHigh;
+                const inRange =
+                  isRangeMode &&
+                  Boolean(rangeLow) &&
+                  Boolean(rangeHigh) &&
+                  iso > (rangeLow ?? "") &&
+                  iso < (rangeHigh ?? "");
+                const selected = isRangeMode
+                  ? isRangeStart || isRangeEnd
+                  : iso === selectedIso;
 
                 return (
                   <td
@@ -422,7 +491,15 @@ export function Calendar({
                       disabled={dayDisabled}
                       data-selected={selected ? "" : undefined}
                       data-outside={outside ? "" : undefined}
-                      onClick={() => selectDate(iso)}
+                      data-range-start={isRangeStart ? "" : undefined}
+                      data-range-end={isRangeEnd ? "" : undefined}
+                      data-in-range={inRange ? "" : undefined}
+                      onClick={() =>
+                        isRangeMode ? selectRangeDate(iso) : selectDate(iso)
+                      }
+                      onMouseEnter={() => {
+                        if (isRangeMode) setHoveredIso(iso);
+                      }}
                       onKeyDown={(event) => handleDayKeyDown(event, day)}
                     >
                       {day.getUTCDate()}

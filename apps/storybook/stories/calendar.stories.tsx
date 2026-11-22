@@ -29,3 +29,22 @@ export const SelectDateInteraction: Story = {
     await expect(day20).toHaveAttribute("aria-pressed", "true");
   },
 };
+
+export const RangeMode: Story = {
+  render: () => <Calendar mode="range" defaultMonth="2026-06" />,
+};
+
+export const RangeSelectionInteraction: Story = {
+  render: () => <Calendar mode="range" defaultMonth="2026-06" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: /2026-06-10/ }));
+    await userEvent.click(canvas.getByRole("button", { name: /2026-06-15/ }));
+    const start = canvas.getByRole("button", { name: /2026-06-10/ });
+    const end = canvas.getByRole("button", { name: /2026-06-15/ });
+    const between = canvas.getByRole("button", { name: /2026-06-12/ });
+    await expect(start).toHaveAttribute("data-range-start");
+    await expect(end).toHaveAttribute("data-range-end");
+    await expect(between).toHaveAttribute("data-in-range");
+  },
+};

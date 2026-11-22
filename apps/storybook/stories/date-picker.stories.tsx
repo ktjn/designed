@@ -40,6 +40,41 @@ export const SelectFromPopover: Story = {
   },
 };
 
+function isoDaysFromToday(offset: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toISOString().slice(0, 10);
+}
+
+export const RangeModeInteraction: Story = {
+  render: () => (
+    <Field>
+      <Field.Label>Trip dates</Field.Label>
+      <DatePicker mode="range" />
+    </Field>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Choose date" }));
+    const startIso = isoDaysFromToday(1);
+    const endIso = isoDaysFromToday(3);
+    const start = await within(document.body).findByRole("button", {
+      name: new RegExp(startIso),
+    });
+    await userEvent.click(start);
+    const end = within(document.body).getByRole("button", {
+      name: new RegExp(endIso),
+    });
+    await userEvent.click(end);
+    await expectEventuallyRemoved(() =>
+      within(document.body).queryByRole("dialog"),
+    );
+    await expect(canvas.getByLabelText("Trip dates")).toHaveValue(
+      `${startIso} – ${endIso}`,
+    );
+  },
+};
+
 export const LocalizedMonthLabelsInteraction: Story = {
   render: () => (
     <Field>
