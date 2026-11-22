@@ -1,6 +1,7 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import type { HTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./checkbox.module.css";
 
 export interface CheckboxProps
@@ -8,13 +9,17 @@ export interface CheckboxProps
   ref?: Ref<HTMLElement>;
   checked?: boolean;
   defaultChecked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
+  onCheckedChange?: (
+    checked: boolean,
+    eventDetails?: ChangeEventDetails,
+  ) => void;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
   indeterminate?: boolean;
   name?: string;
   value?: string;
+  parent?: boolean;
 }
 
 export function Checkbox({
@@ -38,7 +43,9 @@ export function Checkbox({
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
       className={className ? `${styles.root} ${className}` : styles.root}
-      onCheckedChange={(checked) => onCheckedChange?.(checked)}
+      onCheckedChange={(checked, eventDetails) =>
+        onCheckedChange?.(checked, eventDetails)
+      }
       {...rest}
     >
       <BaseCheckbox.Indicator className={styles.indicator}>

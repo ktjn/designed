@@ -1,8 +1,9 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { ChevronDownIcon } from "@ktjn/designed-icons";
+import { CheckIcon, ChevronDownIcon } from "@ktjn/designed-icons";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -13,12 +14,30 @@ import {
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./select.module.css";
 
-export interface SelectRootProps<Value = unknown> {
-  value?: Value;
-  defaultValue?: Value;
-  onValueChange?: (value: Value | null) => void;
+type SelectValueType<
+  Value,
+  Multiple extends boolean | undefined,
+> = Multiple extends true ? Value[] : Value;
+
+export interface SelectRootProps<
+  Value = unknown,
+  Multiple extends boolean | undefined = false,
+> {
+  value?: SelectValueType<Value, Multiple>;
+  defaultValue?: SelectValueType<Value, Multiple>;
+  onValueChange?: (
+    value:
+      | SelectValueType<Value, Multiple>
+      | (Multiple extends true ? never : null),
+    eventDetails?: ChangeEventDetails,
+  ) => void;
+  multiple?: Multiple;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
@@ -29,19 +48,32 @@ export interface SelectRootProps<Value = unknown> {
   children?: ReactNode;
 }
 
-function SelectRoot<Value = unknown>({
+function SelectRoot<
+  Value = unknown,
+  Multiple extends boolean | undefined = false,
+>({
   disabled,
   onValueChange,
+  open,
+  defaultOpen,
+  onOpenChange,
   ...rest
-}: SelectRootProps<Value>) {
+}: SelectRootProps<Value, Multiple>) {
   const field = useFieldContext();
-  const activity = usePortalActivity();
+  const activity = usePortalActivity(open, defaultOpen);
   return (
     <PortalActivityContext.Provider value={activity.active}>
       <BaseSelect.Root
         disabled={disabled ?? field?.disabled}
-        onValueChange={(value) => onValueChange?.(value)}
-        onOpenChange={activity.onOpenChange}
+        onValueChange={(value, eventDetails) =>
+          onValueChange?.(value as never, eventDetails)
+        }
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next, eventDetails) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next, eventDetails);
+        }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
       />
@@ -52,6 +84,8 @@ function SelectRoot<Value = unknown>({
 export interface SelectTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   children?: ReactNode;
 }
 
@@ -97,15 +131,28 @@ function SelectValue({ placeholder, ...rest }: SelectValueProps) {
   );
 }
 
+export type SelectSide = "top" | "right" | "bottom" | "left";
+export type SelectAlign = "start" | "center" | "end";
+
 export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
+  side?: SelectSide;
+  sideOffset?: number;
+  align?: SelectAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<SelectSide, number>>;
   children?: ReactNode;
 }
 
 function SelectContent({
   className,
   finalFocus,
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
   children,
   ...rest
 }: SelectContentProps) {
@@ -114,7 +161,14 @@ function SelectContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseSelect.Portal container={container}>
-        <BaseSelect.Positioner sideOffset={4} className={styles.positioner}>
+        <BaseSelect.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+          className={styles.positioner}
+        >
           <BaseSelect.Popup
             data-slot="select-content"
             finalFocus={finalFocus}
@@ -145,8 +199,55 @@ function SelectItem({ className, children, ...rest }: SelectItemProps) {
       className={className ? `${styles.item} ${className}` : styles.item}
       {...rest}
     >
+      <span className={styles.indicatorSlot} aria-hidden="true">
+        <BaseSelect.ItemIndicator>
+          <CheckIcon aria-hidden />
+        </BaseSelect.ItemIndicator>
+      </span>
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
     </BaseSelect.Item>
+  );
+}
+
+export interface SelectGroupProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  children?: ReactNode;
+}
+
+function SelectGroup(props: SelectGroupProps) {
+  return <BaseSelect.Group data-slot="select-group" {...props} />;
+}
+
+export interface SelectGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  children?: ReactNode;
+}
+
+function SelectGroupLabel({ className, ...rest }: SelectGroupLabelProps) {
+  return (
+    <BaseSelect.GroupLabel
+      data-slot="select-group-label"
+      className={
+        className ? `${styles.groupLabel} ${className}` : styles.groupLabel
+      }
+      {...rest}
+    />
+  );
+}
+
+export interface SelectSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+}
+
+function SelectSeparator({ className, ...rest }: SelectSeparatorProps) {
+  return (
+    <BaseSelect.Separator
+      data-slot="select-separator"
+      className={
+        className ? `${styles.separator} ${className}` : styles.separator
+      }
+      {...rest}
+    />
   );
 }
 
@@ -155,4 +256,7 @@ export const Select = Object.assign(SelectRoot, {
   Value: SelectValue,
   Content: SelectContent,
   Item: SelectItem,
+  Group: SelectGroup,
+  GroupLabel: SelectGroupLabel,
+  Separator: SelectSeparator,
 });

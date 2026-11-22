@@ -8,6 +8,7 @@ import type {
   Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./dialog.module.css";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
 import {
@@ -19,8 +20,10 @@ import {
 export interface DialogRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
   modal?: boolean | "trap-focus";
+  disablePointerDismissal?: boolean;
   children?: ReactNode;
 }
 
@@ -28,6 +31,7 @@ function DialogRoot({
   open,
   defaultOpen,
   onOpenChange,
+  onOpenChangeComplete,
   ...rest
 }: DialogRootProps) {
   const activity = usePortalActivity(open, defaultOpen);
@@ -36,11 +40,14 @@ function DialogRoot({
       <BaseDialog.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
-        onOpenChangeComplete={activity.onOpenChangeComplete}
+        onOpenChangeComplete={(next) => {
+          activity.onOpenChangeComplete(next);
+          onOpenChangeComplete?.(next);
+        }}
         {...rest}
       />
     </PortalActivityContext.Provider>
@@ -74,6 +81,8 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   children?: ReactNode;
   closeLabel?: string;
+  showCloseButton?: boolean;
+  backdropClassName?: string;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
 }
@@ -81,6 +90,8 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
 function DialogContent({
   children,
   closeLabel = "Close",
+  showCloseButton = true,
+  backdropClassName,
   className,
   ...rest
 }: DialogContentProps) {
@@ -89,18 +100,26 @@ function DialogContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseDialog.Portal container={container}>
-        <BaseDialog.Backdrop className={styles.backdrop} />
+        <BaseDialog.Backdrop
+          className={
+            backdropClassName
+              ? `${styles.backdrop} ${backdropClassName}`
+              : styles.backdrop
+          }
+        />
         <BaseDialog.Popup
           data-slot="dialog-content"
           className={className ? `${styles.popup} ${className}` : styles.popup}
           {...rest}
         >
-          <BaseDialog.Close
-            aria-label={closeLabel}
-            className={styles.iconClose}
-          >
-            <CloseIcon aria-hidden />
-          </BaseDialog.Close>
+          {showCloseButton ? (
+            <BaseDialog.Close
+              aria-label={closeLabel}
+              className={styles.iconClose}
+            >
+              <CloseIcon aria-hidden />
+            </BaseDialog.Close>
+          ) : null}
           {children}
         </BaseDialog.Popup>
       </BaseDialog.Portal>

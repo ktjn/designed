@@ -1,4 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import { useRender } from "@base-ui/react/use-render";
 import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import {
   type AnchorHTMLAttributes,
@@ -6,6 +7,7 @@ import {
   createContext,
   type HTMLAttributes,
   type MouseEventHandler,
+  type ReactElement,
   type ReactNode,
   type Ref,
   useContext,
@@ -237,6 +239,8 @@ function SidebarGroupLabel({ className, ...rest }: SidebarGroupLabelProps) {
 export interface SidebarItemProps
   extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
   ref?: Ref<HTMLAnchorElement> | Ref<HTMLButtonElement> | Ref<HTMLElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   active?: boolean;
   icon?: ReactNode;
   href?: string;
@@ -250,6 +254,8 @@ export interface SidebarItemProps
 
 function SidebarItem({
   ref,
+  render,
+  nativeButton = render?.type === "button",
   active = false,
   icon,
   href,
@@ -260,6 +266,7 @@ function SidebarItem({
   className,
   children,
   onClick,
+  onClickCapture,
   ...rest
 }: SidebarItemProps) {
   const classes = [styles.item, className].filter(Boolean).join(" ");
@@ -273,6 +280,35 @@ function SidebarItem({
       <span>{children}</span>
     </>
   );
+  const composedItem = useRender({
+    enabled: Boolean(render),
+    ref: ref as Ref<HTMLElement> | undefined,
+    render,
+    props: {
+      "data-slot": "sidebar-item",
+      "data-active": active ? "true" : undefined,
+      ...rest,
+      ...(href !== undefined && { href }),
+      ...(target !== undefined && { target }),
+      ...(rel !== undefined && { rel }),
+      ...(nativeButton && { type, disabled }),
+      ...(!nativeButton && disabled && { "aria-disabled": true, tabIndex: -1 }),
+      "aria-current": active ? "page" : rest["aria-current"],
+      className: classes,
+      children: content,
+      onClick,
+      onClickCapture: disabled
+        ? (event: React.MouseEvent) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        : onClickCapture,
+    },
+  });
+
+  if (render) {
+    return composedItem;
+  }
 
   if (href !== undefined) {
     const linkProps: AnchorHTMLAttributes<HTMLAnchorElement> = {
@@ -280,6 +316,9 @@ function SidebarItem({
       href,
       target,
       rel,
+      onClickCapture: onClickCapture as
+        | MouseEventHandler<HTMLAnchorElement>
+        | undefined,
       onClick: onClick as MouseEventHandler<HTMLAnchorElement> | undefined,
       "aria-current": active ? "page" : rest["aria-current"],
       className: classes,
@@ -300,6 +339,9 @@ function SidebarItem({
     ...(rest as ButtonHTMLAttributes<HTMLButtonElement>),
     type,
     disabled,
+    onClickCapture: onClickCapture as
+      | MouseEventHandler<HTMLButtonElement>
+      | undefined,
     onClick: onClick as MouseEventHandler<HTMLButtonElement> | undefined,
     "aria-current": active ? "page" : rest["aria-current"],
     className: classes,

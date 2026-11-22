@@ -45,28 +45,42 @@ export function ScrollArea({
         className={styles.viewport}
         tabIndex={0}
       >
-        <BaseScrollArea.Content className={styles.content}>
+        <BaseScrollArea.Content
+          data-slot="scroll-area-content"
+          className={styles.content}
+        >
           {children}
         </BaseScrollArea.Content>
       </BaseScrollArea.Viewport>
       {showVertical ? (
         <BaseScrollArea.Scrollbar
+          data-slot="scroll-area-scrollbar"
           orientation="vertical"
           className={styles.scrollbar}
         >
-          <BaseScrollArea.Thumb className={styles.thumb} />
+          <BaseScrollArea.Thumb
+            data-slot="scroll-area-thumb"
+            className={styles.thumb}
+          />
         </BaseScrollArea.Scrollbar>
       ) : null}
       {showHorizontal ? (
         <BaseScrollArea.Scrollbar
+          data-slot="scroll-area-scrollbar"
           orientation="horizontal"
           className={styles.scrollbar}
         >
-          <BaseScrollArea.Thumb className={styles.thumb} />
+          <BaseScrollArea.Thumb
+            data-slot="scroll-area-thumb"
+            className={styles.thumb}
+          />
         </BaseScrollArea.Scrollbar>
       ) : null}
       {showVertical && showHorizontal ? (
-        <BaseScrollArea.Corner className={styles.corner} />
+        <BaseScrollArea.Corner
+          data-slot="scroll-area-corner"
+          className={styles.corner}
+        />
       ) : null}
     </BaseScrollArea.Root>
   );

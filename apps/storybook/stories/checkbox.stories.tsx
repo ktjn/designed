@@ -33,8 +33,14 @@ export const ToggleInteraction: Story = {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole("checkbox");
     await userEvent.click(checkbox);
-    await expect(args.onCheckedChange).toHaveBeenCalledWith(true);
+    await expect(args.onCheckedChange).toHaveBeenCalledWith(
+      true,
+      expect.anything(),
+    );
     await userEvent.click(checkbox);
-    await expect(args.onCheckedChange).toHaveBeenCalledWith(false);
+    await expect(args.onCheckedChange).toHaveBeenCalledWith(
+      false,
+      expect.anything(),
+    );
   },
 };

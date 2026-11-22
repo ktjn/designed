@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef, useState } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { Button } from "../button/button";
 import { Dialog } from "./dialog";
@@ -232,6 +232,115 @@ describe("Dialog", () => {
         screen.getByRole("button", { name: "Callback target" }),
       );
     });
+  });
+
+  it("exposes the change reason and a cancel() escape hatch on onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Dialog onOpenChange={onOpenChange}>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+    const [, closeDetails] = onOpenChange.mock.calls.at(-1) ?? [];
+    expect(closeDetails?.reason).toBe("escape-key");
+    expect(typeof closeDetails?.cancel).toBe("function");
+  });
+
+  it("cancels the close when onOpenChange calls eventDetails.cancel()", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog
+        onOpenChange={(next, eventDetails) => {
+          if (!next) {
+            eventDetails?.cancel();
+          }
+        }}
+      >
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("dialog")).toBeTruthy();
+  });
+
+  it("hides the corner close button when showCloseButton is false", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content showCloseButton={false}>
+          <Dialog.Title>Delete item?</Dialog.Title>
+          <Dialog.Close>Cancel</Dialog.Close>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+    expect(screen.queryByRole("button", { name: "Close" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeTruthy();
+  });
+
+  it("applies backdropClassName to the backdrop element", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content backdropClassName="custom-backdrop">
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+    expect(document.querySelector(".custom-backdrop")).toBeTruthy();
+  });
+
+  it("calls onOpenChangeComplete after the open/close transition finishes", async () => {
+    const user = userEvent.setup();
+    const onOpenChangeComplete = vi.fn();
+    render(
+      <Dialog onOpenChangeComplete={onOpenChangeComplete}>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+    await waitFor(() => {
+      expect(onOpenChangeComplete).toHaveBeenCalledWith(true);
+    });
+  });
+
+  it("prevents outside-press dismissal when disablePointerDismissal is set", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog disablePointerDismissal modal={false}>
+        <Dialog.Trigger>Delete</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Delete item?</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+    await user.click(document.body);
+    expect(screen.getByRole("dialog")).toBeTruthy();
   });
 
   it("has no automatically detectable accessibility violations while open", async () => {

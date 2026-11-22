@@ -35,14 +35,20 @@ export function Progress({
       {...rest}
     >
       {label || showValue ? (
-        <div className={styles.header}>
+        <div data-slot="progress-header" className={styles.header}>
           {label ? (
-            <BaseProgress.Label className={styles.label}>
+            <BaseProgress.Label
+              data-slot="progress-label"
+              className={styles.label}
+            >
               {label}
             </BaseProgress.Label>
           ) : null}
           {showValue && value !== null ? (
-            <BaseProgress.Value className={styles.value} />
+            <BaseProgress.Value
+              data-slot="progress-value"
+              className={styles.value}
+            />
           ) : null}
         </div>
       ) : null}

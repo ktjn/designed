@@ -13,6 +13,7 @@ export interface EmptyStateProps
   ref?: Ref<HTMLDivElement>;
   icon?: ReactNode;
   title: ReactNode;
+  titleAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   description?: ReactNode;
   action?: ReactNode;
   classNames?: EmptyStateClassNames;
@@ -23,6 +24,7 @@ export function EmptyState({
   ref,
   icon,
   title,
+  titleAs: Heading = "h2",
   description,
   action,
   classNames,
@@ -49,9 +51,9 @@ export function EmptyState({
           {icon}
         </div>
       ) : null}
-      <h2 data-slot="empty-state-title" className={titleClasses}>
+      <Heading data-slot="empty-state-title" className={titleClasses}>
         {title}
-      </h2>
+      </Heading>
       {description ? (
         <p data-slot="empty-state-description" className={descriptionClasses}>
           {description}

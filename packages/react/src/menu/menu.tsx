@@ -14,12 +14,13 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./menu.module.css";
 
 export interface MenuRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   children?: ReactNode;
 }
 
@@ -30,9 +31,9 @@ function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps) {
       <BaseMenu.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
@@ -64,19 +65,43 @@ function MenuTrigger({ render, className, ...rest }: MenuTriggerProps) {
   );
 }
 
+export type MenuSide = "top" | "right" | "bottom" | "left";
+export type MenuAlign = "start" | "center" | "end";
+
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   finalFocus?: OverlayFocusTarget;
+  side?: MenuSide;
+  sideOffset?: number;
+  align?: MenuAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<MenuSide, number>>;
   children?: ReactNode;
 }
 
-function MenuContent({ className, children, ...rest }: MenuContentProps) {
+function MenuContent({
+  side,
+  sideOffset = 4,
+  align,
+  alignOffset,
+  collisionPadding,
+  className,
+  children,
+  ...rest
+}: MenuContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
       <span hidden ref={scopeRef} />
       <BaseMenu.Portal container={container}>
-        <BaseMenu.Positioner sideOffset={4} className={styles.positioner}>
+        <BaseMenu.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+          className={styles.positioner}
+        >
           <BaseMenu.Popup
             data-slot="menu-content"
             className={
@@ -120,6 +145,8 @@ function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps) {
 
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -275,15 +302,63 @@ function MenuShortcut({ className, ...rest }: MenuShortcutProps) {
   );
 }
 
+export interface MenuSubmenuProps {
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function MenuSubmenu(props: MenuSubmenuProps) {
+  return <BaseMenu.SubmenuRoot {...props} />;
+}
+
+export interface MenuSubmenuTriggerProps
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function MenuSubmenuTrigger({ className, ...rest }: MenuSubmenuTriggerProps) {
+  return (
+    <BaseMenu.SubmenuTrigger
+      data-slot="menu-submenu-trigger"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
+export interface MenuLinkItemProps
+  extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+  ref?: Ref<HTMLAnchorElement>;
+  href?: string;
+  closeOnClick?: boolean;
+  children?: ReactNode;
+}
+
+function MenuLinkItem({ className, ...rest }: MenuLinkItemProps) {
+  return (
+    <BaseMenu.LinkItem
+      data-slot="menu-link-item"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
 export const Menu = Object.assign(MenuRoot, {
   Trigger: MenuTrigger,
   Content: MenuContent,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
   Item: MenuItem,
+  LinkItem: MenuLinkItem,
   CheckboxItem: MenuCheckboxItem,
   RadioGroup: MenuRadioGroup,
   RadioItem: MenuRadioItem,
   Separator: MenuSeparator,
   Shortcut: MenuShortcut,
+  Submenu: MenuSubmenu,
+  SubmenuTrigger: MenuSubmenuTrigger,
 });

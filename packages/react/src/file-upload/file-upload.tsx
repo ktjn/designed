@@ -1,5 +1,11 @@
 import { CloseIcon, UploadIcon } from "@ktjn/designed-icons";
-import type { ChangeEvent, DragEvent, InputHTMLAttributes, Ref } from "react";
+import type {
+  ChangeEvent,
+  DragEvent,
+  InputHTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import { useEffect, useRef, useState } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./file-upload.module.css";
@@ -13,10 +19,12 @@ export interface FileUploadProps
   files?: File[];
   defaultFiles?: File[];
   onFilesChange?: (files: File[]) => void;
+  onFilesRejected?: (files: File[]) => void;
   invalid?: boolean;
-  prompt?: string;
-  hint?: string;
+  prompt?: ReactNode;
+  hint?: ReactNode;
   getRemoveLabel?: (file: File) => string;
+  renderItem?: (file: File, index: number) => ReactNode;
 }
 
 function matchesAccept(file: File, accept: string | undefined): boolean {
@@ -68,6 +76,7 @@ export function FileUpload({
   files,
   defaultFiles = [],
   onFilesChange,
+  onFilesRejected,
   invalid,
   disabled,
   multiple,
@@ -75,6 +84,7 @@ export function FileUpload({
   prompt = "Choose files or drag and drop",
   hint,
   getRemoveLabel = (file) => `Remove ${file.name}`,
+  renderItem,
   id,
   className,
   "aria-describedby": ariaDescribedBy,
@@ -135,9 +145,12 @@ export function FileUpload({
     if (resolvedDisabled) return;
     event.preventDefault();
     setDragging(false);
-    const dropped = Array.from(event.dataTransfer.files ?? []).filter((file) =>
-      matchesAccept(file, accept),
-    );
+    const allDropped = Array.from(event.dataTransfer.files ?? []);
+    const dropped = allDropped.filter((file) => matchesAccept(file, accept));
+    const rejected = allDropped.filter((file) => !matchesAccept(file, accept));
+    if (rejected.length > 0) {
+      onFilesRejected?.(rejected);
+    }
     if (dropped.length === 0) return;
     updateFiles(multiple ? [...currentFiles, ...dropped] : dropped.slice(0, 1));
   }
@@ -173,24 +186,46 @@ export function FileUpload({
           {...rest}
         />
         <UploadIcon aria-hidden className={styles.uploadIcon} />
-        <p className={styles.prompt}>{prompt}</p>
-        {hint ? <p className={styles.hint}>{hint}</p> : null}
+        <p data-slot="file-upload-prompt" className={styles.prompt}>
+          {prompt}
+        </p>
+        {hint ? (
+          <p data-slot="file-upload-hint" className={styles.hint}>
+            {hint}
+          </p>
+        ) : null}
       </div>
       {currentFiles.length > 0 ? (
-        <ul className={styles.list}>
+        <ul data-slot="file-upload-list" className={styles.list}>
           {currentFiles.map((file, index) => (
             <li
               key={`${file.name}-${file.size}-${file.lastModified}`}
+              data-slot="file-upload-item"
               className={styles.item}
             >
-              <span className={styles.meta}>
-                <span className={styles.fileName}>{file.name}</span>
-                <span className={styles.fileSize}>
-                  {formatBytes(file.size)}
-                </span>
+              <span data-slot="file-upload-item-meta" className={styles.meta}>
+                {renderItem ? (
+                  renderItem(file, index)
+                ) : (
+                  <>
+                    <span
+                      data-slot="file-upload-item-name"
+                      className={styles.fileName}
+                    >
+                      {file.name}
+                    </span>
+                    <span
+                      data-slot="file-upload-item-size"
+                      className={styles.fileSize}
+                    >
+                      {formatBytes(file.size)}
+                    </span>
+                  </>
+                )}
               </span>
               <button
                 type="button"
+                data-slot="file-upload-item-remove"
                 disabled={resolvedDisabled}
                 aria-label={getRemoveLabel(file)}
                 onClick={() => removeFile(index)}

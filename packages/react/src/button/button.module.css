@@ -14,6 +14,7 @@
   padding-inline: var(--ds-space-control-inline);
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
   white-space: nowrap;
   transition:
     background-color 120ms ease,
@@ -25,7 +26,8 @@
   outline-offset: 2px;
 }
 
-.root:disabled {
+.root:disabled,
+.root[data-disabled] {
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -40,11 +42,11 @@
   color: var(--ds-color-action-primary-foreground);
 }
 
-.primary:not(:disabled, [data-loading]):hover {
+.primary:not(:disabled, [data-disabled], [data-loading]):hover {
   background: var(--ds-color-action-primary-hover);
 }
 
-.primary:not(:disabled, [data-loading]):active {
+.primary:not(:disabled, [data-disabled], [data-loading]):active {
   background: var(--ds-color-action-primary-active);
 }
 
@@ -54,12 +56,12 @@
   border-color: var(--ds-color-border-control);
 }
 
-.secondary:not(:disabled, [data-loading]):hover {
+.secondary:not(:disabled, [data-disabled], [data-loading]):hover {
   background: var(--ds-color-background-subtle);
   border-color: var(--ds-color-border-strong);
 }
 
-.secondary:not(:disabled, [data-loading]):active {
+.secondary:not(:disabled, [data-disabled], [data-loading]):active {
   background: var(--ds-color-background-muted);
 }
 
@@ -68,11 +70,11 @@
   color: var(--ds-color-action-danger-foreground);
 }
 
-.danger:not(:disabled, [data-loading]):hover {
+.danger:not(:disabled, [data-disabled], [data-loading]):hover {
   background: var(--ds-color-action-danger-hover);
 }
 
-.danger:not(:disabled, [data-loading]):active {
+.danger:not(:disabled, [data-disabled], [data-loading]):active {
   background: var(--ds-color-action-danger-active);
 }
 
@@ -81,11 +83,11 @@
   color: var(--ds-color-foreground-default);
 }
 
-.ghost:not(:disabled, [data-loading]):hover {
+.ghost:not(:disabled, [data-disabled], [data-loading]):hover {
   background: var(--ds-color-background-subtle);
 }
 
-.ghost:not(:disabled, [data-loading]):active {
+.ghost:not(:disabled, [data-disabled], [data-loading]):active {
   background: var(--ds-color-background-muted);
 }
 

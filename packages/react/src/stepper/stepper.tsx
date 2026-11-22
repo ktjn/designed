@@ -51,13 +51,24 @@ export function Stepper({
             data-status={status}
             aria-current={status === "current" ? "step" : undefined}
           >
-            <span className={styles.indicator} aria-hidden="true">
+            <span
+              data-slot="stepper-indicator"
+              className={styles.indicator}
+              aria-hidden="true"
+            >
               {status === "complete" ? <CheckIcon aria-hidden /> : index + 1}
             </span>
-            <div className={styles.content}>
-              <span className={styles.label}>{step.label}</span>
+            <div data-slot="stepper-content" className={styles.content}>
+              <span data-slot="stepper-label" className={styles.label}>
+                {step.label}
+              </span>
               {step.description ? (
-                <span className={styles.description}>{step.description}</span>
+                <span
+                  data-slot="stepper-description"
+                  className={styles.description}
+                >
+                  {step.description}
+                </span>
               ) : null}
             </div>
           </li>

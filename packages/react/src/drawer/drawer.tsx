@@ -15,6 +15,7 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./drawer.module.css";
 
 export type DrawerSide = "right" | "left" | "bottom";
@@ -22,7 +23,10 @@ export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
+  modal?: boolean | "trap-focus";
+  disablePointerDismissal?: boolean;
   side?: DrawerSide;
   children: ReactNode;
 }
@@ -38,6 +42,8 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   side?: DrawerSide;
   closeLabel?: string;
+  showCloseButton?: boolean;
+  backdropClassName?: string;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
   children: ReactNode;
@@ -72,8 +78,10 @@ function DrawerRoot({
   open,
   defaultOpen,
   onOpenChange,
+  onOpenChangeComplete,
   side = "right",
   children,
+  ...rest
 }: DrawerRootProps) {
   const activity = usePortalActivity(open, defaultOpen);
   return (
@@ -83,11 +91,15 @@ function DrawerRoot({
           open={open}
           defaultOpen={defaultOpen}
           swipeDirection={toSwipeDirection(side)}
-          onOpenChange={(next) => {
+          onOpenChange={(next, eventDetails) => {
             activity.onOpenChange(next);
-            onOpenChange?.(next);
+            onOpenChange?.(next, eventDetails);
           }}
-          onOpenChangeComplete={activity.onOpenChangeComplete}
+          onOpenChangeComplete={(next) => {
+            activity.onOpenChangeComplete(next);
+            onOpenChangeComplete?.(next);
+          }}
+          {...rest}
         >
           {children}
         </BaseDrawer.Root>
@@ -122,6 +134,8 @@ function DrawerTrigger({
 function DrawerContent({
   side,
   closeLabel = "Close",
+  showCloseButton = true,
+  backdropClassName,
   className,
   children,
   ...rest
@@ -134,7 +148,13 @@ function DrawerContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseDrawer.Portal container={container}>
-        <BaseDrawer.Backdrop className={styles.backdrop} />
+        <BaseDrawer.Backdrop
+          className={
+            backdropClassName
+              ? `${styles.backdrop} ${backdropClassName}`
+              : styles.backdrop
+          }
+        />
         <BaseDrawer.Viewport className={styles.viewport}>
           <BaseDrawer.Popup
             data-slot="drawer-content"
@@ -144,12 +164,14 @@ function DrawerContent({
             }
             {...rest}
           >
-            <BaseDrawer.Close
-              aria-label={closeLabel}
-              className={styles.iconClose}
-            >
-              <CloseIcon aria-hidden />
-            </BaseDrawer.Close>
+            {showCloseButton ? (
+              <BaseDrawer.Close
+                aria-label={closeLabel}
+                className={styles.iconClose}
+              >
+                <CloseIcon aria-hidden />
+              </BaseDrawer.Close>
+            ) : null}
             {children}
           </BaseDrawer.Popup>
         </BaseDrawer.Viewport>

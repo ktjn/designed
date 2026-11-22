@@ -13,12 +13,13 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./popover.module.css";
 
 export interface PopoverRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   children?: ReactNode;
 }
 
@@ -34,9 +35,9 @@ function PopoverRoot({
       <BasePopover.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
@@ -69,11 +70,15 @@ function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps) {
 }
 
 export type PopoverSide = "top" | "right" | "bottom" | "left";
+export type PopoverAlign = "start" | "center" | "end";
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   side?: PopoverSide;
   sideOffset?: number;
+  align?: PopoverAlign;
+  alignOffset?: number;
+  collisionPadding?: number | Partial<Record<PopoverSide, number>>;
   initialFocus?: OverlayFocusTarget;
   finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
@@ -82,6 +87,9 @@ export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
 function PopoverContent({
   side = "bottom",
   sideOffset = 8,
+  align,
+  alignOffset,
+  collisionPadding,
   className,
   children,
   ...rest
@@ -94,6 +102,9 @@ function PopoverContent({
         <BasePopover.Positioner
           side={side}
           sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
           className={styles.positioner}
         >
           <BasePopover.Popup

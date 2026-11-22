@@ -1,18 +1,19 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./context-menu.module.css";
 
 export interface ContextMenuRootProps {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -29,9 +30,9 @@ function ContextMenuRoot({
       <BaseContextMenu.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={(next) => {
+        onOpenChange={(next, eventDetails) => {
           activity.onOpenChange(next);
-          onOpenChange?.(next);
+          onOpenChange?.(next, eventDetails);
         }}
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
@@ -43,6 +44,7 @@ function ContextMenuRoot({
 export interface ContextMenuTriggerProps
   extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
   children?: ReactNode;
 }
 
@@ -121,6 +123,8 @@ function ContextMenuGroupLabel({
 
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -282,15 +286,66 @@ function ContextMenuShortcut({ className, ...rest }: ContextMenuShortcutProps) {
   );
 }
 
+export interface ContextMenuSubmenuProps {
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuSubmenu(props: ContextMenuSubmenuProps) {
+  return <BaseContextMenu.SubmenuRoot {...props} />;
+}
+
+export interface ContextMenuSubmenuTriggerProps
+  extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  disabled?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuSubmenuTrigger({
+  className,
+  ...rest
+}: ContextMenuSubmenuTriggerProps) {
+  return (
+    <BaseContextMenu.SubmenuTrigger
+      data-slot="context-menu-submenu-trigger"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
+export interface ContextMenuLinkItemProps
+  extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+  ref?: Ref<HTMLAnchorElement>;
+  href?: string;
+  closeOnClick?: boolean;
+  children?: ReactNode;
+}
+
+function ContextMenuLinkItem({ className, ...rest }: ContextMenuLinkItemProps) {
+  return (
+    <BaseContextMenu.LinkItem
+      data-slot="context-menu-link-item"
+      className={className ? `${styles.item} ${className}` : styles.item}
+      {...rest}
+    />
+  );
+}
+
 export const ContextMenu = Object.assign(ContextMenuRoot, {
   Trigger: ContextMenuTrigger,
   Content: ContextMenuContent,
   Group: ContextMenuGroup,
   GroupLabel: ContextMenuGroupLabel,
   Item: ContextMenuItem,
+  LinkItem: ContextMenuLinkItem,
   CheckboxItem: ContextMenuCheckboxItem,
   RadioGroup: ContextMenuRadioGroup,
   RadioItem: ContextMenuRadioItem,
   Separator: ContextMenuSeparator,
   Shortcut: ContextMenuShortcut,
+  Submenu: ContextMenuSubmenu,
+  SubmenuTrigger: ContextMenuSubmenuTrigger,
 });

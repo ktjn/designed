@@ -68,6 +68,9 @@
 }
 
 .item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-stack-md);
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
   line-height: var(--ds-font-line-height-100);
@@ -76,6 +79,35 @@
   padding-inline: var(--ds-space-control-inline);
   cursor: pointer;
   user-select: none;
+}
+
+.indicatorSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex-shrink: 0;
+}
+
+.indicatorSlot svg {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+}
+
+.groupLabel {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  font-weight: var(--ds-font-weight-bold);
+  color: var(--ds-color-foreground-muted);
+  padding-block: var(--ds-space-stack-sm) 2px;
+  padding-inline: var(--ds-space-control-inline);
+}
+
+.separator {
+  height: 1px;
+  margin-block: var(--ds-space-stack-sm);
+  background: var(--ds-color-border-default);
 }
 
 .item[data-selected] {

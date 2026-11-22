@@ -18,6 +18,7 @@ export default defineConfig({
       "@ktjn/designed-react > @base-ui/react/combobox",
       "@ktjn/designed-react > @base-ui/react/context-menu",
       "@ktjn/designed-react > @base-ui/react/dialog",
+      "@ktjn/designed-react > @base-ui/react/direction-provider",
       "@ktjn/designed-react > @base-ui/react/drawer",
       "@ktjn/designed-react > @base-ui/react/fieldset",
       "@ktjn/designed-react > @base-ui/react/menu",
@@ -40,6 +41,7 @@ export default defineConfig({
       "@ktjn/designed-react > @base-ui/react/toggle-group",
       "@ktjn/designed-react > @base-ui/react/toolbar",
       "@ktjn/designed-react > @base-ui/react/tooltip",
+      "@ktjn/designed-react > @base-ui/react/use-render",
     ],
   },
   test: {

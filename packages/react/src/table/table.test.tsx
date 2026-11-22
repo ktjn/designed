@@ -36,6 +36,23 @@ describe("Table", () => {
     expect(screen.getByRole("cell", { name: "INV-001" })).toBeTruthy();
   });
 
+  it("exposes a data-slot wrapper and accepts wrapperClassName", () => {
+    render(
+      <Table wrapperClassName="custom-wrapper">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Cell</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+    const wrapper = screen
+      .getByRole("table")
+      .closest('[data-slot="table-wrapper"]');
+    expect(wrapper).toBeTruthy();
+    expect(wrapper?.className).toContain("custom-wrapper");
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Table>

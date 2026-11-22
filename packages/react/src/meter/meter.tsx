@@ -45,11 +45,15 @@ export function Meter({
       {...rest}
     >
       {label || showValue ? (
-        <div className={styles.header}>
+        <div data-slot="meter-header" className={styles.header}>
           {label ? (
-            <BaseMeter.Label className={styles.label}>{label}</BaseMeter.Label>
+            <BaseMeter.Label data-slot="meter-label" className={styles.label}>
+              {label}
+            </BaseMeter.Label>
           ) : null}
-          {showValue ? <BaseMeter.Value className={styles.value} /> : null}
+          {showValue ? (
+            <BaseMeter.Value data-slot="meter-value" className={styles.value} />
+          ) : null}
         </div>
       ) : null}
       <BaseMeter.Track data-slot="meter-track" className={styles.track}>

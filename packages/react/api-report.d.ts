@@ -1,12 +1,15 @@
 // ---- accordion/accordion.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type AccordionOrientation = "horizontal" | "vertical";
 export interface AccordionRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown[];
     defaultValue?: unknown[];
-    onValueChange?: (value: unknown[]) => void;
+    onValueChange?: (value: unknown[], eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     multiple?: boolean;
+    orientation?: AccordionOrientation;
     children?: ReactNode;
 }
 declare function AccordionRoot({ onValueChange, className, ...rest }: AccordionRootProps): import("react").JSX.Element;
@@ -19,11 +22,14 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
 declare function AccordionItem({ className, children, ...rest }: AccordionItemProps): import("react").JSX.Element;
 export interface AccordionTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function AccordionTrigger({ className, children, ...rest }: AccordionTriggerProps): import("react").JSX.Element;
 export interface AccordionPanelProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    keepMounted?: boolean;
     children?: ReactNode;
 }
 declare function AccordionPanel({ className, children, ...rest }: AccordionPanelProps): import("react").JSX.Element;
@@ -38,10 +44,11 @@ export {};
 // ---- alert-dialog/alert-dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface AlertDialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function AlertDialogRoot({ open, defaultOpen, onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
@@ -91,9 +98,11 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
     ref?: Ref<HTMLDivElement>;
     variant?: AlertVariant;
     title?: ReactNode;
+    icon?: ReactNode;
+    action?: ReactNode;
     children?: ReactNode;
 }
-export declare function Alert({ ref, variant, title, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
+export declare function Alert({ ref, variant, title, icon, action, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
 
 
 // ---- aspect-ratio/aspect-ratio.d.ts ----
@@ -107,17 +116,31 @@ export declare function AspectRatio({ ref, ratio, className, style, ...rest }: A
 
 
 // ---- autocomplete/autocomplete.d.ts ----
-import type { InputHTMLAttributes, Ref } from "react";
-export interface AutocompleteProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+export type AutocompleteSide = "top" | "right" | "bottom" | "left";
+export type AutocompleteAlign = "start" | "center" | "end";
+export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
-    items: readonly string[];
+    items: readonly Value[];
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
-    emptyMessage?: string;
+    emptyMessage?: ReactNode;
     invalid?: boolean;
+    filter?: ((item: Value, query: string) => boolean) | null;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    itemToStringValue?: (item: Value) => string;
+    renderItem?: (item: Value) => ReactNode;
+    popupClassName?: string;
+    side?: AutocompleteSide;
+    sideOffset?: number;
+    align?: AutocompleteAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<AutocompleteSide, number>>;
 }
-export declare function Autocomplete({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps): import("react").JSX.Element;
+export declare function Autocomplete<Value = string>({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, filter, open, defaultOpen, onOpenChange, itemToStringValue, renderItem, popupClassName, side, sideOffset, align, alignOffset, collisionPadding, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps<Value>): import("react").JSX.Element;
 
 
 // ---- avatar/avatar.d.ts ----
@@ -145,7 +168,7 @@ export declare function Badge({ ref, variant, className, ...rest }: BadgeProps):
 
 
 // ---- breadcrumb/breadcrumb.d.ts ----
-import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
     ref?: Ref<HTMLElement>;
 }
@@ -157,6 +180,7 @@ export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 export interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
 }
 export interface BreadcrumbPageProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
@@ -168,7 +192,7 @@ export interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement
 declare function BreadcrumbRoot({ ref, "aria-label": ariaLabel, className, ...rest }: BreadcrumbRootProps): import("react").JSX.Element;
 declare function BreadcrumbList({ className, ...rest }: BreadcrumbListProps): import("react").JSX.Element;
 declare function BreadcrumbItem({ className, ...rest }: BreadcrumbItemProps): import("react").JSX.Element;
-declare function BreadcrumbLink({ className, ...rest }: BreadcrumbLinkProps): import("react").JSX.Element;
+declare function BreadcrumbLink({ ref, render, className, ...rest }: BreadcrumbLinkProps): import("react").JSX.Element | null;
 declare function BreadcrumbPage({ className, ...rest }: BreadcrumbPageProps): import("react").JSX.Element;
 declare function BreadcrumbSeparator({ children, className, ...rest }: BreadcrumbSeparatorProps): import("react").JSX.Element;
 export declare const Breadcrumb: typeof BreadcrumbRoot & {
@@ -193,37 +217,52 @@ export declare function ButtonGroup({ ref, orientation, className, ...rest }: Bu
 
 
 // ---- button/button.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import { type ButtonHTMLAttributes, type ReactElement, type ReactNode, type Ref } from "react";
 export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 export type ButtonSize = "small" | "medium" | "large" | "icon";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     variant?: ButtonVariant;
     size?: ButtonSize;
     loading?: boolean;
     children?: ReactNode;
 }
-export declare function Button({ ref, variant, size, loading, disabled, type, className, onClick, "aria-disabled": ariaDisabled, children, ...rest }: ButtonProps): import("react").JSX.Element;
+export declare function Button({ ref, render, nativeButton, variant, size, loading, disabled, type, className, onClick, "aria-disabled": ariaDisabled, children, ...rest }: ButtonProps): import("react").JSX.Element;
 
 
 // ---- calendar/calendar.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type CalendarMode = "single" | "range";
+export interface CalendarRangeValue {
+    start: string;
+    end?: string;
+}
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
+    mode?: CalendarMode;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
+    rangeValue?: CalendarRangeValue | null;
+    defaultRangeValue?: CalendarRangeValue;
+    onRangeValueChange?: (value: CalendarRangeValue) => void;
     min?: string;
     max?: string;
+    isDateDisabled?: (isoDate: string) => boolean;
     locale?: string;
     weekStartsOn?: WeekdayIndex;
     disabled?: boolean;
     previousMonthLabel?: string;
     nextMonthLabel?: string;
+    month?: string;
+    defaultMonth?: string;
+    onMonthChange?: (month: string) => void;
 }
 export declare function parseIsoDate(iso: string | undefined): Date | null;
-export declare function Calendar({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, className, ...rest }: CalendarProps): import("react").JSX.Element;
+export declare function Calendar({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, isDateDisabled, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, month, defaultMonth, onMonthChange, className, ...rest }: CalendarProps): import("react").JSX.Element;
 
 
 // ---- card/card.d.ts ----
@@ -237,6 +276,7 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
 }
@@ -254,7 +294,7 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function CardRoot({ ref, className, ...rest }: CardRootProps): import("react").JSX.Element;
 declare function CardHeader({ className, ...rest }: CardHeaderProps): import("react").JSX.Element;
-declare function CardTitle({ className, ...rest }: CardTitleProps): import("react").JSX.Element;
+declare function CardTitle({ as: Heading, className, ...rest }: CardTitleProps): import("react").JSX.Element;
 declare function CardDescription({ className, ...rest }: CardDescriptionProps): import("react").JSX.Element;
 declare function CardContent({ className, ...rest }: CardContentProps): import("react").JSX.Element;
 declare function CardFooter({ className, ...rest }: CardFooterProps): import("react").JSX.Element;
@@ -268,25 +308,76 @@ export declare const Card: typeof CardRoot & {
 export {};
 
 
+// ---- checkbox-card/checkbox-card.d.ts ----
+import type { LabelHTMLAttributes, ReactNode, Ref } from "react";
+import { type CheckboxProps } from "../checkbox/checkbox.js";
+export interface CheckboxCardProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "onChange"> {
+    ref?: Ref<HTMLLabelElement>;
+    label: ReactNode;
+    description?: ReactNode;
+    checked?: CheckboxProps["checked"];
+    defaultChecked?: CheckboxProps["defaultChecked"];
+    onCheckedChange?: CheckboxProps["onCheckedChange"];
+    disabled?: boolean;
+    name?: string;
+    value?: string;
+    children?: ReactNode;
+}
+export declare function CheckboxCard({ label, description, checked, defaultChecked, onCheckedChange, disabled, name, value, className, children, ...rest }: CheckboxCardProps): import("react").JSX.Element;
+
+
+// ---- checkbox-group/checkbox-group.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type CheckboxGroupOrientation = "horizontal" | "vertical";
+export interface CheckboxGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
+    value?: string[];
+    defaultValue?: string[];
+    onValueChange?: (value: string[], eventDetails?: ChangeEventDetails) => void;
+    allValues?: string[];
+    disabled?: boolean;
+    orientation?: CheckboxGroupOrientation;
+    children?: ReactNode;
+}
+export declare function CheckboxGroup({ disabled, orientation, onValueChange, className, ...rest }: CheckboxGroupProps): import("react").JSX.Element;
+
+
 // ---- checkbox/checkbox.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
-    onCheckedChange?: (checked: boolean) => void;
+    onCheckedChange?: (checked: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
     indeterminate?: boolean;
     name?: string;
     value?: string;
+    parent?: boolean;
 }
 export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
 
+// ---- code-snippet/code-snippet.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type CodeSnippetVariant = "inline" | "block";
+export interface CodeSnippetProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+    variant?: CodeSnippetVariant;
+    showCopyButton?: boolean;
+    copyLabel?: string;
+    copiedLabel?: string;
+    children?: ReactNode;
+}
+export declare function CodeSnippet({ ref, variant, showCopyButton, copyLabel, copiedLabel, className, children, ...rest }: CodeSnippetProps): import("react").JSX.Element;
+
+
 // ---- collapsible/collapsible.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     open?: boolean;
@@ -298,6 +389,8 @@ export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement
 declare function CollapsibleRoot({ onOpenChange, className, ...rest }: CollapsibleRootProps): import("react").JSX.Element;
 export interface CollapsibleTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function CollapsibleTrigger({ className, children, ...rest }: CollapsibleTriggerProps): import("react").JSX.Element;
@@ -317,34 +410,51 @@ export {};
 // ---- combobox/combobox.d.ts ----
 import type { HTMLAttributes, InputHTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface ComboboxItem<Value> {
     label: string;
     value: Value;
+    disabled?: boolean;
 }
-export interface ComboboxRootProps<Value = unknown> {
-    value?: Value;
-    defaultValue?: Value;
-    onValueChange?: (value: Value | null) => void;
+type ComboboxValue<Value, Multiple extends boolean | undefined> = Multiple extends true ? Value[] : Value;
+export interface ComboboxRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
+    value?: ComboboxValue<Value, Multiple> | null;
+    defaultValue?: ComboboxValue<Value, Multiple>;
+    onValueChange?: (value: ComboboxValue<Value, Multiple> | (Multiple extends true ? never : null), eventDetails?: ChangeEventDetails) => void;
+    multiple?: Multiple;
     inputValue?: string;
+    defaultInputValue?: string;
     onInputValueChange?: (inputValue: string) => void;
     disabled?: boolean;
     readOnly?: boolean;
     name?: string;
     items: ReadonlyArray<ComboboxItem<Value>>;
+    filter?: ((item: ComboboxItem<Value>, query: string) => boolean) | null;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
-declare function ComboboxRoot<Value = unknown>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, ...rest }: ComboboxRootProps<Value>): import("react").JSX.Element;
+declare function ComboboxRoot<Value = unknown, Multiple extends boolean | undefined = false>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, multiple, filter, open, defaultOpen, onOpenChange, ...rest }: ComboboxRootProps<Value, Multiple>): import("react").JSX.Element;
 export interface ComboboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
     ref?: Ref<HTMLInputElement>;
 }
 declare function ComboboxInput({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): import("react").JSX.Element;
-export interface ComboboxContentProps extends HTMLAttributes<HTMLDivElement> {
+export type ComboboxSide = "top" | "right" | "bottom" | "left";
+export type ComboboxAlign = "start" | "center" | "end";
+export interface ComboboxContentProps<Value = unknown> extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     emptyMessage?: ReactNode;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
+    side?: ComboboxSide;
+    sideOffset?: number;
+    align?: ComboboxAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<ComboboxSide, number>>;
+    renderItem?: (item: ComboboxItem<Value>) => ReactNode;
 }
-declare function ComboboxContent({ className, emptyMessage, initialFocus, finalFocus, ...rest }: ComboboxContentProps): import("react").JSX.Element;
+declare function ComboboxContent<Value = unknown>({ className, emptyMessage, initialFocus, finalFocus, side, sideOffset, align, alignOffset, collisionPadding, renderItem, ...rest }: ComboboxContentProps<Value>): import("react").JSX.Element;
 export declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
@@ -353,7 +463,7 @@ export {};
 
 
 // ---- command-palette/command-palette.d.ts ----
-import { type HTMLAttributes, type Ref } from "react";
+import { type HTMLAttributes, type ReactNode, type Ref } from "react";
 export interface CommandPaletteItem {
     id: string;
     label: string;
@@ -362,13 +472,17 @@ export interface CommandPaletteItem {
     shortcut?: string;
     disabled?: boolean;
 }
-export interface CommandPaletteProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "onSelect" | "children"> {
+export interface CommandPaletteProps<Item extends CommandPaletteItem = CommandPaletteItem> extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "onSelect" | "children"> {
     ref?: Ref<HTMLDivElement>;
-    items: readonly CommandPaletteItem[];
+    items: readonly Item[];
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
-    onSelect?: (item: CommandPaletteItem) => void;
+    query?: string;
+    onQueryChange?: (query: string) => void;
+    filter?: ((item: Item, query: string) => boolean) | null;
+    renderItem?: (item: Item) => ReactNode;
+    onSelect?: (item: Item) => void;
     title?: string;
     placeholder?: string;
     searchLabel?: string;
@@ -376,7 +490,7 @@ export interface CommandPaletteProps extends Omit<HTMLAttributes<HTMLDivElement>
     closeLabel?: string;
     enableGlobalShortcut?: boolean;
 }
-export declare function CommandPalette({ items, open, defaultOpen, onOpenChange, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps): import("react").JSX.Element;
+export declare function CommandPalette<Item extends CommandPaletteItem = CommandPaletteItem>({ items, open, defaultOpen, onOpenChange, query: controlledQuery, onQueryChange, filter, renderItem, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps<Item>): import("react").JSX.Element;
 
 
 // ---- container/container.d.ts ----
@@ -392,18 +506,20 @@ export declare function Container({ ref, size, padded, className, ...rest }: Con
 
 
 // ---- context-menu/context-menu.d.ts ----
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface ContextMenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     children?: ReactNode;
 }
 declare function ContextMenuRoot({ open, defaultOpen, onOpenChange, ...rest }: ContextMenuRootProps): import("react").JSX.Element;
 export interface ContextMenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
 declare function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps): import("react").JSX.Element;
@@ -425,6 +541,8 @@ export interface ContextMenuGroupLabelProps extends HTMLAttributes<HTMLDivElemen
 declare function ContextMenuGroupLabel({ className, ...rest }: ContextMenuGroupLabelProps): import("react").JSX.Element;
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     disabled?: boolean;
     children?: ReactNode;
 }
@@ -463,50 +581,125 @@ export interface ContextMenuShortcutProps extends HTMLAttributes<HTMLSpanElement
     children?: ReactNode;
 }
 declare function ContextMenuShortcut({ className, ...rest }: ContextMenuShortcutProps): import("react").JSX.Element;
+export interface ContextMenuSubmenuProps {
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuSubmenu(props: ContextMenuSubmenuProps): import("react").JSX.Element;
+export interface ContextMenuSubmenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuSubmenuTrigger({ className, ...rest }: ContextMenuSubmenuTriggerProps): import("react").JSX.Element;
+export interface ContextMenuLinkItemProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    href?: string;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function ContextMenuLinkItem({ className, ...rest }: ContextMenuLinkItemProps): import("react").JSX.Element;
 export declare const ContextMenu: typeof ContextMenuRoot & {
     Trigger: typeof ContextMenuTrigger;
     Content: typeof ContextMenuContent;
     Group: typeof ContextMenuGroup;
     GroupLabel: typeof ContextMenuGroupLabel;
     Item: typeof ContextMenuItem;
+    LinkItem: typeof ContextMenuLinkItem;
     CheckboxItem: typeof ContextMenuCheckboxItem;
     RadioGroup: typeof ContextMenuRadioGroup;
     RadioItem: typeof ContextMenuRadioItem;
     Separator: typeof ContextMenuSeparator;
     Shortcut: typeof ContextMenuShortcut;
+    Submenu: typeof ContextMenuSubmenu;
+    SubmenuTrigger: typeof ContextMenuSubmenuTrigger;
 };
 export {};
 
 
+// ---- copy-button/copy-button.d.ts ----
+import { type ButtonProps } from "../button/button.js";
+export interface CopyButtonProps extends Omit<ButtonProps, "onClick" | "onCopy" | "value" | "children"> {
+    value: string | (() => string);
+    label?: string;
+    copiedLabel?: string;
+    copiedDuration?: number;
+    onCopy?: (value: string) => void;
+    onError?: (error: unknown) => void;
+}
+export declare function CopyButton({ value, label, copiedLabel, copiedDuration, onCopy, onError, variant, ...rest }: CopyButtonProps): import("react").JSX.Element;
+
+
 // ---- date-picker/date-picker.d.ts ----
 import type { InputHTMLAttributes, Ref } from "react";
-import { type WeekdayIndex } from "../calendar/calendar.js";
+import { type CalendarMode, type CalendarRangeValue, type WeekdayIndex } from "../calendar/calendar.js";
+export type DatePickerSide = "top" | "right" | "bottom" | "left";
+export type DatePickerAlign = "start" | "center" | "end";
 export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
+    mode?: CalendarMode;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
+    rangeValue?: CalendarRangeValue | null;
+    defaultRangeValue?: CalendarRangeValue;
+    onRangeValueChange?: (value: CalendarRangeValue) => void;
     min?: string;
     max?: string;
     locale?: string;
     weekStartsOn?: WeekdayIndex;
     invalid?: boolean;
     openCalendarLabel?: string;
+    previousMonthLabel?: string;
+    nextMonthLabel?: string;
+    isDateDisabled?: (isoDate: string) => boolean;
+    formatValidationMessage?: (kind: "invalid" | "min" | "max", context: {
+        min?: string;
+        max?: string;
+    }) => string;
+    side?: DatePickerSide;
+    sideOffset?: number;
+    align?: DatePickerAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
-export declare function DatePicker({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
+export declare function DatePicker({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
+
+
+// ---- description-list/description-list.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface DescriptionListRootProps extends HTMLAttributes<HTMLDListElement> {
+    ref?: Ref<HTMLDListElement>;
+    children?: ReactNode;
+}
+declare function DescriptionListRoot({ className, ...rest }: DescriptionListRootProps): import("react").JSX.Element;
+export interface DescriptionListItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    term: ReactNode;
+    children?: ReactNode;
+}
+declare function DescriptionListItem({ term, className, children, ...rest }: DescriptionListItemProps): import("react").JSX.Element;
+export declare const DescriptionList: typeof DescriptionListRoot & {
+    Item: typeof DescriptionListItem;
+};
+export {};
 
 
 // ---- dialog/dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
 export interface DialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+    onOpenChangeComplete?: (open: boolean) => void;
     modal?: boolean | "trap-focus";
+    disablePointerDismissal?: boolean;
     children?: ReactNode;
 }
-declare function DialogRoot({ open, defaultOpen, onOpenChange, ...rest }: DialogRootProps): import("react").JSX.Element;
+declare function DialogRoot({ open, defaultOpen, onOpenChange, onOpenChangeComplete, ...rest }: DialogRootProps): import("react").JSX.Element;
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
@@ -517,10 +710,12 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
     closeLabel?: string;
+    showCloseButton?: boolean;
+    backdropClassName?: string;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
 }
-declare function DialogContent({ children, closeLabel, className, ...rest }: DialogContentProps): import("react").JSX.Element;
+declare function DialogContent({ children, closeLabel, showCloseButton, backdropClassName, className, ...rest }: DialogContentProps): import("react").JSX.Element;
 export interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
     ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
@@ -567,14 +762,34 @@ export declare function useDialogPortalContainer(enabled?: boolean): {
 };
 
 
+// ---- dialog/use-portal-container.d.ts ----
+export declare function usePortalContainer(enabled?: boolean): {
+    container: HTMLElement | null;
+    scopeRef: (node: HTMLSpanElement | null) => void;
+};
+
+
+// ---- direction-provider/direction-provider.d.ts ----
+import type { HTMLAttributes, Ref } from "react";
+export interface DirectionProviderProps extends Omit<HTMLAttributes<HTMLDivElement>, "dir"> {
+    ref?: Ref<HTMLDivElement>;
+    direction?: "ltr" | "rtl";
+}
+export declare function DirectionProvider({ direction, children, ...rest }: DirectionProviderProps): import("react").JSX.Element;
+
+
 // ---- drawer/drawer.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+    onOpenChangeComplete?: (open: boolean) => void;
+    modal?: boolean | "trap-focus";
+    disablePointerDismissal?: boolean;
     side?: DrawerSide;
     children: ReactNode;
 }
@@ -587,6 +802,8 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     side?: DrawerSide;
     closeLabel?: string;
+    showCloseButton?: boolean;
+    backdropClassName?: string;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
     children: ReactNode;
@@ -604,9 +821,9 @@ export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement
     render?: ReactElement;
     children?: ReactNode;
 }
-declare function DrawerRoot({ open, defaultOpen, onOpenChange, side, children, }: DrawerRootProps): import("react").JSX.Element;
+declare function DrawerRoot({ open, defaultOpen, onOpenChange, onOpenChangeComplete, side, children, ...rest }: DrawerRootProps): import("react").JSX.Element;
 declare function DrawerTrigger({ render, className, children, ...rest }: DrawerTriggerProps): import("react").JSX.Element;
-declare function DrawerContent({ side, closeLabel, className, children, ...rest }: DrawerContentProps): import("react").JSX.Element;
+declare function DrawerContent({ side, closeLabel, showCloseButton, backdropClassName, className, children, ...rest }: DrawerContentProps): import("react").JSX.Element;
 declare function DrawerTitle({ className, children, ...rest }: DrawerTitleProps): import("react").JSX.Element;
 declare function DrawerDescription({ className, children, ...rest }: DrawerDescriptionProps): import("react").JSX.Element;
 declare function DrawerClose({ render, className, children, ...rest }: DrawerCloseProps): import("react").JSX.Element;
@@ -632,12 +849,13 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
     ref?: Ref<HTMLDivElement>;
     icon?: ReactNode;
     title: ReactNode;
+    titleAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     description?: ReactNode;
     action?: ReactNode;
     classNames?: EmptyStateClassNames;
     children?: ReactNode;
 }
-export declare function EmptyState({ ref, icon, title, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
+export declare function EmptyState({ ref, icon, title, titleAs: Heading, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
 
 
 // ---- field/field-context.d.ts ----
@@ -724,18 +942,20 @@ export {};
 
 
 // ---- file-upload/file-upload.d.ts ----
-import type { InputHTMLAttributes, Ref } from "react";
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 export interface FileUploadProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
     files?: File[];
     defaultFiles?: File[];
     onFilesChange?: (files: File[]) => void;
+    onFilesRejected?: (files: File[]) => void;
     invalid?: boolean;
-    prompt?: string;
-    hint?: string;
+    prompt?: ReactNode;
+    hint?: ReactNode;
     getRemoveLabel?: (file: File) => string;
+    renderItem?: (file: File, index: number) => ReactNode;
 }
-export declare function FileUpload({ ref, files, defaultFiles, onFilesChange, invalid, disabled, multiple, accept, prompt, hint, getRemoveLabel, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: FileUploadProps): import("react").JSX.Element;
+export declare function FileUpload({ ref, files, defaultFiles, onFilesChange, onFilesRejected, invalid, disabled, multiple, accept, prompt, hint, getRemoveLabel, renderItem, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: FileUploadProps): import("react").JSX.Element;
 
 
 // ---- grid/grid.d.ts ----
@@ -752,6 +972,21 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export declare function Grid({ ref, columns, minItemWidth, gap, align, className, style, ...rest }: GridProps): import("react").JSX.Element;
+
+
+// ---- heading/heading.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export interface HeadingSectionProps {
+    children?: ReactNode;
+}
+export declare function HeadingSection({ children }: HeadingSectionProps): import("react").JSX.Element;
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
+    as?: HeadingTag;
+    children?: ReactNode;
+}
+export declare function Heading({ as, className, ...rest }: HeadingProps): import("react").JSX.Element;
 
 
 // ---- index.d.ts ----
@@ -775,12 +1010,18 @@ export type { ButtonProps, ButtonSize, ButtonVariant, } from "./button/button.js
 export { Button } from "./button/button.js";
 export type { ButtonGroupOrientation, ButtonGroupProps, } from "./button-group/button-group.js";
 export { ButtonGroup } from "./button-group/button-group.js";
-export type { CalendarProps, WeekdayIndex } from "./calendar/calendar.js";
+export type { CalendarMode, CalendarProps, CalendarRangeValue, WeekdayIndex, } from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
 export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardTitleProps, } from "./card/card.js";
 export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
+export type { CheckboxCardProps } from "./checkbox-card/checkbox-card.js";
+export { CheckboxCard } from "./checkbox-card/checkbox-card.js";
+export type { CheckboxGroupOrientation, CheckboxGroupProps, } from "./checkbox-group/checkbox-group.js";
+export { CheckboxGroup } from "./checkbox-group/checkbox-group.js";
+export type { CodeSnippetProps, CodeSnippetVariant, } from "./code-snippet/code-snippet.js";
+export { CodeSnippet } from "./code-snippet/code-snippet.js";
 export type { CollapsiblePanelProps, CollapsibleRootProps, CollapsibleTriggerProps, } from "./collapsible/collapsible.js";
 export { Collapsible } from "./collapsible/collapsible.js";
 export type { ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps, } from "./combobox/combobox.js";
@@ -789,19 +1030,28 @@ export type { CommandPaletteItem, CommandPaletteProps, } from "./command-palette
 export { CommandPalette } from "./command-palette/command-palette.js";
 export type { ContainerProps, ContainerSize } from "./container/container.js";
 export { Container } from "./container/container.js";
-export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
+export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuLinkItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuSubmenuProps, ContextMenuSubmenuTriggerProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
+export type { CopyButtonProps } from "./copy-button/copy-button.js";
+export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
+export type { DescriptionListItemProps, DescriptionListRootProps, } from "./description-list/description-list.js";
+export { DescriptionList } from "./description-list/description-list.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
+export { usePortalContainer } from "./dialog/use-portal-container.js";
+export type { DirectionProviderProps } from "./direction-provider/direction-provider.js";
+export { DirectionProvider } from "./direction-provider/direction-provider.js";
 export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, DrawerRootProps, DrawerSide, DrawerTitleProps, DrawerTriggerProps, } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
 export type { EmptyStateClassNames, EmptyStateProps, } from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
+export type { FieldContextValue } from "./field/field-context.js";
+export { useFieldContext, useFieldControlId, } from "./field/field-context.js";
 export type { FieldDescriptionProps } from "./field/field-description.js";
 export type { FieldErrorProps } from "./field/field-error.js";
 export type { FieldLabelProps } from "./field/field-label.js";
@@ -811,6 +1061,8 @@ export type { FileUploadProps } from "./file-upload/file-upload.js";
 export { FileUpload } from "./file-upload/file-upload.js";
 export type { GridAlign, GridColumns, GridGap, GridProps, } from "./grid/grid.js";
 export { Grid } from "./grid/grid.js";
+export type { HeadingProps, HeadingSectionProps, HeadingTag, } from "./heading/heading.js";
+export { Heading, HeadingSection } from "./heading/heading.js";
 export type { InputProps } from "./input/input.js";
 export { Input } from "./input/input.js";
 export type { InputGroupAddonAlign, InputGroupAddonProps, InputGroupInputProps, InputGroupRootProps, } from "./input-group/input-group.js";
@@ -819,30 +1071,45 @@ export type { KbdProps, KbdSize } from "./kbd/kbd.js";
 export { Kbd } from "./kbd/kbd.js";
 export type { LinkProps } from "./link/link.js";
 export { Link } from "./link/link.js";
-export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuTriggerProps, } from "./menu/menu.js";
+export type { ListItemProps, ListRootProps, ListVariant } from "./list/list.js";
+export { List } from "./list/list.js";
+export type { LiveRegionProps } from "./live-region/live-region.js";
+export { LiveRegion } from "./live-region/live-region.js";
+export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuLinkItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuSubmenuProps, MenuSubmenuTriggerProps, MenuTriggerProps, } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
+export type { MenubarOrientation, MenubarProps, } from "./menubar/menubar.js";
+export { Menubar } from "./menubar/menubar.js";
 export type { MeterProps, MeterVariant } from "./meter/meter.js";
 export { Meter } from "./meter/meter.js";
+export type { NavigationMenuAlign, NavigationMenuContentProps, NavigationMenuItemProps, NavigationMenuLinkProps, NavigationMenuListProps, NavigationMenuRootProps, NavigationMenuSide, NavigationMenuTriggerProps, NavigationMenuViewportProps, } from "./navigation-menu/navigation-menu.js";
+export { NavigationMenu } from "./navigation-menu/navigation-menu.js";
 export type { NumberFieldProps } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
+export type { PasswordInputProps } from "./password-input/password-input.js";
+export { PasswordInput } from "./password-input/password-input.js";
 export type { PopoverCloseProps, PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps, } from "./popover/popover.js";
 export { Popover } from "./popover/popover.js";
 export type { PreviewCardContentProps, PreviewCardRootProps, PreviewCardSide, PreviewCardTriggerProps, } from "./preview-card/preview-card.js";
 export { PreviewCard } from "./preview-card/preview-card.js";
 export type { ProgressProps } from "./progress/progress.js";
 export { Progress } from "./progress/progress.js";
+export type { RadioCardProps } from "./radio-card/radio-card.js";
+export { RadioCard } from "./radio-card/radio-card.js";
 export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
 export { ScrollArea } from "./scroll-area/scroll-area.js";
-export type { SelectContentProps, SelectItemProps, SelectRootProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
+export type { SearchInputProps } from "./search-input/search-input.js";
+export { SearchInput } from "./search-input/search-input.js";
+export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
+export type { ChangeEventDetails } from "./shared/change-event-details.js";
 export type { SidebarContentProps, SidebarFooterProps, SidebarGroupLabelProps, SidebarGroupProps, SidebarHeaderProps, SidebarInsetProps, SidebarItemProps, SidebarProviderProps, SidebarRootProps, SidebarTriggerProps, UseSidebarResult, } from "./sidebar/sidebar.js";
 export { Sidebar, useSidebar } from "./sidebar/sidebar.js";
 export type { SkeletonProps, SkeletonVariant } from "./skeleton/skeleton.js";
@@ -851,6 +1118,8 @@ export type { SliderProps, SliderValue } from "./slider/slider.js";
 export { Slider } from "./slider/slider.js";
 export type { SpinnerProps, SpinnerSize } from "./spinner/spinner.js";
 export { Spinner } from "./spinner/spinner.js";
+export type { SplitButtonProps } from "./split-button/split-button.js";
+export { SplitButton } from "./split-button/split-button.js";
 export type { StackAlign, StackDirection, StackGap, StackJustify, StackProps, } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
 export type { StepperOrientation, StepperProps, StepperStep, } from "./stepper/stepper.js";
@@ -863,8 +1132,16 @@ export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type { TagOverflowItem, TagOverflowProps, } from "./tag-overflow/tag-overflow.js";
+export { TagOverflow } from "./tag-overflow/tag-overflow.js";
+export type { TextProps, TextSize, TextTag, TextTone, TextWeight, } from "./text/text.js";
+export { Text } from "./text/text.js";
 export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
+export type { ThemeProps, ThemeValues } from "./theme/theme.js";
+export { Theme, useTheme } from "./theme/theme.js";
+export type { TimePickerProps } from "./time-picker/time-picker.js";
+export { TimePicker } from "./time-picker/time-picker.js";
 export type { ToastActionOptions, ToastOptions, ToastProviderProps, ToastVariant, UseToastResult, } from "./toast/toast.js";
 export { Toast, useToast } from "./toast/toast.js";
 export type { ToggleProps } from "./toggle/toggle.js";
@@ -873,8 +1150,12 @@ export type { ToggleGroupOrientation, ToggleGroupProps, } from "./toggle-group/t
 export { ToggleGroup } from "./toggle-group/toggle-group.js";
 export type { ToolbarButtonProps, ToolbarGroupProps, ToolbarLinkProps, ToolbarOrientation, ToolbarRootProps, ToolbarSeparatorProps, } from "./toolbar/toolbar.js";
 export { Toolbar } from "./toolbar/toolbar.js";
-export type { TooltipProps, TooltipSide } from "./tooltip/tooltip.js";
+export type { TooltipProps, TooltipProviderProps, TooltipSide, } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
+export type { TreeViewNode, TreeViewProps, } from "./tree-view/tree-view.js";
+export { TreeView } from "./tree-view/tree-view.js";
+export type { TruncatedTextProps } from "./truncated-text/truncated-text.js";
+export { TruncatedText } from "./truncated-text/truncated-text.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
 export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";
 
@@ -927,21 +1208,55 @@ export declare function Kbd({ ref, size, className, ...rest }: KbdProps): import
 
 
 // ---- link/link.d.ts ----
-import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
-export declare function Link({ ref, className, ...rest }: LinkProps): import("react").JSX.Element;
+export declare function Link({ ref, render, className, ...rest }: LinkProps): import("react").JSX.Element | null;
+
+
+// ---- list/list.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type ListVariant = "plain" | "contained";
+export interface ListRootProps extends HTMLAttributes<HTMLUListElement> {
+    ref?: Ref<HTMLUListElement>;
+    variant?: ListVariant;
+    children?: ReactNode;
+}
+declare function ListRoot({ variant, className, ...rest }: ListRootProps): import("react").JSX.Element;
+export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+    leading?: ReactNode;
+    trailing?: ReactNode;
+    children?: ReactNode;
+}
+declare function ListItem({ leading, trailing, className, children, ...rest }: ListItemProps): import("react").JSX.Element;
+export declare const List: typeof ListRoot & {
+    Item: typeof ListItem;
+};
+export {};
+
+
+// ---- live-region/live-region.d.ts ----
+import type { HTMLAttributes, Ref } from "react";
+export interface LiveRegionProps extends Omit<HTMLAttributes<HTMLSpanElement>, "aria-atomic" | "aria-live"> {
+    ref?: Ref<HTMLSpanElement>;
+    politeness?: "polite" | "assertive";
+    atomic?: boolean;
+}
+export declare function LiveRegion({ politeness, atomic, ...rest }: LiveRegionProps): import("react").JSX.Element;
 
 
 // ---- menu/menu.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface MenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
@@ -951,12 +1266,19 @@ export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement
     children?: ReactNode;
 }
 declare function MenuTrigger({ render, className, ...rest }: MenuTriggerProps): import("react").JSX.Element;
+export type MenuSide = "top" | "right" | "bottom" | "left";
+export type MenuAlign = "start" | "center" | "end";
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     finalFocus?: OverlayFocusTarget;
+    side?: MenuSide;
+    sideOffset?: number;
+    align?: MenuAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<MenuSide, number>>;
     children?: ReactNode;
 }
-declare function MenuContent({ className, children, ...rest }: MenuContentProps): import("react").JSX.Element;
+declare function MenuContent({ side, sideOffset, align, alignOffset, collisionPadding, className, children, ...rest }: MenuContentProps): import("react").JSX.Element;
 export interface MenuGroupProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
@@ -969,6 +1291,8 @@ export interface MenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
 declare function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps): import("react").JSX.Element;
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     disabled?: boolean;
     children?: ReactNode;
 }
@@ -1007,19 +1331,55 @@ export interface MenuShortcutProps extends HTMLAttributes<HTMLSpanElement> {
     children?: ReactNode;
 }
 declare function MenuShortcut({ className, ...rest }: MenuShortcutProps): import("react").JSX.Element;
+export interface MenuSubmenuProps {
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function MenuSubmenu(props: MenuSubmenuProps): import("react").JSX.Element;
+export interface MenuSubmenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function MenuSubmenuTrigger({ className, ...rest }: MenuSubmenuTriggerProps): import("react").JSX.Element;
+export interface MenuLinkItemProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    href?: string;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function MenuLinkItem({ className, ...rest }: MenuLinkItemProps): import("react").JSX.Element;
 export declare const Menu: typeof MenuRoot & {
     Trigger: typeof MenuTrigger;
     Content: typeof MenuContent;
     Group: typeof MenuGroup;
     GroupLabel: typeof MenuGroupLabel;
     Item: typeof MenuItem;
+    LinkItem: typeof MenuLinkItem;
     CheckboxItem: typeof MenuCheckboxItem;
     RadioGroup: typeof MenuRadioGroup;
     RadioItem: typeof MenuRadioItem;
     Separator: typeof MenuSeparator;
     Shortcut: typeof MenuShortcut;
+    Submenu: typeof MenuSubmenu;
+    SubmenuTrigger: typeof MenuSubmenuTrigger;
 };
 export {};
+
+
+// ---- menubar/menubar.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type MenubarOrientation = "horizontal" | "vertical";
+export interface MenubarProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    modal?: boolean;
+    disabled?: boolean;
+    orientation?: MenubarOrientation;
+    loopFocus?: boolean;
+    children?: ReactNode;
+}
+export declare function Menubar({ className, ...rest }: MenubarProps): import("react").JSX.Element;
 
 
 // ---- meter/meter.d.ts ----
@@ -1035,6 +1395,72 @@ export interface MeterProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
     variant?: MeterVariant;
 }
 export declare function Meter({ ref, value, min, max, label, showValue, variant, className, ...rest }: MeterProps): import("react").JSX.Element;
+
+
+// ---- navigation-menu/navigation-menu.d.ts ----
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export interface NavigationMenuRootProps<Value = unknown> extends Omit<HTMLAttributes<HTMLElement>, "onChange" | "value" | "defaultValue"> {
+    ref?: Ref<HTMLElement>;
+    value?: Value | null;
+    defaultValue?: Value | null;
+    onValueChange?: (value: Value | null, eventDetails?: ChangeEventDetails) => void;
+    delay?: number;
+    closeDelay?: number;
+    children?: ReactNode;
+}
+declare function NavigationMenuRoot<Value = unknown>({ value, defaultValue, onValueChange, className, ...rest }: NavigationMenuRootProps<Value>): import("react").JSX.Element;
+export interface NavigationMenuListProps extends HTMLAttributes<HTMLUListElement> {
+    ref?: Ref<HTMLUListElement>;
+    children?: ReactNode;
+}
+declare function NavigationMenuList({ className, ...rest }: NavigationMenuListProps): import("react").JSX.Element;
+export interface NavigationMenuItemProps extends HTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+    value?: unknown;
+    children?: ReactNode;
+}
+declare function NavigationMenuItem({ className, ...rest }: NavigationMenuItemProps): import("react").JSX.Element;
+export interface NavigationMenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function NavigationMenuTrigger({ className, ...rest }: NavigationMenuTriggerProps): import("react").JSX.Element;
+export interface NavigationMenuLinkProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
+    href?: string;
+    active?: boolean;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function NavigationMenuLink({ className, ...rest }: NavigationMenuLinkProps): import("react").JSX.Element;
+export interface NavigationMenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function NavigationMenuContent({ className, ...rest }: NavigationMenuContentProps): import("react").JSX.Element;
+export type NavigationMenuSide = "top" | "right" | "bottom" | "left";
+export type NavigationMenuAlign = "start" | "center" | "end";
+export interface NavigationMenuViewportProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    side?: NavigationMenuSide;
+    sideOffset?: number;
+    align?: NavigationMenuAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<NavigationMenuSide, number>>;
+}
+declare function NavigationMenuViewport({ className, side, sideOffset, align, alignOffset, collisionPadding, ...rest }: NavigationMenuViewportProps): import("react").JSX.Element;
+export declare const NavigationMenu: typeof NavigationMenuRoot & {
+    List: typeof NavigationMenuList;
+    Item: typeof NavigationMenuItem;
+    Trigger: typeof NavigationMenuTrigger;
+    Link: typeof NavigationMenuLink;
+    Content: typeof NavigationMenuContent;
+    Viewport: typeof NavigationMenuViewport;
+};
+export {};
 
 
 // ---- number-field/number-field.d.ts ----
@@ -1092,13 +1518,28 @@ export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "chil
 export declare function Pagination({ ref, page, totalPages, onPageChange, siblingCount, previousLabel, nextLabel, "aria-label": ariaLabel, className, ...rest }: PaginationProps): import("react").JSX.Element;
 
 
+// ---- password-input/password-input.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+    ref?: Ref<HTMLInputElement>;
+    visible?: boolean;
+    defaultVisible?: boolean;
+    onVisibleChange?: (visible: boolean) => void;
+    showLabel?: string;
+    hideLabel?: string;
+    invalid?: boolean;
+}
+export declare function PasswordInput({ ref, visible, defaultVisible, onVisibleChange, showLabel, hideLabel, invalid, className, ...rest }: PasswordInputProps): import("react").JSX.Element;
+
+
 // ---- popover/popover.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface PopoverRootProps {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children?: ReactNode;
 }
 declare function PopoverRoot({ open, defaultOpen, onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
@@ -1109,15 +1550,19 @@ export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
 }
 declare function PopoverTrigger({ render, className, ...rest }: PopoverTriggerProps): import("react").JSX.Element;
 export type PopoverSide = "top" | "right" | "bottom" | "left";
+export type PopoverAlign = "start" | "center" | "end";
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     side?: PopoverSide;
     sideOffset?: number;
+    align?: PopoverAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<PopoverSide, number>>;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
-declare function PopoverContent({ side, sideOffset, className, children, ...rest }: PopoverContentProps): import("react").JSX.Element;
+declare function PopoverContent({ side, sideOffset, align, alignOffset, collisionPadding, className, children, ...rest }: PopoverContentProps): import("react").JSX.Element;
 export interface PopoverTitleProps extends HTMLAttributes<HTMLHeadingElement> {
     ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
@@ -1145,7 +1590,7 @@ export {};
 
 
 // ---- preview-card/preview-card.d.ts ----
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface PreviewCardRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -1155,19 +1600,24 @@ export interface PreviewCardRootProps {
 declare function PreviewCardRoot({ open, defaultOpen, onOpenChange, ...rest }: PreviewCardRootProps): import("react").JSX.Element;
 export interface PreviewCardTriggerProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     delay?: number;
     closeDelay?: number;
     children?: ReactNode;
 }
 declare function PreviewCardTrigger({ className, ...rest }: PreviewCardTriggerProps): import("react").JSX.Element;
 export type PreviewCardSide = "top" | "right" | "bottom" | "left";
+export type PreviewCardAlign = "start" | "center" | "end";
 export interface PreviewCardContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     side?: PreviewCardSide;
     sideOffset?: number;
+    align?: PreviewCardAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<PreviewCardSide, number>>;
     children?: ReactNode;
 }
-declare function PreviewCardContent({ side, sideOffset, className, children, ...rest }: PreviewCardContentProps): import("react").JSX.Element;
+declare function PreviewCardContent({ side, sideOffset, align, alignOffset, collisionPadding, className, children, ...rest }: PreviewCardContentProps): import("react").JSX.Element;
 export declare const PreviewCard: typeof PreviewCardRoot & {
     Trigger: typeof PreviewCardTrigger;
     Content: typeof PreviewCardContent;
@@ -1188,20 +1638,31 @@ export interface ProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, "chi
 export declare function Progress({ ref, value, min, max, label, showValue, className, ...rest }: ProgressProps): import("react").JSX.Element;
 
 
+// ---- radio-card/radio-card.d.ts ----
+import type { ReactNode } from "react";
+import { type RadioGroupItemProps } from "../radio-group/radio-group.js";
+export interface RadioCardProps<Value = string> extends RadioGroupItemProps<Value> {
+    label: ReactNode;
+    description?: ReactNode;
+}
+export declare function RadioCard<Value = string>({ label, description, className, children, ...rest }: RadioCardProps<Value>): import("react").JSX.Element;
+
+
 // ---- radio-group/radio-group.d.ts ----
 import type { HTMLAttributes, LabelHTMLAttributes, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface RadioGroupProps<Value = string> extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     name?: string;
     value?: Value;
     defaultValue?: Value;
-    onValueChange?: (value: Value) => void;
+    onValueChange?: (value: Value, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
     children?: ReactNode;
 }
-declare function RadioGroupRoot<Value = string>({ disabled, className, onValueChange, "aria-describedby": ariaDescribedBy, ...rest }: RadioGroupProps<Value>): import("react").JSX.Element;
+declare function RadioGroupRoot<Value = string>({ disabled, className, onValueChange, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: RadioGroupProps<Value>): import("react").JSX.Element;
 export interface RadioGroupItemProps<Value = string> extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "value"> {
     ref?: Ref<HTMLLabelElement>;
     value: Value;
@@ -1227,13 +1688,33 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
 export declare function ScrollArea({ ref, orientation, maxHeight, className, style, children, ...rest }: ScrollAreaProps): import("react").JSX.Element;
 
 
+// ---- search-input/search-input.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    onClear?: () => void;
+    clearLabel?: string;
+    invalid?: boolean;
+}
+export declare function SearchInput({ ref, value, defaultValue, onValueChange, onClear, clearLabel, invalid, onKeyDown, className, ...rest }: SearchInputProps): import("react").JSX.Element;
+
+
 // ---- select/select.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-export interface SelectRootProps<Value = unknown> {
-    value?: Value;
-    defaultValue?: Value;
-    onValueChange?: (value: Value | null) => void;
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+type SelectValueType<Value, Multiple extends boolean | undefined> = Multiple extends true ? Value[] : Value;
+export interface SelectRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
+    value?: SelectValueType<Value, Multiple>;
+    defaultValue?: SelectValueType<Value, Multiple>;
+    onValueChange?: (value: SelectValueType<Value, Multiple> | (Multiple extends true ? never : null), eventDetails?: ChangeEventDetails) => void;
+    multiple?: Multiple;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -1244,9 +1725,11 @@ export interface SelectRootProps<Value = unknown> {
     }>;
     children?: ReactNode;
 }
-declare function SelectRoot<Value = unknown>({ disabled, onValueChange, ...rest }: SelectRootProps<Value>): import("react").JSX.Element;
+declare function SelectRoot<Value = unknown, Multiple extends boolean | undefined = false>({ disabled, onValueChange, open, defaultOpen, onOpenChange, ...rest }: SelectRootProps<Value, Multiple>): import("react").JSX.Element;
 export interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function SelectTrigger({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, ...rest }: SelectTriggerProps): import("react").JSX.Element;
@@ -1255,12 +1738,19 @@ export interface SelectValueProps extends HTMLAttributes<HTMLSpanElement> {
     placeholder?: string;
 }
 declare function SelectValue({ placeholder, ...rest }: SelectValueProps): import("react").JSX.Element;
+export type SelectSide = "top" | "right" | "bottom" | "left";
+export type SelectAlign = "start" | "center" | "end";
 export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     finalFocus?: OverlayFocusTarget;
+    side?: SelectSide;
+    sideOffset?: number;
+    align?: SelectAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<SelectSide, number>>;
     children?: ReactNode;
 }
-declare function SelectContent({ className, finalFocus, children, ...rest }: SelectContentProps): import("react").JSX.Element;
+declare function SelectContent({ className, finalFocus, side, sideOffset, align, alignOffset, collisionPadding, children, ...rest }: SelectContentProps): import("react").JSX.Element;
 export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     value: unknown;
@@ -1268,11 +1758,28 @@ export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 declare function SelectItem({ className, children, ...rest }: SelectItemProps): import("react").JSX.Element;
+export interface SelectGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function SelectGroup(props: SelectGroupProps): import("react").JSX.Element;
+export interface SelectGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function SelectGroupLabel({ className, ...rest }: SelectGroupLabelProps): import("react").JSX.Element;
+export interface SelectSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+}
+declare function SelectSeparator({ className, ...rest }: SelectSeparatorProps): import("react").JSX.Element;
 export declare const Select: typeof SelectRoot & {
     Trigger: typeof SelectTrigger;
     Value: typeof SelectValue;
     Content: typeof SelectContent;
     Item: typeof SelectItem;
+    Group: typeof SelectGroup;
+    GroupLabel: typeof SelectGroupLabel;
+    Separator: typeof SelectSeparator;
 };
 export {};
 
@@ -1287,8 +1794,17 @@ export interface SeparatorProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
 export declare function Separator({ ref, orientation, className, ...rest }: SeparatorProps): import("react").JSX.Element;
 
 
+// ---- shared/change-event-details.d.ts ----
+export interface ChangeEventDetails {
+    reason: string;
+    event: Event;
+    cancel: () => void;
+    isCanceled: boolean;
+}
+
+
 // ---- sidebar/sidebar.d.ts ----
-import { type ButtonHTMLAttributes, type HTMLAttributes, type MouseEventHandler, type ReactNode, type Ref } from "react";
+import { type ButtonHTMLAttributes, type HTMLAttributes, type MouseEventHandler, type ReactElement, type ReactNode, type Ref } from "react";
 export interface UseSidebarResult {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -1341,6 +1857,8 @@ export interface SidebarGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
 declare function SidebarGroupLabel({ className, ...rest }: SidebarGroupLabelProps): import("react").JSX.Element;
 export interface SidebarItemProps extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
     ref?: Ref<HTMLAnchorElement> | Ref<HTMLButtonElement> | Ref<HTMLElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     active?: boolean;
     icon?: ReactNode;
     href?: string;
@@ -1351,7 +1869,7 @@ export interface SidebarItemProps extends Omit<HTMLAttributes<HTMLElement>, "onC
     onClick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
     children?: ReactNode;
 }
-declare function SidebarItem({ ref, active, icon, href, target, rel, disabled, type, className, children, onClick, ...rest }: SidebarItemProps): import("react").JSX.Element;
+declare function SidebarItem({ ref, render, nativeButton, active, icon, href, target, rel, disabled, type, className, children, onClick, onClickCapture, ...rest }: SidebarItemProps): import("react").JSX.Element | null;
 export interface SidebarInsetProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
@@ -1389,7 +1907,7 @@ export declare function Skeleton({ ref, variant, width, height, style, className
 
 
 // ---- slider/slider.d.ts ----
-import type { HTMLAttributes, Ref } from "react";
+import { type HTMLAttributes, type Ref } from "react";
 export type SliderValue = number | readonly number[];
 export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
@@ -1402,7 +1920,7 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defau
     disabled?: boolean;
     name?: string;
 }
-export declare function Slider({ ref, value, defaultValue, onValueChange, min, max, step, disabled, name, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, ...rest }: SliderProps): import("react").JSX.Element;
+export declare function Slider({ ref, value, defaultValue, onValueChange, min, max, step, disabled, name, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SliderProps): import("react").JSX.Element;
 
 
 // ---- spinner/spinner.d.ts ----
@@ -1414,6 +1932,17 @@ export interface SpinnerProps extends Omit<HTMLAttributes<HTMLSpanElement>, "chi
     label?: string;
 }
 export declare function Spinner({ ref, size, label, className, ...rest }: SpinnerProps): import("react").JSX.Element;
+
+
+// ---- split-button/split-button.d.ts ----
+import type { ReactNode } from "react";
+import { type ButtonProps } from "../button/button.js";
+export interface SplitButtonProps extends Omit<ButtonProps, "render" | "children"> {
+    menuLabel?: string;
+    menu: ReactNode;
+    children?: ReactNode;
+}
+export declare function SplitButton({ menuLabel, variant, size, menu, children, className, ...rest }: SplitButtonProps): import("react").JSX.Element;
 
 
 // ---- stack/stack.d.ts ----
@@ -1453,11 +1982,12 @@ export declare function Stepper({ ref, steps, currentStep, orientation, classNam
 
 // ---- switch/switch.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
     defaultChecked?: boolean;
-    onCheckedChange?: (checked: boolean) => void;
+    onCheckedChange?: (checked: boolean, eventDetails?: ChangeEventDetails) => void;
     disabled?: boolean;
     required?: boolean;
     readOnly?: boolean;
@@ -1470,6 +2000,7 @@ export declare function Switch({ ref, onCheckedChange, disabled, id, className, 
 import type { HTMLAttributes, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
     ref?: Ref<HTMLTableElement>;
+    wrapperClassName?: string;
 }
 export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
     ref?: Ref<HTMLTableSectionElement>;
@@ -1492,7 +2023,7 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
 export interface TableCaptionProps extends HTMLAttributes<HTMLTableCaptionElement> {
     ref?: Ref<HTMLTableCaptionElement>;
 }
-declare function TableRoot({ ref, className, ...rest }: TableRootProps): import("react").JSX.Element;
+declare function TableRoot({ ref, className, wrapperClassName, ...rest }: TableRootProps): import("react").JSX.Element;
 declare function TableHeader({ className, ...rest }: TableHeaderProps): import("react").JSX.Element;
 declare function TableBody({ className, ...rest }: TableBodyProps): import("react").JSX.Element;
 declare function TableFooter({ className, ...rest }: TableFooterProps): import("react").JSX.Element;
@@ -1513,22 +2044,29 @@ export {};
 
 
 // ---- tabs/tabs.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type TabsOrientation = "horizontal" | "vertical";
 export interface TabsRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown;
     defaultValue?: unknown;
-    onValueChange?: (value: unknown) => void;
+    onValueChange?: (value: unknown, eventDetails?: ChangeEventDetails) => void;
+    orientation?: TabsOrientation;
     children?: ReactNode;
 }
 declare function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps): import("react").JSX.Element;
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    activateOnFocus?: boolean;
+    loopFocus?: boolean;
     children?: ReactNode;
 }
 declare function TabsList({ className, children, ...rest }: TabsListProps): import("react").JSX.Element;
 export interface TabsTabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     value: unknown;
     disabled?: boolean;
     children?: ReactNode;
@@ -1537,6 +2075,7 @@ declare function TabsTab({ className, children, ...rest }: TabsTabProps): import
 export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     value: unknown;
+    keepMounted?: boolean;
     children?: ReactNode;
 }
 declare function TabsPanel({ className, children, ...rest }: TabsPanelProps): import("react").JSX.Element;
@@ -1546,6 +2085,23 @@ export declare const Tabs: typeof TabsRoot & {
     Panel: typeof TabsPanel;
 };
 export {};
+
+
+// ---- tag-overflow/tag-overflow.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TagOverflowItem {
+    id: string;
+    label: ReactNode;
+}
+export interface TagOverflowProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    items: readonly TagOverflowItem[];
+    max?: number;
+    renderItem?: (item: TagOverflowItem) => ReactNode;
+    overflowLabel?: (count: number) => string;
+    overflowAriaLabel?: (count: number) => string;
+}
+export declare function TagOverflow({ ref, items, max, renderItem, overflowLabel, overflowAriaLabel, className, ...rest }: TagOverflowProps): import("react").JSX.Element;
 
 
 // ---- tag/tag.d.ts ----
@@ -1561,6 +2117,23 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 export declare function Tag({ ref, variant, onRemove, removeLabel, className, children, ...rest }: TagProps): import("react").JSX.Element;
 
 
+// ---- text/text.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type TextTag = "p" | "span" | "div" | "label";
+export type TextSize = "100" | "200" | "300";
+export type TextWeight = "regular" | "medium" | "bold";
+export type TextTone = "default" | "muted" | "inverse";
+export interface TextProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+    as?: TextTag;
+    size?: TextSize;
+    weight?: TextWeight;
+    tone?: TextTone;
+    children?: ReactNode;
+}
+export declare function Text({ as, size, weight, tone, className, ...rest }: TextProps): import("react").JSX.Element;
+
+
 // ---- textarea/textarea.d.ts ----
 import type { Ref, TextareaHTMLAttributes } from "react";
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -1570,9 +2143,40 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 export declare function Textarea({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TextareaProps): import("react").JSX.Element;
 
 
+// ---- theme/theme.d.ts ----
+import { type HTMLAttributes, type Ref } from "react";
+export interface ThemeValues {
+    brand?: string;
+    colorScheme?: "light" | "dark";
+    density?: "default" | "compact";
+    contrast?: "default" | "more";
+}
+export interface ThemeProps extends HTMLAttributes<HTMLDivElement>, ThemeValues {
+    ref?: Ref<HTMLDivElement>;
+}
+export declare function useTheme(): Readonly<ThemeValues>;
+export declare function Theme({ brand, colorScheme, density, contrast, children, ...rest }: ThemeProps): import("react").JSX.Element;
+
+
+// ---- time-picker/time-picker.d.ts ----
+import type { InputHTMLAttributes, Ref } from "react";
+export interface TimePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    min?: string;
+    max?: string;
+    step?: number;
+    invalid?: boolean;
+}
+export declare function TimePicker({ ref, value, defaultValue, onValueChange, min, max, step, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TimePickerProps): import("react").JSX.Element;
+
+
 // ---- toast/toast.d.ts ----
 import type { ReactNode } from "react";
 export type ToastVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export type ToastPosition = "top-start" | "top-end" | "bottom-start" | "bottom-end";
 export interface ToastActionOptions {
     label: string;
     onClick: () => void;
@@ -1585,18 +2189,30 @@ export interface ToastOptions {
     timeout?: number;
     priority?: "low" | "high";
     action?: ToastActionOptions;
+    icon?: ReactNode;
+    onClose?: () => void;
+}
+export type ToastUpdateOptions = Partial<Omit<ToastOptions, "id">>;
+export interface ToastPromiseOptions<Value> {
+    loading: string | ToastUpdateOptions;
+    success: string | ToastUpdateOptions | ((result: Value) => string | ToastUpdateOptions);
+    error: string | ToastUpdateOptions | ((error: unknown) => string | ToastUpdateOptions);
 }
 export interface UseToastResult {
     add: (options: ToastOptions) => string;
+    update: (id: string, options: ToastUpdateOptions) => void;
     close: (id?: string) => void;
+    promise: <Value>(promise: Promise<Value>, options: ToastPromiseOptions<Value>) => Promise<Value>;
 }
 export interface ToastProviderProps {
     children: ReactNode;
     timeout?: number;
     limit?: number;
     dismissLabel?: string;
+    position?: ToastPosition;
+    className?: string;
 }
-declare function ToastProvider({ children, timeout, limit, dismissLabel, }: ToastProviderProps): import("react").JSX.Element;
+declare function ToastProvider({ children, timeout, limit, dismissLabel, position, className, }: ToastProviderProps): import("react").JSX.Element;
 export declare function useToast(): UseToastResult;
 export declare const Toast: {
     Provider: typeof ToastProvider;
@@ -1627,9 +2243,11 @@ export {};
 
 
 // ---- toggle/toggle.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?: (pressed: boolean) => void;
@@ -1640,7 +2258,7 @@ export declare function Toggle({ ref, pressed, defaultPressed, onPressedChange, 
 
 
 // ---- toolbar/toolbar.d.ts ----
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export type ToolbarOrientation = "horizontal" | "vertical";
 export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
@@ -1658,12 +2276,15 @@ export interface ToolbarGroupProps extends HTMLAttributes<HTMLDivElement> {
 declare function ToolbarGroup({ className, ...rest }: ToolbarGroupProps): import("react").JSX.Element;
 export interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     focusableWhenDisabled?: boolean;
     children?: ReactNode;
 }
 declare function ToolbarButton({ className, ...rest }: ToolbarButtonProps): import("react").JSX.Element;
 export interface ToolbarLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
 declare function ToolbarLink({ className, ...rest }: ToolbarLinkProps): import("react").JSX.Element;
@@ -1682,18 +2303,76 @@ export {};
 
 // ---- tooltip/tooltip.d.ts ----
 import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type TooltipSide = "top" | "right" | "bottom" | "left";
+export type TooltipAlign = "start" | "center" | "end";
+export interface TooltipProviderProps {
+    delay?: number;
+    closeDelay?: number;
+    timeout?: number;
+    children?: ReactNode;
+}
+declare function TooltipProvider(props: TooltipProviderProps): import("react").JSX.Element;
 export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, "content" | "children"> {
     ref?: Ref<HTMLDivElement>;
     content: ReactNode;
     side?: TooltipSide;
     sideOffset?: number;
+    align?: TooltipAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<TooltipSide, number>>;
+    disabled?: boolean;
+    delay?: number;
+    closeDelay?: number;
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
     children: ReactElement;
 }
-export declare function Tooltip({ content, side, sideOffset, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
+declare function TooltipRoot({ id, content, side, sideOffset, align, alignOffset, collisionPadding, disabled, delay, closeDelay, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
+export declare const Tooltip: typeof TooltipRoot & {
+    Provider: typeof TooltipProvider;
+};
+export {};
+
+
+// ---- tree-view/tree-view.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TreeViewNode<T = unknown> {
+    id: string;
+    label: ReactNode;
+    icon?: ReactNode;
+    disabled?: boolean;
+    children?: readonly TreeViewNode<T>[];
+    hasChildren?: boolean;
+    data?: T;
+}
+export interface TreeViewProps<T = unknown> extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    ref?: Ref<HTMLDivElement>;
+    items: readonly TreeViewNode<T>[];
+    multiple?: boolean;
+    selected?: readonly string[];
+    defaultSelected?: readonly string[];
+    onSelectedChange?: (selected: string[]) => void;
+    expanded?: readonly string[];
+    defaultExpanded?: readonly string[];
+    onExpandedChange?: (expanded: string[]) => void;
+    onLoadChildren?: (node: TreeViewNode<T>) => void;
+    renderItem?: (node: TreeViewNode<T>) => ReactNode;
+    getItemLabel?: (node: TreeViewNode<T>) => string;
+}
+export declare function TreeView<T = unknown>({ ref, items, multiple, selected, defaultSelected, onSelectedChange, expanded, defaultExpanded, onExpandedChange, onLoadChildren, renderItem, getItemLabel, className, ...rest }: TreeViewProps<T>): import("react").JSX.Element;
+
+
+// ---- truncated-text/truncated-text.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TruncatedTextProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
+    lines?: number;
+    showTooltip?: boolean;
+    children?: ReactNode;
+}
+export declare function TruncatedText({ ref, lines, showTooltip, className, children, ...rest }: TruncatedTextProps): import("react").JSX.Element;
 
 
 // ---- visually-hidden/visually-hidden.d.ts ----

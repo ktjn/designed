@@ -18,10 +18,20 @@ describe("Card", () => {
         </Card.Footer>
       </Card>,
     );
-    expect(screen.getByRole("heading", { name: "Workspace" })).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { name: "Workspace", level: 3 }),
+    ).toBeTruthy();
     expect(screen.getByText("Manage team settings.")).toBeTruthy();
     expect(screen.getByText("Body content")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Save" })).toBeTruthy();
+  });
+
+  it("renders the heading level supplied by the page", () => {
+    render(<Card.Title as="h2">Workspace</Card.Title>);
+
+    expect(
+      screen.getByRole("heading", { name: "Workspace", level: 2 }),
+    ).toBeTruthy();
   });
 
   it("has no automatically detectable accessibility violations", async () => {

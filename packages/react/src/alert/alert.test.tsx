@@ -36,6 +36,26 @@ describe("Alert", () => {
     expect(screen.getByRole("alert")).toBeTruthy();
   });
 
+  it("renders optional icon and action slots with data-slot attributes", () => {
+    render(
+      <Alert
+        variant="info"
+        title="Heads up"
+        icon={<span data-testid="icon">!</span>}
+        action={<button type="button">Undo</button>}
+      >
+        Changes take effect immediately.
+      </Alert>,
+    );
+    const region = screen.getByRole("status");
+    expect(region.querySelector('[data-slot="alert-icon"]')).toBeTruthy();
+    expect(region.querySelector('[data-slot="alert-action"]')).toBeTruthy();
+    expect(region.querySelector('[data-slot="alert-title"]')).toBeTruthy();
+    expect(region.querySelector('[data-slot="alert-content"]')).toBeTruthy();
+    expect(screen.getByTestId("icon")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Undo" })).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Alert variant="success" title="Saved">

@@ -2,19 +2,24 @@ import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./accordion.module.css";
+
+export type AccordionOrientation = "horizontal" | "vertical";
 
 export interface AccordionRootProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   ref?: Ref<HTMLDivElement>;
   value?: unknown[];
   defaultValue?: unknown[];
-  onValueChange?: (value: unknown[]) => void;
+  onValueChange?: (value: unknown[], eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   multiple?: boolean;
+  orientation?: AccordionOrientation;
   children?: ReactNode;
 }
 
@@ -27,7 +32,9 @@ function AccordionRoot({
     <BaseAccordion.Root
       data-slot="accordion"
       className={className}
-      onValueChange={(value) => onValueChange?.(value)}
+      onValueChange={(value, eventDetails) =>
+        onValueChange?.(value, eventDetails)
+      }
       {...rest}
     />
   );
@@ -55,6 +62,8 @@ function AccordionItem({ className, children, ...rest }: AccordionItemProps) {
 export interface AccordionTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   children?: ReactNode;
 }
 
@@ -80,6 +89,7 @@ function AccordionTrigger({
 
 export interface AccordionPanelProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  keepMounted?: boolean;
   children?: ReactNode;
 }
 

@@ -20,6 +20,25 @@ describe("Autocomplete", () => {
     expect(input.getAttribute("aria-invalid")).toBe("true");
   });
 
+  it("accepts object items with a custom renderItem and null filter", () => {
+    const frameworks = [
+      { id: "react", label: "React" },
+      { id: "vue", label: "Vue" },
+    ];
+    render(
+      <Field>
+        <Field.Label>Framework</Field.Label>
+        <Autocomplete
+          items={frameworks}
+          filter={null}
+          itemToStringValue={(item) => item.id}
+          renderItem={(item) => <em>{item.label}</em>}
+        />
+      </Field>,
+    );
+    expect(screen.getByRole("combobox", { name: "Framework" })).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>

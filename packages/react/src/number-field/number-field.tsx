@@ -80,8 +80,12 @@ export function NumberField({
       className={classes}
       {...rest}
     >
-      <BaseNumberField.Group className={styles.group}>
+      <BaseNumberField.Group
+        data-slot="number-field-group"
+        className={styles.group}
+      >
         <BaseNumberField.Decrement
+          data-slot="number-field-decrement"
           aria-label={decrementLabel}
           className={styles.button}
         >
@@ -97,6 +101,7 @@ export function NumberField({
           className={styles.input}
         />
         <BaseNumberField.Increment
+          data-slot="number-field-increment"
           aria-label={incrementLabel}
           className={styles.button}
         >

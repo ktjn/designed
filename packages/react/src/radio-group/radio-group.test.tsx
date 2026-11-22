@@ -26,7 +26,7 @@ describe("RadioGroup", () => {
       </RadioGroup>,
     );
     await user.click(screen.getByText("Pro"));
-    expect(onValueChange).toHaveBeenCalledWith("pro");
+    expect(onValueChange).toHaveBeenCalledWith("pro", expect.anything());
   });
 
   it("moves selection between items with arrow keys", async () => {
@@ -40,7 +40,7 @@ describe("RadioGroup", () => {
     );
     await user.tab();
     await user.keyboard("{ArrowDown}");
-    expect(onValueChange).toHaveBeenCalledWith("pro");
+    expect(onValueChange).toHaveBeenCalledWith("pro", expect.anything());
   });
 
   it("has no automatically detectable accessibility violations", async () => {

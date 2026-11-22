@@ -85,12 +85,12 @@
       "name": "Button (single component import)",
       "path": "dist/button/button.js",
       "import": "{ Button }",
-      "limit": "1 kB"
+      "limit": "1.5 kB"
     },
     {
       "name": "Full package import (all components, including Base UI + floating-ui)",
       "path": "dist/index.js",
-      "limit": "160 kB"
+      "limit": "175 kB"
     }
   ]
 }

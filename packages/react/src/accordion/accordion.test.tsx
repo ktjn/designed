@@ -99,6 +99,32 @@ describe("Accordion", () => {
     ).toBe("true");
   });
 
+  it("exposes the vertical orientation as a data attribute", () => {
+    const { container } = render(
+      <Accordion orientation="vertical">
+        <Accordion.Item value="a">
+          <Accordion.Trigger>Section A</Accordion.Trigger>
+          <Accordion.Panel>Content A</Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>,
+    );
+    expect(
+      container.querySelector('[data-orientation="vertical"]'),
+    ).toBeTruthy();
+  });
+
+  it("keeps a collapsed panel's DOM mounted when keepMounted is set", () => {
+    render(
+      <Accordion>
+        <Accordion.Item value="a">
+          <Accordion.Trigger>Section A</Accordion.Trigger>
+          <Accordion.Panel keepMounted>Content A</Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>,
+    );
+    expect(screen.getByText("Content A")).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<BasicAccordion />);
     expect(await axe(container)).toHaveNoViolations();

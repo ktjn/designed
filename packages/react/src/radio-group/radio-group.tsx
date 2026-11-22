@@ -7,6 +7,7 @@ import type {
   Ref,
 } from "react";
 import { useFieldContext } from "../field/field-context.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./radio-group.module.css";
 
 export interface RadioGroupProps<Value = string>
@@ -15,7 +16,7 @@ export interface RadioGroupProps<Value = string>
   name?: string;
   value?: Value;
   defaultValue?: Value;
-  onValueChange?: (value: Value) => void;
+  onValueChange?: (value: Value, eventDetails?: ChangeEventDetails) => void;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
@@ -27,6 +28,7 @@ function RadioGroupRoot<Value = string>({
   className,
   onValueChange,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...rest
 }: RadioGroupProps<Value>) {
   const field = useFieldContext();
@@ -35,8 +37,11 @@ function RadioGroupRoot<Value = string>({
       data-slot="radio-group"
       disabled={disabled ?? field?.disabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
+      aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
       className={className ? `${styles.root} ${className}` : styles.root}
-      onValueChange={(value) => onValueChange?.(value)}
+      onValueChange={(value, eventDetails) =>
+        onValueChange?.(value, eventDetails)
+      }
       {...rest}
     />
   );

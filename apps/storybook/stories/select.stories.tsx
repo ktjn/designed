@@ -113,6 +113,66 @@ export const SelectInteraction: Story = {
   },
 };
 
+export const GroupedItemsInteraction: Story = {
+  render: () => (
+    <Select>
+      <Select.Trigger aria-label="Plan">
+        <Select.Value placeholder="Choose a plan" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Group>
+          <Select.GroupLabel>Personal</Select.GroupLabel>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Group>
+        <Select.Separator />
+        <Select.Group>
+          <Select.GroupLabel>Team</Select.GroupLabel>
+          <Select.Item value="team">Team</Select.Item>
+        </Select.Group>
+      </Select.Content>
+    </Select>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("combobox"));
+    const listbox = await within(document.body).findByRole("listbox");
+    await expect(within(listbox).getByText("Personal")).toBeTruthy();
+    const teamOption = within(listbox).getByRole("option", { name: "Team" });
+    await expect(teamOption).toBeTruthy();
+    await userEvent.click(teamOption);
+    await expectEventuallyRemoved(() =>
+      within(document.body).queryByRole("listbox"),
+    );
+  },
+};
+
+export const MultipleSelectionInteraction: Story = {
+  render: () => (
+    <Select items={items} multiple defaultValue={["basic"]}>
+      <Select.Trigger aria-label="Plans">
+        <Select.Value placeholder="Choose plans" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Item value="basic">Basic</Select.Item>
+        <Select.Item value="pro">Pro</Select.Item>
+      </Select.Content>
+    </Select>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("combobox"));
+    const listbox = await within(document.body).findByRole("listbox");
+    await userEvent.click(within(listbox).getByText("Pro"));
+    const basicOption = within(listbox).getByRole("option", {
+      name: "Basic",
+    });
+    const proOption = within(listbox).getByRole("option", { name: "Pro" });
+    await expect(basicOption).toHaveAttribute("aria-selected", "true");
+    await expect(proOption).toHaveAttribute("aria-selected", "true");
+  },
+};
+
 export const ScopedDarkThemeInteraction: Story = {
   render: () => (
     <div

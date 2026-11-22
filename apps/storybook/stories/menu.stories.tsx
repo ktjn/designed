@@ -51,6 +51,38 @@ export const KeyboardNavigationInteraction: Story = {
   },
 };
 
+export const SubmenuAndLinkItemInteraction: Story = {
+  render: () => (
+    <Menu>
+      <Menu.Trigger>File</Menu.Trigger>
+      <Menu.Content>
+        <Menu.LinkItem href="/docs">Documentation</Menu.LinkItem>
+        <Menu.Submenu>
+          <Menu.SubmenuTrigger>Export as</Menu.SubmenuTrigger>
+          <Menu.Content>
+            <Menu.Item>PNG</Menu.Item>
+            <Menu.Item>SVG</Menu.Item>
+          </Menu.Content>
+        </Menu.Submenu>
+      </Menu.Content>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "File" }));
+    const menu = await within(document.body).findByRole("menu");
+    await expect(
+      within(menu).getByRole("menuitem", { name: "Documentation" }),
+    ).toHaveAttribute("href", "/docs");
+    await userEvent.click(
+      within(menu).getByRole("menuitem", { name: "Export as" }),
+    );
+    await expect(
+      await within(document.body).findByRole("menuitem", { name: "SVG" }),
+    ).toBeTruthy();
+  },
+};
+
 export const RichItemsInteraction: Story = {
   render: () => (
     <Menu>

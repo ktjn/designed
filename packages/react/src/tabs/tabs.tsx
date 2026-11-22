@@ -2,17 +2,22 @@ import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./tabs.module.css";
+
+export type TabsOrientation = "horizontal" | "vertical";
 
 export interface TabsRootProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   ref?: Ref<HTMLDivElement>;
   value?: unknown;
   defaultValue?: unknown;
-  onValueChange?: (value: unknown) => void;
+  onValueChange?: (value: unknown, eventDetails?: ChangeEventDetails) => void;
+  orientation?: TabsOrientation;
   children?: ReactNode;
 }
 
@@ -21,7 +26,9 @@ function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps) {
     <BaseTabs.Root
       data-slot="tabs"
       className={className}
-      onValueChange={(value) => onValueChange?.(value)}
+      onValueChange={(value, eventDetails) =>
+        onValueChange?.(value, eventDetails)
+      }
       {...rest}
     />
   );
@@ -29,6 +36,8 @@ function TabsRoot({ onValueChange, className, ...rest }: TabsRootProps) {
 
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  activateOnFocus?: boolean;
+  loopFocus?: boolean;
   children?: ReactNode;
 }
 
@@ -47,6 +56,8 @@ function TabsList({ className, children, ...rest }: TabsListProps) {
 export interface TabsTabProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   value: unknown;
   disabled?: boolean;
   children?: ReactNode;
@@ -67,6 +78,7 @@ function TabsTab({ className, children, ...rest }: TabsTabProps) {
 export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   value: unknown;
+  keepMounted?: boolean;
   children?: ReactNode;
 }
 

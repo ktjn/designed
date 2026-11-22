@@ -1,8 +1,10 @@
+import { useRender } from "@base-ui/react/use-render";
 import type {
   AnchorHTMLAttributes,
   HTMLAttributes,
   LiHTMLAttributes,
   OlHTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -21,6 +23,7 @@ export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
 export interface BreadcrumbLinkProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
   ref?: Ref<HTMLAnchorElement>;
+  render?: ReactElement;
 }
 export interface BreadcrumbPageProps extends HTMLAttributes<HTMLSpanElement> {
   ref?: Ref<HTMLSpanElement>;
@@ -59,9 +62,24 @@ function BreadcrumbItem({ className, ...rest }: BreadcrumbItemProps) {
   return <li data-slot="breadcrumb-item" className={classes} {...rest} />;
 }
 
-function BreadcrumbLink({ className, ...rest }: BreadcrumbLinkProps) {
+function BreadcrumbLink({
+  ref,
+  render,
+  className,
+  ...rest
+}: BreadcrumbLinkProps) {
   const classes = [styles.link, className].filter(Boolean).join(" ");
-  return <a data-slot="breadcrumb-link" className={classes} {...rest} />;
+  const link = useRender({
+    enabled: Boolean(render),
+    ref,
+    render,
+    props: { "data-slot": "breadcrumb-link", className: classes, ...rest },
+  });
+  return render ? (
+    link
+  ) : (
+    <a ref={ref} data-slot="breadcrumb-link" className={classes} {...rest} />
+  );
 }
 
 function BreadcrumbPage({ className, ...rest }: BreadcrumbPageProps) {
