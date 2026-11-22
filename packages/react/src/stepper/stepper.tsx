@@ -10,7 +10,8 @@ export interface StepperStep {
   description?: ReactNode;
 }
 
-export interface StepperProps extends OlHTMLAttributes<HTMLOListElement> {
+export interface StepperProps
+  extends Omit<OlHTMLAttributes<HTMLOListElement>, "children"> {
   ref?: Ref<HTMLOListElement>;
   steps: readonly StepperStep[];
   currentStep: number;

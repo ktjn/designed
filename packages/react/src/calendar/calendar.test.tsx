@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
-import { Calendar } from "./calendar";
+import { Calendar, type CalendarProps } from "./calendar";
 
 describe("Calendar", () => {
   it("selects a date and emits an ISO YYYY-MM-DD string", async () => {
@@ -14,6 +14,15 @@ describe("Calendar", () => {
 
     await user.click(screen.getByRole("button", { name: /2026-05-20/ }));
     expect(onValueChange).toHaveBeenCalledWith("2026-05-20");
+  });
+
+  it("omits children from CalendarProps", () => {
+    const props: CalendarProps = {
+      defaultValue: "2026-05-15",
+      // @ts-expect-error Calendar renders its own grid and does not accept children
+      children: null,
+    };
+    expect(props.defaultValue).toBe("2026-05-15");
   });
 
   it("navigates months and respects min/max bounds", async () => {

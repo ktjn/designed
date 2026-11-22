@@ -185,7 +185,7 @@ export declare function Button({ ref, variant, size, loading, disabled, type, cl
 // ---- calendar/calendar.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
     value?: string;
     defaultValue?: string;
@@ -1366,7 +1366,7 @@ export interface StepperStep {
     label: ReactNode;
     description?: ReactNode;
 }
-export interface StepperProps extends OlHTMLAttributes<HTMLOListElement> {
+export interface StepperProps extends Omit<OlHTMLAttributes<HTMLOListElement>, "children"> {
     ref?: Ref<HTMLOListElement>;
     steps: readonly StepperStep[];
     currentStep: number;

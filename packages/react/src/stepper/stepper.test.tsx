@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
-import { Stepper } from "./stepper.js";
+import { Stepper, type StepperProps } from "./stepper.js";
 
 const STEPS = [
   { id: "account", label: "Account", description: "Create credentials" },
@@ -33,5 +33,15 @@ describe("Stepper", () => {
 
     expect(screen.getByRole("list", { name: "Onboarding steps" })).toBeTruthy();
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("omits children from StepperProps", () => {
+    const props: StepperProps = {
+      steps: STEPS,
+      currentStep: 0,
+      // @ts-expect-error Stepper renders steps data and does not accept children
+      children: null,
+    };
+    expect(props.steps).toHaveLength(3);
   });
 });
