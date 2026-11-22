@@ -113,7 +113,10 @@ export type {
   DrawerTriggerProps,
 } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
-export type { EmptyStateProps } from "./empty-state/empty-state.js";
+export type {
+  EmptyStateClassNames,
+  EmptyStateProps,
+} from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";

@@ -572,14 +572,22 @@ export {};
 
 // ---- empty-state/empty-state.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface EmptyStateClassNames {
+    icon?: string;
+    title?: string;
+    description?: string;
+    action?: string;
+}
 export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
     ref?: Ref<HTMLDivElement>;
     icon?: ReactNode;
     title: ReactNode;
     description?: ReactNode;
     action?: ReactNode;
+    classNames?: EmptyStateClassNames;
+    children?: ReactNode;
 }
-export declare function EmptyState({ ref, icon, title, description, action, className, ...rest }: EmptyStateProps): import("react").JSX.Element;
+export declare function EmptyState({ ref, icon, title, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
 
 
 // ---- field/field-context.d.ts ----
@@ -736,7 +744,7 @@ export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
 export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, DrawerRootProps, DrawerSide, DrawerTitleProps, DrawerTriggerProps, } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
-export type { EmptyStateProps } from "./empty-state/empty-state.js";
+export type { EmptyStateClassNames, EmptyStateProps, } from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
