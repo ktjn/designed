@@ -16,11 +16,15 @@ export interface CalendarProps
   onValueChange?: (value: string) => void;
   min?: string;
   max?: string;
+  isDateDisabled?: (isoDate: string) => boolean;
   locale?: string;
   weekStartsOn?: WeekdayIndex;
   disabled?: boolean;
   previousMonthLabel?: string;
   nextMonthLabel?: string;
+  month?: string;
+  defaultMonth?: string;
+  onMonthChange?: (month: string) => void;
 }
 
 const ISO_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -41,6 +45,24 @@ export function parseIsoDate(iso: string | undefined): Date | null {
     return null;
   }
   return date;
+}
+
+const ISO_MONTH_RE = /^(\d{4})-(\d{2})$/;
+
+function parseIsoMonth(
+  iso: string | undefined,
+): { year: number; month: number } | null {
+  if (!iso) return null;
+  const match = ISO_MONTH_RE.exec(iso);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  if (month < 0 || month > 11) return null;
+  return { year, month };
+}
+
+function formatIsoMonth(year: number, month: number): string {
+  return `${String(year).padStart(4, "0")}-${String(month + 1).padStart(2, "0")}`;
 }
 
 function formatIsoDate(date: Date): string {
@@ -137,31 +159,50 @@ export function Calendar({
   onValueChange,
   min,
   max,
+  isDateDisabled,
   locale,
   weekStartsOn,
   disabled = false,
   previousMonthLabel = "Previous month",
   nextMonthLabel = "Next month",
+  month,
+  defaultMonth,
+  onMonthChange,
   className,
   ...rest
 }: CalendarProps) {
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const selectedIso = value ?? internalValue;
   const initialDate = parseIsoDate(selectedIso) ?? getTodayUtc();
-  const [view, setView] = useState({
-    year: initialDate.getUTCFullYear(),
-    month: initialDate.getUTCMonth(),
-  });
+  const isMonthControlled = month !== undefined;
+  const [internalView, setInternalView] = useState(
+    parseIsoMonth(month) ??
+      parseIsoMonth(defaultMonth) ?? {
+        year: initialDate.getUTCFullYear(),
+        month: initialDate.getUTCMonth(),
+      },
+  );
+  const view = isMonthControlled
+    ? (parseIsoMonth(month) ?? internalView)
+    : internalView;
+  const setView = (next: { year: number; month: number }) => {
+    if (!isMonthControlled) {
+      setInternalView(next);
+    }
+    onMonthChange?.(formatIsoMonth(next.year, next.month));
+  };
   const [focusedIso, setFocusedIso] = useState(formatIsoDate(initialDate));
   const [prevValue, setPrevValue] = useState(value);
   if (value !== prevValue) {
     setPrevValue(value);
     const parsed = parseIsoDate(value);
     if (parsed) {
-      setView({
-        year: parsed.getUTCFullYear(),
-        month: parsed.getUTCMonth(),
-      });
+      if (!isMonthControlled) {
+        setInternalView({
+          year: parsed.getUTCFullYear(),
+          month: parsed.getUTCMonth(),
+        });
+      }
       setFocusedIso(formatIsoDate(parsed));
     }
   }
@@ -206,6 +247,7 @@ export function Calendar({
     if (disabled) return true;
     if (min && iso < min) return true;
     if (max && iso > max) return true;
+    if (isDateDisabled?.(iso)) return true;
     return false;
   }
 

@@ -1,5 +1,11 @@
 import { CloseIcon, UploadIcon } from "@ktjn/designed-icons";
-import type { ChangeEvent, DragEvent, InputHTMLAttributes, Ref } from "react";
+import type {
+  ChangeEvent,
+  DragEvent,
+  InputHTMLAttributes,
+  ReactNode,
+  Ref,
+} from "react";
 import { useEffect, useRef, useState } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./file-upload.module.css";
@@ -13,10 +19,12 @@ export interface FileUploadProps
   files?: File[];
   defaultFiles?: File[];
   onFilesChange?: (files: File[]) => void;
+  onFilesRejected?: (files: File[]) => void;
   invalid?: boolean;
-  prompt?: string;
-  hint?: string;
+  prompt?: ReactNode;
+  hint?: ReactNode;
   getRemoveLabel?: (file: File) => string;
+  renderItem?: (file: File, index: number) => ReactNode;
 }
 
 function matchesAccept(file: File, accept: string | undefined): boolean {
@@ -68,6 +76,7 @@ export function FileUpload({
   files,
   defaultFiles = [],
   onFilesChange,
+  onFilesRejected,
   invalid,
   disabled,
   multiple,
@@ -75,6 +84,7 @@ export function FileUpload({
   prompt = "Choose files or drag and drop",
   hint,
   getRemoveLabel = (file) => `Remove ${file.name}`,
+  renderItem,
   id,
   className,
   "aria-describedby": ariaDescribedBy,
@@ -135,9 +145,12 @@ export function FileUpload({
     if (resolvedDisabled) return;
     event.preventDefault();
     setDragging(false);
-    const dropped = Array.from(event.dataTransfer.files ?? []).filter((file) =>
-      matchesAccept(file, accept),
-    );
+    const allDropped = Array.from(event.dataTransfer.files ?? []);
+    const dropped = allDropped.filter((file) => matchesAccept(file, accept));
+    const rejected = allDropped.filter((file) => !matchesAccept(file, accept));
+    if (rejected.length > 0) {
+      onFilesRejected?.(rejected);
+    }
     if (dropped.length === 0) return;
     updateFiles(multiple ? [...currentFiles, ...dropped] : dropped.slice(0, 1));
   }
@@ -191,18 +204,24 @@ export function FileUpload({
               className={styles.item}
             >
               <span data-slot="file-upload-item-meta" className={styles.meta}>
-                <span
-                  data-slot="file-upload-item-name"
-                  className={styles.fileName}
-                >
-                  {file.name}
-                </span>
-                <span
-                  data-slot="file-upload-item-size"
-                  className={styles.fileSize}
-                >
-                  {formatBytes(file.size)}
-                </span>
+                {renderItem ? (
+                  renderItem(file, index)
+                ) : (
+                  <>
+                    <span
+                      data-slot="file-upload-item-name"
+                      className={styles.fileName}
+                    >
+                      {file.name}
+                    </span>
+                    <span
+                      data-slot="file-upload-item-size"
+                      className={styles.fileSize}
+                    >
+                      {formatBytes(file.size)}
+                    </span>
+                  </>
+                )}
               </span>
               <button
                 type="button"

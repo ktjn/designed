@@ -148,6 +148,47 @@ describe("FileUpload", () => {
     expect(screen.queryByText("script.exe")).toBeNull();
   });
 
+  it("reports files rejected by accept filtering via onFilesRejected", () => {
+    const onFilesChange = vi.fn();
+    const onFilesRejected = vi.fn();
+    render(
+      <Field>
+        <Field.Label>Documents</Field.Label>
+        <FileUpload
+          multiple
+          accept=".pdf"
+          onFilesChange={onFilesChange}
+          onFilesRejected={onFilesRejected}
+        />
+      </Field>,
+    );
+    const dropzone = screen
+      .getByText("Choose files or drag and drop")
+      .closest('[data-slot="file-upload-dropzone"]') as HTMLElement;
+    const pdf = new File(["pdf"], "report.pdf", { type: "application/pdf" });
+    const exe = new File(["bin"], "script.exe", {
+      type: "application/x-msdownload",
+    });
+
+    fireEvent.drop(dropzone, { dataTransfer: { files: [pdf, exe] } });
+    expect(onFilesChange).toHaveBeenCalledWith([pdf]);
+    expect(onFilesRejected).toHaveBeenCalledWith([exe]);
+  });
+
+  it("renders custom file items via renderItem", async () => {
+    const user = userEvent.setup();
+    render(
+      <Field>
+        <Field.Label>Documents</Field.Label>
+        <FileUpload renderItem={(file) => <span>Custom: {file.name}</span>} />
+      </Field>,
+    );
+    const input = screen.getByLabelText("Documents") as HTMLInputElement;
+    const file = new File(["pdf"], "report.pdf", { type: "application/pdf" });
+    await user.upload(input, file);
+    expect(screen.getByText("Custom: report.pdf")).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>

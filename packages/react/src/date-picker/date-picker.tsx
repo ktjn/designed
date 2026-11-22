@@ -37,6 +37,13 @@ export interface DatePickerProps
   weekStartsOn?: WeekdayIndex;
   invalid?: boolean;
   openCalendarLabel?: string;
+  previousMonthLabel?: string;
+  nextMonthLabel?: string;
+  isDateDisabled?: (isoDate: string) => boolean;
+  formatValidationMessage?: (
+    kind: "invalid" | "min" | "max",
+    context: { min?: string; max?: string },
+  ) => string;
   side?: DatePickerSide;
   sideOffset?: number;
   align?: DatePickerAlign;
@@ -44,16 +51,33 @@ export interface DatePickerProps
   collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
 
-function validateDateText(text: string, min?: string, max?: string): string {
+function defaultFormatValidationMessage(
+  kind: "invalid" | "min" | "max",
+  { min, max }: { min?: string; max?: string },
+): string {
+  if (kind === "invalid") return "Enter a valid date (YYYY-MM-DD)";
+  if (kind === "min") return `Date must be on or after ${min}`;
+  return `Date must be on or before ${max}`;
+}
+
+function validateDateText(
+  text: string,
+  min: string | undefined,
+  max: string | undefined,
+  formatMessage: (
+    kind: "invalid" | "min" | "max",
+    context: { min?: string; max?: string },
+  ) => string,
+): string {
   if (text === "") return "";
   if (!parseIsoDate(text)) {
-    return "Enter a valid date (YYYY-MM-DD)";
+    return formatMessage("invalid", { min, max });
   }
   if (min && text < min) {
-    return `Date must be on or after ${min}`;
+    return formatMessage("min", { min, max });
   }
   if (max && text > max) {
-    return `Date must be on or before ${max}`;
+    return formatMessage("max", { min, max });
   }
   return "";
 }
@@ -72,6 +96,10 @@ export function DatePicker({
   readOnly,
   placeholder = "YYYY-MM-DD",
   openCalendarLabel = "Choose date",
+  previousMonthLabel,
+  nextMonthLabel,
+  isDateDisabled,
+  formatValidationMessage = defaultFormatValidationMessage,
   side = "bottom",
   sideOffset = 6,
   align = "end",
@@ -104,7 +132,12 @@ export function DatePicker({
     }
   }, [value]);
 
-  const validationMessage = validateDateText(draft, min, max);
+  const validationMessage = validateDateText(
+    draft,
+    min,
+    max,
+    formatValidationMessage,
+  );
 
   useLayoutEffect(() => {
     inputRef.current?.setCustomValidity(validationMessage);
@@ -142,7 +175,7 @@ export function DatePicker({
   function handleTextChange(next: string) {
     if (readOnly || resolvedDisabled) return;
     setDraft(next);
-    const error = validateDateText(next, min, max);
+    const error = validateDateText(next, min, max, formatValidationMessage);
     inputRef.current?.setCustomValidity(error);
     if (error === "") {
       setValidationFailed(false);
@@ -154,7 +187,7 @@ export function DatePicker({
   }
 
   function handleCommit() {
-    const error = validateDateText(draft, min, max);
+    const error = validateDateText(draft, min, max, formatValidationMessage);
     inputRef.current?.setCustomValidity(error);
     setValidationFailed(error !== "");
   }
@@ -233,9 +266,12 @@ export function DatePicker({
               value={currentValidValue}
               min={min}
               max={max}
+              isDateDisabled={isDateDisabled}
               locale={locale}
               weekStartsOn={weekStartsOn}
               disabled={resolvedDisabled || Boolean(readOnly)}
+              previousMonthLabel={previousMonthLabel}
+              nextMonthLabel={nextMonthLabel}
               onValueChange={(next) => {
                 commitValidValue(next);
                 setOpen(false);

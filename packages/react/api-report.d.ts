@@ -240,14 +240,18 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "def
     onValueChange?: (value: string) => void;
     min?: string;
     max?: string;
+    isDateDisabled?: (isoDate: string) => boolean;
     locale?: string;
     weekStartsOn?: WeekdayIndex;
     disabled?: boolean;
     previousMonthLabel?: string;
     nextMonthLabel?: string;
+    month?: string;
+    defaultMonth?: string;
+    onMonthChange?: (month: string) => void;
 }
 export declare function parseIsoDate(iso: string | undefined): Date | null;
-export declare function Calendar({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, className, ...rest }: CalendarProps): import("react").JSX.Element;
+export declare function Calendar({ ref, value, defaultValue, onValueChange, min, max, isDateDisabled, locale, weekStartsOn, disabled, previousMonthLabel, nextMonthLabel, month, defaultMonth, onMonthChange, className, ...rest }: CalendarProps): import("react").JSX.Element;
 
 
 // ---- card/card.d.ts ----
@@ -566,13 +570,20 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     weekStartsOn?: WeekdayIndex;
     invalid?: boolean;
     openCalendarLabel?: string;
+    previousMonthLabel?: string;
+    nextMonthLabel?: string;
+    isDateDisabled?: (isoDate: string) => boolean;
+    formatValidationMessage?: (kind: "invalid" | "min" | "max", context: {
+        min?: string;
+        max?: string;
+    }) => string;
     side?: DatePickerSide;
     sideOffset?: number;
     align?: DatePickerAlign;
     alignOffset?: number;
     collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
-export declare function DatePicker({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
+export declare function DatePicker({ ref, value, defaultValue, onValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
 
 
 // ---- dialog/dialog.d.ts ----
@@ -829,18 +840,20 @@ export {};
 
 
 // ---- file-upload/file-upload.d.ts ----
-import type { InputHTMLAttributes, Ref } from "react";
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 export interface FileUploadProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
     files?: File[];
     defaultFiles?: File[];
     onFilesChange?: (files: File[]) => void;
+    onFilesRejected?: (files: File[]) => void;
     invalid?: boolean;
-    prompt?: string;
-    hint?: string;
+    prompt?: ReactNode;
+    hint?: ReactNode;
     getRemoveLabel?: (file: File) => string;
+    renderItem?: (file: File, index: number) => ReactNode;
 }
-export declare function FileUpload({ ref, files, defaultFiles, onFilesChange, invalid, disabled, multiple, accept, prompt, hint, getRemoveLabel, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: FileUploadProps): import("react").JSX.Element;
+export declare function FileUpload({ ref, files, defaultFiles, onFilesChange, onFilesRejected, invalid, disabled, multiple, accept, prompt, hint, getRemoveLabel, renderItem, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: FileUploadProps): import("react").JSX.Element;
 
 
 // ---- grid/grid.d.ts ----

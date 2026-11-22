@@ -107,6 +107,55 @@ describe("Calendar", () => {
     ).toBe("0");
   });
 
+  it("disables dates matched by isDateDisabled", () => {
+    render(
+      <Calendar
+        defaultValue="2026-05-15"
+        isDateDisabled={(iso) => iso === "2026-05-16"}
+      />,
+    );
+    const disabledDay = screen.getByRole("button", {
+      name: "2026-05-16",
+    }) as HTMLButtonElement;
+    expect(disabledDay.disabled).toBe(true);
+    const enabledDay = screen.getByRole("button", {
+      name: "2026-05-17",
+    }) as HTMLButtonElement;
+    expect(enabledDay.disabled).toBe(false);
+  });
+
+  it("supports a controlled month independent of the selected value", async () => {
+    const user = userEvent.setup();
+    const onMonthChange = vi.fn();
+    const { rerender } = render(
+      <Calendar
+        defaultValue="2026-05-15"
+        month="2026-08"
+        onMonthChange={onMonthChange}
+      />,
+    );
+    expect(screen.getByRole("button", { name: /2026-08-01/ })).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Next month" }));
+    expect(onMonthChange).toHaveBeenCalledWith("2026-09");
+    // Controlled month prop hasn't changed yet, so the view stays on August.
+    expect(screen.getByRole("button", { name: /2026-08-01/ })).toBeTruthy();
+
+    rerender(
+      <Calendar
+        defaultValue="2026-05-15"
+        month="2026-09"
+        onMonthChange={onMonthChange}
+      />,
+    );
+    expect(screen.getByRole("button", { name: /2026-09-01/ })).toBeTruthy();
+  });
+
+  it("initializes the displayed month from defaultMonth when uncontrolled", () => {
+    render(<Calendar defaultValue="2026-05-15" defaultMonth="2026-11" />);
+    expect(screen.getByRole("button", { name: /2026-11-01/ })).toBeTruthy();
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<Calendar defaultValue="2026-05-15" />);
     expect(await axe(container)).toHaveNoViolations();
