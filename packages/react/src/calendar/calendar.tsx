@@ -6,7 +6,10 @@ import styles from "./calendar.module.css";
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface CalendarProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+  extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    "defaultValue" | "onChange" | "children"
+  > {
   ref?: Ref<HTMLDivElement>;
   value?: string;
   defaultValue?: string;
