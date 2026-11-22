@@ -16,12 +16,20 @@ describe("EmptyState", () => {
 
     expect(screen.getByTestId("empty-icon")).toBeTruthy();
     expect(
-      screen.getByRole("heading", { name: "No projects yet" }),
+      screen.getByRole("heading", { name: "No projects yet", level: 2 }),
     ).toBeTruthy();
     expect(
       screen.getByText("Create your first project to get started."),
     ).toBeTruthy();
     expect(screen.getByRole("button", { name: "Create project" })).toBeTruthy();
+  });
+
+  it("renders the title at the heading level supplied by the page", () => {
+    render(<EmptyState title="No results" titleAs="h4" />);
+
+    expect(
+      screen.getByRole("heading", { name: "No results", level: 4 }),
+    ).toBeTruthy();
   });
 
   it("renders optional children after built-in slots and applies slot classNames and data-slots", () => {

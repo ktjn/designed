@@ -12,6 +12,7 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   ref?: Ref<HTMLHeadingElement>;
   children?: ReactNode;
 }
@@ -42,9 +43,9 @@ function CardHeader({ className, ...rest }: CardHeaderProps) {
   return <div data-slot="card-header" className={classes} {...rest} />;
 }
 
-function CardTitle({ className, ...rest }: CardTitleProps) {
+function CardTitle({ as: Heading = "h3", className, ...rest }: CardTitleProps) {
   const classes = [styles.title, className].filter(Boolean).join(" ");
-  return <h3 data-slot="card-title" className={classes} {...rest} />;
+  return <Heading data-slot="card-title" className={classes} {...rest} />;
 }
 
 function CardDescription({ className, ...rest }: CardDescriptionProps) {

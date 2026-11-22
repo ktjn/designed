@@ -237,6 +237,7 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     ref?: Ref<HTMLHeadingElement>;
     children?: ReactNode;
 }
@@ -254,7 +255,7 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare function CardRoot({ ref, className, ...rest }: CardRootProps): import("react").JSX.Element;
 declare function CardHeader({ className, ...rest }: CardHeaderProps): import("react").JSX.Element;
-declare function CardTitle({ className, ...rest }: CardTitleProps): import("react").JSX.Element;
+declare function CardTitle({ as: Heading, className, ...rest }: CardTitleProps): import("react").JSX.Element;
 declare function CardDescription({ className, ...rest }: CardDescriptionProps): import("react").JSX.Element;
 declare function CardContent({ className, ...rest }: CardContentProps): import("react").JSX.Element;
 declare function CardFooter({ className, ...rest }: CardFooterProps): import("react").JSX.Element;
@@ -632,12 +633,13 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
     ref?: Ref<HTMLDivElement>;
     icon?: ReactNode;
     title: ReactNode;
+    titleAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     description?: ReactNode;
     action?: ReactNode;
     classNames?: EmptyStateClassNames;
     children?: ReactNode;
 }
-export declare function EmptyState({ ref, icon, title, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
+export declare function EmptyState({ ref, icon, title, titleAs: Heading, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
 
 
 // ---- field/field-context.d.ts ----
