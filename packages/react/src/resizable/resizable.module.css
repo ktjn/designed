@@ -1,0 +1,173 @@
+.root {
+  display: flex;
+  inline-size: 100%;
+  block-size: 100%;
+  min-inline-size: 0;
+  min-block-size: 0;
+  box-sizing: border-box;
+}
+
+.root[data-orientation="horizontal"] {
+  flex-direction: row;
+}
+
+.root[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+.panel {
+  flex-grow: 0;
+  flex-shrink: 1;
+  min-inline-size: 0;
+  min-block-size: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.panel[data-collapsed] {
+  overflow: hidden;
+}
+
+.handle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: var(--ds-color-border-default);
+  color: var(--ds-color-foreground-muted);
+  touch-action: none;
+  user-select: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.handle::after {
+  content: "";
+  position: absolute;
+}
+
+.handle[data-orientation="horizontal"] {
+  inline-size: 0.25rem;
+  min-inline-size: 0.25rem;
+  block-size: 100%;
+  cursor: col-resize;
+}
+
+.handle[data-orientation="horizontal"]::after {
+  inset-block: 0;
+  inset-inline: -0.25rem;
+}
+
+.handle[data-orientation="vertical"] {
+  block-size: 0.25rem;
+  min-block-size: 0.25rem;
+  inline-size: 100%;
+  cursor: row-resize;
+}
+
+.handle[data-orientation="vertical"]::after {
+  inset-inline: 0;
+  inset-block: -0.25rem;
+}
+
+.handle:hover:not([data-disabled]) {
+  background: var(--ds-color-border-strong);
+  color: var(--ds-color-foreground-default);
+}
+
+.handle[data-dragging]:not([data-disabled]),
+.handle:active:not([data-disabled]) {
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+}
+
+.handle:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.handle[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grip {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 0.875rem;
+  block-size: 1.5rem;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-muted);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.handle[data-orientation="vertical"] .grip {
+  inline-size: 1.5rem;
+  block-size: 0.875rem;
+}
+
+.grip svg {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+.handle[data-orientation="vertical"] .grip svg {
+  transform: rotate(90deg);
+}
+
+.handle:hover:not([data-disabled]) .grip {
+  border-color: var(--ds-color-border-strong);
+  color: var(--ds-color-foreground-default);
+}
+
+.handle[data-dragging]:not([data-disabled]) .grip,
+.handle:active:not([data-disabled]) .grip {
+  border-color: var(--ds-color-action-primary-default);
+  background: var(--ds-color-action-primary-default);
+  color: var(--ds-color-action-primary-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handle,
+  .grip {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .handle {
+    background: CanvasText;
+  }
+
+  .handle[data-dragging] {
+    background: Highlight;
+  }
+
+  .handle:focus-visible {
+    outline: 2px solid Highlight;
+  }
+
+  .grip {
+    background: Canvas;
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+
+  .handle[data-dragging] .grip {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

@@ -1087,6 +1087,8 @@ export type { NumberFieldProps } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
+export type { PageHeaderActionsProps, PageHeaderBreadcrumbProps, PageHeaderDescriptionProps, PageHeaderRootProps, PageHeaderTabsProps, PageHeaderTitleProps, } from "./page-header/page-header.js";
+export { PageHeader } from "./page-header/page-header.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
 export type { PasswordInputProps } from "./password-input/password-input.js";
@@ -1101,6 +1103,8 @@ export type { RadioCardProps } from "./radio-card/radio-card.js";
 export { RadioCard } from "./radio-card/radio-card.js";
 export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
+export type { ResizableHandleProps, ResizableOrientation, ResizablePanelProps, ResizableRootProps, } from "./resizable/resizable.js";
+export { Resizable } from "./resizable/resizable.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
 export { ScrollArea } from "./scroll-area/scroll-area.js";
 export type { SearchInputProps } from "./search-input/search-input.js";
@@ -1122,11 +1126,13 @@ export type { SplitButtonProps } from "./split-button/split-button.js";
 export { SplitButton } from "./split-button/split-button.js";
 export type { StackAlign, StackDirection, StackGap, StackJustify, StackProps, } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
+export type { StatProps, StatTrend } from "./stat/stat.js";
+export { Stat } from "./stat/stat.js";
 export type { StepperOrientation, StepperProps, StepperStep, } from "./stepper/stepper.js";
 export { Stepper } from "./stepper/stepper.js";
 export type { SwitchProps } from "./switch/switch.js";
 export { Switch } from "./switch/switch.js";
-export type { TableBodyProps, TableCaptionProps, TableCellProps, TableFooterProps, TableHeaderProps, TableHeadProps, TableRootProps, TableRowProps, } from "./table/table.js";
+export type { TableBodyProps, TableCaptionProps, TableCellProps, TableExpandButtonProps, TableExpandedRowProps, TableFooterProps, TableHeaderProps, TableHeadProps, TableRootProps, TableRowProps, TableSortDirection, } from "./table/table.js";
 export { Table } from "./table/table.js";
 export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from "./tabs/tabs.js";
 export { Tabs } from "./tabs/tabs.js";
@@ -1504,6 +1510,49 @@ export interface OTPFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "def
 export declare function OTPField({ ref, length, value, defaultValue, onValueChange, onValueComplete, disabled, required, mask, invalid, name, getSlotDescription, id, className, "aria-label": ariaLabel, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: OTPFieldProps): import("react").JSX.Element;
 
 
+// ---- page-header/page-header.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface PageHeaderRootProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+    children?: ReactNode;
+}
+export interface PageHeaderBreadcrumbProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+export interface PageHeaderTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+    ref?: Ref<HTMLHeadingElement>;
+    children?: ReactNode;
+}
+export interface PageHeaderDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+    ref?: Ref<HTMLParagraphElement>;
+    children?: ReactNode;
+}
+export interface PageHeaderActionsProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+export interface PageHeaderTabsProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function PageHeaderRoot({ ref, className, ...rest }: PageHeaderRootProps): import("react").JSX.Element;
+declare function PageHeaderBreadcrumb({ ref, className, ...rest }: PageHeaderBreadcrumbProps): import("react").JSX.Element;
+declare function PageHeaderTitle({ ref, as: Heading, className, ...rest }: PageHeaderTitleProps): import("react").JSX.Element;
+declare function PageHeaderDescription({ ref, className, ...rest }: PageHeaderDescriptionProps): import("react").JSX.Element;
+declare function PageHeaderActions({ ref, className, ...rest }: PageHeaderActionsProps): import("react").JSX.Element;
+declare function PageHeaderTabs({ ref, className, ...rest }: PageHeaderTabsProps): import("react").JSX.Element;
+export declare const PageHeader: typeof PageHeaderRoot & {
+    Breadcrumb: typeof PageHeaderBreadcrumb;
+    Title: typeof PageHeaderTitle;
+    Description: typeof PageHeaderDescription;
+    Actions: typeof PageHeaderActions;
+    Tabs: typeof PageHeaderTabs;
+};
+export {};
+
+
 // ---- pagination/pagination.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
@@ -1672,6 +1721,42 @@ export interface RadioGroupItemProps<Value = string> extends Omit<LabelHTMLAttri
 declare function RadioGroupItem<Value = string>({ value, disabled, className, children, ...rest }: RadioGroupItemProps<Value>): import("react").JSX.Element;
 export declare const RadioGroup: typeof RadioGroupRoot & {
     Item: typeof RadioGroupItem;
+};
+export {};
+
+
+// ---- resizable/resizable.d.ts ----
+import { type HTMLAttributes, type ReactNode, type Ref } from "react";
+export type ResizableOrientation = "horizontal" | "vertical";
+export interface ResizableRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    orientation?: ResizableOrientation;
+    onLayout?: (sizes: number[]) => void;
+    children?: ReactNode;
+}
+export interface ResizablePanelProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    defaultSize?: number;
+    minSize?: number;
+    maxSize?: number;
+    collapsible?: boolean;
+    collapsedSize?: number;
+    onCollapse?: (collapsed: boolean) => void;
+    children?: ReactNode;
+}
+export interface ResizableHandleProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    disabled?: boolean;
+    withHandle?: boolean;
+    step?: number;
+    children?: ReactNode;
+}
+declare function ResizablePanel({ ref, defaultSize: _defaultSize, minSize: _minSize, maxSize: _maxSize, collapsible: _collapsible, collapsedSize: _collapsedSize, onCollapse: _onCollapse, className, style, children, ...rest }: ResizablePanelProps): import("react").JSX.Element;
+declare function ResizableHandle({ ref, disabled, withHandle, step, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, onKeyDown, onPointerDown, onPointerMove, onPointerUp, onPointerCancel, onLostPointerCapture, children, ...rest }: ResizableHandleProps): import("react").JSX.Element;
+declare function ResizableRoot({ ref, orientation, onLayout, className, children, ...rest }: ResizableRootProps): import("react").JSX.Element;
+export declare const Resizable: typeof ResizableRoot & {
+    Panel: typeof ResizablePanel;
+    Handle: typeof ResizableHandle;
 };
 export {};
 
@@ -1963,6 +2048,21 @@ export interface StackProps extends HTMLAttributes<HTMLDivElement> {
 export declare function Stack({ ref, direction, gap, align, justify, wrap, className, ...rest }: StackProps): import("react").JSX.Element;
 
 
+// ---- stat/stat.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type StatTrend = "up" | "down" | "neutral";
+export interface StatProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    label: ReactNode;
+    value: ReactNode;
+    delta?: ReactNode;
+    trend?: StatTrend;
+    helpText?: ReactNode;
+    children?: ReactNode;
+}
+export declare function Stat({ ref, label, value, delta, trend, helpText, className, children, ...rest }: StatProps): import("react").JSX.Element;
+
+
 // ---- stepper/stepper.d.ts ----
 import type { OlHTMLAttributes, ReactNode, Ref } from "react";
 export type StepperOrientation = "horizontal" | "vertical";
@@ -1997,13 +2097,16 @@ export declare function Switch({ ref, onCheckedChange, disabled, id, className, 
 
 
 // ---- table/table.d.ts ----
-import type { HTMLAttributes, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+export type TableSortDirection = "ascending" | "descending" | "none";
 export interface TableRootProps extends TableHTMLAttributes<HTMLTableElement> {
     ref?: Ref<HTMLTableElement>;
     wrapperClassName?: string;
+    stickyHeader?: boolean;
 }
 export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
     ref?: Ref<HTMLTableSectionElement>;
+    sticky?: boolean;
 }
 export interface TableBodyProps extends HTMLAttributes<HTMLTableSectionElement> {
     ref?: Ref<HTMLTableSectionElement>;
@@ -2013,9 +2116,13 @@ export interface TableFooterProps extends HTMLAttributes<HTMLTableSectionElement
 }
 export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
     ref?: Ref<HTMLTableRowElement>;
+    selected?: boolean;
+    expanded?: boolean;
 }
 export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
     ref?: Ref<HTMLTableCellElement>;
+    sortDirection?: TableSortDirection;
+    onSort?: () => void;
 }
 export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
     ref?: Ref<HTMLTableCellElement>;
@@ -2023,14 +2130,29 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
 export interface TableCaptionProps extends HTMLAttributes<HTMLTableCaptionElement> {
     ref?: Ref<HTMLTableCaptionElement>;
 }
-declare function TableRoot({ ref, className, wrapperClassName, ...rest }: TableRootProps): import("react").JSX.Element;
-declare function TableHeader({ className, ...rest }: TableHeaderProps): import("react").JSX.Element;
+export interface TableExpandButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+    ref?: Ref<HTMLButtonElement>;
+    expanded: boolean;
+    expandLabel?: string;
+    collapseLabel?: string;
+}
+export interface TableExpandedRowProps extends HTMLAttributes<HTMLTableRowElement> {
+    ref?: Ref<HTMLTableRowElement>;
+    colSpan: number;
+    open?: boolean;
+    cellClassName?: string;
+    children?: ReactNode;
+}
+declare function TableRoot({ ref, className, wrapperClassName, stickyHeader, ...rest }: TableRootProps): import("react").JSX.Element;
+declare function TableHeader({ sticky, className, ...rest }: TableHeaderProps): import("react").JSX.Element;
 declare function TableBody({ className, ...rest }: TableBodyProps): import("react").JSX.Element;
 declare function TableFooter({ className, ...rest }: TableFooterProps): import("react").JSX.Element;
-declare function TableRow({ className, ...rest }: TableRowProps): import("react").JSX.Element;
-declare function TableHead({ scope, className, ...rest }: TableHeadProps): import("react").JSX.Element;
+declare function TableRow({ selected, expanded, className, ...rest }: TableRowProps): import("react").JSX.Element;
+declare function TableHead({ scope, sortDirection, onSort, className, children, "aria-sort": ariaSort, ...rest }: TableHeadProps): import("react").JSX.Element;
 declare function TableCell({ className, ...rest }: TableCellProps): import("react").JSX.Element;
 declare function TableCaption({ className, ...rest }: TableCaptionProps): import("react").JSX.Element;
+declare function TableExpandButton({ ref, expanded, expandLabel, collapseLabel, className, type, "aria-label": ariaLabel, ...rest }: TableExpandButtonProps): import("react").JSX.Element;
+declare function TableExpandedRow({ ref, colSpan, open, className, cellClassName, children, ...rest }: TableExpandedRowProps): import("react").JSX.Element | null;
 export declare const Table: typeof TableRoot & {
     Header: typeof TableHeader;
     Body: typeof TableBody;
@@ -2039,6 +2161,8 @@ export declare const Table: typeof TableRoot & {
     Head: typeof TableHead;
     Cell: typeof TableCell;
     Caption: typeof TableCaption;
+    ExpandButton: typeof TableExpandButton;
+    ExpandedRow: typeof TableExpandedRow;
 };
 export {};
 

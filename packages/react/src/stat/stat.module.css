@@ -1,0 +1,66 @@
+.root {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  box-sizing: border-box;
+  padding: var(--ds-space-surface);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-foreground-default);
+  font-family: var(--ds-font-family-base);
+}
+
+.label {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-foreground-muted);
+}
+
+.value {
+  font-size: var(--ds-font-size-300);
+  line-height: var(--ds-font-line-height-200);
+  font-weight: var(--ds-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-color-foreground-default);
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.up {
+  color: var(--ds-color-status-success-foreground);
+}
+
+.down {
+  color: var(--ds-color-status-danger-foreground);
+}
+
+.neutral {
+  color: var(--ds-color-foreground-muted);
+}
+
+.trendIcon {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.helpText {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+@media (forced-colors: active) {
+  .root {
+    border: 1px solid CanvasText;
+  }
+}
