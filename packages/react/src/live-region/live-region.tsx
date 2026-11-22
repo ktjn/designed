@@ -1,10 +1,9 @@
-import {
-  VisuallyHidden,
-  type VisuallyHiddenProps,
-} from "../visually-hidden/visually-hidden.js";
+import type { HTMLAttributes, Ref } from "react";
+import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";
 
 export interface LiveRegionProps
-  extends Omit<VisuallyHiddenProps, "aria-atomic" | "aria-live"> {
+  extends Omit<HTMLAttributes<HTMLSpanElement>, "aria-atomic" | "aria-live"> {
+  ref?: Ref<HTMLSpanElement>;
   politeness?: "polite" | "assertive";
   atomic?: boolean;
 }

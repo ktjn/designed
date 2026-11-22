@@ -950,8 +950,9 @@ export declare function Link({ ref, className, ...rest }: LinkProps): import("re
 
 
 // ---- live-region/live-region.d.ts ----
-import { type VisuallyHiddenProps } from "../visually-hidden/visually-hidden.js";
-export interface LiveRegionProps extends Omit<VisuallyHiddenProps, "aria-atomic" | "aria-live"> {
+import type { HTMLAttributes, Ref } from "react";
+export interface LiveRegionProps extends Omit<HTMLAttributes<HTMLSpanElement>, "aria-atomic" | "aria-live"> {
+    ref?: Ref<HTMLSpanElement>;
     politeness?: "polite" | "assertive";
     atomic?: boolean;
 }

@@ -56,6 +56,7 @@ const NON_DOM_ROOT_PROPS = new Set([
   "PreviewCardRootProps",
   "SelectRootProps",
   "ToastProviderProps",
+  "TooltipProviderProps",
 ]);
 
 function walkTsxFiles(dir: string): string[] {
