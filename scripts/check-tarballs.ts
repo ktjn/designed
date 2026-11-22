@@ -1,5 +1,14 @@
 import { execFileSync } from "node:child_process";
-import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  access,
+  cp,
+  mkdir,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -171,7 +180,6 @@ createRoot(document.getElementById("root")).render(
         2,
       ),
     );
-    const { cp, mkdir } = await import("node:fs/promises");
     await mkdir(patchedTokensDir, { recursive: true });
     await cp(
       path.join(tokensDistSrc, "dist"),
@@ -255,7 +263,7 @@ createRoot(document.getElementById("root")).render(
       ],
       { cwd: sharedBaseUiDir, stdio: "inherit" },
     );
-    const { access } = await import("node:fs/promises");
+    await access(path.join(sharedBaseUiDir, "node_modules/@base-ui/react"));
     let hasNestedBaseUi = false;
     try {
       await access(
@@ -275,6 +283,95 @@ createRoot(document.getElementById("root")).render(
     }
     console.log(
       "@ktjn/designed-react shares a single @base-ui/react installation with direct consumer dependency",
+    );
+
+    const patchedIconsDir = path.join(scratchDir, "patched-icons");
+    const iconsSrcDir = path.join(repoRoot, "packages/icons");
+    await mkdir(patchedIconsDir, { recursive: true });
+    await cp(
+      path.join(iconsSrcDir, "dist"),
+      path.join(patchedIconsDir, "dist"),
+      { recursive: true },
+    );
+    await cp(
+      path.join(iconsSrcDir, "LICENSE-LUCIDE"),
+      path.join(patchedIconsDir, "LICENSE-LUCIDE"),
+    );
+    const iconsManifest = JSON.parse(
+      await readFile(path.join(iconsSrcDir, "package.json"), "utf8"),
+    ) as { version: string };
+    const [iconMajor = "0", iconMinor = "0", iconPatch = "0"] =
+      iconsManifest.version.split(".");
+    const bumpedIconsVersion = `${iconMajor}.${iconMinor}.${Number(iconPatch) + 1}`;
+    await writeFile(
+      path.join(patchedIconsDir, "package.json"),
+      JSON.stringify(
+        { ...iconsManifest, version: bumpedIconsVersion },
+        null,
+        2,
+      ),
+    );
+    const patchedIconsTarball = run(
+      "pnpm",
+      ["pack", "--pack-destination", scratchDir],
+      { cwd: patchedIconsDir },
+    )
+      .trim()
+      .split("\n")
+      .pop()
+      ?.trim();
+    if (!patchedIconsTarball) {
+      throw new Error("Failed to pack patched @ktjn/designed-icons tarball");
+    }
+    const mixedIconsDir = path.join(scratchDir, "mixed-icons-consumer");
+    await mkdir(mixedIconsDir, { recursive: true });
+    await writeFile(
+      path.join(mixedIconsDir, "package.json"),
+      JSON.stringify(
+        {
+          name: "mixed-icons-consumer",
+          version: "0.0.0",
+          private: true,
+          type: "module",
+        },
+        null,
+        2,
+      ),
+    );
+    run(
+      "npm",
+      [
+        "install",
+        "--no-audit",
+        "--no-fund",
+        "--silent",
+        tarballPaths["@ktjn/designed-tokens"] ?? "",
+        patchedIconsTarball,
+        tarballPaths["@ktjn/designed-react"] ?? "",
+        "react@19.3.1",
+        "react-dom@19.3.1",
+      ],
+      { cwd: mixedIconsDir, stdio: "inherit" },
+    );
+    let hasNestedIcons = false;
+    try {
+      await access(
+        path.join(
+          mixedIconsDir,
+          "node_modules/@ktjn/designed-react/node_modules/@ktjn/designed-icons",
+        ),
+      );
+      hasNestedIcons = true;
+    } catch {
+      hasNestedIcons = false;
+    }
+    if (hasNestedIcons) {
+      throw new Error(
+        `Expected a single deduplicated @ktjn/designed-icons installation for patch ${bumpedIconsVersion}`,
+      );
+    }
+    console.log(
+      `@ktjn/designed-react shares independent @ktjn/designed-icons patch (${bumpedIconsVersion}) without duplicate installs`,
     );
 
     console.log("\nAll packed tarballs install and work correctly.");
