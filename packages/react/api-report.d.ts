@@ -568,6 +568,13 @@ export declare function useDialogPortalContainer(enabled?: boolean): {
 };
 
 
+// ---- dialog/use-portal-container.d.ts ----
+export declare function usePortalContainer(enabled?: boolean): {
+    container: HTMLElement | null;
+    scopeRef: (node: HTMLSpanElement | null) => void;
+};
+
+
 // ---- drawer/drawer.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -798,12 +805,15 @@ export { DatePicker } from "./date-picker/date-picker.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
+export { usePortalContainer } from "./dialog/use-portal-container.js";
 export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, DrawerRootProps, DrawerSide, DrawerTitleProps, DrawerTriggerProps, } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
 export type { EmptyStateClassNames, EmptyStateProps, } from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
+export type { FieldContextValue } from "./field/field-context.js";
+export { useFieldContext, useFieldControlId, } from "./field/field-context.js";
 export type { FieldDescriptionProps } from "./field/field-description.js";
 export type { FieldErrorProps } from "./field/field-error.js";
 export type { FieldLabelProps } from "./field/field-label.js";
@@ -1214,7 +1224,7 @@ export interface RadioGroupProps<Value = string> extends Omit<HTMLAttributes<HTM
     readOnly?: boolean;
     children?: ReactNode;
 }
-declare function RadioGroupRoot<Value = string>({ disabled, className, onValueChange, "aria-describedby": ariaDescribedBy, ...rest }: RadioGroupProps<Value>): import("react").JSX.Element;
+declare function RadioGroupRoot<Value = string>({ disabled, className, onValueChange, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: RadioGroupProps<Value>): import("react").JSX.Element;
 export interface RadioGroupItemProps<Value = string> extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "value"> {
     ref?: Ref<HTMLLabelElement>;
     value: Value;
@@ -1402,7 +1412,7 @@ export declare function Skeleton({ ref, variant, width, height, style, className
 
 
 // ---- slider/slider.d.ts ----
-import type { HTMLAttributes, Ref } from "react";
+import { type HTMLAttributes, type Ref } from "react";
 export type SliderValue = number | readonly number[];
 export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
@@ -1415,7 +1425,7 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, "defau
     disabled?: boolean;
     name?: string;
 }
-export declare function Slider({ ref, value, defaultValue, onValueChange, min, max, step, disabled, name, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, ...rest }: SliderProps): import("react").JSX.Element;
+export declare function Slider({ ref, value, defaultValue, onValueChange, min, max, step, disabled, name, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SliderProps): import("react").JSX.Element;
 
 
 // ---- spinner/spinner.d.ts ----

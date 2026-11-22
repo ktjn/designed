@@ -1,5 +1,5 @@
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-import type { HTMLAttributes, Ref } from "react";
+import { type HTMLAttributes, type Ref, useCallback } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./slider.module.css";
 
@@ -36,11 +36,24 @@ export function Slider({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...rest
 }: SliderProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
+  const resolvedInvalid = ariaInvalid ?? (field?.invalid || undefined);
+  const setThumbInvalid = useCallback(
+    (input: HTMLInputElement | null) => {
+      if (!input) return;
+      if (resolvedInvalid === undefined) {
+        input.removeAttribute("aria-invalid");
+      } else {
+        input.setAttribute("aria-invalid", String(resolvedInvalid));
+      }
+    },
+    [resolvedInvalid],
+  );
   const initialValues = value ?? defaultValue;
   const thumbCount = Array.isArray(initialValues) ? initialValues.length : 1;
   const thumbIndices = Array.from({ length: thumbCount }, (_, i) => i);
@@ -60,6 +73,7 @@ export function Slider({
       disabled={resolvedDisabled}
       name={name}
       aria-labelledby={ariaLabelledBy}
+      aria-invalid={resolvedInvalid}
       className={classes}
       {...rest}
     >
@@ -71,6 +85,7 @@ export function Slider({
               key={`thumb-${thumbIndex}`}
               data-slot="slider-thumb"
               index={thumbIndex}
+              inputRef={setThumbInvalid}
               aria-label={
                 ariaLabel
                   ? thumbCount > 1

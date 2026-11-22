@@ -27,6 +27,7 @@ function RadioGroupRoot<Value = string>({
   className,
   onValueChange,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...rest
 }: RadioGroupProps<Value>) {
   const field = useFieldContext();
@@ -35,6 +36,7 @@ function RadioGroupRoot<Value = string>({
       data-slot="radio-group"
       disabled={disabled ?? field?.disabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
+      aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
       className={className ? `${styles.root} ${className}` : styles.root}
       onValueChange={(value) => onValueChange?.(value)}
       {...rest}

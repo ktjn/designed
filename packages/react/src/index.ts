@@ -106,6 +106,7 @@ export type {
   OverlayFocusTarget,
   OverlayInteractionType,
 } from "./dialog/overlay-focus.js";
+export { usePortalContainer } from "./dialog/use-portal-container.js";
 export type {
   DrawerCloseProps,
   DrawerContentProps,
@@ -123,6 +124,11 @@ export type {
 export { EmptyState } from "./empty-state/empty-state.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
+export type { FieldContextValue } from "./field/field-context.js";
+export {
+  useFieldContext,
+  useFieldControlId,
+} from "./field/field-context.js";
 export type { FieldDescriptionProps } from "./field/field-description.js";
 export type { FieldErrorProps } from "./field/field-error.js";
 export type { FieldLabelProps } from "./field/field-label.js";
