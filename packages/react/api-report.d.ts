@@ -143,6 +143,20 @@ export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttribu
 export declare function Autocomplete<Value = string>({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, filter, open, defaultOpen, onOpenChange, itemToStringValue, renderItem, popupClassName, side, sideOffset, align, alignOffset, collisionPadding, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps<Value>): import("react").JSX.Element;
 
 
+// ---- avatar-group/avatar-group.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { type AvatarSize } from "../avatar/avatar.js";
+export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    max?: number;
+    size?: AvatarSize;
+    renderOverflow?: (count: number) => ReactNode;
+    overflowLabel?: (count: number) => string;
+    children?: ReactNode;
+}
+export declare function AvatarGroup({ ref, max, size, renderOverflow, overflowLabel, className, children, ...rest }: AvatarGroupProps): import("react").JSX.Element;
+
+
 // ---- avatar/avatar.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type AvatarSize = "small" | "medium" | "large";
@@ -165,6 +179,22 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
     children?: ReactNode;
 }
 export declare function Badge({ ref, variant, className, ...rest }: BadgeProps): import("react").JSX.Element;
+
+
+// ---- banner/banner.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type BannerVariant = "info" | "success" | "warning" | "danger";
+export interface BannerProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+    ref?: Ref<HTMLDivElement>;
+    variant?: BannerVariant;
+    title?: ReactNode;
+    icon?: ReactNode;
+    action?: ReactNode;
+    onDismiss?: () => void;
+    dismissLabel?: string;
+    children?: ReactNode;
+}
+export declare function Banner({ ref, variant, title, icon, action, onDismiss, dismissLabel, children, role, className, ...rest }: BannerProps): import("react").JSX.Element;
 
 
 // ---- breadcrumb/breadcrumb.d.ts ----
@@ -1002,8 +1032,12 @@ export type { AutocompleteProps } from "./autocomplete/autocomplete.js";
 export { Autocomplete } from "./autocomplete/autocomplete.js";
 export type { AvatarProps, AvatarSize } from "./avatar/avatar.js";
 export { Avatar } from "./avatar/avatar.js";
+export type { AvatarGroupProps } from "./avatar-group/avatar-group.js";
+export { AvatarGroup } from "./avatar-group/avatar-group.js";
 export type { BadgeProps, BadgeVariant } from "./badge/badge.js";
 export { Badge } from "./badge/badge.js";
+export type { BannerProps, BannerVariant } from "./banner/banner.js";
+export { Banner } from "./banner/banner.js";
 export type { BreadcrumbItemProps, BreadcrumbLinkProps, BreadcrumbListProps, BreadcrumbPageProps, BreadcrumbRootProps, BreadcrumbSeparatorProps, } from "./breadcrumb/breadcrumb.js";
 export { Breadcrumb } from "./breadcrumb/breadcrumb.js";
 export type { ButtonProps, ButtonSize, ButtonVariant, } from "./button/button.js";
@@ -1109,6 +1143,8 @@ export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scro
 export { ScrollArea } from "./scroll-area/scroll-area.js";
 export type { SearchInputProps } from "./search-input/search-input.js";
 export { SearchInput } from "./search-input/search-input.js";
+export type { SegmentedControlItemProps, SegmentedControlRootProps, SegmentedControlSize, } from "./segmented-control/segmented-control.js";
+export { SegmentedControl } from "./segmented-control/segmented-control.js";
 export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
@@ -1128,6 +1164,8 @@ export type { StackAlign, StackDirection, StackGap, StackJustify, StackProps, } 
 export { Stack } from "./stack/stack.js";
 export type { StatProps, StatTrend } from "./stat/stat.js";
 export { Stat } from "./stat/stat.js";
+export type { StatusIndicatorProps, StatusIndicatorVariant, } from "./status-indicator/status-indicator.js";
+export { StatusIndicator } from "./status-indicator/status-indicator.js";
 export type { StepperOrientation, StepperProps, StepperStep, } from "./stepper/stepper.js";
 export { Stepper } from "./stepper/stepper.js";
 export type { SwitchProps } from "./switch/switch.js";
@@ -1787,6 +1825,34 @@ export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElem
 export declare function SearchInput({ ref, value, defaultValue, onValueChange, onClear, clearLabel, invalid, onKeyDown, className, ...rest }: SearchInputProps): import("react").JSX.Element;
 
 
+// ---- segmented-control/segmented-control.d.ts ----
+import { type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, type Ref } from "react";
+export type SegmentedControlSize = "small" | "medium" | "large";
+export interface SegmentedControlRootProps<Value extends string = string> extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLDivElement>;
+    value?: Value;
+    defaultValue?: Value;
+    onValueChange?: (value: Value) => void;
+    size?: SegmentedControlSize;
+    fullWidth?: boolean;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+export interface SegmentedControlItemProps<Value extends string = string> extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+    ref?: Ref<HTMLButtonElement>;
+    value: Value;
+    icon?: ReactNode;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function SegmentedControlRoot<Value extends string = string>({ ref, value, defaultValue, onValueChange, size, fullWidth, disabled, "aria-disabled": ariaDisabled, className, children, ...rest }: SegmentedControlRootProps<Value>): import("react").JSX.Element;
+declare function SegmentedControlItem<Value extends string = string>({ ref, value, icon, disabled, type, className, onClick, onKeyDown, children, ...rest }: SegmentedControlItemProps<Value>): import("react").JSX.Element;
+export declare const SegmentedControl: typeof SegmentedControlRoot & {
+    Item: typeof SegmentedControlItem;
+};
+export {};
+
+
 // ---- select/select.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -2061,6 +2127,18 @@ export interface StatProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 export declare function Stat({ ref, label, value, delta, trend, helpText, className, children, ...rest }: StatProps): import("react").JSX.Element;
+
+
+// ---- status-indicator/status-indicator.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type StatusIndicatorVariant = "neutral" | "info" | "success" | "warning" | "danger" | "pending" | "loading";
+export interface StatusIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
+    variant?: StatusIndicatorVariant;
+    pulse?: boolean;
+    children?: ReactNode;
+}
+export declare function StatusIndicator({ ref, variant, pulse, className, children, ...rest }: StatusIndicatorProps): import("react").JSX.Element;
 
 
 // ---- stepper/stepper.d.ts ----

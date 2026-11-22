@@ -1,0 +1,141 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-default);
+  vertical-align: middle;
+}
+
+.indicator {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.neutral .indicator {
+  color: var(--ds-color-foreground-muted);
+}
+
+.info .indicator {
+  color: var(--ds-color-status-info-foreground);
+}
+
+.success .indicator {
+  color: var(--ds-color-status-success-foreground);
+}
+
+.warning .indicator {
+  color: var(--ds-color-status-warning-foreground);
+}
+
+.danger .indicator {
+  color: var(--ds-color-status-danger-foreground);
+}
+
+.pending .indicator {
+  color: var(--ds-color-action-primary-default);
+}
+
+.loading .indicator {
+  color: var(--ds-color-action-primary-default);
+}
+
+.icon {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.dot {
+  display: inline-block;
+  box-sizing: border-box;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 9999px;
+  background: var(--ds-color-action-primary-default);
+  border: 1.5px solid var(--ds-color-action-primary-default);
+  box-shadow:
+    0 0 0 2px var(--ds-color-background-default),
+    0 0 0 3px var(--ds-color-foreground-muted);
+}
+
+.spinner {
+  display: inline-block;
+  box-sizing: border-box;
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border-radius: 9999px;
+  border: 2px solid var(--ds-color-action-primary-default);
+  border-inline-end-color: transparent;
+  animation: statusIndicatorSpin 750ms linear infinite;
+}
+
+.root[data-pulse] .indicator::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1.5px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+  animation: statusIndicatorPulse 1800ms ease-out infinite;
+}
+
+.label {
+  color: var(--ds-color-foreground-default);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+@keyframes statusIndicatorSpin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes statusIndicatorPulse {
+  0% {
+    scale: 0.75;
+    opacity: 0.75;
+  }
+  100% {
+    scale: 1.45;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-pulse] .indicator::after {
+    animation: none;
+  }
+
+  .spinner {
+    animation-duration: 2400ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .root .indicator {
+    color: CanvasText;
+  }
+
+  .dot {
+    forced-color-adjust: none;
+    background: CanvasText;
+    border-color: CanvasText;
+    box-shadow:
+      0 0 0 2px Canvas,
+      0 0 0 3px CanvasText;
+  }
+
+  .spinner {
+    border-color: CanvasText;
+    border-inline-end-color: transparent;
+  }
+}
