@@ -3,6 +3,7 @@ import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
 import {
   type HTMLAttributes,
   type KeyboardEvent,
+  type ReactNode,
   type Ref,
   useCallback,
   useEffect,
@@ -26,17 +27,22 @@ export interface CommandPaletteItem {
   disabled?: boolean;
 }
 
-export interface CommandPaletteProps
-  extends Omit<
+export interface CommandPaletteProps<
+  Item extends CommandPaletteItem = CommandPaletteItem,
+> extends Omit<
     HTMLAttributes<HTMLDivElement>,
     "title" | "onSelect" | "children"
   > {
   ref?: Ref<HTMLDivElement>;
-  items: readonly CommandPaletteItem[];
+  items: readonly Item[];
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onSelect?: (item: CommandPaletteItem) => void;
+  query?: string;
+  onQueryChange?: (query: string) => void;
+  filter?: ((item: Item, query: string) => boolean) | null;
+  renderItem?: (item: Item) => ReactNode;
+  onSelect?: (item: Item) => void;
   title?: string;
   placeholder?: string;
   searchLabel?: string;
@@ -62,11 +68,17 @@ function matchesQuery(item: CommandPaletteItem, normalizedQuery: string) {
   );
 }
 
-export function CommandPalette({
+export function CommandPalette<
+  Item extends CommandPaletteItem = CommandPaletteItem,
+>({
   items,
   open,
   defaultOpen = false,
   onOpenChange,
+  query: controlledQuery,
+  onQueryChange,
+  filter,
+  renderItem,
   onSelect,
   title = "Command palette",
   placeholder = "Type a command or search...",
@@ -76,21 +88,30 @@ export function CommandPalette({
   enableGlobalShortcut = false,
   className,
   ...rest
-}: CommandPaletteProps) {
+}: CommandPaletteProps<Item>) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const [query, setQuery] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [uncontrolledQuery, setUncontrolledQuery] = useState("");
+  const [activeId, setActiveId] = useState<string>();
   const listboxId = useId();
 
   const isControlled = open !== undefined;
   const currentOpen = isControlled ? open : uncontrolledOpen;
+  const query = controlledQuery ?? uncontrolledQuery;
   const [prevOpen, setPrevOpen] = useState(currentOpen);
+  const [prevQuery, setPrevQuery] = useState(query);
   if (currentOpen !== prevOpen) {
     setPrevOpen(currentOpen);
     if (!currentOpen) {
-      setQuery("");
-      setActiveIndex(0);
+      setUncontrolledQuery("");
+      setActiveId(undefined);
+      if (controlledQuery === undefined) {
+        onQueryChange?.("");
+      }
     }
+  }
+  if (query !== prevQuery) {
+    setPrevQuery(query);
+    setActiveId(undefined);
   }
   const activity = usePortalActivity(currentOpen);
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
@@ -120,12 +141,14 @@ export function CommandPalette({
   }, [currentOpen, enableGlobalShortcut, setOpen]);
 
   const filteredItems = useMemo(() => {
+    if (filter === null) return items;
+    if (filter) return items.filter((item) => filter(item, query));
     const normalized = query.trim().toLowerCase();
     return items.filter((item) => matchesQuery(item, normalized));
-  }, [items, query]);
+  }, [filter, items, query]);
 
   const groupedSections = useMemo(() => {
-    const groups = new Map<string, CommandPaletteItem[]>();
+    const groups = new Map<string, Item[]>();
     for (const item of filteredItems) {
       const key = item.group ?? "";
       const bucket = groups.get(key);
@@ -143,24 +166,19 @@ export function CommandPalette({
     [groupedSections],
   );
 
-  const resolvedActiveIndex = useMemo(() => {
-    if (flatItems.length === 0) {
-      return -1;
-    }
-    if (
-      activeIndex >= 0 &&
-      activeIndex < flatItems.length &&
-      !flatItems[activeIndex]?.disabled
-    ) {
-      return activeIndex;
-    }
-    return flatItems.findIndex((item) => !item.disabled);
-  }, [activeIndex, flatItems]);
+  const activeIndex = flatItems.findIndex(
+    (item) => item.id === activeId && !item.disabled,
+  );
+  if (activeId !== undefined && activeIndex === -1) {
+    setActiveId(undefined);
+  }
+  const resolvedActiveIndex =
+    activeIndex === -1
+      ? flatItems.findIndex((item) => !item.disabled)
+      : activeIndex;
+  const activeItem = flatItems[resolvedActiveIndex];
 
-  const activeItem =
-    resolvedActiveIndex >= 0 ? flatItems[resolvedActiveIndex] : undefined;
-
-  const selectItem = (item: CommandPaletteItem) => {
+  const selectItem = (item: Item) => {
     if (item.disabled) {
       return;
     }
@@ -176,8 +194,9 @@ export function CommandPalette({
     for (let step = 1; step <= flatItems.length; step += 1) {
       const candidate =
         (start + direction * step + flatItems.length) % flatItems.length;
-      if (!flatItems[candidate]?.disabled) {
-        setActiveIndex(candidate);
+      const item = flatItems[candidate];
+      if (item && !item.disabled) {
+        setActiveId(item.id);
         return;
       }
     }
@@ -192,15 +211,16 @@ export function CommandPalette({
       moveActive(-1);
     } else if (event.key === "Home") {
       event.preventDefault();
-      const firstEnabled = flatItems.findIndex((item) => !item.disabled);
-      if (firstEnabled >= 0) {
-        setActiveIndex(firstEnabled);
+      const firstEnabled = flatItems.find((item) => !item.disabled);
+      if (firstEnabled) {
+        setActiveId(firstEnabled.id);
       }
     } else if (event.key === "End") {
       event.preventDefault();
       for (let idx = flatItems.length - 1; idx >= 0; idx -= 1) {
-        if (!flatItems[idx]?.disabled) {
-          setActiveIndex(idx);
+        const item = flatItems[idx];
+        if (item && !item.disabled) {
+          setActiveId(item.id);
           break;
         }
       }
@@ -250,8 +270,11 @@ export function CommandPalette({
                 placeholder={placeholder}
                 className={styles.input}
                 onChange={(event) => {
-                  setQuery(event.target.value);
-                  setActiveIndex(0);
+                  const nextQuery = event.target.value;
+                  if (controlledQuery === undefined) {
+                    setUncontrolledQuery(nextQuery);
+                  }
+                  onQueryChange?.(nextQuery);
                 }}
                 onKeyDown={handleInputKeyDown}
               />
@@ -280,10 +303,7 @@ export function CommandPalette({
                       </div>
                     ) : null}
                     {groupItems.map((item) => {
-                      const flatIndex = flatItems.findIndex(
-                        (candidate) => candidate.id === item.id,
-                      );
-                      const isActive = flatIndex === resolvedActiveIndex;
+                      const isActive = item.id === activeItem?.id;
                       return (
                         <div
                           key={item.id}
@@ -297,7 +317,7 @@ export function CommandPalette({
                           className={styles.option}
                           onMouseEnter={() => {
                             if (!item.disabled) {
-                              setActiveIndex(flatIndex);
+                              setActiveId(item.id);
                             }
                           }}
                           onClick={() => selectItem(item)}
@@ -308,12 +328,18 @@ export function CommandPalette({
                             }
                           }}
                         >
-                          <span>{item.label}</span>
-                          {item.shortcut ? (
-                            <kbd className={styles.shortcut}>
-                              {item.shortcut}
-                            </kbd>
-                          ) : null}
+                          {renderItem ? (
+                            renderItem(item)
+                          ) : (
+                            <>
+                              <span>{item.label}</span>
+                              {item.shortcut ? (
+                                <kbd className={styles.shortcut}>
+                                  {item.shortcut}
+                                </kbd>
+                              ) : null}
+                            </>
+                          )}
                         </div>
                       );
                     })}

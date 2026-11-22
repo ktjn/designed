@@ -1,7 +1,7 @@
 import { Button, CommandPalette } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
-import { expect, userEvent, within } from "storybook/test";
+import { useEffect, useState } from "react";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
 const meta: Meta<typeof CommandPalette> = {
   title: "CommandPalette",
@@ -68,5 +68,71 @@ export const FilterAndSelectInteraction: Story = {
     await expect(
       await canvas.findByText("Selected: Open Settings"),
     ).toBeInTheDocument();
+  },
+};
+
+const SEARCH_RESULTS = [
+  { id: "handbook", label: "Team Handbook", kind: "Document", terms: "guide" },
+  { id: "design", label: "Design System", kind: "Project", terms: "guide" },
+];
+
+function AsyncSearchDemo() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [items, setItems] = useState(SEARCH_RESULTS);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const search = query.trim().toLowerCase();
+      setItems(
+        SEARCH_RESULTS.filter(
+          (item) =>
+            item.terms.includes(search) ||
+            item.label.toLowerCase().includes(search),
+        ),
+      );
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [query]);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Search workspace</Button>
+      <CommandPalette
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setQuery("");
+        }}
+        query={query}
+        onQueryChange={setQuery}
+        items={items}
+        filter={null}
+        renderItem={(item) => (
+          <span>
+            {item.label} · {item.kind}
+          </span>
+        )}
+      />
+    </>
+  );
+}
+
+export const AsyncSearch: Story = {
+  render: () => <AsyncSearchDemo />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(
+      within(canvasElement).getByRole("button", { name: "Search workspace" }),
+    );
+    const body = within(document.body);
+    await userEvent.type(await body.findByRole("combobox"), "handbook");
+    await expect(
+      await body.findByText("Team Handbook · Document"),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        body.queryByRole("option", { name: "Design System" }),
+      ).not.toBeInTheDocument(),
+    );
   },
 };

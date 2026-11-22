@@ -361,7 +361,7 @@ export {};
 
 
 // ---- command-palette/command-palette.d.ts ----
-import { type HTMLAttributes, type Ref } from "react";
+import { type HTMLAttributes, type ReactNode, type Ref } from "react";
 export interface CommandPaletteItem {
     id: string;
     label: string;
@@ -370,13 +370,17 @@ export interface CommandPaletteItem {
     shortcut?: string;
     disabled?: boolean;
 }
-export interface CommandPaletteProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "onSelect" | "children"> {
+export interface CommandPaletteProps<Item extends CommandPaletteItem = CommandPaletteItem> extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "onSelect" | "children"> {
     ref?: Ref<HTMLDivElement>;
-    items: readonly CommandPaletteItem[];
+    items: readonly Item[];
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
-    onSelect?: (item: CommandPaletteItem) => void;
+    query?: string;
+    onQueryChange?: (query: string) => void;
+    filter?: ((item: Item, query: string) => boolean) | null;
+    renderItem?: (item: Item) => ReactNode;
+    onSelect?: (item: Item) => void;
     title?: string;
     placeholder?: string;
     searchLabel?: string;
@@ -384,7 +388,7 @@ export interface CommandPaletteProps extends Omit<HTMLAttributes<HTMLDivElement>
     closeLabel?: string;
     enableGlobalShortcut?: boolean;
 }
-export declare function CommandPalette({ items, open, defaultOpen, onOpenChange, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps): import("react").JSX.Element;
+export declare function CommandPalette<Item extends CommandPaletteItem = CommandPaletteItem>({ items, open, defaultOpen, onOpenChange, query: controlledQuery, onQueryChange, filter, renderItem, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps<Item>): import("react").JSX.Element;
 
 
 // ---- container/container.d.ts ----
