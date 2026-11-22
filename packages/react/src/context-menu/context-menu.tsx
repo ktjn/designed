@@ -71,7 +71,7 @@ function ContextMenuContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseContextMenu.Portal container={container}>
-        <BaseContextMenu.Positioner>
+        <BaseContextMenu.Positioner className={styles.positioner}>
           <BaseContextMenu.Popup
             data-slot="context-menu-content"
             className={

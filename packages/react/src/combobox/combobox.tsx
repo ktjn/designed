@@ -115,7 +115,7 @@ function ComboboxContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseCombobox.Portal container={container}>
-        <BaseCombobox.Positioner sideOffset={4}>
+        <BaseCombobox.Positioner sideOffset={4} className={styles.positioner}>
           <BaseCombobox.Popup
             data-slot="combobox-content"
             initialFocus={initialFocus}

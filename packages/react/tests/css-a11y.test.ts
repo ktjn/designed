@@ -67,4 +67,47 @@ describe("CSS accessibility and RTL contracts", () => {
     )?.[1];
     expect(reducedBlock).toContain(".iconClose");
   });
+
+  it("uses design tokens for overlay z-index, backdrop scrims, and monospace fonts", async () => {
+    for (const modalFile of [
+      "dialog/dialog.module.css",
+      "drawer/drawer.module.css",
+      "command-palette/command-palette.module.css",
+      "sidebar/sidebar.module.css",
+    ]) {
+      const css = await readFile(path.join(srcDir, modalFile), "utf8");
+      expect(css, modalFile).toContain("var(--ds-z-index-modal)");
+      expect(css, modalFile).toContain("var(--ds-color-backdrop-scrim)");
+    }
+
+    for (const floatingFile of [
+      "popover/popover.module.css",
+      "menu/menu.module.css",
+      "context-menu/context-menu.module.css",
+      "select/select.module.css",
+      "combobox/combobox.module.css",
+      "autocomplete/autocomplete.module.css",
+      "date-picker/date-picker.module.css",
+      "preview-card/preview-card.module.css",
+      "tooltip/tooltip.module.css",
+    ]) {
+      const css = await readFile(path.join(srcDir, floatingFile), "utf8");
+      expect(css, floatingFile).toContain(".positioner");
+      expect(css, floatingFile).toContain("var(--ds-z-index-popover)");
+      expect(css, floatingFile).not.toMatch(/z-index:\s*\d+/);
+    }
+
+    const toastCss = await readFile(
+      path.join(srcDir, "toast/toast.module.css"),
+      "utf8",
+    );
+    expect(toastCss).toContain("var(--ds-z-index-toast)");
+    expect(toastCss).not.toMatch(/z-index:\s*\d+/);
+
+    const files = await collectCssModules();
+    for (const file of files) {
+      const css = await readFile(file, "utf8");
+      expect(css, file).not.toContain("ui-monospace");
+    }
+  });
 });

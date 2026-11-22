@@ -1,8 +1,9 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgb(0 0 0 / 48%);
+  background: var(--ds-color-backdrop-scrim);
   transition: opacity 150ms ease;
+  z-index: var(--ds-z-index-modal);
 }
 
 .backdrop[data-starting-style],
@@ -34,6 +35,7 @@
   transition:
     opacity 150ms ease,
     scale 150ms ease;
+  z-index: var(--ds-z-index-modal);
 }
 
 .popup[data-starting-style],

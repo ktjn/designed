@@ -152,8 +152,8 @@
 .mobileBackdrop {
   position: fixed;
   inset: 0;
-  background: rgb(0 0 0 / 48%);
-  z-index: 40;
+  background: var(--ds-color-backdrop-scrim);
+  z-index: var(--ds-z-index-modal);
 }
 
 .mobilePopup {
@@ -167,7 +167,7 @@
   color: var(--ds-color-foreground-default);
   border-inline-end: 1px solid var(--ds-color-border-default);
   box-shadow: var(--ds-shadow-overlay);
-  z-index: 41;
+  z-index: var(--ds-z-index-modal);
 }
 
 @media (prefers-reduced-motion: reduce) {

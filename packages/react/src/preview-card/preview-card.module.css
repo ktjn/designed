@@ -12,6 +12,10 @@
   outline-offset: 2px;
 }
 
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   max-inline-size: 20rem;
   box-sizing: border-box;
@@ -25,7 +29,6 @@
   font-size: var(--ds-font-size-100);
   line-height: var(--ds-font-line-height-100);
   transition: opacity 150ms ease;
-  z-index: 10;
 }
 
 .popup[data-starting-style],

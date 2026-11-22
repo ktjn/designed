@@ -107,7 +107,7 @@ function SelectContent({
     <>
       <span hidden ref={scopeRef} />
       <BaseSelect.Portal container={container}>
-        <BaseSelect.Positioner sideOffset={4}>
+        <BaseSelect.Positioner sideOffset={4} className={styles.positioner}>
           <BaseSelect.Popup
             data-slot="select-content"
             finalFocus={finalFocus}

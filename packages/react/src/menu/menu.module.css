@@ -1,3 +1,7 @@
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   display: grid;
   gap: 2px;
@@ -9,7 +13,6 @@
   box-shadow: var(--ds-shadow-overlay);
   box-sizing: border-box;
   padding: var(--ds-space-stack-sm);
-  z-index: 10;
 }
 
 .groupLabel {
@@ -71,7 +74,7 @@
 
 .shortcut {
   margin-inline-start: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--ds-font-family-mono);
   font-size: 0.75rem;
   color: var(--ds-color-foreground-muted);
 }

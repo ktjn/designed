@@ -2,7 +2,7 @@
   position: fixed;
   inset-block-end: var(--ds-space-surface);
   inset-inline-end: var(--ds-space-surface);
-  z-index: 1000;
+  z-index: var(--ds-z-index-toast);
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-stack-md);
