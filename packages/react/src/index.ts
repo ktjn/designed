@@ -115,6 +115,11 @@ export type {
   ContextMenuTriggerProps,
 } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
+export type {
+  ContextualHelpProps,
+  ContextualHelpVariant,
+} from "./contextual-help/contextual-help.js";
+export { ContextualHelp } from "./contextual-help/contextual-help.js";
 export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
@@ -256,6 +261,11 @@ export { Pagination } from "./pagination/pagination.js";
 export type { PasswordInputProps } from "./password-input/password-input.js";
 export { PasswordInput } from "./password-input/password-input.js";
 export type {
+  PopconfirmConfirmVariant,
+  PopconfirmProps,
+} from "./popconfirm/popconfirm.js";
+export { Popconfirm } from "./popconfirm/popconfirm.js";
+export type {
   PopoverCloseProps,
   PopoverContentProps,
   PopoverDescriptionProps,
@@ -281,6 +291,11 @@ export type {
   RadioGroupProps,
 } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
+export type {
+  RelativeTimeFormat,
+  RelativeTimeProps,
+} from "./relative-time/relative-time.js";
+export { RelativeTime } from "./relative-time/relative-time.js";
 export type {
   ResizableHandleProps,
   ResizableOrientation,
@@ -387,6 +402,16 @@ export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
 export type {
+  TagGroupItemProps,
+  TagGroupRootProps,
+} from "./tag-group/tag-group.js";
+export { TagGroup } from "./tag-group/tag-group.js";
+export type {
+  TagInputProps,
+  TagInputRejectReason,
+} from "./tag-input/tag-input.js";
+export { TagInput } from "./tag-input/tag-input.js";
+export type {
   TagOverflowItem,
   TagOverflowProps,
 } from "./tag-overflow/tag-overflow.js";
@@ -405,6 +430,14 @@ export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";
 export type { TimePickerProps } from "./time-picker/time-picker.js";
 export { TimePicker } from "./time-picker/time-picker.js";
+export type {
+  TimelineBadgeProps,
+  TimelineBadgeVariant,
+  TimelineBodyProps,
+  TimelineItemProps,
+  TimelineRootProps,
+} from "./timeline/timeline.js";
+export { Timeline } from "./timeline/timeline.js";
 export type {
   ToastActionOptions,
   ToastOptions,

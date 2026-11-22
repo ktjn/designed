@@ -1,0 +1,105 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+}
+
+.item {
+  display: inline-flex;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  box-sizing: border-box;
+  padding-block: 0.1875rem;
+  padding-inline: 0.5rem;
+  border-radius: var(--ds-radius-control);
+  border: 1px solid transparent;
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  font-weight: var(--ds-font-weight-medium);
+  white-space: nowrap;
+}
+
+.neutral {
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  border-color: var(--ds-color-border-default);
+}
+
+.info {
+  background: var(--ds-color-status-info-background);
+  color: var(--ds-color-status-info-foreground);
+  border-color: var(--ds-color-status-info-border);
+}
+
+.success {
+  background: var(--ds-color-status-success-background);
+  color: var(--ds-color-status-success-foreground);
+  border-color: var(--ds-color-status-success-border);
+}
+
+.warning {
+  background: var(--ds-color-status-warning-background);
+  color: var(--ds-color-status-warning-foreground);
+  border-color: var(--ds-color-status-warning-border);
+}
+
+.danger {
+  background: var(--ds-color-status-danger-background);
+  color: var(--ds-color-status-danger-foreground);
+  border-color: var(--ds-color-status-danger-border);
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.remove:hover {
+  background: rgb(0 0 0 / 8%);
+}
+
+.remove:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 1px;
+}
+
+.remove svg {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .remove {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .tag {
+    border: 1px solid CanvasText;
+  }
+
+  .remove {
+    border: 1px solid ButtonText;
+  }
+
+  .remove:focus-visible {
+    outline-color: Highlight;
+  }
+}

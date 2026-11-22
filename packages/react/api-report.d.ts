@@ -648,6 +648,30 @@ export declare const ContextMenu: typeof ContextMenuRoot & {
 export {};
 
 
+// ---- contextual-help/contextual-help.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { type PopoverAlign, type PopoverSide } from "../popover/popover.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type ContextualHelpVariant = "info" | "help";
+export interface ContextualHelpProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+    ref?: Ref<HTMLDivElement>;
+    heading: ReactNode;
+    children?: ReactNode;
+    footer?: ReactNode;
+    variant?: ContextualHelpVariant;
+    label?: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+    side?: PopoverSide;
+    sideOffset?: number;
+    align?: PopoverAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<PopoverSide, number>>;
+}
+export declare function ContextualHelp({ ref, heading, children, footer, variant, label, open, defaultOpen, onOpenChange, side, sideOffset, align, alignOffset, collisionPadding, className, ...rest }: ContextualHelpProps): import("react").JSX.Element;
+
+
 // ---- copy-button/copy-button.d.ts ----
 import { type ButtonProps } from "../button/button.js";
 export interface CopyButtonProps extends Omit<ButtonProps, "onClick" | "onCopy" | "value" | "children"> {
@@ -1066,6 +1090,8 @@ export type { ContainerProps, ContainerSize } from "./container/container.js";
 export { Container } from "./container/container.js";
 export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuLinkItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuSubmenuProps, ContextMenuSubmenuTriggerProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
+export type { ContextualHelpProps, ContextualHelpVariant, } from "./contextual-help/contextual-help.js";
+export { ContextualHelp } from "./contextual-help/contextual-help.js";
 export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
@@ -1127,6 +1153,8 @@ export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
 export type { PasswordInputProps } from "./password-input/password-input.js";
 export { PasswordInput } from "./password-input/password-input.js";
+export type { PopconfirmConfirmVariant, PopconfirmProps, } from "./popconfirm/popconfirm.js";
+export { Popconfirm } from "./popconfirm/popconfirm.js";
 export type { PopoverCloseProps, PopoverContentProps, PopoverDescriptionProps, PopoverRootProps, PopoverSide, PopoverTitleProps, PopoverTriggerProps, } from "./popover/popover.js";
 export { Popover } from "./popover/popover.js";
 export type { PreviewCardContentProps, PreviewCardRootProps, PreviewCardSide, PreviewCardTriggerProps, } from "./preview-card/preview-card.js";
@@ -1137,6 +1165,8 @@ export type { RadioCardProps } from "./radio-card/radio-card.js";
 export { RadioCard } from "./radio-card/radio-card.js";
 export type { RadioGroupItemProps, RadioGroupProps, } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
+export type { RelativeTimeFormat, RelativeTimeProps, } from "./relative-time/relative-time.js";
+export { RelativeTime } from "./relative-time/relative-time.js";
 export type { ResizableHandleProps, ResizableOrientation, ResizablePanelProps, ResizableRootProps, } from "./resizable/resizable.js";
 export { Resizable } from "./resizable/resizable.js";
 export type { ScrollAreaOrientation, ScrollAreaProps, } from "./scroll-area/scroll-area.js";
@@ -1176,6 +1206,10 @@ export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type { TagGroupItemProps, TagGroupRootProps, } from "./tag-group/tag-group.js";
+export { TagGroup } from "./tag-group/tag-group.js";
+export type { TagInputProps, TagInputRejectReason, } from "./tag-input/tag-input.js";
+export { TagInput } from "./tag-input/tag-input.js";
 export type { TagOverflowItem, TagOverflowProps, } from "./tag-overflow/tag-overflow.js";
 export { TagOverflow } from "./tag-overflow/tag-overflow.js";
 export type { TextProps, TextSize, TextTag, TextTone, TextWeight, } from "./text/text.js";
@@ -1186,6 +1220,8 @@ export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";
 export type { TimePickerProps } from "./time-picker/time-picker.js";
 export { TimePicker } from "./time-picker/time-picker.js";
+export type { TimelineBadgeProps, TimelineBadgeVariant, TimelineBodyProps, TimelineItemProps, TimelineRootProps, } from "./timeline/timeline.js";
+export { Timeline } from "./timeline/timeline.js";
 export type { ToastActionOptions, ToastOptions, ToastProviderProps, ToastVariant, UseToastResult, } from "./toast/toast.js";
 export { Toast, useToast } from "./toast/toast.js";
 export type { ToggleProps } from "./toggle/toggle.js";
@@ -1619,6 +1655,33 @@ export interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputEl
 export declare function PasswordInput({ ref, visible, defaultVisible, onVisibleChange, showLabel, hideLabel, invalid, className, ...rest }: PasswordInputProps): import("react").JSX.Element;
 
 
+// ---- popconfirm/popconfirm.d.ts ----
+import { type HTMLAttributes, type ReactElement, type ReactNode, type Ref } from "react";
+import { type PopoverAlign, type PopoverSide } from "../popover/popover.js";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type PopconfirmConfirmVariant = "primary" | "danger";
+export interface PopconfirmProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "children"> {
+    ref?: Ref<HTMLDivElement>;
+    title: ReactNode;
+    description?: ReactNode;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    confirmVariant?: PopconfirmConfirmVariant;
+    onConfirm?: () => void | Promise<void>;
+    onCancel?: () => void;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean, eventDetails?: ChangeEventDetails) => void;
+    side?: PopoverSide;
+    sideOffset?: number;
+    align?: PopoverAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<PopoverSide, number>>;
+    children: ReactElement;
+}
+export declare function Popconfirm({ ref, title, description, confirmLabel, cancelLabel, confirmVariant, onConfirm, onCancel, open, defaultOpen, onOpenChange, side, sideOffset, align, alignOffset, collisionPadding, className, children, ...rest }: PopconfirmProps): import("react").JSX.Element;
+
+
 // ---- popover/popover.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -1761,6 +1824,21 @@ export declare const RadioGroup: typeof RadioGroupRoot & {
     Item: typeof RadioGroupItem;
 };
 export {};
+
+
+// ---- relative-time/relative-time.d.ts ----
+import type { ComponentPropsWithRef } from "react";
+export type RelativeTimeFormat = "long" | "short" | "narrow";
+export interface RelativeTimeProps extends Omit<ComponentPropsWithRef<"time">, "dateTime" | "children"> {
+    date: Date | string | number;
+    locale?: string;
+    format?: RelativeTimeFormat;
+    numeric?: "always" | "auto";
+    refreshInterval?: number;
+    now?: Date | number;
+    showTitle?: boolean;
+}
+export declare function RelativeTime({ ref, date, locale, format, numeric, refreshInterval, now, showTitle, title, className, ...rest }: RelativeTimeProps): import("react").JSX.Element;
 
 
 // ---- resizable/resizable.d.ts ----
@@ -2289,6 +2367,56 @@ export declare const Tabs: typeof TabsRoot & {
 export {};
 
 
+// ---- tag-group/tag-group.d.ts ----
+import { type HTMLAttributes, type ReactNode, type Ref } from "react";
+import type { TagVariant } from "../tag/tag.js";
+export interface TagGroupRootProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    onRemove?: (value: string) => void;
+    getRemoveLabel?: (label: string) => string;
+    children?: ReactNode;
+}
+export interface TagGroupItemProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    value: string;
+    variant?: TagVariant;
+    removable?: boolean;
+    onRemove?: () => void;
+    removeLabel?: string;
+    children?: ReactNode;
+}
+declare function TagGroupRoot({ ref, onRemove, getRemoveLabel, className, children, ...rest }: TagGroupRootProps): import("react").JSX.Element;
+declare function TagGroupItem({ ref, value, variant, removable, onRemove, removeLabel, className, children, ...rest }: TagGroupItemProps): import("react").JSX.Element;
+export declare const TagGroup: typeof TagGroupRoot & {
+    Item: typeof TagGroupItem;
+};
+export {};
+
+
+// ---- tag-input/tag-input.d.ts ----
+import { type InputHTMLAttributes, type Ref } from "react";
+export type TagInputRejectReason = "duplicate" | "invalid" | "max";
+export interface TagInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
+    ref?: Ref<HTMLInputElement>;
+    value?: readonly string[];
+    defaultValue?: readonly string[];
+    onValueChange?: (value: string[]) => void;
+    inputValue?: string;
+    defaultInputValue?: string;
+    onInputValueChange?: (inputValue: string) => void;
+    suggestions?: readonly string[];
+    delimiters?: readonly string[];
+    allowDuplicates?: boolean;
+    maxTags?: number;
+    validate?: (tag: string) => boolean;
+    onReject?: (tag: string, reason: TagInputRejectReason) => void;
+    invalid?: boolean;
+    getRemoveLabel?: (tag: string) => string;
+    wrapperClassName?: string;
+}
+export declare function TagInput({ ref, value, defaultValue, onValueChange, inputValue, defaultInputValue, onInputValueChange, suggestions, delimiters, allowDuplicates, maxTags, validate, onReject, invalid, disabled, readOnly, id, className, wrapperClassName, getRemoveLabel, onKeyDown, onPaste, onFocus, onBlur, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TagInputProps): import("react").JSX.Element;
+
+
 // ---- tag-overflow/tag-overflow.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface TagOverflowItem {
@@ -2373,6 +2501,39 @@ export interface TimePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     invalid?: boolean;
 }
 export declare function TimePicker({ ref, value, defaultValue, onValueChange, min, max, step, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TimePickerProps): import("react").JSX.Element;
+
+
+// ---- timeline/timeline.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type TimelineBadgeVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export interface TimelineRootProps extends HTMLAttributes<HTMLOListElement> {
+    ref?: Ref<HTMLOListElement>;
+    children?: ReactNode;
+}
+export interface TimelineItemProps extends HTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+    children?: ReactNode;
+}
+export interface TimelineBadgeProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    variant?: TimelineBadgeVariant;
+    children?: ReactNode;
+}
+export interface TimelineBodyProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    timestamp?: ReactNode;
+    children?: ReactNode;
+}
+declare function TimelineRoot({ ref, className, ...rest }: TimelineRootProps): import("react").JSX.Element;
+declare function TimelineItem({ ref, className, ...rest }: TimelineItemProps): import("react").JSX.Element;
+declare function TimelineBadge({ ref, variant, className, children, ...rest }: TimelineBadgeProps): import("react").JSX.Element;
+declare function TimelineBody({ ref, timestamp, className, children, ...rest }: TimelineBodyProps): import("react").JSX.Element;
+export declare const Timeline: typeof TimelineRoot & {
+    Item: typeof TimelineItem;
+    Badge: typeof TimelineBadge;
+    Body: typeof TimelineBody;
+};
+export {};
 
 
 // ---- toast/toast.d.ts ----
