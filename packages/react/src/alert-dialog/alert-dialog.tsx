@@ -12,6 +12,7 @@ import type {
   DialogTitleProps,
 } from "../dialog/dialog.js";
 import styles from "../dialog/dialog.module.css";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 
 export interface AlertDialogRootProps {
@@ -59,6 +60,8 @@ function AlertDialogTrigger({
 export interface AlertDialogContentProps
   extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
+  initialFocus?: OverlayFocusTarget;
+  finalFocus?: OverlayFocusTarget;
 }
 
 function AlertDialogContent({

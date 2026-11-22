@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import { Button } from "../button/button";
@@ -28,6 +28,43 @@ function BasicDialog() {
         <Dialog.Title>Delete item?</Dialog.Title>
         <Dialog.Description>This cannot be undone.</Dialog.Description>
         <Dialog.Close>Cancel</Dialog.Close>
+      </Dialog.Content>
+    </Dialog>
+  );
+}
+
+function FocusManagedDialog() {
+  const initialRef = useRef<HTMLButtonElement>(null);
+  const finalRef = useRef<HTMLButtonElement>(null);
+  return (
+    <>
+      <Dialog>
+        <Dialog.Trigger>Open</Dialog.Trigger>
+        <Dialog.Content initialFocus={initialRef} finalFocus={finalRef}>
+          <Dialog.Title>Focus test</Dialog.Title>
+          <Button>First button</Button>
+          <Button ref={initialRef}>Preferred focus</Button>
+          <Dialog.Close>Done</Dialog.Close>
+        </Dialog.Content>
+      </Dialog>
+      <Button ref={finalRef}>Return target</Button>
+    </>
+  );
+}
+
+function CallbackFocusDialog() {
+  const targetRef = useRef<HTMLButtonElement>(null);
+  return (
+    <Dialog>
+      <Dialog.Trigger>Open callback</Dialog.Trigger>
+      <Dialog.Content
+        initialFocus={() => targetRef.current}
+        finalFocus={() => {}}
+      >
+        <Dialog.Title>Callback focus</Dialog.Title>
+        <Button>First</Button>
+        <Button ref={targetRef}>Callback target</Button>
+        <Dialog.Close>Done</Dialog.Close>
       </Dialog.Content>
     </Dialog>
   );
@@ -160,6 +197,40 @@ describe("Dialog", () => {
     await user.click(confirm);
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).toBeNull();
+    });
+  });
+
+  it("moves initialFocus and finalFocus to caller-provided refs", async () => {
+    const user = userEvent.setup();
+    render(<FocusManagedDialog />);
+    await user.click(screen.getByRole("button", { name: "Open" }));
+    await screen.findByRole("dialog");
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Preferred focus" }),
+      );
+    });
+
+    await user.click(screen.getByRole("button", { name: "Done" }));
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).toBeNull();
+    });
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Return target" }),
+      );
+    });
+  });
+
+  it("accepts boolean and callback forms for initialFocus and finalFocus", async () => {
+    const user = userEvent.setup();
+    render(<CallbackFocusDialog />);
+    await user.click(screen.getByRole("button", { name: "Open callback" }));
+    await screen.findByRole("dialog");
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Callback target" }),
+      );
     });
   });
 

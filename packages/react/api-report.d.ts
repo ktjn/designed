@@ -38,6 +38,7 @@ export {};
 // ---- alert-dialog/alert-dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
 import type { DialogCloseProps, DialogDescriptionProps, DialogTitleProps } from "../dialog/dialog.js";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface AlertDialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -52,6 +53,8 @@ export interface AlertDialogTriggerProps extends ButtonHTMLAttributes<HTMLButton
 declare function AlertDialogTrigger({ render, className, ...rest }: AlertDialogTriggerProps): import("react").JSX.Element;
 export interface AlertDialogContentProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
+    initialFocus?: OverlayFocusTarget;
+    finalFocus?: OverlayFocusTarget;
 }
 declare function AlertDialogContent({ className, children, ...rest }: AlertDialogContentProps): import("react").JSX.Element;
 declare function AlertDialogTitle({ className, ...rest }: DialogTitleProps): import("react").JSX.Element;
@@ -456,6 +459,7 @@ export declare function DatePicker({ ref, value, defaultValue, onValueChange, mi
 
 // ---- dialog/dialog.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { OverlayFocusTarget } from "./overlay-focus.js";
 export interface DialogRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -472,6 +476,8 @@ declare function DialogTrigger({ render, className, ...rest }: DialogTriggerProp
 export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
     closeLabel?: string;
+    initialFocus?: OverlayFocusTarget;
+    finalFocus?: OverlayFocusTarget;
 }
 declare function DialogContent({ children, closeLabel, className, ...rest }: DialogContentProps): import("react").JSX.Element;
 export interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
@@ -495,6 +501,13 @@ export declare const Dialog: typeof DialogRoot & {
     Close: typeof DialogCloseButton;
 };
 export {};
+
+
+// ---- dialog/overlay-focus.d.ts ----
+import type { RefObject } from "react";
+export type OverlayInteractionType = "mouse" | "touch" | "pen" | "keyboard" | "";
+export type OverlayFocusTarget = boolean | RefObject<HTMLElement | null> | ((interactionType: OverlayInteractionType) => // biome-ignore lint/suspicious/noConfusingVoidType: matches Base UI popup focus callback return contract
+boolean | HTMLElement | null | void);
 
 
 // ---- dialog/use-dialog-portal-container.d.ts ----
@@ -712,6 +725,7 @@ export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
+export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
 export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, DrawerRootProps, DrawerSide, DrawerTitleProps, DrawerTriggerProps, } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
 export type { EmptyStateProps } from "./empty-state/empty-state.js";

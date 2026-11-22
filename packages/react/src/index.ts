@@ -100,6 +100,10 @@ export type {
 } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
 export type {
+  OverlayFocusTarget,
+  OverlayInteractionType,
+} from "./dialog/overlay-focus.js";
+export type {
   DrawerCloseProps,
   DrawerContentProps,
   DrawerDescriptionProps,
