@@ -1,10 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import { useRef } from "react";
 import { describe, expect, it } from "vitest";
 import {
   AlertDialog,
   Button,
   Calendar,
   Combobox,
+  ContextMenu,
   DatePicker,
   Dialog,
   Drawer,
@@ -18,6 +20,45 @@ import {
   Textarea,
   Tooltip,
 } from "../src/index.js";
+
+function OverlayFocusPropsHarness() {
+  const focusRef = useRef<HTMLButtonElement>(null);
+  return (
+    <>
+      <Button ref={focusRef}>Target</Button>
+      <Popover>
+        <Popover.Trigger>Popover</Popover.Trigger>
+        <Popover.Content initialFocus={focusRef} finalFocus={focusRef}>
+          Body
+        </Popover.Content>
+      </Popover>
+      <Menu>
+        <Menu.Trigger>Menu</Menu.Trigger>
+        <Menu.Content finalFocus={focusRef}>
+          <Menu.Item>Edit</Menu.Item>
+        </Menu.Content>
+      </Menu>
+      <ContextMenu>
+        <ContextMenu.Trigger>Context area</ContextMenu.Trigger>
+        <ContextMenu.Content finalFocus={focusRef}>
+          <ContextMenu.Item>Inspect</ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>
+      <Select items={[{ value: "a", label: "A" }]}>
+        <Select.Trigger aria-label="Select">
+          <Select.Value placeholder="Choose" />
+        </Select.Trigger>
+        <Select.Content finalFocus={focusRef}>
+          <Select.Item value="a">A</Select.Item>
+        </Select.Content>
+      </Select>
+      <Combobox items={[{ value: "a", label: "A" }]}>
+        <Combobox.Input />
+        <Combobox.Content initialFocus={false} finalFocus={focusRef} />
+      </Combobox>
+    </>
+  );
+}
 
 describe("consumer composition and styling escape hatches", () => {
   it("accepts className on root controls and overlay triggers/contents", () => {
@@ -137,5 +178,10 @@ describe("consumer composition and styling escape hatches", () => {
     ).toBeTruthy();
     expect(screen.getByRole("button", { name: "Välj datum" })).toBeTruthy();
     expect(screen.getByText("Välj filer eller dra och släpp")).toBeTruthy();
+  });
+
+  it("accepts focus management props across overlay popups", () => {
+    render(<OverlayFocusPropsHarness />);
+    expect(screen.getByRole("button", { name: "Target" })).toBeTruthy();
   });
 });

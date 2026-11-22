@@ -290,6 +290,7 @@ export {};
 
 // ---- combobox/combobox.d.ts ----
 import type { ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ComboboxItem<Value> {
     label: string;
     value: Value;
@@ -318,8 +319,10 @@ declare function ComboboxInput({ id, className, "aria-describedby": ariaDescribe
 export interface ComboboxContentProps {
     className?: string;
     emptyMessage?: ReactNode;
+    initialFocus?: OverlayFocusTarget;
+    finalFocus?: OverlayFocusTarget;
 }
-declare function ComboboxContent({ className, emptyMessage, }: ComboboxContentProps): import("react").JSX.Element;
+declare function ComboboxContent({ className, emptyMessage, initialFocus, finalFocus, }: ComboboxContentProps): import("react").JSX.Element;
 export declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
@@ -366,6 +369,7 @@ export declare function Container({ ref, size, padded, className, ...rest }: Con
 
 // ---- context-menu/context-menu.d.ts ----
 import type { HTMLAttributes, ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ContextMenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -379,6 +383,7 @@ export interface ContextMenuTriggerProps extends HTMLAttributes<HTMLDivElement> 
 }
 declare function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps): import("react").JSX.Element;
 export interface ContextMenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
 declare function ContextMenuContent({ className, children, ...rest }: ContextMenuContentProps): import("react").JSX.Element;
@@ -519,6 +524,7 @@ export declare function useDialogPortalContainer(): {
 
 // ---- drawer/drawer.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export type DrawerSide = "right" | "left" | "bottom";
 export interface DrawerRootProps {
     open?: boolean;
@@ -534,6 +540,8 @@ export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
     side?: DrawerSide;
     closeLabel?: string;
+    initialFocus?: OverlayFocusTarget;
+    finalFocus?: OverlayFocusTarget;
     children: ReactNode;
 }
 export interface DrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
@@ -867,6 +875,7 @@ export declare function Link({ ref, className, ...rest }: LinkProps): import("re
 
 // ---- menu/menu.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface MenuRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -880,6 +889,7 @@ export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement
 }
 declare function MenuTrigger({ render, className, ...rest }: MenuTriggerProps): import("react").JSX.Element;
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
 declare function MenuContent({ className, children, ...rest }: MenuContentProps): import("react").JSX.Element;
@@ -1012,6 +1022,7 @@ export declare function Pagination({ ref, page, totalPages, onPageChange, siblin
 
 // ---- popover/popover.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface PopoverRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -1028,6 +1039,8 @@ export type PopoverSide = "top" | "right" | "bottom" | "left";
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
     side?: PopoverSide;
     sideOffset?: number;
+    initialFocus?: OverlayFocusTarget;
+    finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
 declare function PopoverContent({ side, sideOffset, className, children, ...rest }: PopoverContentProps): import("react").JSX.Element;
@@ -1140,6 +1153,7 @@ export declare function ScrollArea({ ref, orientation, maxHeight, className, sty
 
 // ---- select/select.d.ts ----
 import type { ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface SelectRootProps<Value = unknown> {
     value?: Value;
     defaultValue?: Value;
@@ -1171,9 +1185,10 @@ export interface SelectValueProps {
 declare function SelectValue({ placeholder }: SelectValueProps): import("react").JSX.Element;
 export interface SelectContentProps {
     className?: string;
+    finalFocus?: OverlayFocusTarget;
     children?: ReactNode;
 }
-declare function SelectContent({ className, children }: SelectContentProps): import("react").JSX.Element;
+declare function SelectContent({ className, finalFocus, children, }: SelectContentProps): import("react").JSX.Element;
 export interface SelectItemProps {
     value: unknown;
     disabled?: boolean;

@@ -1,6 +1,7 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./context-menu.module.css";
 
@@ -38,6 +39,7 @@ function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps) {
 
 export interface ContextMenuContentProps
   extends HTMLAttributes<HTMLDivElement> {
+  finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
 

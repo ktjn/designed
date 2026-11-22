@@ -1,6 +1,7 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronDownIcon } from "@ktjn/designed-icons";
 import type { ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./select.module.css";
@@ -83,10 +84,15 @@ function SelectValue({ placeholder }: SelectValueProps) {
 
 export interface SelectContentProps {
   className?: string;
+  finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
 
-function SelectContent({ className, children }: SelectContentProps) {
+function SelectContent({
+  className,
+  finalFocus,
+  children,
+}: SelectContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
@@ -95,6 +101,7 @@ function SelectContent({ className, children }: SelectContentProps) {
         <BaseSelect.Positioner sideOffset={4}>
           <BaseSelect.Popup
             data-slot="select-content"
+            finalFocus={finalFocus}
             className={
               className ? `${styles.popup} ${className}` : styles.popup
             }

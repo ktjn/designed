@@ -8,6 +8,7 @@ import type {
 } from "react";
 import { createContext, useContext } from "react";
 import buttonStyles from "../button/button.module.css";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./drawer.module.css";
 
@@ -30,6 +31,8 @@ export interface DrawerTriggerProps
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   side?: DrawerSide;
   closeLabel?: string;
+  initialFocus?: OverlayFocusTarget;
+  finalFocus?: OverlayFocusTarget;
   children: ReactNode;
 }
 
