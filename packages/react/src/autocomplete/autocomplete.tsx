@@ -70,7 +70,10 @@ export function Autocomplete({
       />
       <span hidden ref={scopeRef} />
       <BaseAutocomplete.Portal container={container}>
-        <BaseAutocomplete.Positioner sideOffset={4}>
+        <BaseAutocomplete.Positioner
+          sideOffset={4}
+          className={styles.positioner}
+        >
           <BaseAutocomplete.Popup
             data-slot="autocomplete-content"
             className={styles.popup}

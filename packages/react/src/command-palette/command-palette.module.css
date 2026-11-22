@@ -1,9 +1,9 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgb(0 0 0 / 48%);
+  background: var(--ds-color-backdrop-scrim);
   transition: opacity 150ms ease;
-  z-index: 40;
+  z-index: var(--ds-z-index-modal);
 }
 
 .backdrop[data-starting-style],
@@ -31,7 +31,7 @@
   transition:
     opacity 150ms ease,
     scale 150ms ease;
-  z-index: 41;
+  z-index: var(--ds-z-index-modal);
 }
 
 .popup[data-starting-style],
@@ -147,7 +147,7 @@
 .shortcut {
   font-size: var(--ds-font-size-100);
   color: var(--ds-color-foreground-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--ds-font-family-mono);
 }
 
 .empty {

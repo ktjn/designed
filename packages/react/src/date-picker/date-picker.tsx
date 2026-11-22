@@ -204,7 +204,12 @@ export function DatePicker({
       </div>
       <span hidden ref={scopeRef} />
       <BasePopover.Portal container={container}>
-        <BasePopover.Positioner side="bottom" align="end" sideOffset={6}>
+        <BasePopover.Positioner
+          side="bottom"
+          align="end"
+          sideOffset={6}
+          className={styles.positioner}
+        >
           <BasePopover.Popup
             data-slot="date-picker-content"
             className={styles.popup}

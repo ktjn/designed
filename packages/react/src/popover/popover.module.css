@@ -1,3 +1,7 @@
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   display: grid;
   gap: var(--ds-space-stack-sm);
@@ -9,7 +13,6 @@
   border-radius: var(--ds-radius-surface);
   box-shadow: var(--ds-shadow-overlay);
   padding: var(--ds-space-control-inline);
-  z-index: 1;
 }
 
 .title {

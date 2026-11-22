@@ -1,3 +1,7 @@
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   box-sizing: border-box;
   max-width: 16rem;
@@ -9,7 +13,6 @@
   border-radius: var(--ds-radius-control);
   padding-block: var(--ds-space-stack-sm);
   padding-inline: var(--ds-space-stack-md);
-  z-index: 1;
 }
 
 @media (forced-colors: active) {

@@ -88,7 +88,11 @@ function PopoverContent({
     <>
       <span hidden ref={scopeRef} />
       <BasePopover.Portal container={container}>
-        <BasePopover.Positioner side={side} sideOffset={sideOffset}>
+        <BasePopover.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          className={styles.positioner}
+        >
           <BasePopover.Popup
             data-slot="popover-content"
             className={

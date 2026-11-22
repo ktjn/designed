@@ -65,7 +65,11 @@ export function Tooltip({
           aria-describedby={activity.active ? describedBy : undefined}
         />
         <BaseTooltip.Portal container={container}>
-          <BaseTooltip.Positioner side={side} sideOffset={sideOffset}>
+          <BaseTooltip.Positioner
+            side={side}
+            sideOffset={sideOffset}
+            className={styles.positioner}
+          >
             <BaseTooltip.Popup
               data-slot="tooltip-content"
               id={popupId}

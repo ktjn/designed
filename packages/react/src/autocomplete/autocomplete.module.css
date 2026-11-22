@@ -32,6 +32,10 @@
   cursor: not-allowed;
 }
 
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   box-sizing: border-box;
   min-width: var(--anchor-width);

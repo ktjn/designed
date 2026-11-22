@@ -73,7 +73,7 @@ function MenuContent({ className, children, ...rest }: MenuContentProps) {
     <>
       <span hidden ref={scopeRef} />
       <BaseMenu.Portal container={container}>
-        <BaseMenu.Positioner sideOffset={4}>
+        <BaseMenu.Positioner sideOffset={4} className={styles.positioner}>
           <BaseMenu.Popup
             data-slot="menu-content"
             className={

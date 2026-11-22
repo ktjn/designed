@@ -48,6 +48,10 @@
   height: 1rem;
 }
 
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   display: grid;
   gap: 2px;
@@ -61,7 +65,6 @@
   box-shadow: var(--ds-shadow-overlay);
   box-sizing: border-box;
   padding: var(--ds-space-stack-sm);
-  z-index: 1;
 }
 
 .item {

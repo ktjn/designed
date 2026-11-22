@@ -74,7 +74,11 @@ function PreviewCardContent({
     <>
       <span hidden ref={scopeRef} />
       <BasePreviewCard.Portal container={container}>
-        <BasePreviewCard.Positioner side={side} sideOffset={sideOffset}>
+        <BasePreviewCard.Positioner
+          side={side}
+          sideOffset={sideOffset}
+          className={styles.positioner}
+        >
           <BasePreviewCard.Popup
             data-slot="preview-card-content"
             className={

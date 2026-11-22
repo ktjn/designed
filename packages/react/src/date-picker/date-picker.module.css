@@ -77,6 +77,10 @@
   height: 1rem;
 }
 
+.positioner {
+  z-index: var(--ds-z-index-popover);
+}
+
 .popup {
   border-radius: var(--ds-radius-surface);
   box-shadow: var(--ds-shadow-overlay);

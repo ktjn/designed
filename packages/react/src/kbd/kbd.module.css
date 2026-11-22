@@ -6,7 +6,7 @@
   box-sizing: border-box;
   padding-block: 0.125rem;
   padding-inline: 0.375rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--ds-font-family-mono);
   font-size: var(--ds-font-size-100);
   line-height: 1.1;
   font-weight: var(--ds-font-weight-medium);
