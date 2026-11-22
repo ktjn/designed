@@ -15,7 +15,21 @@ const isFromFile = (fileName: string) => (token: TransformedToken) =>
 
 const isBaseCssToken = (token: TransformedToken) =>
   isFromFile("semantic/base.json")(token) ||
-  isFromFile("primitives/font.json")(token);
+  isFromFile("primitives/font.json")(token) ||
+  isFromFile("primitives/motion.json")(token);
+
+const isBrandableToken = (token: TransformedToken) => {
+  const id = tokenIdentifier(token);
+  return (
+    id === "color.background.selected" ||
+    id === "color.border.focus" ||
+    id.startsWith("color.action.") ||
+    id.startsWith("font.family.") ||
+    id.startsWith("radius.") ||
+    id.startsWith("shadow.") ||
+    id.startsWith("motion.")
+  );
+};
 
 const tokenIdentifier = (token: TransformedToken) => token.path.join(".");
 
@@ -273,21 +287,36 @@ export async function buildTokens() {
     ],
   });
 
+  const baseValueTokens = (
+    await getPlatformTokens([PRIMITIVES, SEMANTIC_BASE])
+  ).filter((token) => isBaseCssToken(token) && isBrandableToken(token));
+  const darkBrandableTokens = (
+    await getPlatformTokens([
+      PRIMITIVES,
+      SEMANTIC_BASE,
+      "src/semantic/dark.json",
+    ])
+  ).filter(
+    (token) =>
+      isFromFile("semantic/dark.json")(token) && isBrandableToken(token),
+  );
+
   await writeLayeredSheet({
     destination: "brands/default.css",
     layer: "ds.tokens.brand",
     blocks: [
-      await renderResetBlock({
-        matchSourceFiles: [
-          "src/semantic/brand-editorial.json",
-          "src/semantic/brand-editorial-dark.json",
-        ],
-        valueSources: [PRIMITIVES, SEMANTIC_BASE],
+      formatBlock({
+        tokens: baseValueTokens,
         selector: '[data-brand="default"]',
       }),
-      await renderResetBlock({
-        matchSourceFiles: ["src/semantic/brand-editorial-dark.json"],
-        valueSources: [PRIMITIVES, SEMANTIC_BASE, "src/semantic/dark.json"],
+      formatBlock({
+        tokens: darkBrandableTokens,
+        selector:
+          ':root:not([data-color-scheme="light"])[data-brand="default"], :root:not([data-color-scheme="light"]) [data-brand="default"]',
+        media: "(prefers-color-scheme: dark)",
+      }),
+      formatBlock({
+        tokens: darkBrandableTokens,
         selector: '[data-brand="default"][data-color-scheme="dark"]',
       }),
     ],

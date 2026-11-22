@@ -109,6 +109,57 @@ describe("token build", () => {
     );
   });
 
+  it("emits semantic motion, monospace font, scrim, and z-index tokens", async () => {
+    const base = await readFile(path.join(distDir, "css/base.css"), "utf8");
+    const dts = await readFile(path.join(distDir, "types/tokens.d.ts"), "utf8");
+
+    for (const cssVar of [
+      "--ds-font-family-mono",
+      "--ds-color-backdrop-scrim",
+      "--ds-motion-duration-fast",
+      "--ds-motion-duration-default",
+      "--ds-motion-easing-standard",
+      "--ds-z-index-sticky",
+      "--ds-z-index-dropdown",
+      "--ds-z-index-modal",
+      "--ds-z-index-popover",
+      "--ds-z-index-toast",
+    ]) {
+      expect(base, `base.css should define ${cssVar}`).toContain(cssVar);
+      expect(dts, `tokens.d.ts should include ${cssVar}`).toContain(
+        `"${cssVar}"`,
+      );
+    }
+    expect(base).not.toContain("--ds-color-backdrop-scrim: #000000;");
+    expect(base).toMatch(
+      /--ds-color-backdrop-scrim:\s*(rgba\(0,\s*0,\s*0,\s*0\.48\)|#0000007a);/,
+    );
+  });
+
+  it("resets brandable tokens in brands/default.css for custom brand scopes without overriding density or page background", async () => {
+    const defaultBrand = await readFile(
+      path.join(distDir, "css/brands/default.css"),
+      "utf8",
+    );
+
+    for (const cssVar of [
+      "--ds-color-action-primary-default",
+      "--ds-color-action-danger-default",
+      "--ds-color-border-focus",
+      "--ds-color-background-selected",
+      "--ds-font-family-base",
+      "--ds-font-family-mono",
+      "--ds-radius-control",
+      "--ds-shadow-raised",
+      "--ds-motion-duration-fast",
+    ]) {
+      expect(defaultBrand).toContain(cssVar);
+    }
+
+    expect(defaultBrand).not.toContain("--ds-space-control-block");
+    expect(defaultBrand).not.toContain("--ds-color-background-default");
+  });
+
   it("does not emit primitive tokens as public CSS custom properties", async () => {
     const base = await readFile(path.join(distDir, "css/base.css"), "utf8");
     expect(base).not.toMatch(/--ds-color-neutral-/);
