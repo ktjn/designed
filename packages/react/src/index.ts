@@ -107,6 +107,8 @@ export type {
   OverlayInteractionType,
 } from "./dialog/overlay-focus.js";
 export { usePortalContainer } from "./dialog/use-portal-container.js";
+export type { DirectionProviderProps } from "./direction-provider/direction-provider.js";
+export { DirectionProvider } from "./direction-provider/direction-provider.js";
 export type {
   DrawerCloseProps,
   DrawerContentProps,
@@ -283,6 +285,8 @@ export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
 export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
+export type { ThemeProps, ThemeValues } from "./theme/theme.js";
+export { Theme, useTheme } from "./theme/theme.js";
 export type {
   ToastActionOptions,
   ToastOptions,

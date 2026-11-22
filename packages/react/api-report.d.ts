@@ -585,6 +585,15 @@ export declare function usePortalContainer(enabled?: boolean): {
 };
 
 
+// ---- direction-provider/direction-provider.d.ts ----
+import type { HTMLAttributes, Ref } from "react";
+export interface DirectionProviderProps extends Omit<HTMLAttributes<HTMLDivElement>, "dir"> {
+    ref?: Ref<HTMLDivElement>;
+    direction?: "ltr" | "rtl";
+}
+export declare function DirectionProvider({ direction, children, ...rest }: DirectionProviderProps): import("react").JSX.Element;
+
+
 // ---- drawer/drawer.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -816,6 +825,8 @@ export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, Dial
 export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
 export { usePortalContainer } from "./dialog/use-portal-container.js";
+export type { DirectionProviderProps } from "./direction-provider/direction-provider.js";
+export { DirectionProvider } from "./direction-provider/direction-provider.js";
 export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, DrawerRootProps, DrawerSide, DrawerTitleProps, DrawerTriggerProps, } from "./drawer/drawer.js";
 export { Drawer } from "./drawer/drawer.js";
 export type { EmptyStateClassNames, EmptyStateProps, } from "./empty-state/empty-state.js";
@@ -889,6 +900,8 @@ export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
 export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
+export type { ThemeProps, ThemeValues } from "./theme/theme.js";
+export { Theme, useTheme } from "./theme/theme.js";
 export type { ToastActionOptions, ToastOptions, ToastProviderProps, ToastVariant, UseToastResult, } from "./toast/toast.js";
 export { Toast, useToast } from "./toast/toast.js";
 export type { ToggleProps } from "./toggle/toggle.js";
@@ -1612,6 +1625,21 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
     invalid?: boolean;
 }
 export declare function Textarea({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TextareaProps): import("react").JSX.Element;
+
+
+// ---- theme/theme.d.ts ----
+import { type HTMLAttributes, type Ref } from "react";
+export interface ThemeValues {
+    brand?: string;
+    colorScheme?: "light" | "dark";
+    density?: "default" | "compact";
+    contrast?: "default" | "more";
+}
+export interface ThemeProps extends HTMLAttributes<HTMLDivElement>, ThemeValues {
+    ref?: Ref<HTMLDivElement>;
+}
+export declare function useTheme(): Readonly<ThemeValues>;
+export declare function Theme({ brand, colorScheme, density, contrast, children, ...rest }: ThemeProps): import("react").JSX.Element;
 
 
 // ---- toast/toast.d.ts ----
