@@ -63,8 +63,10 @@ describe("CommandPalette", () => {
     );
 
     const input = screen.getByRole("combobox", { name: "Search commands" });
-    fireEvent.change(input, { target: { value: "config" } });
-    expect((input as HTMLInputElement).value).toBe("config");
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(
+      screen.getAllByRole("option")[1]?.getAttribute("aria-selected"),
+    ).toBe("true");
 
     fireEvent.keyDown(window, { key: "k", ctrlKey: true });
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -74,16 +76,36 @@ describe("CommandPalette", () => {
       name: "Search commands",
     }) as HTMLInputElement;
     expect(reopenedInput.value).toBe("");
-    const options = screen.getAllByRole("option");
-    expect(options[0]?.getAttribute("aria-selected")).toBe("true");
+    const reopenedOptions = screen.getAllByRole("option");
+    expect(reopenedOptions[0]?.getAttribute("aria-selected")).toBe("true");
+    expect(reopenedOptions[1]?.getAttribute("aria-selected")).toBe("false");
+
+    fireEvent.change(reopenedInput, { target: { value: "config" } });
+    expect(reopenedInput.value).toBe("config");
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(
+      (
+        screen.getByRole("combobox", {
+          name: "Search commands",
+        }) as HTMLInputElement
+      ).value,
+    ).toBe("");
   });
 
   it("resets query and activeIndex when closed via controlled open prop", () => {
     const { rerender } = render(<CommandPalette items={COMMANDS} open />);
 
     const input = screen.getByRole("combobox", { name: "Search commands" });
-    fireEvent.change(input, { target: { value: "config" } });
-    expect((input as HTMLInputElement).value).toBe("config");
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(
+      screen.getAllByRole("option")[1]?.getAttribute("aria-selected"),
+    ).toBe("true");
+    fireEvent.change(input, { target: { value: "e" } });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(
+      screen.getAllByRole("option")[1]?.getAttribute("aria-selected"),
+    ).toBe("true");
 
     rerender(<CommandPalette items={COMMANDS} open={false} />);
     rerender(<CommandPalette items={COMMANDS} open />);
@@ -92,6 +114,9 @@ describe("CommandPalette", () => {
       name: "Search commands",
     }) as HTMLInputElement;
     expect(reopenedInput.value).toBe("");
+    const reopenedOptions = screen.getAllByRole("option");
+    expect(reopenedOptions[0]?.getAttribute("aria-selected")).toBe("true");
+    expect(reopenedOptions[1]?.getAttribute("aria-selected")).toBe("false");
   });
 
   it("has no axe violations when open", async () => {

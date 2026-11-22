@@ -88,17 +88,12 @@ export function CommandPalette({
 
   const setOpen = useCallback(
     (next: boolean) => {
-      activity.onOpenChange(next);
       if (!isControlled) {
         setUncontrolledOpen(next);
       }
       onOpenChange?.(next);
-      if (!next) {
-        setQuery("");
-        setActiveIndex(0);
-      }
     },
-    [activity.onOpenChange, isControlled, onOpenChange],
+    [isControlled, onOpenChange],
   );
 
   useEffect(() => {
