@@ -22,4 +22,26 @@ describe("Combobox", () => {
     expect(screen.getByPlaceholderText("Search plans")).toBeTruthy();
     expect(screen.queryByRole("listbox")).toBeNull();
   });
+
+  it("accepts disabled items, a null filter, and multiple selection without mounting the popup", () => {
+    render(
+      <Combobox
+        multiple
+        defaultValue={["basic"]}
+        filter={null}
+        items={[
+          { value: "basic", label: "Basic" },
+          { value: "pro", label: "Pro" },
+          { value: "enterprise", label: "Enterprise", disabled: true },
+        ]}
+      >
+        <Combobox.Input placeholder="Search plans" />
+        <Combobox.Content
+          renderItem={(item) => <strong>{item.label}</strong>}
+        />
+      </Combobox>,
+    );
+    expect(screen.getByPlaceholderText("Search plans")).toBeTruthy();
+    expect(screen.queryByRole("listbox")).toBeNull();
+  });
 });

@@ -109,17 +109,24 @@ export declare function AspectRatio({ ref, ratio, className, style, ...rest }: A
 
 
 // ---- autocomplete/autocomplete.d.ts ----
-import type { InputHTMLAttributes, Ref } from "react";
-export interface AutocompleteProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
     ref?: Ref<HTMLInputElement>;
-    items: readonly string[];
+    items: readonly Value[];
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
-    emptyMessage?: string;
+    emptyMessage?: ReactNode;
     invalid?: boolean;
+    filter?: ((item: Value, query: string) => boolean) | null;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    itemToStringValue?: (item: Value) => string;
+    renderItem?: (item: Value) => ReactNode;
+    popupClassName?: string;
 }
-export declare function Autocomplete({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps): import("react").JSX.Element;
+export declare function Autocomplete<Value = string>({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, filter, open, defaultOpen, onOpenChange, itemToStringValue, renderItem, popupClassName, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps<Value>): import("react").JSX.Element;
 
 
 // ---- avatar/avatar.d.ts ----
@@ -328,31 +335,40 @@ import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ComboboxItem<Value> {
     label: string;
     value: Value;
+    disabled?: boolean;
 }
-export interface ComboboxRootProps<Value = unknown> {
-    value?: Value;
-    defaultValue?: Value;
-    onValueChange?: (value: Value | null) => void;
+type ComboboxValue<Value, Multiple extends boolean | undefined> = Multiple extends true ? Value[] : Value;
+export interface ComboboxRootProps<Value = unknown, Multiple extends boolean | undefined = false> {
+    value?: ComboboxValue<Value, Multiple> | null;
+    defaultValue?: ComboboxValue<Value, Multiple>;
+    onValueChange?: (value: ComboboxValue<Value, Multiple> | (Multiple extends true ? never : null)) => void;
+    multiple?: Multiple;
     inputValue?: string;
+    defaultInputValue?: string;
     onInputValueChange?: (inputValue: string) => void;
     disabled?: boolean;
     readOnly?: boolean;
     name?: string;
     items: ReadonlyArray<ComboboxItem<Value>>;
+    filter?: ((item: ComboboxItem<Value>, query: string) => boolean) | null;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
     children?: ReactNode;
 }
-declare function ComboboxRoot<Value = unknown>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, ...rest }: ComboboxRootProps<Value>): import("react").JSX.Element;
+declare function ComboboxRoot<Value = unknown, Multiple extends boolean | undefined = false>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, multiple, filter, open, defaultOpen, onOpenChange, ...rest }: ComboboxRootProps<Value, Multiple>): import("react").JSX.Element;
 export interface ComboboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
     ref?: Ref<HTMLInputElement>;
 }
 declare function ComboboxInput({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): import("react").JSX.Element;
-export interface ComboboxContentProps extends HTMLAttributes<HTMLDivElement> {
+export interface ComboboxContentProps<Value = unknown> extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     emptyMessage?: ReactNode;
     initialFocus?: OverlayFocusTarget;
     finalFocus?: OverlayFocusTarget;
+    renderItem?: (item: ComboboxItem<Value>) => ReactNode;
 }
-declare function ComboboxContent({ className, emptyMessage, initialFocus, finalFocus, ...rest }: ComboboxContentProps): import("react").JSX.Element;
+declare function ComboboxContent<Value = unknown>({ className, emptyMessage, initialFocus, finalFocus, renderItem, ...rest }: ComboboxContentProps<Value>): import("react").JSX.Element;
 export declare const Combobox: typeof ComboboxRoot & {
     Input: typeof ComboboxInput;
     Content: typeof ComboboxContent;
