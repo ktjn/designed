@@ -54,8 +54,6 @@ ${identifierUnion};
 
 export type CssVariableName =
 ${cssVarUnion};
-
-export declare const tokens: Record<TokenIdentifier, CssVariableName>;
 `;
   };
 }
