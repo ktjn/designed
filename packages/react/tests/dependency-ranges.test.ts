@@ -15,4 +15,12 @@ describe("dependency range contract", () => {
     expect(range).toBeDefined();
     expect(range).toMatch(/^\^\d+\.\d+\.\d+$/);
   });
+
+  it("declares a caret workspace range for @ktjn/designed-icons", async () => {
+    const manifest = JSON.parse(
+      await readFile(path.join(packageRoot, "package.json"), "utf8"),
+    ) as { dependencies?: Record<string, string> };
+
+    expect(manifest.dependencies?.["@ktjn/designed-icons"]).toBe("workspace:^");
+  });
 });
