@@ -2,7 +2,11 @@ import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronDownIcon } from "@ktjn/designed-icons";
 import type { ReactNode } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./select.module.css";
 
@@ -26,12 +30,17 @@ function SelectRoot<Value = unknown>({
   ...rest
 }: SelectRootProps<Value>) {
   const field = useFieldContext();
+  const activity = usePortalActivity();
   return (
-    <BaseSelect.Root
-      disabled={disabled ?? field?.disabled}
-      onValueChange={(value) => onValueChange?.(value)}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseSelect.Root
+        disabled={disabled ?? field?.disabled}
+        onValueChange={(value) => onValueChange?.(value)}
+        onOpenChange={activity.onOpenChange}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

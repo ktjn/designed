@@ -93,17 +93,12 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
   );
 }
 
-function ToastProvider({
-  children,
-  timeout = 5000,
-  limit = 3,
-  dismissLabel = "Dismiss",
-}: ToastProviderProps) {
-  const { container, scopeRef } = useDialogPortalContainer();
+function ToastPortal({ dismissLabel }: { dismissLabel: string }) {
+  const { toasts } = BaseToast.useToastManager<ToastItemData>();
+  const { container, scopeRef } = useDialogPortalContainer(toasts.length > 0);
 
   return (
-    <BaseToast.Provider timeout={timeout} limit={limit}>
-      {children}
+    <>
       <span hidden ref={scopeRef} />
       <BaseToast.Portal container={container}>
         <BaseToast.Viewport
@@ -113,6 +108,20 @@ function ToastProvider({
           <ToastList dismissLabel={dismissLabel} />
         </BaseToast.Viewport>
       </BaseToast.Portal>
+    </>
+  );
+}
+
+function ToastProvider({
+  children,
+  timeout = 5000,
+  limit = 3,
+  dismissLabel = "Dismiss",
+}: ToastProviderProps) {
+  return (
+    <BaseToast.Provider timeout={timeout} limit={limit}>
+      {children}
+      <ToastPortal dismissLabel={dismissLabel} />
     </BaseToast.Provider>
   );
 }

@@ -9,7 +9,11 @@ import type {
 import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
-import { useDialogPortalContainer } from "./use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "./use-dialog-portal-container.js";
 
 export interface DialogRootProps {
   open?: boolean;
@@ -19,9 +23,26 @@ export interface DialogRootProps {
   children?: ReactNode;
 }
 
-function DialogRoot({ onOpenChange, ...rest }: DialogRootProps) {
+function DialogRoot({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...rest
+}: DialogRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BaseDialog.Root onOpenChange={(open) => onOpenChange?.(open)} {...rest} />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseDialog.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

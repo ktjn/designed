@@ -1,7 +1,10 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import type { ReactElement, ReactNode } from "react";
 import { useId } from "react";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./tooltip.module.css";
 
 export type TooltipSide = "top" | "right" | "bottom" | "left";
@@ -22,16 +25,28 @@ export function Tooltip({
   side = "top",
   sideOffset = 8,
   className,
+  open,
+  defaultOpen,
   onOpenChange,
   children,
   ...rest
 }: TooltipProps) {
   const popupId = useId();
-  const { container, scopeRef } = useDialogPortalContainer();
+  const activity = usePortalActivity(open, defaultOpen);
+  const { container, scopeRef } = useDialogPortalContainer(activity.active);
   return (
     <>
       <span hidden ref={scopeRef} />
-      <BaseTooltip.Root onOpenChange={(open) => onOpenChange?.(open)} {...rest}>
+      <BaseTooltip.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      >
         <BaseTooltip.Trigger render={children} aria-describedby={popupId} />
         <BaseTooltip.Portal container={container}>
           <BaseTooltip.Positioner side={side} sideOffset={sideOffset}>

@@ -45,7 +45,7 @@ export interface AlertDialogRootProps {
     onOpenChange?: (open: boolean) => void;
     children?: ReactNode;
 }
-declare function AlertDialogRoot({ onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
+declare function AlertDialogRoot({ open, defaultOpen, onOpenChange, ...rest }: AlertDialogRootProps): import("react").JSX.Element;
 export interface AlertDialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     render?: ReactElement;
     children?: ReactNode;
@@ -377,7 +377,7 @@ export interface ContextMenuRootProps {
     disabled?: boolean;
     children?: ReactNode;
 }
-declare function ContextMenuRoot({ onOpenChange, ...rest }: ContextMenuRootProps): import("react").JSX.Element;
+declare function ContextMenuRoot({ open, defaultOpen, onOpenChange, ...rest }: ContextMenuRootProps): import("react").JSX.Element;
 export interface ContextMenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
@@ -472,7 +472,7 @@ export interface DialogRootProps {
     modal?: boolean | "trap-focus";
     children?: ReactNode;
 }
-declare function DialogRoot({ onOpenChange, ...rest }: DialogRootProps): import("react").JSX.Element;
+declare function DialogRoot({ open, defaultOpen, onOpenChange, ...rest }: DialogRootProps): import("react").JSX.Element;
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     render?: ReactElement;
     children?: ReactNode;
@@ -516,8 +516,14 @@ boolean | HTMLElement | null | void);
 
 
 // ---- dialog/use-dialog-portal-container.d.ts ----
-export declare function useDialogPortalContainer(): {
-    container: HTMLElement | undefined;
+export declare const PortalActivityContext: import("react").Context<boolean | undefined>;
+export declare function usePortalActivity(open?: boolean, defaultOpen?: boolean): {
+    active: boolean;
+    onOpenChange: (next: boolean) => void;
+    onOpenChangeComplete: (next: boolean) => void;
+};
+export declare function useDialogPortalContainer(enabled?: boolean): {
+    container: HTMLElement | null | undefined;
     scopeRef: (node: HTMLSpanElement | null) => void;
 };
 
@@ -890,7 +896,7 @@ export interface MenuRootProps {
     onOpenChange?: (open: boolean) => void;
     children?: ReactNode;
 }
-declare function MenuRoot({ onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
+declare function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps): import("react").JSX.Element;
 export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     render?: ReactElement;
     children?: ReactNode;
@@ -1037,7 +1043,7 @@ export interface PopoverRootProps {
     onOpenChange?: (open: boolean) => void;
     children?: ReactNode;
 }
-declare function PopoverRoot({ onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
+declare function PopoverRoot({ open, defaultOpen, onOpenChange, ...rest }: PopoverRootProps): import("react").JSX.Element;
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     render?: ReactElement;
     children?: ReactNode;
@@ -1083,7 +1089,7 @@ export interface PreviewCardRootProps {
     onOpenChange?: (open: boolean) => void;
     children?: ReactNode;
 }
-declare function PreviewCardRoot({ onOpenChange, ...rest }: PreviewCardRootProps): import("react").JSX.Element;
+declare function PreviewCardRoot({ open, defaultOpen, onOpenChange, ...rest }: PreviewCardRootProps): import("react").JSX.Element;
 export interface PreviewCardTriggerProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     delay?: number;
     closeDelay?: number;
@@ -1599,7 +1605,7 @@ export interface TooltipProps {
     onOpenChange?: (open: boolean) => void;
     children: ReactElement;
 }
-export declare function Tooltip({ content, side, sideOffset, className, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
+export declare function Tooltip({ content, side, sideOffset, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
 
 
 // ---- visually-hidden/visually-hidden.d.ts ----

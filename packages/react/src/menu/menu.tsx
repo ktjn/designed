@@ -8,7 +8,11 @@ import type {
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./menu.module.css";
 
 export interface MenuRootProps {
@@ -18,12 +22,21 @@ export interface MenuRootProps {
   children?: ReactNode;
 }
 
-function MenuRoot({ onOpenChange, ...rest }: MenuRootProps) {
+function MenuRoot({ open, defaultOpen, onOpenChange, ...rest }: MenuRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BaseMenu.Root
-      onOpenChange={onOpenChange ? (open) => onOpenChange(open) : undefined}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseMenu.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

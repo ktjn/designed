@@ -13,7 +13,11 @@ import type {
 } from "../dialog/dialog.js";
 import styles from "../dialog/dialog.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 
 export interface AlertDialogRootProps {
   open?: boolean;
@@ -22,12 +26,26 @@ export interface AlertDialogRootProps {
   children?: ReactNode;
 }
 
-function AlertDialogRoot({ onOpenChange, ...rest }: AlertDialogRootProps) {
+function AlertDialogRoot({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...rest
+}: AlertDialogRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BaseAlertDialog.Root
-      onOpenChange={(open) => onOpenChange?.(open)}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseAlertDialog.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

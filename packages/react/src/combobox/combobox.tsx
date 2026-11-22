@@ -1,7 +1,11 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import type { ReactNode } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./combobox.module.css";
 
@@ -33,29 +37,34 @@ function ComboboxRoot<Value = unknown>({
   ...rest
 }: ComboboxRootProps<Value>) {
   const field = useFieldContext();
+  const activity = usePortalActivity();
   const findItem = (itemValue: Value | undefined) =>
     items.find((item) => item.value === itemValue) ?? null;
 
   return (
-    <BaseCombobox.Root
-      items={items}
-      disabled={disabled ?? field?.disabled}
-      itemToStringLabel={(item: ComboboxItem<Value>) => item.label}
-      itemToStringValue={(item: ComboboxItem<Value>) => String(item.value)}
-      isItemEqualToValue={(
-        item: ComboboxItem<Value>,
-        other: ComboboxItem<Value>,
-      ) => item.value === other.value}
-      value={value !== undefined ? findItem(value) : undefined}
-      defaultValue={
-        defaultValue !== undefined ? findItem(defaultValue) : undefined
-      }
-      onValueChange={(item: ComboboxItem<Value> | null) =>
-        onValueChange?.(item ? item.value : null)
-      }
-      onInputValueChange={(inputValue) => onInputValueChange?.(inputValue)}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseCombobox.Root
+        items={items}
+        disabled={disabled ?? field?.disabled}
+        itemToStringLabel={(item: ComboboxItem<Value>) => item.label}
+        itemToStringValue={(item: ComboboxItem<Value>) => String(item.value)}
+        isItemEqualToValue={(
+          item: ComboboxItem<Value>,
+          other: ComboboxItem<Value>,
+        ) => item.value === other.value}
+        value={value !== undefined ? findItem(value) : undefined}
+        defaultValue={
+          defaultValue !== undefined ? findItem(defaultValue) : undefined
+        }
+        onValueChange={(item: ComboboxItem<Value> | null) =>
+          onValueChange?.(item ? item.value : null)
+        }
+        onInputValueChange={(inputValue) => onInputValueChange?.(inputValue)}
+        onOpenChange={activity.onOpenChange}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 
