@@ -33,16 +33,23 @@ function assertSafe(source: string, file: string) {
 }
 
 function toComponentSource(rawTransform: string, name: string): string {
-  // svgr emits a ref-forwarding component as the default export named
-  // "ForwardRef". Keep its output mostly untouched (avoids fragile string
-  // surgery on generated JSX) and add a named alias + displayName matching
-  // this repo's component convention.
-  const withTypeOnlyRefImport = rawTransform.replace(
-    'import { Ref, forwardRef } from "react";',
-    'import type { Ref } from "react";\nimport { forwardRef } from "react";',
+  const jsxMatch = rawTransform.match(/<svg\b[\s\S]*<\/svg>/);
+  if (!jsxMatch) {
+    throw new Error(`SVGR output for ${name} did not contain an <svg> element`);
+  }
+  const svgJsx = jsxMatch[0];
+  if (!svgJsx.includes("{...props}")) {
+    throw new Error(`SVGR output for ${name} did not contain {...props}`);
+  }
+  const renderedSvg = svgJsx.replace(
+    "{...props}",
+    "ref={ref} width={width ?? size} height={height ?? size} {...props}",
   );
-  return `${withTypeOnlyRefImport.replace("export default ForwardRef;", "")}
-export const ${name} = ForwardRef;
+  return `import type { IconProps } from "../types.js";
+
+export function ${name}({ size, width, height, ref, ...props }: IconProps) {
+  return ${renderedSvg};
+}
 ${name}.displayName = "${name}";
 `;
 }
@@ -56,7 +63,6 @@ async function buildIcon(
   assertSafe(source, file);
 
   const optimized = optimize(source, {
-    // preset-default already preserves viewBox by default in svgo v4.
     plugins: ["preset-default", "removeDimensions", "removeScripts"],
   });
 
@@ -69,12 +75,10 @@ async function buildIcon(
       typescript: true,
       plugins: ["@svgr/plugin-jsx"],
       icon: false,
-      ref: true,
+      ref: false,
       titleProp: false,
       expandProps: "end",
     },
-    // Name the raw generated identifier "<Name>Impl" so it never collides
-    // with the "export const <Name> = ForwardRef" alias added below.
     { componentName: `${componentName}Impl` },
   );
 
@@ -99,7 +103,7 @@ export async function buildIconsFrom(
 
 export async function buildIcons() {
   const icons = await buildIconsFrom(SVG_DIR, OUT_DIR);
-  const indexSource = `${icons.map((icon) => `export { ${icon.name} } from "./generated/${icon.name}.js";`).join("\n")}\n`;
+  const indexSource = `export type { IconProps } from "./types.js";\n${icons.map((icon) => `export { ${icon.name} } from "./generated/${icon.name}.js";`).join("\n")}\n`;
   await writeFile("src/index.ts", indexSource);
   return icons;
 }
