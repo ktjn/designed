@@ -238,6 +238,15 @@ export type { NumberFieldProps } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
+export type {
+  PageHeaderActionsProps,
+  PageHeaderBreadcrumbProps,
+  PageHeaderDescriptionProps,
+  PageHeaderRootProps,
+  PageHeaderTabsProps,
+  PageHeaderTitleProps,
+} from "./page-header/page-header.js";
+export { PageHeader } from "./page-header/page-header.js";
 export type { PaginationProps } from "./pagination/pagination.js";
 export { Pagination } from "./pagination/pagination.js";
 export type { PasswordInputProps } from "./password-input/password-input.js";
@@ -268,6 +277,13 @@ export type {
   RadioGroupProps,
 } from "./radio-group/radio-group.js";
 export { RadioGroup } from "./radio-group/radio-group.js";
+export type {
+  ResizableHandleProps,
+  ResizableOrientation,
+  ResizablePanelProps,
+  ResizableRootProps,
+} from "./resizable/resizable.js";
+export { Resizable } from "./resizable/resizable.js";
 export type {
   ScrollAreaOrientation,
   ScrollAreaProps,
@@ -322,6 +338,8 @@ export type {
   StackProps,
 } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
+export type { StatProps, StatTrend } from "./stat/stat.js";
+export { Stat } from "./stat/stat.js";
 export type {
   StepperOrientation,
   StepperProps,
@@ -334,11 +352,14 @@ export type {
   TableBodyProps,
   TableCaptionProps,
   TableCellProps,
+  TableExpandButtonProps,
+  TableExpandedRowProps,
   TableFooterProps,
   TableHeaderProps,
   TableHeadProps,
   TableRootProps,
   TableRowProps,
+  TableSortDirection,
 } from "./table/table.js";
 export { Table } from "./table/table.js";
 export type {

@@ -1,18 +1,35 @@
 .wrapper {
-  width: 100%;
+  inline-size: 100%;
   overflow-x: auto;
   border: 1px solid var(--ds-color-border-default);
   border-radius: var(--ds-radius-surface);
   background: var(--ds-color-background-default);
 }
 
+.wrapper[data-sticky-header],
+.wrapper:has(> .table > [data-sticky]) {
+  overflow-y: auto;
+  max-block-size: 100%;
+}
+
+.wrapper:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
 .table {
-  width: 100%;
+  inline-size: 100%;
   border-collapse: collapse;
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-100);
   line-height: var(--ds-font-line-height-100);
   color: var(--ds-color-foreground-default);
+}
+
+.table[data-sticky-header],
+.table:has(.header[data-sticky]) {
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .caption {
@@ -37,12 +54,18 @@
 }
 
 .body .row:last-child,
+.body .expandedRow:last-child,
 .footer .row:last-child {
   border-block-end: none;
 }
 
 .body .row:hover {
   background: var(--ds-color-background-subtle);
+}
+
+.body .row[data-selected],
+.body .row[data-selected]:hover {
+  background: var(--ds-color-background-selected);
 }
 
 .head {
@@ -54,8 +77,138 @@
   border-block-end: 1px solid var(--ds-color-border-default);
 }
 
+.header[data-sticky] .head,
+.table[data-sticky-header] .header .head {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--ds-z-index-sticky);
+  background: var(--ds-color-background-subtle);
+}
+
 .cell {
   padding-block: var(--ds-space-control-block);
   padding-inline: var(--ds-space-control-inline);
   text-align: start;
+}
+
+.expandedRow {
+  border-block-end: 1px solid var(--ds-color-border-default);
+  background: var(--ds-color-background-subtle);
+}
+
+.expandedCell {
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  text-align: start;
+}
+
+.table[data-sticky-header] .cell,
+.table[data-sticky-header] .expandedCell,
+.table:has(.header[data-sticky]) .cell,
+.table:has(.header[data-sticky]) .expandedCell {
+  border-block-end: 1px solid var(--ds-color-border-default);
+}
+
+.table[data-sticky-header] .body .row:last-child .cell,
+.table[data-sticky-header] .body .expandedRow:last-child .expandedCell,
+.table[data-sticky-header] .footer .row:last-child .cell,
+.table:has(.header[data-sticky]) .body .row:last-child .cell,
+.table:has(.header[data-sticky]) .body .expandedRow:last-child .expandedCell,
+.table:has(.header[data-sticky]) .footer .row:last-child .cell {
+  border-block-end: none;
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-control);
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  color: var(--ds-color-action-primary-default);
+}
+
+.sortButton:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.sortIcon {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex-shrink: 0;
+  color: var(--ds-color-foreground-muted);
+}
+
+.head[aria-sort="ascending"] .sortIcon,
+.head[aria-sort="descending"] .sortIcon {
+  color: var(--ds-color-foreground-default);
+}
+
+.expandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  color: var(--ds-color-foreground-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-control);
+  cursor: pointer;
+}
+
+.expandButton:hover {
+  color: var(--ds-color-foreground-default);
+  background: var(--ds-color-background-muted);
+}
+
+.expandButton:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.expandIcon {
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex-shrink: 0;
+  transition: transform 120ms ease;
+}
+
+.expandButton[data-expanded] .expandIcon {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expandIcon {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .sortButton,
+  .expandButton {
+    border-color: ButtonText;
+  }
+
+  .wrapper:focus-visible,
+  .sortButton:focus-visible,
+  .expandButton:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .body .row[data-selected] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
 }
