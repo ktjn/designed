@@ -153,6 +153,18 @@ export function Calendar({
     month: initialDate.getUTCMonth(),
   });
   const [focusedIso, setFocusedIso] = useState(formatIsoDate(initialDate));
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
+    const parsed = parseIsoDate(value);
+    if (parsed) {
+      setView({
+        year: parsed.getUTCFullYear(),
+        month: parsed.getUTCMonth(),
+      });
+      setFocusedIso(formatIsoDate(parsed));
+    }
+  }
   const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const resolvedWeekStartsOn = useMemo(
