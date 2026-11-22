@@ -1,6 +1,10 @@
 import { PreviewCard as BasePreviewCard } from "@base-ui/react/preview-card";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./preview-card.module.css";
 
 export interface PreviewCardRootProps {
@@ -10,12 +14,26 @@ export interface PreviewCardRootProps {
   children?: ReactNode;
 }
 
-function PreviewCardRoot({ onOpenChange, ...rest }: PreviewCardRootProps) {
+function PreviewCardRoot({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...rest
+}: PreviewCardRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BasePreviewCard.Root
-      onOpenChange={onOpenChange ? (open) => onOpenChange(open) : undefined}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BasePreviewCard.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

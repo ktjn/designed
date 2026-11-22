@@ -9,7 +9,10 @@ import {
   useContext,
   useState,
 } from "react";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";
 import styles from "./sidebar.module.css";
 
@@ -109,7 +112,8 @@ function SidebarRoot({
   ...rest
 }: SidebarRootProps) {
   const { open, mobileOpen, setMobileOpen } = useSidebar();
-  const { container, scopeRef } = useDialogPortalContainer(mobileOpen);
+  const activity = usePortalActivity(mobileOpen);
+  const { container, scopeRef } = useDialogPortalContainer(activity.active);
   const classes = [styles.sidebar, className].filter(Boolean).join(" ");
 
   return (
@@ -126,7 +130,11 @@ function SidebarRoot({
       <span hidden ref={scopeRef} />
       <BaseDialog.Root
         open={mobileOpen}
-        onOpenChange={(next) => setMobileOpen(next)}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          setMobileOpen(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
       >
         <BaseDialog.Portal container={container}>
           <BaseDialog.Backdrop className={styles.mobileBackdrop} />

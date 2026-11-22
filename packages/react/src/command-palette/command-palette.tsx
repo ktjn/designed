@@ -1,7 +1,10 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
 import { type KeyboardEvent, useEffect, useId, useMemo, useState } from "react";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";
 import styles from "./command-palette.module.css";
 
@@ -65,7 +68,8 @@ export function CommandPalette({
 
   const isControlled = open !== undefined;
   const currentOpen = isControlled ? open : uncontrolledOpen;
-  const { container, scopeRef } = useDialogPortalContainer(currentOpen);
+  const activity = usePortalActivity(currentOpen);
+  const { container, scopeRef } = useDialogPortalContainer(activity.active);
 
   const setOpen = (next: boolean) => {
     if (!isControlled) {
@@ -192,7 +196,11 @@ export function CommandPalette({
       <span hidden ref={scopeRef} />
       <BaseDialog.Root
         open={currentOpen}
-        onOpenChange={(next) => setOpen(next)}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          setOpen(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
       >
         <BaseDialog.Portal container={container}>
           <BaseDialog.Backdrop className={styles.backdrop} />

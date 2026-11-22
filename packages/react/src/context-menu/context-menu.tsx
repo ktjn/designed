@@ -2,7 +2,11 @@ import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./context-menu.module.css";
 
 export interface ContextMenuRootProps {
@@ -13,12 +17,26 @@ export interface ContextMenuRootProps {
   children?: ReactNode;
 }
 
-function ContextMenuRoot({ onOpenChange, ...rest }: ContextMenuRootProps) {
+function ContextMenuRoot({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...rest
+}: ContextMenuRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BaseContextMenu.Root
-      onOpenChange={onOpenChange ? (open) => onOpenChange(open) : undefined}
-      {...rest}
-    />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BaseContextMenu.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 

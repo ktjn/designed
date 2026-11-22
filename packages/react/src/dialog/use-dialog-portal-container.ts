@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 const THEME_ATTRIBUTES = [
   "data-brand",
@@ -16,6 +23,35 @@ interface SharedHostEntry {
 }
 
 const sharedHosts = new Map<HTMLElement, SharedHostEntry>();
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+export const PortalActivityContext = createContext<boolean | undefined>(
+  undefined,
+);
+
+export function usePortalActivity(open?: boolean, defaultOpen?: boolean) {
+  const [mounted, setMounted] = useState(Boolean(open ?? defaultOpen));
+  if (open && !mounted) {
+    setMounted(true);
+  }
+  const active = Boolean(open) || mounted;
+
+  const onOpenChange = useCallback((next: boolean) => {
+    if (next) {
+      setMounted(true);
+    }
+  }, []);
+
+  const onOpenChangeComplete = useCallback((next: boolean) => {
+    if (!next) {
+      setMounted(false);
+    }
+  }, []);
+
+  return { active, onOpenChange, onOpenChangeComplete };
+}
 
 function collectResolvedTheme(node: HTMLElement): {
   attrs: ResolvedThemeAttrs;
@@ -93,19 +129,22 @@ function releaseSharedHost(scope: HTMLElement) {
   }
 }
 
-export function useDialogPortalContainer(enabled = true) {
+export function useDialogPortalContainer(enabled?: boolean) {
+  const contextActive = useContext(PortalActivityContext);
+  const isEnabled = enabled ?? contextActive ?? true;
   const [scopeNode, setScopeNode] = useState<HTMLSpanElement | null>(null);
-  const [container, setContainer] = useState<HTMLElement | undefined>(
-    undefined,
-  );
+  const [resolvedState, setResolvedState] = useState<{
+    ready: boolean;
+    host: HTMLElement | undefined;
+  }>({ ready: false, host: undefined });
 
   const scopeRef = useCallback((node: HTMLSpanElement | null) => {
     setScopeNode(node);
   }, []);
 
-  useEffect(() => {
-    if (!enabled || !scopeNode || typeof document === "undefined") {
-      setContainer(undefined);
+  useIsomorphicLayoutEffect(() => {
+    if (!isEnabled || !scopeNode || typeof document === "undefined") {
+      setResolvedState({ ready: false, host: undefined });
       return;
     }
 
@@ -119,6 +158,8 @@ export function useDialogPortalContainer(enabled = true) {
           if (entry) {
             applyThemeAttrs(entry.host, resolved.attrs);
           }
+        } else {
+          setResolvedState({ ready: true, host: undefined });
         }
         return resolved.ancestors;
       }
@@ -130,9 +171,9 @@ export function useDialogPortalContainer(enabled = true) {
       activeScope = resolved.nearestNestedScope;
       if (activeScope) {
         const host = acquireSharedHost(activeScope, resolved.attrs);
-        setContainer(host);
+        setResolvedState({ ready: true, host });
       } else {
-        setContainer(undefined);
+        setResolvedState({ ready: true, host: undefined });
       }
       return resolved.ancestors;
     };
@@ -155,9 +196,15 @@ export function useDialogPortalContainer(enabled = true) {
         releaseSharedHost(activeScope);
         activeScope = null;
       }
-      setContainer(undefined);
+      setResolvedState({ ready: false, host: undefined });
     };
-  }, [enabled, scopeNode]);
+  }, [isEnabled, scopeNode]);
+
+  const container: HTMLElement | null | undefined = isEnabled
+    ? resolvedState.ready
+      ? resolvedState.host
+      : null
+    : undefined;
 
   return { container, scopeRef };
 }

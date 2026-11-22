@@ -12,7 +12,10 @@ import {
   parseIsoDate,
   type WeekdayIndex,
 } from "../calendar/calendar.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./date-picker.module.css";
 
@@ -77,7 +80,9 @@ export function DatePicker({
   const [validationFailed, setValidationFailed] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { container, scopeRef } = useDialogPortalContainer(open);
+  const effectiveOpen = readOnly || resolvedDisabled ? false : open;
+  const activity = usePortalActivity(effectiveOpen);
+  const { container, scopeRef } = useDialogPortalContainer(activity.active);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -158,14 +163,16 @@ export function DatePicker({
 
   return (
     <BasePopover.Root
-      open={readOnly || resolvedDisabled ? false : open}
+      open={effectiveOpen}
       onOpenChange={(next) => {
         if (readOnly || resolvedDisabled) {
           setOpen(false);
           return;
         }
+        activity.onOpenChange(next);
         setOpen(next);
       }}
+      onOpenChangeComplete={activity.onOpenChangeComplete}
     >
       <div data-slot="date-picker" className={classes}>
         <input

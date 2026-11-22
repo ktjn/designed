@@ -9,7 +9,11 @@ import type {
 import { createContext, useContext } from "react";
 import buttonStyles from "../button/button.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./drawer.module.css";
 
 export type DrawerSide = "right" | "left" | "bottom";
@@ -65,17 +69,24 @@ function DrawerRoot({
   side = "right",
   children,
 }: DrawerRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <DrawerSideContext.Provider value={side}>
-      <BaseDrawer.Root
-        open={open}
-        defaultOpen={defaultOpen}
-        swipeDirection={toSwipeDirection(side)}
-        onOpenChange={onOpenChange ? (next) => onOpenChange(next) : undefined}
-      >
-        {children}
-      </BaseDrawer.Root>
-    </DrawerSideContext.Provider>
+    <PortalActivityContext.Provider value={activity.active}>
+      <DrawerSideContext.Provider value={side}>
+        <BaseDrawer.Root
+          open={open}
+          defaultOpen={defaultOpen}
+          swipeDirection={toSwipeDirection(side)}
+          onOpenChange={(next) => {
+            activity.onOpenChange(next);
+            onOpenChange?.(next);
+          }}
+          onOpenChangeComplete={activity.onOpenChangeComplete}
+        >
+          {children}
+        </BaseDrawer.Root>
+      </DrawerSideContext.Provider>
+    </PortalActivityContext.Provider>
   );
 }
 

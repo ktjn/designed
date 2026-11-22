@@ -7,7 +7,11 @@ import type {
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
-import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
+import {
+  PortalActivityContext,
+  useDialogPortalContainer,
+  usePortalActivity,
+} from "../dialog/use-dialog-portal-container.js";
 import styles from "./popover.module.css";
 
 export interface PopoverRootProps {
@@ -17,9 +21,26 @@ export interface PopoverRootProps {
   children?: ReactNode;
 }
 
-function PopoverRoot({ onOpenChange, ...rest }: PopoverRootProps) {
+function PopoverRoot({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...rest
+}: PopoverRootProps) {
+  const activity = usePortalActivity(open, defaultOpen);
   return (
-    <BasePopover.Root onOpenChange={(open) => onOpenChange?.(open)} {...rest} />
+    <PortalActivityContext.Provider value={activity.active}>
+      <BasePopover.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={(next) => {
+          activity.onOpenChange(next);
+          onOpenChange?.(next);
+        }}
+        onOpenChangeComplete={activity.onOpenChangeComplete}
+        {...rest}
+      />
+    </PortalActivityContext.Provider>
   );
 }
 
