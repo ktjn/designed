@@ -1,5 +1,5 @@
 // ---- accordion/accordion.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface AccordionRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown[];
@@ -19,6 +19,8 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
 declare function AccordionItem({ className, children, ...rest }: AccordionItemProps): import("react").JSX.Element;
 export interface AccordionTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function AccordionTrigger({ className, children, ...rest }: AccordionTriggerProps): import("react").JSX.Element;
@@ -145,7 +147,7 @@ export declare function Badge({ ref, variant, className, ...rest }: BadgeProps):
 
 
 // ---- breadcrumb/breadcrumb.d.ts ----
-import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface BreadcrumbRootProps extends HTMLAttributes<HTMLElement> {
     ref?: Ref<HTMLElement>;
 }
@@ -157,6 +159,7 @@ export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 export interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
 }
 export interface BreadcrumbPageProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
@@ -168,7 +171,7 @@ export interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement
 declare function BreadcrumbRoot({ ref, "aria-label": ariaLabel, className, ...rest }: BreadcrumbRootProps): import("react").JSX.Element;
 declare function BreadcrumbList({ className, ...rest }: BreadcrumbListProps): import("react").JSX.Element;
 declare function BreadcrumbItem({ className, ...rest }: BreadcrumbItemProps): import("react").JSX.Element;
-declare function BreadcrumbLink({ className, ...rest }: BreadcrumbLinkProps): import("react").JSX.Element;
+declare function BreadcrumbLink({ ref, render, className, ...rest }: BreadcrumbLinkProps): import("react").JSX.Element | null;
 declare function BreadcrumbPage({ className, ...rest }: BreadcrumbPageProps): import("react").JSX.Element;
 declare function BreadcrumbSeparator({ children, className, ...rest }: BreadcrumbSeparatorProps): import("react").JSX.Element;
 export declare const Breadcrumb: typeof BreadcrumbRoot & {
@@ -193,17 +196,19 @@ export declare function ButtonGroup({ ref, orientation, className, ...rest }: Bu
 
 
 // ---- button/button.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import { type ButtonHTMLAttributes, type ReactElement, type ReactNode, type Ref } from "react";
 export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 export type ButtonSize = "small" | "medium" | "large" | "icon";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     variant?: ButtonVariant;
     size?: ButtonSize;
     loading?: boolean;
     children?: ReactNode;
 }
-export declare function Button({ ref, variant, size, loading, disabled, type, className, onClick, "aria-disabled": ariaDisabled, children, ...rest }: ButtonProps): import("react").JSX.Element;
+export declare function Button({ ref, render, nativeButton, variant, size, loading, disabled, type, className, onClick, "aria-disabled": ariaDisabled, children, ...rest }: ButtonProps): import("react").JSX.Element;
 
 
 // ---- calendar/calendar.d.ts ----
@@ -287,7 +292,7 @@ export declare function Checkbox({ ref, onCheckedChange, disabled, id, className
 
 
 // ---- collapsible/collapsible.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     open?: boolean;
@@ -299,6 +304,8 @@ export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement
 declare function CollapsibleRoot({ onOpenChange, className, ...rest }: CollapsibleRootProps): import("react").JSX.Element;
 export interface CollapsibleTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function CollapsibleTrigger({ className, children, ...rest }: CollapsibleTriggerProps): import("react").JSX.Element;
@@ -393,7 +400,7 @@ export declare function Container({ ref, size, padded, className, ...rest }: Con
 
 
 // ---- context-menu/context-menu.d.ts ----
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface ContextMenuRootProps {
     open?: boolean;
@@ -405,6 +412,7 @@ export interface ContextMenuRootProps {
 declare function ContextMenuRoot({ open, defaultOpen, onOpenChange, ...rest }: ContextMenuRootProps): import("react").JSX.Element;
 export interface ContextMenuTriggerProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
 declare function ContextMenuTrigger({ className, ...rest }: ContextMenuTriggerProps): import("react").JSX.Element;
@@ -426,6 +434,8 @@ export interface ContextMenuGroupLabelProps extends HTMLAttributes<HTMLDivElemen
 declare function ContextMenuGroupLabel({ className, ...rest }: ContextMenuGroupLabelProps): import("react").JSX.Element;
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     disabled?: boolean;
     children?: ReactNode;
 }
@@ -941,12 +951,13 @@ export declare function Kbd({ ref, size, className, ...rest }: KbdProps): import
 
 
 // ---- link/link.d.ts ----
-import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
-export declare function Link({ ref, className, ...rest }: LinkProps): import("react").JSX.Element;
+export declare function Link({ ref, render, className, ...rest }: LinkProps): import("react").JSX.Element | null;
 
 
 // ---- live-region/live-region.d.ts ----
@@ -993,6 +1004,8 @@ export interface MenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
 declare function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps): import("react").JSX.Element;
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     disabled?: boolean;
     children?: ReactNode;
 }
@@ -1169,7 +1182,7 @@ export {};
 
 
 // ---- preview-card/preview-card.d.ts ----
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface PreviewCardRootProps {
     open?: boolean;
     defaultOpen?: boolean;
@@ -1179,6 +1192,7 @@ export interface PreviewCardRootProps {
 declare function PreviewCardRoot({ open, defaultOpen, onOpenChange, ...rest }: PreviewCardRootProps): import("react").JSX.Element;
 export interface PreviewCardTriggerProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     delay?: number;
     closeDelay?: number;
     children?: ReactNode;
@@ -1252,7 +1266,7 @@ export declare function ScrollArea({ ref, orientation, maxHeight, className, sty
 
 
 // ---- select/select.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 export interface SelectRootProps<Value = unknown> {
     value?: Value;
@@ -1271,6 +1285,8 @@ export interface SelectRootProps<Value = unknown> {
 declare function SelectRoot<Value = unknown>({ disabled, onValueChange, ...rest }: SelectRootProps<Value>): import("react").JSX.Element;
 export interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     children?: ReactNode;
 }
 declare function SelectTrigger({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, ...rest }: SelectTriggerProps): import("react").JSX.Element;
@@ -1312,7 +1328,7 @@ export declare function Separator({ ref, orientation, className, ...rest }: Sepa
 
 
 // ---- sidebar/sidebar.d.ts ----
-import { type ButtonHTMLAttributes, type HTMLAttributes, type MouseEventHandler, type ReactNode, type Ref } from "react";
+import { type ButtonHTMLAttributes, type HTMLAttributes, type MouseEventHandler, type ReactElement, type ReactNode, type Ref } from "react";
 export interface UseSidebarResult {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -1365,6 +1381,8 @@ export interface SidebarGroupLabelProps extends HTMLAttributes<HTMLDivElement> {
 declare function SidebarGroupLabel({ className, ...rest }: SidebarGroupLabelProps): import("react").JSX.Element;
 export interface SidebarItemProps extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
     ref?: Ref<HTMLAnchorElement> | Ref<HTMLButtonElement> | Ref<HTMLElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     active?: boolean;
     icon?: ReactNode;
     href?: string;
@@ -1375,7 +1393,7 @@ export interface SidebarItemProps extends Omit<HTMLAttributes<HTMLElement>, "onC
     onClick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
     children?: ReactNode;
 }
-declare function SidebarItem({ ref, active, icon, href, target, rel, disabled, type, className, children, onClick, ...rest }: SidebarItemProps): import("react").JSX.Element;
+declare function SidebarItem({ ref, render, nativeButton, active, icon, href, target, rel, disabled, type, className, children, onClick, onClickCapture, ...rest }: SidebarItemProps): import("react").JSX.Element | null;
 export interface SidebarInsetProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
@@ -1537,7 +1555,7 @@ export {};
 
 
 // ---- tabs/tabs.d.ts ----
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface TabsRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown;
@@ -1553,6 +1571,8 @@ export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
 declare function TabsList({ className, children, ...rest }: TabsListProps): import("react").JSX.Element;
 export interface TabsTabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     value: unknown;
     disabled?: boolean;
     children?: ReactNode;
@@ -1651,9 +1671,11 @@ export {};
 
 
 // ---- toggle/toggle.d.ts ----
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?: (pressed: boolean) => void;
@@ -1664,7 +1686,7 @@ export declare function Toggle({ ref, pressed, defaultPressed, onPressedChange, 
 
 
 // ---- toolbar/toolbar.d.ts ----
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export type ToolbarOrientation = "horizontal" | "vertical";
 export interface ToolbarRootProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
@@ -1682,12 +1704,15 @@ export interface ToolbarGroupProps extends HTMLAttributes<HTMLDivElement> {
 declare function ToolbarGroup({ className, ...rest }: ToolbarGroupProps): import("react").JSX.Element;
 export interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
+    render?: ReactElement;
+    nativeButton?: boolean;
     focusableWhenDisabled?: boolean;
     children?: ReactNode;
 }
 declare function ToolbarButton({ className, ...rest }: ToolbarButtonProps): import("react").JSX.Element;
 export interface ToolbarLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
     children?: ReactNode;
 }
 declare function ToolbarLink({ className, ...rest }: ToolbarLinkProps): import("react").JSX.Element;

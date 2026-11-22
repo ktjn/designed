@@ -40,6 +40,7 @@ export default defineConfig({
       "@ktjn/designed-react > @base-ui/react/toggle-group",
       "@ktjn/designed-react > @base-ui/react/toolbar",
       "@ktjn/designed-react > @base-ui/react/tooltip",
+      "@ktjn/designed-react > @base-ui/react/use-render",
     ],
   },
   test: {

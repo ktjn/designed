@@ -2,6 +2,7 @@ import { PreviewCard as BasePreviewCard } from "@base-ui/react/preview-card";
 import type {
   AnchorHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -45,6 +46,7 @@ function PreviewCardRoot({
 export interface PreviewCardTriggerProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
   ref?: Ref<HTMLAnchorElement>;
+  render?: ReactElement;
   delay?: number;
   closeDelay?: number;
   children?: ReactNode;

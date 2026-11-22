@@ -2,6 +2,7 @@ import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -55,6 +56,8 @@ function AccordionItem({ className, children, ...rest }: AccordionItemProps) {
 export interface AccordionTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   children?: ReactNode;
 }
 

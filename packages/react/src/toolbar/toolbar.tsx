@@ -3,6 +3,7 @@ import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -47,6 +48,8 @@ function ToolbarGroup({ className, ...rest }: ToolbarGroupProps) {
 export interface ToolbarButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   focusableWhenDisabled?: boolean;
   children?: ReactNode;
 }
@@ -64,6 +67,7 @@ function ToolbarButton({ className, ...rest }: ToolbarButtonProps) {
 export interface ToolbarLinkProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
   ref?: Ref<HTMLAnchorElement>;
+  render?: ReactElement;
   children?: ReactNode;
 }
 

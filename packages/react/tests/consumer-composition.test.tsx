@@ -1,10 +1,13 @@
-import { render, screen } from "@testing-library/react";
-import { useRef } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { type ComponentPropsWithRef, createRef, useRef } from "react";
 import { describe, expect, it } from "vitest";
 import {
+  Accordion,
   AlertDialog,
+  Breadcrumb,
   Button,
   Calendar,
+  Collapsible,
   Combobox,
   ContextMenu,
   DatePicker,
@@ -16,10 +19,154 @@ import {
   Link,
   Menu,
   Popover,
+  PreviewCard,
   Select,
+  Sidebar,
+  Tabs,
   Textarea,
+  Toggle,
+  Toolbar,
   Tooltip,
 } from "../src/index.js";
+
+function RouterLink({
+  to,
+  ...props
+}: Omit<ComponentPropsWithRef<"a">, "href"> & { to: string }) {
+  return <a href={to} {...props} />;
+}
+
+it("composes navigation styles, props and refs onto router links", () => {
+  const ref = createRef<HTMLAnchorElement>();
+  const renderRef = createRef<HTMLAnchorElement>();
+  render(
+    <>
+      <Link
+        ref={ref}
+        className="outer"
+        render={<RouterLink ref={renderRef} to="/docs" className="router" />}
+      >
+        Docs
+      </Link>
+      <Breadcrumb>
+        <Breadcrumb.List>
+          <Breadcrumb.Item>
+            <Breadcrumb.Link render={<RouterLink to="/docs/usage" />}>
+              Usage
+            </Breadcrumb.Link>
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb>
+      <Sidebar.Item active render={<RouterLink to="/home" />}>
+        Home
+      </Sidebar.Item>
+    </>,
+  );
+  const docs = screen.getByRole("link", { name: "Docs" });
+  expect(docs).toBe(ref.current);
+  expect(docs).toBe(renderRef.current);
+  expect(docs.className.split(" ")).toEqual(
+    expect.arrayContaining(["outer", "router"]),
+  );
+  expect(docs.getAttribute("data-slot")).toBe("link");
+  expect(screen.getByRole("link", { name: "Usage" }).getAttribute("href")).toBe(
+    "/docs/usage",
+  );
+  const home = screen.getByRole("link", { name: "Home" });
+  expect(home.getAttribute("href")).toBe("/home");
+  expect(home.getAttribute("aria-current")).toBe("page");
+  expect(home.hasAttribute("type")).toBe(false);
+});
+
+it("renders replacement elements for Base UI components and keeps their interactions", () => {
+  render(
+    <>
+      <ContextMenu>
+        <ContextMenu.Trigger render={<section />}>Context</ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Item render={<a href="/context" />}>
+            Inspect
+          </ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>
+      <PreviewCard>
+        <PreviewCard.Trigger render={<RouterLink to="/preview" />}>
+          Preview
+        </PreviewCard.Trigger>
+      </PreviewCard>
+      <Menu defaultOpen>
+        <Menu.Trigger>Actions</Menu.Trigger>
+        <Menu.Content>
+          <Menu.Item nativeButton render={<button type="button" />}>
+            Edit
+          </Menu.Item>
+        </Menu.Content>
+      </Menu>
+      <Toolbar>
+        <Toolbar.Button nativeButton={false} render={<span />}>
+          Format
+        </Toolbar.Button>
+        <Toolbar.Link render={<RouterLink to="/help" />}>Help</Toolbar.Link>
+      </Toolbar>
+      <Collapsible>
+        <Collapsible.Trigger nativeButton={false} render={<span />}>
+          Details
+        </Collapsible.Trigger>
+        <Collapsible.Panel>More information</Collapsible.Panel>
+      </Collapsible>
+      <Accordion>
+        <Accordion.Item value="a">
+          <Accordion.Trigger nativeButton={false} render={<span />}>
+            Accordion
+          </Accordion.Trigger>
+        </Accordion.Item>
+      </Accordion>
+      <Tabs defaultValue="a">
+        <Tabs.List>
+          <Tabs.Tab value="a" nativeButton={false} render={<span />}>
+            First
+          </Tabs.Tab>
+        </Tabs.List>
+      </Tabs>
+      <Select>
+        <Select.Trigger nativeButton={false} render={<span />}>
+          Select
+        </Select.Trigger>
+      </Select>
+      <Toggle nativeButton={false} render={<span />}>
+        Bold
+      </Toggle>
+    </>,
+  );
+  const slots = [
+    ["context-menu-trigger", "SECTION"],
+    ["preview-card-trigger", "A"],
+    ["menu-item", "BUTTON"],
+    ["toolbar-button", "SPAN"],
+    ["toolbar-link", "A"],
+    ["collapsible-trigger", "SPAN"],
+    ["accordion-trigger", "SPAN"],
+    ["tabs-tab", "SPAN"],
+    ["select-trigger", "SPAN"],
+    ["toggle", "SPAN"],
+  ];
+  for (const [slot, tag] of slots) {
+    expect(document.querySelector(`[data-slot="${slot}"]`)?.tagName).toBe(tag);
+  }
+  fireEvent.contextMenu(screen.getByText("Context"));
+  expect(
+    document.querySelector('[data-slot="context-menu-item"]')?.tagName,
+  ).toBe("A");
+  const details = screen
+    .getByText("Details")
+    .closest('[data-slot="collapsible-trigger"]');
+  expect(details?.getAttribute("aria-expanded")).toBe("false");
+  fireEvent.click(screen.getByText("Details"));
+  expect(details?.getAttribute("aria-expanded")).toBe("true");
+  const bold = screen.getByText("Bold");
+  fireEvent.click(bold);
+  expect(bold.getAttribute("aria-pressed")).toBe("true");
+});
 
 function OverlayFocusPropsHarness() {
   const focusRef = useRef<HTMLButtonElement>(null);

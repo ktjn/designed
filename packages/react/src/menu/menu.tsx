@@ -120,6 +120,8 @@ function MenuGroupLabel({ className, ...rest }: MenuGroupLabelProps) {
 
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   disabled?: boolean;
   children?: ReactNode;
 }

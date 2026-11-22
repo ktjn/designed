@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@ktjn/designed-icons";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -52,6 +53,8 @@ function SelectRoot<Value = unknown>({
 export interface SelectTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   children?: ReactNode;
 }
 

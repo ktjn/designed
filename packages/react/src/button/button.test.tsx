@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
@@ -13,6 +13,148 @@ describe("Button", () => {
     }) as HTMLButtonElement;
     expect(button.tagName).toBe("BUTTON");
     expect(button.type).toBe("button");
+  });
+
+  it("composes styled buttons onto links", () => {
+    const ref = createRef<HTMLAnchorElement>();
+    const onClick = vi.fn();
+    const onNavigate = vi.fn((event: React.MouseEvent) =>
+      event.preventDefault(),
+    );
+    render(
+      <Button
+        className="outer"
+        onClick={onClick}
+        render={
+          <a
+            ref={ref}
+            href="/settings"
+            className="router"
+            onClick={onNavigate}
+          />
+        }
+      >
+        Settings
+      </Button>,
+    );
+    const link = screen.getByRole("link", { name: "Settings" });
+    expect(link).toBe(ref.current);
+    expect(link.getAttribute("href")).toBe("/settings");
+    expect(link.getAttribute("data-slot")).toBe("button");
+    expect(link.className.split(" ")).toEqual(
+      expect.arrayContaining([
+        "outer",
+        "router",
+        expect.stringContaining("primary"),
+      ]),
+    );
+    expect(link.hasAttribute("type")).toBe(false);
+    link.click();
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onNavigate).toHaveBeenCalledOnce();
+  });
+
+  it("blocks render-element click handlers while loading or disabled", () => {
+    const onClick = vi.fn();
+    const onNavigate = vi.fn();
+    const { rerender } = render(
+      <Button
+        loading
+        onAuxClick={onClick}
+        onClick={onClick}
+        render={
+          <a href="/settings" onAuxClick={onNavigate} onClick={onNavigate} />
+        }
+      >
+        Settings
+      </Button>,
+    );
+    const link = screen.getByRole("link", { name: "Settings" });
+    expect(link.getAttribute("aria-busy")).toBe("true");
+    expect(link.getAttribute("aria-disabled")).toBe("true");
+    expect(
+      link.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      ),
+    ).toBe(false);
+    expect(
+      link.dispatchEvent(
+        new MouseEvent("auxclick", {
+          bubbles: true,
+          cancelable: true,
+          button: 1,
+        }),
+      ),
+    ).toBe(false);
+
+    rerender(
+      <Button
+        disabled
+        onAuxClick={onClick}
+        onClick={onClick}
+        render={
+          <a href="/settings" onAuxClick={onNavigate} onClick={onNavigate} />
+        }
+      >
+        Settings
+      </Button>,
+    );
+    expect(link.getAttribute("aria-disabled")).toBe("true");
+    expect(
+      link.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      ),
+    ).toBe(false);
+    expect(
+      link.dispatchEvent(
+        new MouseEvent("auxclick", {
+          bubbles: true,
+          cancelable: true,
+          button: 1,
+        }),
+      ),
+    ).toBe(false);
+    expect(onClick).not.toHaveBeenCalled();
+    expect(onNavigate).not.toHaveBeenCalled();
+  });
+
+  it("preserves event handlers from both the wrapper and replacement", () => {
+    const calls: string[] = [];
+    const record = (source: string) => (event: React.SyntheticEvent) => {
+      event.preventDefault();
+      calls.push(`${source} ${event.type}`);
+    };
+    const outer = record("wrapper");
+    const inner = record("replacement");
+    render(
+      <Button
+        onFocus={outer}
+        onKeyDown={outer}
+        onClickCapture={outer}
+        render={
+          <a
+            href="/settings"
+            onFocus={inner}
+            onKeyDown={inner}
+            onClickCapture={inner}
+          />
+        }
+      >
+        Settings
+      </Button>,
+    );
+    const link = screen.getByRole("link", { name: "Settings" });
+    fireEvent.focus(link);
+    fireEvent.keyDown(link, { key: "Enter" });
+    fireEvent.click(link);
+    expect(calls).toEqual([
+      "replacement focus",
+      "wrapper focus",
+      "replacement keydown",
+      "wrapper keydown",
+      "replacement click",
+      "wrapper click",
+    ]);
   });
 
   it("supports the primary, secondary, and danger variants", () => {

@@ -1,6 +1,6 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -43,6 +43,7 @@ function ContextMenuRoot({
 export interface ContextMenuTriggerProps
   extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
   children?: ReactNode;
 }
 
@@ -121,6 +122,8 @@ function ContextMenuGroupLabel({
 
 export interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   disabled?: boolean;
   children?: ReactNode;
 }

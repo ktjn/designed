@@ -1,10 +1,12 @@
 import { Toggle as BaseToggle } from "@base-ui/react/toggle";
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import type { ButtonHTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import styles from "./toggle.module.css";
 
 export interface ToggleProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "onChange"> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   pressed?: boolean;
   defaultPressed?: boolean;
   onPressedChange?: (pressed: boolean) => void;

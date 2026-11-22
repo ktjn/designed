@@ -62,6 +62,23 @@ export function Example() {
 }
 ```
 
+## Custom elements and router links
+
+Pass a React element to `render` to use it as the component's root. Custom
+components must forward the received DOM props and ref to their interactive
+element.
+
+```tsx
+<Button render={<RouterLink to="/settings" />}>Settings</Button>
+<Breadcrumb.Link render={<RouterLink to="/docs" />}>Docs</Breadcrumb.Link>
+<Sidebar.Item active render={<RouterLink to="/home" />}>Home</Sidebar.Item>
+```
+
+For button-like wrappers such as `Toggle` and `Collapsible.Trigger`, set
+`nativeButton={false}` if the replacement does not render a native button.
+Set `nativeButton` on `Menu.Item` and `ContextMenu.Item` when their
+replacement renders a native button.
+
 ## CSS Cascade Layers & Tailwind Coexistence
 
 Token and component rules declare an explicit sub-layer order under `ds`:

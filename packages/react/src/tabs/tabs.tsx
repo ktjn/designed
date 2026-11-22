@@ -2,6 +2,7 @@ import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ReactElement,
   ReactNode,
   Ref,
 } from "react";
@@ -47,6 +48,8 @@ function TabsList({ className, children, ...rest }: TabsListProps) {
 export interface TabsTabProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
   ref?: Ref<HTMLButtonElement>;
+  render?: ReactElement;
+  nativeButton?: boolean;
   value: unknown;
   disabled?: boolean;
   children?: ReactNode;
