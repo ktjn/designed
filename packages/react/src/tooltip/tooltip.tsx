@@ -22,6 +22,7 @@ export interface TooltipProps
 }
 
 export function Tooltip({
+  id,
   content,
   side = "top",
   sideOffset = 8,
@@ -32,7 +33,8 @@ export function Tooltip({
   children,
   ...rest
 }: TooltipProps) {
-  const popupId = useId();
+  const generatedPopupId = useId();
+  const popupId = id ?? generatedPopupId;
   const activity = usePortalActivity(open, defaultOpen);
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
   const childDescribedBy = (
