@@ -109,6 +109,8 @@ export type {
   ContextMenuTriggerProps,
 } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
+export type { CopyButtonProps } from "./copy-button/copy-button.js";
+export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type {
@@ -299,6 +301,8 @@ export type { SliderProps, SliderValue } from "./slider/slider.js";
 export { Slider } from "./slider/slider.js";
 export type { SpinnerProps, SpinnerSize } from "./spinner/spinner.js";
 export { Spinner } from "./spinner/spinner.js";
+export type { SplitButtonProps } from "./split-button/split-button.js";
+export { SplitButton } from "./split-button/split-button.js";
 export type {
   StackAlign,
   StackDirection,

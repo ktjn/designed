@@ -600,6 +600,19 @@ export declare const ContextMenu: typeof ContextMenuRoot & {
 export {};
 
 
+// ---- copy-button/copy-button.d.ts ----
+import { type ButtonProps } from "../button/button.js";
+export interface CopyButtonProps extends Omit<ButtonProps, "onClick" | "onCopy" | "value" | "children"> {
+    value: string | (() => string);
+    label?: string;
+    copiedLabel?: string;
+    copiedDuration?: number;
+    onCopy?: (value: string) => void;
+    onError?: (error: unknown) => void;
+}
+export declare function CopyButton({ value, label, copiedLabel, copiedDuration, onCopy, onError, variant, ...rest }: CopyButtonProps): import("react").JSX.Element;
+
+
 // ---- date-picker/date-picker.d.ts ----
 import type { InputHTMLAttributes, Ref } from "react";
 import { type CalendarMode, type CalendarRangeValue, type WeekdayIndex } from "../calendar/calendar.js";
@@ -980,6 +993,8 @@ export type { ContainerProps, ContainerSize } from "./container/container.js";
 export { Container } from "./container/container.js";
 export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupLabelProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuLinkItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuRootProps, ContextMenuSeparatorProps, ContextMenuShortcutProps, ContextMenuSubmenuProps, ContextMenuSubmenuTriggerProps, ContextMenuTriggerProps, } from "./context-menu/context-menu.js";
 export { ContextMenu } from "./context-menu/context-menu.js";
+export type { CopyButtonProps } from "./copy-button/copy-button.js";
+export { CopyButton } from "./copy-button/copy-button.js";
 export type { DatePickerProps } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
@@ -1058,6 +1073,8 @@ export type { SliderProps, SliderValue } from "./slider/slider.js";
 export { Slider } from "./slider/slider.js";
 export type { SpinnerProps, SpinnerSize } from "./spinner/spinner.js";
 export { Spinner } from "./spinner/spinner.js";
+export type { SplitButtonProps } from "./split-button/split-button.js";
+export { SplitButton } from "./split-button/split-button.js";
 export type { StackAlign, StackDirection, StackGap, StackJustify, StackProps, } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
 export type { StepperOrientation, StepperProps, StepperStep, } from "./stepper/stepper.js";
@@ -1836,6 +1853,17 @@ export interface SpinnerProps extends Omit<HTMLAttributes<HTMLSpanElement>, "chi
     label?: string;
 }
 export declare function Spinner({ ref, size, label, className, ...rest }: SpinnerProps): import("react").JSX.Element;
+
+
+// ---- split-button/split-button.d.ts ----
+import type { ReactNode } from "react";
+import { type ButtonProps } from "../button/button.js";
+export interface SplitButtonProps extends Omit<ButtonProps, "render" | "children"> {
+    menuLabel?: string;
+    menu: ReactNode;
+    children?: ReactNode;
+}
+export declare function SplitButton({ menuLabel, variant, size, menu, children, className, ...rest }: SplitButtonProps): import("react").JSX.Element;
 
 
 // ---- stack/stack.d.ts ----

@@ -101,11 +101,12 @@ describe("HTML attribute, className, ref, and barrel prop-type contracts", () =>
           continue;
         }
         const extendsHtml =
-          /HTMLAttributes|SVGAttributes|ButtonHTMLAttributes|InputHTMLAttributes|TextareaHTMLAttributes|AnchorHTMLAttributes|LabelHTMLAttributes|TableHTMLAttributes|ThHTMLAttributes|TdHTMLAttributes|OlHTMLAttributes|LiHTMLAttributes|FieldsetHTMLAttributes|ComponentPropsWithRef|ComponentProps/.test(
+          /HTMLAttributes|SVGAttributes|ButtonHTMLAttributes|InputHTMLAttributes|TextareaHTMLAttributes|AnchorHTMLAttributes|LabelHTMLAttributes|TableHTMLAttributes|ThHTMLAttributes|TdHTMLAttributes|OlHTMLAttributes|LiHTMLAttributes|FieldsetHTMLAttributes|ComponentPropsWithRef|ComponentProps|\bButtonProps\b/.test(
             `${header} ${body}`,
           );
         const hasRef =
-          /\bref\??:/.test(body) || /ComponentPropsWithRef/.test(header);
+          /\bref\??:/.test(body) ||
+          /ComponentPropsWithRef|\bButtonProps\b/.test(header);
         if (!extendsHtml) {
           missingHtmlAttributes.push(name);
         }
