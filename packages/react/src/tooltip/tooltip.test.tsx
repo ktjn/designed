@@ -8,6 +8,21 @@ import { Tooltip } from "./tooltip";
 // jsdom. Open/close, keyboard, and axe coverage for Tooltip instead lives in
 // Storybook interaction tests (apps/storybook/stories/tooltip.stories.tsx).
 describe("Tooltip", () => {
+  it("renders grouped tooltips with their original triggers", () => {
+    render(
+      <Tooltip.Provider delay={100} closeDelay={200} timeout={300}>
+        <Tooltip content="Saves your changes">
+          <Button>Save</Button>
+        </Tooltip>
+        <Tooltip content="Discards your changes">
+          <Button>Discard</Button>
+        </Tooltip>
+      </Tooltip.Provider>,
+    );
+    expect(screen.getAllByRole("button")).toHaveLength(2);
+    expect(screen.queryByRole("tooltip")).toBeNull();
+  });
+
   it("is hidden by default and does not change the trigger element type", () => {
     render(
       <Tooltip content="Saves your changes">

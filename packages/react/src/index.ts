@@ -301,7 +301,11 @@ export type {
   ToolbarSeparatorProps,
 } from "./toolbar/toolbar.js";
 export { Toolbar } from "./toolbar/toolbar.js";
-export type { TooltipProps, TooltipSide } from "./tooltip/tooltip.js";
+export type {
+  TooltipProps,
+  TooltipProviderProps,
+  TooltipSide,
+} from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
 export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";

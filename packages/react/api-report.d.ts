@@ -877,7 +877,7 @@ export type { ToggleGroupOrientation, ToggleGroupProps, } from "./toggle-group/t
 export { ToggleGroup } from "./toggle-group/toggle-group.js";
 export type { ToolbarButtonProps, ToolbarGroupProps, ToolbarLinkProps, ToolbarOrientation, ToolbarRootProps, ToolbarSeparatorProps, } from "./toolbar/toolbar.js";
 export { Toolbar } from "./toolbar/toolbar.js";
-export type { TooltipProps, TooltipSide } from "./tooltip/tooltip.js";
+export type { TooltipProps, TooltipProviderProps, TooltipSide, } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
 export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";
@@ -1696,17 +1696,31 @@ export {};
 // ---- tooltip/tooltip.d.ts ----
 import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export type TooltipSide = "top" | "right" | "bottom" | "left";
+export interface TooltipProviderProps {
+    delay?: number;
+    closeDelay?: number;
+    timeout?: number;
+    children?: ReactNode;
+}
+declare function TooltipProvider(props: TooltipProviderProps): import("react").JSX.Element;
 export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, "content" | "children"> {
     ref?: Ref<HTMLDivElement>;
     content: ReactNode;
     side?: TooltipSide;
     sideOffset?: number;
+    disabled?: boolean;
+    delay?: number;
+    closeDelay?: number;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     children: ReactElement;
 }
-export declare function Tooltip({ content, side, sideOffset, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
+declare function TooltipRoot({ id, content, side, sideOffset, disabled, delay, closeDelay, className, open, defaultOpen, onOpenChange, children, ...rest }: TooltipProps): import("react").JSX.Element;
+export declare const Tooltip: typeof TooltipRoot & {
+    Provider: typeof TooltipProvider;
+};
+export {};
 
 
 // ---- visually-hidden/visually-hidden.d.ts ----

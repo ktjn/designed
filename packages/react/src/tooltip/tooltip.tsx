@@ -9,23 +9,40 @@ import styles from "./tooltip.module.css";
 
 export type TooltipSide = "top" | "right" | "bottom" | "left";
 
+export interface TooltipProviderProps {
+  delay?: number;
+  closeDelay?: number;
+  timeout?: number;
+  children?: ReactNode;
+}
+
+function TooltipProvider(props: TooltipProviderProps) {
+  return <BaseTooltip.Provider {...props} />;
+}
+
 export interface TooltipProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "content" | "children"> {
   ref?: Ref<HTMLDivElement>;
   content: ReactNode;
   side?: TooltipSide;
   sideOffset?: number;
+  disabled?: boolean;
+  delay?: number;
+  closeDelay?: number;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   children: ReactElement;
 }
 
-export function Tooltip({
+function TooltipRoot({
   id,
   content,
   side = "top",
   sideOffset = 8,
+  disabled,
+  delay,
+  closeDelay,
   className,
   open,
   defaultOpen,
@@ -35,16 +52,17 @@ export function Tooltip({
 }: TooltipProps) {
   const generatedPopupId = useId();
   const popupId = id ?? generatedPopupId;
-  const activity = usePortalActivity(open, defaultOpen);
+  const activity = usePortalActivity(disabled ? false : open, defaultOpen);
+  const active = !disabled && activity.active;
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
   const childDescribedBy = (
     children.props as { "aria-describedby"?: string } | undefined
   )?.["aria-describedby"];
-  const describedBy = activity.active
+  const describedBy = active
     ? [childDescribedBy, popupId].filter(Boolean).join(" ")
     : childDescribedBy;
   const triggerElement =
-    activity.active && childDescribedBy
+    active && childDescribedBy
       ? cloneElement(
           children as ReactElement<{ "aria-describedby"?: string }>,
           { "aria-describedby": describedBy },
@@ -54,6 +72,7 @@ export function Tooltip({
     <>
       <span hidden ref={scopeRef} />
       <BaseTooltip.Root
+        disabled={disabled}
         open={open}
         defaultOpen={defaultOpen}
         onOpenChange={(next) => {
@@ -64,7 +83,9 @@ export function Tooltip({
       >
         <BaseTooltip.Trigger
           render={triggerElement}
-          aria-describedby={activity.active ? describedBy : undefined}
+          delay={delay}
+          closeDelay={closeDelay}
+          aria-describedby={active ? describedBy : undefined}
         />
         <BaseTooltip.Portal container={container}>
           <BaseTooltip.Positioner
@@ -89,3 +110,7 @@ export function Tooltip({
     </>
   );
 }
+
+export const Tooltip = Object.assign(TooltipRoot, {
+  Provider: TooltipProvider,
+});
