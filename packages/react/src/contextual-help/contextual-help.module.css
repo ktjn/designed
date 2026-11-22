@@ -1,0 +1,96 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--ds-color-foreground-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-motion-duration-fast)
+    var(--ds-motion-easing-standard),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard);
+}
+
+.trigger:hover {
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.trigger svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex-shrink: 0;
+}
+
+.content {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  max-inline-size: 20rem;
+}
+
+.content:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.heading {
+  margin: 0;
+  color: var(--ds-color-foreground-default);
+}
+
+.body {
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+  color: var(--ds-color-foreground-muted);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-stack-sm);
+  margin-block-start: var(--ds-space-stack-sm);
+  padding-block-start: var(--ds-space-stack-sm);
+  border-block-start: 1px solid var(--ds-color-border-default);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .trigger {
+    border-color: ButtonText;
+    color: ButtonText;
+  }
+
+  .trigger:focus-visible,
+  .content:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .content {
+    border: 1px solid CanvasText;
+  }
+
+  .footer {
+    border-block-start-color: CanvasText;
+  }
+}

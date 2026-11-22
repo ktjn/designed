@@ -1,0 +1,39 @@
+.content {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  min-inline-size: 14rem;
+  max-inline-size: 22rem;
+}
+
+.content:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.title {
+  margin: 0;
+  color: var(--ds-color-foreground-default);
+}
+
+.description {
+  margin: 0;
+  color: var(--ds-color-foreground-muted);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-space-stack-sm);
+  margin-block-start: var(--ds-space-stack-sm);
+}
+
+@media (forced-colors: active) {
+  .content {
+    border: 1px solid CanvasText;
+  }
+
+  .content:focus-visible {
+    outline-color: Highlight;
+  }
+}
