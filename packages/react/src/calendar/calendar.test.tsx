@@ -25,6 +25,24 @@ describe("Calendar", () => {
     expect(props.defaultValue).toBe("2026-05-15");
   });
 
+  it("syncs the displayed month and roving focus when controlled value changes", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Calendar value="2026-01-15" />);
+
+    expect(screen.getByRole("button", { name: "2026-01-15" })).toBeTruthy();
+
+    rerender(<Calendar value="2026-12-20" />);
+    const dec20 = screen.getByRole("button", { name: "2026-12-20" });
+    expect(dec20.getAttribute("aria-pressed")).toBe("true");
+    expect(dec20.getAttribute("tabindex")).toBe("0");
+
+    await user.click(screen.getByRole("button", { name: "Previous month" }));
+    expect(screen.getByRole("button", { name: "2026-11-15" })).toBeTruthy();
+
+    rerender(<Calendar value="2026-12-20" />);
+    expect(screen.getByRole("button", { name: "2026-11-15" })).toBeTruthy();
+  });
+
   it("navigates months and respects min/max bounds", async () => {
     const user = userEvent.setup();
     render(
