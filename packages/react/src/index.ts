@@ -204,8 +204,25 @@ export type {
   MenuTriggerProps,
 } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
+export type {
+  MenubarOrientation,
+  MenubarProps,
+} from "./menubar/menubar.js";
+export { Menubar } from "./menubar/menubar.js";
 export type { MeterProps, MeterVariant } from "./meter/meter.js";
 export { Meter } from "./meter/meter.js";
+export type {
+  NavigationMenuAlign,
+  NavigationMenuContentProps,
+  NavigationMenuItemProps,
+  NavigationMenuLinkProps,
+  NavigationMenuListProps,
+  NavigationMenuRootProps,
+  NavigationMenuSide,
+  NavigationMenuTriggerProps,
+  NavigationMenuViewportProps,
+} from "./navigation-menu/navigation-menu.js";
+export { NavigationMenu } from "./navigation-menu/navigation-menu.js";
 export type { NumberFieldProps } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";

@@ -1019,8 +1019,12 @@ export type { LiveRegionProps } from "./live-region/live-region.js";
 export { LiveRegion } from "./live-region/live-region.js";
 export type { MenuCheckboxItemProps, MenuContentProps, MenuGroupLabelProps, MenuGroupProps, MenuItemProps, MenuLinkItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuRootProps, MenuSeparatorProps, MenuShortcutProps, MenuSubmenuProps, MenuSubmenuTriggerProps, MenuTriggerProps, } from "./menu/menu.js";
 export { Menu } from "./menu/menu.js";
+export type { MenubarOrientation, MenubarProps, } from "./menubar/menubar.js";
+export { Menubar } from "./menubar/menubar.js";
 export type { MeterProps, MeterVariant } from "./meter/meter.js";
 export { Meter } from "./meter/meter.js";
+export type { NavigationMenuAlign, NavigationMenuContentProps, NavigationMenuItemProps, NavigationMenuLinkProps, NavigationMenuListProps, NavigationMenuRootProps, NavigationMenuSide, NavigationMenuTriggerProps, NavigationMenuViewportProps, } from "./navigation-menu/navigation-menu.js";
+export { NavigationMenu } from "./navigation-menu/navigation-menu.js";
 export type { NumberFieldProps } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
@@ -1276,6 +1280,20 @@ export declare const Menu: typeof MenuRoot & {
 export {};
 
 
+// ---- menubar/menubar.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type MenubarOrientation = "horizontal" | "vertical";
+export interface MenubarProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    modal?: boolean;
+    disabled?: boolean;
+    orientation?: MenubarOrientation;
+    loopFocus?: boolean;
+    children?: ReactNode;
+}
+export declare function Menubar({ className, ...rest }: MenubarProps): import("react").JSX.Element;
+
+
 // ---- meter/meter.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type MeterVariant = "default" | "success" | "warning" | "danger";
@@ -1289,6 +1307,72 @@ export interface MeterProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
     variant?: MeterVariant;
 }
 export declare function Meter({ ref, value, min, max, label, showValue, variant, className, ...rest }: MeterProps): import("react").JSX.Element;
+
+
+// ---- navigation-menu/navigation-menu.d.ts ----
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export interface NavigationMenuRootProps<Value = unknown> extends Omit<HTMLAttributes<HTMLElement>, "onChange" | "value" | "defaultValue"> {
+    ref?: Ref<HTMLElement>;
+    value?: Value | null;
+    defaultValue?: Value | null;
+    onValueChange?: (value: Value | null, eventDetails?: ChangeEventDetails) => void;
+    delay?: number;
+    closeDelay?: number;
+    children?: ReactNode;
+}
+declare function NavigationMenuRoot<Value = unknown>({ value, defaultValue, onValueChange, className, ...rest }: NavigationMenuRootProps<Value>): import("react").JSX.Element;
+export interface NavigationMenuListProps extends HTMLAttributes<HTMLUListElement> {
+    ref?: Ref<HTMLUListElement>;
+    children?: ReactNode;
+}
+declare function NavigationMenuList({ className, ...rest }: NavigationMenuListProps): import("react").JSX.Element;
+export interface NavigationMenuItemProps extends HTMLAttributes<HTMLLIElement> {
+    ref?: Ref<HTMLLIElement>;
+    value?: unknown;
+    children?: ReactNode;
+}
+declare function NavigationMenuItem({ className, ...rest }: NavigationMenuItemProps): import("react").JSX.Element;
+export interface NavigationMenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: Ref<HTMLButtonElement>;
+    disabled?: boolean;
+    children?: ReactNode;
+}
+declare function NavigationMenuTrigger({ className, ...rest }: NavigationMenuTriggerProps): import("react").JSX.Element;
+export interface NavigationMenuLinkProps extends Omit<HTMLAttributes<HTMLAnchorElement>, "href"> {
+    ref?: Ref<HTMLAnchorElement>;
+    render?: ReactElement;
+    href?: string;
+    active?: boolean;
+    closeOnClick?: boolean;
+    children?: ReactNode;
+}
+declare function NavigationMenuLink({ className, ...rest }: NavigationMenuLinkProps): import("react").JSX.Element;
+export interface NavigationMenuContentProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+declare function NavigationMenuContent({ className, ...rest }: NavigationMenuContentProps): import("react").JSX.Element;
+export type NavigationMenuSide = "top" | "right" | "bottom" | "left";
+export type NavigationMenuAlign = "start" | "center" | "end";
+export interface NavigationMenuViewportProps extends HTMLAttributes<HTMLDivElement> {
+    ref?: Ref<HTMLDivElement>;
+    side?: NavigationMenuSide;
+    sideOffset?: number;
+    align?: NavigationMenuAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<NavigationMenuSide, number>>;
+}
+declare function NavigationMenuViewport({ className, side, sideOffset, align, alignOffset, collisionPadding, ...rest }: NavigationMenuViewportProps): import("react").JSX.Element;
+export declare const NavigationMenu: typeof NavigationMenuRoot & {
+    List: typeof NavigationMenuList;
+    Item: typeof NavigationMenuItem;
+    Trigger: typeof NavigationMenuTrigger;
+    Link: typeof NavigationMenuLink;
+    Content: typeof NavigationMenuContent;
+    Viewport: typeof NavigationMenuViewport;
+};
+export {};
 
 
 // ---- number-field/number-field.d.ts ----
