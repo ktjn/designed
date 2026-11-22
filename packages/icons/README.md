@@ -13,7 +13,7 @@ pnpm add @ktjn/designed-icons
 ```tsx
 import { CalendarIcon, SearchIcon } from "@ktjn/designed-icons";
 
-<SearchIcon aria-hidden width={16} height={16} />;
+<SearchIcon aria-hidden size={16} />;
 ```
 
 ## Icon sources

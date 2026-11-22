@@ -3,10 +3,11 @@ import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createElement } from "react";
+import { createElement, createRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeAll, describe, expect, it } from "vitest";
 import { buildIcons } from "../scripts/build-icons.ts";
+import type { IconProps } from "../src/index.ts";
 
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -92,6 +93,58 @@ describe("icon generation", () => {
     expect(markup).not.toMatch(/\swidth="/);
     expect(markup).not.toMatch(/\sheight="/);
     expect(markup).toContain("viewBox");
+  });
+
+  it("emits React 19 function components accepting ref as a prop without forwardRef", async () => {
+    const { CloseIcon } = await import("../src/index.ts");
+    const generatedSource = await readFile(
+      path.join(packageRoot, "src/generated/CloseIcon.tsx"),
+      "utf8",
+    );
+
+    expect(typeof CloseIcon).toBe("function");
+    expect(CloseIcon.displayName).toBe("CloseIcon");
+    expect(generatedSource).not.toContain("forwardRef");
+
+    const ref = createRef<SVGSVGElement>();
+    const props: IconProps = { ref, size: 16 };
+    const element = createElement(CloseIcon, props);
+    expect(element.props.ref).toBe(ref);
+  });
+
+  it("supports the optional size prop while honoring explicit width and height overrides", async () => {
+    const { CloseIcon } = await import("../src/index.ts");
+
+    const numericSize = renderToStaticMarkup(
+      createElement(CloseIcon, { size: 20 }),
+    );
+    expect(numericSize).toContain('width="20"');
+    expect(numericSize).toContain('height="20"');
+    expect(numericSize).not.toContain('size="');
+
+    const stringSize = renderToStaticMarkup(
+      createElement(CloseIcon, { size: "1.5rem" }),
+    );
+    expect(stringSize).toContain('width="1.5rem"');
+    expect(stringSize).toContain('height="1.5rem"');
+
+    const zeroSize = renderToStaticMarkup(
+      createElement(CloseIcon, { size: 0 }),
+    );
+    expect(zeroSize).toContain('width="0"');
+    expect(zeroSize).toContain('height="0"');
+
+    const overridden = renderToStaticMarkup(
+      createElement(CloseIcon, { size: 20, width: 24 }),
+    );
+    expect(overridden).toContain('width="24"');
+    expect(overridden).toContain('height="20"');
+
+    const overriddenBoth = renderToStaticMarkup(
+      createElement(CloseIcon, { size: 20, width: 12, height: 18 }),
+    );
+    expect(overriddenBoth).toContain('width="12"');
+    expect(overriddenBoth).toContain('height="18"');
   });
 
   it("supports aria-hidden for decorative usage without baking it in by default", async () => {
