@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useRef } from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
+import { Button } from "../button/button";
 import { AlertDialog } from "./alert-dialog";
 
 function DestructiveAlertDialog() {
@@ -16,6 +18,24 @@ function DestructiveAlertDialog() {
         <AlertDialog.Close>Cancel</AlertDialog.Close>
       </AlertDialog.Content>
     </AlertDialog>
+  );
+}
+
+function FocusManagedAlertDialog() {
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const returnRef = useRef<HTMLButtonElement>(null);
+  return (
+    <>
+      <AlertDialog>
+        <AlertDialog.Trigger>Delete account</AlertDialog.Trigger>
+        <AlertDialog.Content initialFocus={cancelRef} finalFocus={returnRef}>
+          <AlertDialog.Title>Delete your account?</AlertDialog.Title>
+          <Button variant="danger">Confirm delete</Button>
+          <AlertDialog.Close render={<Button ref={cancelRef}>Cancel</Button>} />
+        </AlertDialog.Content>
+      </AlertDialog>
+      <Button ref={returnRef}>After close</Button>
+    </>
   );
 }
 
@@ -50,6 +70,28 @@ describe("AlertDialog", () => {
 
     await waitFor(() => {
       expect(screen.queryByRole("alertdialog")).toBeNull();
+    });
+  });
+
+  it("moves initialFocus and finalFocus to caller-provided refs", async () => {
+    const user = userEvent.setup();
+    render(<FocusManagedAlertDialog />);
+    await user.click(screen.getByRole("button", { name: "Delete account" }));
+    await screen.findByRole("alertdialog");
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Cancel" }),
+      );
+    });
+
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    await waitFor(() => {
+      expect(screen.queryByRole("alertdialog")).toBeNull();
+    });
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "After close" }),
+      );
     });
   });
 

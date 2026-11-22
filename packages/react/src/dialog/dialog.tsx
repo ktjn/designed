@@ -8,6 +8,7 @@ import type {
 } from "react";
 import buttonStyles from "../button/button.module.css";
 import styles from "./dialog.module.css";
+import type { OverlayFocusTarget } from "./overlay-focus.js";
 import { useDialogPortalContainer } from "./use-dialog-portal-container.js";
 
 export interface DialogRootProps {
@@ -49,6 +50,8 @@ function DialogTrigger({ render, className, ...rest }: DialogTriggerProps) {
 export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   closeLabel?: string;
+  initialFocus?: OverlayFocusTarget;
+  finalFocus?: OverlayFocusTarget;
 }
 
 function DialogContent({
