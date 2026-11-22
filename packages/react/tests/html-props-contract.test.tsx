@@ -52,6 +52,7 @@ const NON_DOM_ROOT_PROPS = new Set([
   "ContextMenuSubmenuProps",
   "DialogRootProps",
   "DrawerRootProps",
+  "HeadingSectionProps",
   "MenuRootProps",
   "MenuSubmenuProps",
   "PopoverRootProps",

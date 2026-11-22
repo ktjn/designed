@@ -1,0 +1,69 @@
+.code {
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-100);
+}
+
+.code[data-variant="inline"] {
+  padding-block: 0.0625rem;
+  padding-inline: 0.3125rem;
+  color: var(--ds-color-foreground-default);
+  background: var(--ds-color-background-subtle);
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+}
+
+.block {
+  position: relative;
+  display: grid;
+}
+
+.pre {
+  margin: 0;
+  overflow-x: auto;
+  box-sizing: border-box;
+  padding: var(--ds-space-stack-md);
+  padding-inline-end: 2.5rem;
+  color: var(--ds-color-foreground-default);
+  background: var(--ds-color-background-subtle);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-surface);
+}
+
+.copyButton {
+  position: absolute;
+  inset-block-start: var(--ds-space-stack-sm);
+  inset-inline-end: var(--ds-space-stack-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  color: var(--ds-color-foreground-muted);
+  background: var(--ds-color-background-default);
+  border: 1px solid var(--ds-color-border-control);
+  border-radius: var(--ds-radius-control);
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  color: var(--ds-color-foreground-default);
+}
+
+.copyButton:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 1px;
+}
+
+.copyButton svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+@media (forced-colors: active) {
+  .code[data-variant="inline"],
+  .pre,
+  .copyButton {
+    border-color: CanvasText;
+  }
+}

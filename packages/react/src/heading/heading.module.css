@@ -1,0 +1,32 @@
+.root {
+  margin: 0;
+  font-family: var(--ds-font-family-base);
+  color: var(--ds-color-foreground-default);
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.root[data-level="1"] {
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+.root[data-level="2"] {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.root[data-level="3"] {
+  font-size: var(--ds-font-size-300);
+  line-height: var(--ds-font-line-height-200);
+}
+
+.root[data-level="4"] {
+  font-size: var(--ds-font-size-200);
+  line-height: var(--ds-font-line-height-200);
+}
+
+.root[data-level="5"],
+.root[data-level="6"] {
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+}

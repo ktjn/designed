@@ -58,6 +58,11 @@ export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
 export type {
+  CodeSnippetProps,
+  CodeSnippetVariant,
+} from "./code-snippet/code-snippet.js";
+export { CodeSnippet } from "./code-snippet/code-snippet.js";
+export type {
   CollapsiblePanelProps,
   CollapsibleRootProps,
   CollapsibleTriggerProps,
@@ -151,6 +156,12 @@ export type {
   GridProps,
 } from "./grid/grid.js";
 export { Grid } from "./grid/grid.js";
+export type {
+  HeadingProps,
+  HeadingSectionProps,
+  HeadingTag,
+} from "./heading/heading.js";
+export { Heading, HeadingSection } from "./heading/heading.js";
 export type { InputProps } from "./input/input.js";
 export { Input } from "./input/input.js";
 export type {
@@ -293,6 +304,14 @@ export type {
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type {
+  TextProps,
+  TextSize,
+  TextTag,
+  TextTone,
+  TextWeight,
+} from "./text/text.js";
+export { Text } from "./text/text.js";
 export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
@@ -327,5 +346,7 @@ export type {
   TooltipSide,
 } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
+export type { TruncatedTextProps } from "./truncated-text/truncated-text.js";
+export { TruncatedText } from "./truncated-text/truncated-text.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
 export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";

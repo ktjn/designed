@@ -317,6 +317,20 @@ export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaul
 export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
 
+// ---- code-snippet/code-snippet.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type CodeSnippetVariant = "inline" | "block";
+export interface CodeSnippetProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+    variant?: CodeSnippetVariant;
+    showCopyButton?: boolean;
+    copyLabel?: string;
+    copiedLabel?: string;
+    children?: ReactNode;
+}
+export declare function CodeSnippet({ ref, variant, showCopyButton, copyLabel, copiedLabel, className, children, ...rest }: CodeSnippetProps): import("react").JSX.Element;
+
+
 // ---- collapsible/collapsible.d.ts ----
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 export interface CollapsibleRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
@@ -879,6 +893,21 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 export declare function Grid({ ref, columns, minItemWidth, gap, align, className, style, ...rest }: GridProps): import("react").JSX.Element;
 
 
+// ---- heading/heading.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export interface HeadingSectionProps {
+    children?: ReactNode;
+}
+export declare function HeadingSection({ children }: HeadingSectionProps): import("react").JSX.Element;
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+    ref?: Ref<HTMLHeadingElement>;
+    as?: HeadingTag;
+    children?: ReactNode;
+}
+export declare function Heading({ as, className, ...rest }: HeadingProps): import("react").JSX.Element;
+
+
 // ---- index.d.ts ----
 export type { AccordionItemProps, AccordionPanelProps, AccordionRootProps, AccordionTriggerProps, } from "./accordion/accordion.js";
 export { Accordion } from "./accordion/accordion.js";
@@ -906,6 +935,8 @@ export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeade
 export { Card } from "./card/card.js";
 export type { CheckboxProps } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
+export type { CodeSnippetProps, CodeSnippetVariant, } from "./code-snippet/code-snippet.js";
+export { CodeSnippet } from "./code-snippet/code-snippet.js";
 export type { CollapsiblePanelProps, CollapsibleRootProps, CollapsibleTriggerProps, } from "./collapsible/collapsible.js";
 export { Collapsible } from "./collapsible/collapsible.js";
 export type { ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps, } from "./combobox/combobox.js";
@@ -941,6 +972,8 @@ export type { FileUploadProps } from "./file-upload/file-upload.js";
 export { FileUpload } from "./file-upload/file-upload.js";
 export type { GridAlign, GridColumns, GridGap, GridProps, } from "./grid/grid.js";
 export { Grid } from "./grid/grid.js";
+export type { HeadingProps, HeadingSectionProps, HeadingTag, } from "./heading/heading.js";
+export { Heading, HeadingSection } from "./heading/heading.js";
 export type { InputProps } from "./input/input.js";
 export { Input } from "./input/input.js";
 export type { InputGroupAddonAlign, InputGroupAddonProps, InputGroupInputProps, InputGroupRootProps, } from "./input-group/input-group.js";
@@ -996,6 +1029,8 @@ export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
+export type { TextProps, TextSize, TextTag, TextTone, TextWeight, } from "./text/text.js";
+export { Text } from "./text/text.js";
 export type { TextareaProps } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
@@ -1010,6 +1045,8 @@ export type { ToolbarButtonProps, ToolbarGroupProps, ToolbarLinkProps, ToolbarOr
 export { Toolbar } from "./toolbar/toolbar.js";
 export type { TooltipProps, TooltipProviderProps, TooltipSide, } from "./tooltip/tooltip.js";
 export { Tooltip } from "./tooltip/tooltip.js";
+export type { TruncatedTextProps } from "./truncated-text/truncated-text.js";
+export { TruncatedText } from "./truncated-text/truncated-text.js";
 export type { VisuallyHiddenProps } from "./visually-hidden/visually-hidden.js";
 export { VisuallyHidden } from "./visually-hidden/visually-hidden.js";
 
@@ -1803,6 +1840,23 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 export declare function Tag({ ref, variant, onRemove, removeLabel, className, children, ...rest }: TagProps): import("react").JSX.Element;
 
 
+// ---- text/text.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export type TextTag = "p" | "span" | "div" | "label";
+export type TextSize = "100" | "200" | "300";
+export type TextWeight = "regular" | "medium" | "bold";
+export type TextTone = "default" | "muted" | "inverse";
+export interface TextProps extends HTMLAttributes<HTMLElement> {
+    ref?: Ref<HTMLElement>;
+    as?: TextTag;
+    size?: TextSize;
+    weight?: TextWeight;
+    tone?: TextTone;
+    children?: ReactNode;
+}
+export declare function Text({ as, size, weight, tone, className, ...rest }: TextProps): import("react").JSX.Element;
+
+
 // ---- textarea/textarea.d.ts ----
 import type { Ref, TextareaHTMLAttributes } from "react";
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -1988,6 +2042,17 @@ export declare const Tooltip: typeof TooltipRoot & {
     Provider: typeof TooltipProvider;
 };
 export {};
+
+
+// ---- truncated-text/truncated-text.d.ts ----
+import type { HTMLAttributes, ReactNode, Ref } from "react";
+export interface TruncatedTextProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
+    lines?: number;
+    showTooltip?: boolean;
+    children?: ReactNode;
+}
+export declare function TruncatedText({ ref, lines, showTooltip, className, children, ...rest }: TruncatedTextProps): import("react").JSX.Element;
 
 
 // ---- visually-hidden/visually-hidden.d.ts ----
