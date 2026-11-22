@@ -21,7 +21,7 @@ Framework-independent DTCG design tokens, monochrome SVG icons, and an accessibl
 
 - **Client-side React 19 only**: targets client-rendered React 19 apps (`react >= 19`). Does not ship `"use client"` directives or React Server Components (RSC) exports.
 - **CSS Modules bundler**: ships unprocessed `.module.css` alongside ESM JS; requires a CSS-Modules-aware bundler (Vite, webpack, Rollup, Parcel).
-- **Private Base UI internals**: Base UI powers complex interactive behavior internally and never appears in public types (`packages/react/api-report.d.ts`).
+- **Private Base UI internals**: Base UI powers complex interactive behavior internally (`@base-ui/react` `^1.9.0`) and never appears in public types (`packages/react/api-report.d.ts`). Apps using `@base-ui/react` directly on a compatible `1.x` version (`>=1.9.0 <2.0.0`) share a single resolved installation.
 
 ## Quick Start
 

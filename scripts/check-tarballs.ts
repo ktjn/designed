@@ -224,6 +224,59 @@ createRoot(document.getElementById("root")).render(
       `@ktjn/designed-react accepts independent @ktjn/designed-tokens patch (${bumpedVersion}) without peer conflicts`,
     );
 
+    const sharedBaseUiDir = path.join(scratchDir, "shared-base-ui-consumer");
+    await mkdir(sharedBaseUiDir, { recursive: true });
+    await writeFile(
+      path.join(sharedBaseUiDir, "package.json"),
+      JSON.stringify(
+        {
+          name: "shared-base-ui-consumer",
+          version: "0.0.0",
+          private: true,
+          type: "module",
+        },
+        null,
+        2,
+      ),
+    );
+    run(
+      "npm",
+      [
+        "install",
+        "--no-audit",
+        "--no-fund",
+        "--silent",
+        tarballPaths["@ktjn/designed-tokens"] ?? "",
+        tarballPaths["@ktjn/designed-icons"] ?? "",
+        tarballPaths["@ktjn/designed-react"] ?? "",
+        "@base-ui/react@^1.9.0",
+        "react@19.3.1",
+        "react-dom@19.3.1",
+      ],
+      { cwd: sharedBaseUiDir, stdio: "inherit" },
+    );
+    const { access } = await import("node:fs/promises");
+    let hasNestedBaseUi = false;
+    try {
+      await access(
+        path.join(
+          sharedBaseUiDir,
+          "node_modules/@ktjn/designed-react/node_modules/@base-ui/react",
+        ),
+      );
+      hasNestedBaseUi = true;
+    } catch {
+      hasNestedBaseUi = false;
+    }
+    if (hasNestedBaseUi) {
+      throw new Error(
+        "Expected a single deduplicated @base-ui/react installation when consumer also declares @base-ui/react@^1.9.0",
+      );
+    }
+    console.log(
+      "@ktjn/designed-react shares a single @base-ui/react installation with direct consumer dependency",
+    );
+
     console.log("\nAll packed tarballs install and work correctly.");
   } finally {
     await rm(scratchDir, { recursive: true, force: true });
