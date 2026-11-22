@@ -7,6 +7,7 @@ import type {
   ReactNode,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./menu.module.css";
 
@@ -49,6 +50,7 @@ function MenuTrigger({ render, className, ...rest }: MenuTriggerProps) {
 }
 
 export interface MenuContentProps extends HTMLAttributes<HTMLDivElement> {
+  finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
 

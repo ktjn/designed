@@ -6,6 +6,7 @@ import type {
   ReactNode,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./popover.module.css";
 
@@ -49,6 +50,8 @@ export type PopoverSide = "top" | "right" | "bottom" | "left";
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   side?: PopoverSide;
   sideOffset?: number;
+  initialFocus?: OverlayFocusTarget;
+  finalFocus?: OverlayFocusTarget;
   children?: ReactNode;
 }
 

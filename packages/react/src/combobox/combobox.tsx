@@ -1,5 +1,6 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import type { ReactNode } from "react";
+import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./combobox.module.css";
@@ -90,11 +91,15 @@ function ComboboxInput({
 export interface ComboboxContentProps {
   className?: string;
   emptyMessage?: ReactNode;
+  initialFocus?: OverlayFocusTarget;
+  finalFocus?: OverlayFocusTarget;
 }
 
 function ComboboxContent({
   className,
   emptyMessage = "No results",
+  initialFocus,
+  finalFocus,
 }: ComboboxContentProps) {
   const { container, scopeRef } = useDialogPortalContainer();
   return (
@@ -104,6 +109,8 @@ function ComboboxContent({
         <BaseCombobox.Positioner sideOffset={4}>
           <BaseCombobox.Popup
             data-slot="combobox-content"
+            initialFocus={initialFocus}
+            finalFocus={finalFocus}
             className={
               className ? `${styles.popup} ${className}` : styles.popup
             }
