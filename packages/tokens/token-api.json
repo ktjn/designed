@@ -117,6 +117,9 @@
         "foreground": "#991b1b",
         "border": "#fca5a5"
       }
+    },
+    "backdrop": {
+      "scrim": "#0000007a"
     }
   },
   "elevation": {
@@ -137,7 +140,15 @@
   },
   "font": {
     "family": {
-      "base": ["system-ui", "sans-serif"]
+      "base": ["system-ui", "sans-serif"],
+      "mono": [
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        "monospace"
+      ]
     },
     "size": {
       "100": "0.875rem",
@@ -204,5 +215,12 @@
       "blur": "24px",
       "spread": "0"
     }
+  },
+  "zIndex": {
+    "sticky": 10,
+    "dropdown": 20,
+    "modal": 40,
+    "popover": 50,
+    "toast": 100
   }
 }
