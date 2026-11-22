@@ -158,6 +158,16 @@ describe("token build", () => {
 
     expect(defaultBrand).not.toContain("--ds-space-control-block");
     expect(defaultBrand).not.toContain("--ds-color-background-default");
+    expect(defaultBrand).toContain(
+      '[data-color-scheme="dark"] [data-brand="default"]:not([data-color-scheme="light"])',
+    );
+    expect(defaultBrand).toContain(
+      '[data-color-scheme="light"] [data-brand="default"]:not([data-color-scheme="dark"])',
+    );
+    expect(defaultBrand).toContain("@media (prefers-contrast: more)");
+    expect(defaultBrand).toContain(
+      '[data-contrast="more"] [data-brand="default"]:not([data-contrast="default"])',
+    );
   });
 
   it("does not emit primitive tokens as public CSS custom properties", async () => {

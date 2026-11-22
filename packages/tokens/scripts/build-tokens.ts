@@ -13,6 +13,8 @@ const LAYER_DECLARATION =
 const isFromFile = (fileName: string) => (token: TransformedToken) =>
   token.filePath.replace(/\\/g, "/").endsWith(fileName);
 
+const tokenIdentifier = (token: TransformedToken) => token.path.join(".");
+
 const isBaseCssToken = (token: TransformedToken) =>
   isFromFile("semantic/base.json")(token) ||
   isFromFile("primitives/font.json")(token) ||
@@ -30,8 +32,6 @@ const isBrandableToken = (token: TransformedToken) => {
     id.startsWith("motion.")
   );
 };
-
-const tokenIdentifier = (token: TransformedToken) => token.path.join(".");
 
 function indentBlock(css: string): string {
   return css
@@ -300,6 +300,34 @@ export async function buildTokens() {
     (token) =>
       isFromFile("semantic/dark.json")(token) && isBrandableToken(token),
   );
+  const darkBrandableNames = new Set(
+    darkBrandableTokens.map((token) => token.name),
+  );
+  const lightBrandableResetTokens = baseValueTokens.filter((token) =>
+    darkBrandableNames.has(token.name),
+  );
+  const contrastMoreBrandableTokens = (
+    await getPlatformTokens([
+      PRIMITIVES,
+      SEMANTIC_BASE,
+      "src/semantic/contrast-more.json",
+    ])
+  ).filter(
+    (token) =>
+      isFromFile("semantic/contrast-more.json")(token) &&
+      isBrandableToken(token),
+  );
+  const contrastMoreDarkBrandableTokens = (
+    await getPlatformTokens([
+      PRIMITIVES,
+      SEMANTIC_BASE,
+      "src/semantic/contrast-more-dark.json",
+    ])
+  ).filter(
+    (token) =>
+      isFromFile("semantic/contrast-more-dark.json")(token) &&
+      isBrandableToken(token),
+  );
 
   await writeLayeredSheet({
     destination: "brands/default.css",
@@ -312,12 +340,52 @@ export async function buildTokens() {
       formatBlock({
         tokens: darkBrandableTokens,
         selector:
-          ':root:not([data-color-scheme="light"])[data-brand="default"], :root:not([data-color-scheme="light"]) [data-brand="default"]',
+          ':root:not([data-color-scheme="light"])[data-brand="default"], :root:not([data-color-scheme="light"]) [data-brand="default"]:not([data-color-scheme="light"])',
         media: "(prefers-color-scheme: dark)",
       }),
       formatBlock({
         tokens: darkBrandableTokens,
-        selector: '[data-brand="default"][data-color-scheme="dark"]',
+        selector:
+          '[data-brand="default"][data-color-scheme="dark"], [data-color-scheme="dark"] [data-brand="default"]:not([data-color-scheme="light"])',
+      }),
+      formatBlock({
+        tokens: lightBrandableResetTokens,
+        selector:
+          '[data-brand="default"][data-color-scheme="light"], [data-color-scheme="light"] [data-brand="default"]:not([data-color-scheme="dark"])',
+      }),
+      formatBlock({
+        tokens: contrastMoreBrandableTokens,
+        selector:
+          ':root:not([data-contrast="default"])[data-brand="default"], :root:not([data-contrast="default"]) [data-brand="default"]:not([data-contrast="default"])',
+        media: "(prefers-contrast: more)",
+      }),
+      formatBlock({
+        tokens: contrastMoreDarkBrandableTokens,
+        selector:
+          ':root:not([data-color-scheme="light"]):not([data-contrast="default"])[data-brand="default"], :root:not([data-color-scheme="light"]):not([data-contrast="default"]) [data-brand="default"]:not([data-color-scheme="light"]):not([data-contrast="default"])',
+        media: "(prefers-color-scheme: dark) and (prefers-contrast: more)",
+      }),
+      formatBlock({
+        tokens: contrastMoreDarkBrandableTokens,
+        selector:
+          '[data-color-scheme="dark"][data-brand="default"]:not([data-contrast="default"]), [data-color-scheme="dark"] [data-brand="default"]:not([data-color-scheme="light"]):not([data-contrast="default"])',
+        media: "(prefers-contrast: more)",
+      }),
+      formatBlock({
+        tokens: contrastMoreBrandableTokens,
+        selector:
+          '[data-brand="default"][data-contrast="more"], [data-contrast="more"] [data-brand="default"]:not([data-contrast="default"])',
+      }),
+      formatBlock({
+        tokens: contrastMoreDarkBrandableTokens,
+        selector:
+          ':root:not([data-color-scheme="light"])[data-contrast="more"][data-brand="default"], :root:not([data-color-scheme="light"]) [data-contrast="more"] [data-brand="default"]:not([data-color-scheme="light"]):not([data-contrast="default"]), :root:not([data-color-scheme="light"]) [data-brand="default"][data-contrast="more"]:not([data-color-scheme="light"])',
+        media: "(prefers-color-scheme: dark)",
+      }),
+      formatBlock({
+        tokens: contrastMoreDarkBrandableTokens,
+        selector:
+          '[data-color-scheme="dark"][data-contrast="more"][data-brand="default"], [data-color-scheme="dark"] [data-brand="default"][data-contrast="more"]:not([data-color-scheme="light"]), [data-color-scheme="dark"][data-contrast="more"] [data-brand="default"]:not([data-color-scheme="light"]):not([data-contrast="default"])',
       }),
     ],
   });
