@@ -29,13 +29,18 @@ export const Default: Story = {
 // enough delta regardless of where the pointer started.
 export const HoverInteraction: Story = {
   render: () => (
-    <Tooltip content="Saves your changes">
-      <Button>Save</Button>
-    </Tooltip>
+    <>
+      <span id="save-hint">Shortcut: Ctrl+S</span>
+      <Tooltip content="Saves your changes">
+        <Button aria-describedby="save-hint">Save</Button>
+      </Tooltip>
+    </>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole("button", { name: "Save" });
+    await expect(trigger).toHaveAttribute("aria-describedby", "save-hint");
+
     await userEvent.pointer({ target: canvasElement, coords: { x: 0, y: 0 } });
     await userEvent.hover(trigger);
     const tooltip = await within(document.body).findByRole(
@@ -44,10 +49,15 @@ export const HoverInteraction: Story = {
       { timeout: 5000 },
     );
     await expect(tooltip).toHaveTextContent("Saves your changes");
+    await expect(trigger).toHaveAttribute(
+      "aria-describedby",
+      `save-hint ${tooltip.id}`,
+    );
 
     await userEvent.unhover(trigger);
     await expectEventuallyRemoved(() =>
       within(document.body).queryByRole("tooltip"),
     );
+    await expect(trigger).toHaveAttribute("aria-describedby", "save-hint");
   },
 };

@@ -1,6 +1,6 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import type { ReactElement, ReactNode } from "react";
-import { useId } from "react";
+import { cloneElement, useId } from "react";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -34,6 +34,19 @@ export function Tooltip({
   const popupId = useId();
   const activity = usePortalActivity(open, defaultOpen);
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
+  const childDescribedBy = (
+    children.props as { "aria-describedby"?: string } | undefined
+  )?.["aria-describedby"];
+  const describedBy = activity.active
+    ? [childDescribedBy, popupId].filter(Boolean).join(" ")
+    : childDescribedBy;
+  const triggerElement =
+    activity.active && childDescribedBy
+      ? cloneElement(
+          children as ReactElement<{ "aria-describedby"?: string }>,
+          { "aria-describedby": describedBy },
+        )
+      : children;
   return (
     <>
       <span hidden ref={scopeRef} />
@@ -47,7 +60,10 @@ export function Tooltip({
         onOpenChangeComplete={activity.onOpenChangeComplete}
         {...rest}
       >
-        <BaseTooltip.Trigger render={children} aria-describedby={popupId} />
+        <BaseTooltip.Trigger
+          render={triggerElement}
+          aria-describedby={activity.active ? describedBy : undefined}
+        />
         <BaseTooltip.Portal container={container}>
           <BaseTooltip.Positioner side={side} sideOffset={sideOffset}>
             <BaseTooltip.Popup

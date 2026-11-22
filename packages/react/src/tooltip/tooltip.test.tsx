@@ -17,4 +17,33 @@ describe("Tooltip", () => {
     expect(screen.queryByRole("tooltip")).toBeNull();
     expect(screen.getByRole("button", { name: "Save" }).tagName).toBe("BUTTON");
   });
+
+  it("does not attach a dangling aria-describedby while closed", () => {
+    render(
+      <Tooltip content="Saves your changes">
+        <Button>Save</Button>
+      </Tooltip>,
+    );
+    expect(
+      screen
+        .getByRole("button", { name: "Save" })
+        .getAttribute("aria-describedby"),
+    ).toBeNull();
+  });
+
+  it("preserves existing aria-describedby on the trigger element while closed", () => {
+    render(
+      <>
+        <span id="hint-id">Shortcut: Ctrl+S</span>
+        <Tooltip content="Saves your changes">
+          <Button aria-describedby="hint-id">Save</Button>
+        </Tooltip>
+      </>,
+    );
+    expect(
+      screen
+        .getByRole("button", { name: "Save" })
+        .getAttribute("aria-describedby"),
+    ).toBe("hint-id");
+  });
 });
