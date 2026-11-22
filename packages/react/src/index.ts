@@ -22,8 +22,12 @@ export type { AutocompleteProps } from "./autocomplete/autocomplete.js";
 export { Autocomplete } from "./autocomplete/autocomplete.js";
 export type { AvatarProps, AvatarSize } from "./avatar/avatar.js";
 export { Avatar } from "./avatar/avatar.js";
+export type { AvatarGroupProps } from "./avatar-group/avatar-group.js";
+export { AvatarGroup } from "./avatar-group/avatar-group.js";
 export type { BadgeProps, BadgeVariant } from "./badge/badge.js";
 export { Badge } from "./badge/badge.js";
+export type { BannerProps, BannerVariant } from "./banner/banner.js";
+export { Banner } from "./banner/banner.js";
 export type {
   BreadcrumbItemProps,
   BreadcrumbLinkProps,
@@ -292,6 +296,12 @@ export { ScrollArea } from "./scroll-area/scroll-area.js";
 export type { SearchInputProps } from "./search-input/search-input.js";
 export { SearchInput } from "./search-input/search-input.js";
 export type {
+  SegmentedControlItemProps,
+  SegmentedControlRootProps,
+  SegmentedControlSize,
+} from "./segmented-control/segmented-control.js";
+export { SegmentedControl } from "./segmented-control/segmented-control.js";
+export type {
   SelectContentProps,
   SelectGroupLabelProps,
   SelectGroupProps,
@@ -340,6 +350,11 @@ export type {
 export { Stack } from "./stack/stack.js";
 export type { StatProps, StatTrend } from "./stat/stat.js";
 export { Stat } from "./stat/stat.js";
+export type {
+  StatusIndicatorProps,
+  StatusIndicatorVariant,
+} from "./status-indicator/status-indicator.js";
+export { StatusIndicator } from "./status-indicator/status-indicator.js";
 export type {
   StepperOrientation,
   StepperProps,

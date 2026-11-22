@@ -1,0 +1,78 @@
+.root {
+  --avatar-group-overlap: -0.625rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.root[data-size="small"] {
+  --avatar-group-overlap: -0.5rem;
+}
+
+.root[data-size="medium"] {
+  --avatar-group-overlap: -0.625rem;
+}
+
+.root[data-size="large"] {
+  --avatar-group-overlap: -0.875rem;
+}
+
+.root > * {
+  position: relative;
+}
+
+.root > :not(:first-child) {
+  margin-inline-start: var(--avatar-group-overlap);
+}
+
+.item {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 2px var(--ds-color-background-default);
+}
+
+.overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--ds-color-border-default);
+  background: var(--ds-color-background-subtle);
+  color: var(--ds-color-foreground-default);
+  box-shadow: 0 0 0 2px var(--ds-color-background-default);
+  font-family: var(--ds-font-family-base);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: 1;
+  user-select: none;
+}
+
+.small {
+  inline-size: 2rem;
+  block-size: 2rem;
+  font-size: var(--ds-font-size-100);
+}
+
+.medium {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  font-size: var(--ds-font-size-100);
+}
+
+.large {
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  font-size: var(--ds-font-size-200);
+}
+
+@media (forced-colors: active) {
+  .item,
+  .overflow {
+    box-shadow: none;
+  }
+
+  .item > *,
+  .overflow {
+    border-color: CanvasText;
+  }
+}

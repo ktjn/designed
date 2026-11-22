@@ -1,0 +1,123 @@
+.root {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-stack-md);
+  inline-size: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+  border-block-end: 1px solid transparent;
+  padding-block: var(--ds-space-control-block);
+  padding-inline: var(--ds-space-control-inline);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-size-100);
+  line-height: var(--ds-font-line-height-100);
+}
+
+.info {
+  background: var(--ds-color-status-info-background);
+  color: var(--ds-color-status-info-foreground);
+  border-block-end-color: var(--ds-color-status-info-border);
+}
+
+.success {
+  background: var(--ds-color-status-success-background);
+  color: var(--ds-color-status-success-foreground);
+  border-block-end-color: var(--ds-color-status-success-border);
+}
+
+.warning {
+  background: var(--ds-color-status-warning-background);
+  color: var(--ds-color-status-warning-foreground);
+  border-block-end-color: var(--ds-color-status-warning-border);
+}
+
+.danger {
+  background: var(--ds-color-status-danger-background);
+  color: var(--ds-color-status-danger-foreground);
+  border-block-end-color: var(--ds-color-status-danger-border);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  block-size: var(--ds-font-line-height-100);
+}
+
+.icon svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.body {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.title {
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.content {
+  margin: 0;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+.dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  transition: background-color var(--ds-motion-duration-fast)
+    var(--ds-motion-easing-standard);
+}
+
+.dismiss:hover {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.dismiss:focus-visible {
+  outline: 2px solid var(--ds-color-border-focus);
+  outline-offset: 2px;
+}
+
+.dismiss svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dismiss {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border-block-end: 1px solid CanvasText;
+  }
+
+  .dismiss {
+    border: 1px solid ButtonText;
+  }
+
+  .dismiss:focus-visible {
+    outline-color: Highlight;
+  }
+}
