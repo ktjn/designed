@@ -52,6 +52,24 @@ function FocusManagedDialog() {
   );
 }
 
+function CallbackFocusDialog() {
+  const targetRef = useRef<HTMLButtonElement>(null);
+  return (
+    <Dialog>
+      <Dialog.Trigger>Open callback</Dialog.Trigger>
+      <Dialog.Content
+        initialFocus={() => targetRef.current}
+        finalFocus={() => {}}
+      >
+        <Dialog.Title>Callback focus</Dialog.Title>
+        <Button>First</Button>
+        <Button ref={targetRef}>Callback target</Button>
+        <Dialog.Close>Done</Dialog.Close>
+      </Dialog.Content>
+    </Dialog>
+  );
+}
+
 describe("Dialog", () => {
   it("is closed by default and opens on trigger activation", async () => {
     const user = userEvent.setup();
@@ -200,6 +218,18 @@ describe("Dialog", () => {
     await waitFor(() => {
       expect(document.activeElement).toBe(
         screen.getByRole("button", { name: "Return target" }),
+      );
+    });
+  });
+
+  it("accepts boolean and callback forms for initialFocus and finalFocus", async () => {
+    const user = userEvent.setup();
+    render(<CallbackFocusDialog />);
+    await user.click(screen.getByRole("button", { name: "Open callback" }));
+    await screen.findByRole("dialog");
+    await waitFor(() => {
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Callback target" }),
       );
     });
   });

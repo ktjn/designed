@@ -12,4 +12,5 @@ export type OverlayFocusTarget =
   | RefObject<HTMLElement | null>
   | ((
       interactionType: OverlayInteractionType,
-    ) => boolean | HTMLElement | null | undefined);
+    ) => // biome-ignore lint/suspicious/noConfusingVoidType: matches Base UI popup focus callback return contract
+    boolean | HTMLElement | null | void);
