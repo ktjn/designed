@@ -1,5 +1,11 @@
 # @ktjn/design-icons
 
+## 0.4.0
+
+### Minor Changes
+
+- 28c53a2: Add 20 Lucide icons for navigation, editing, filtering, and account actions.
+
 ## 0.3.0
 
 ### Minor Changes
