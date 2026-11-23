@@ -1,5 +1,16 @@
 # @ktjn/design-react
 
+## 0.7.0
+
+### Minor Changes
+
+- 349050c: Add polymorphic `render`, Table/Resizable/PageHeader/Stat, SegmentedControl, AvatarGroup, StatusIndicator, Banner, TagGroup, TagInput, Popconfirm, ContextualHelp, Timeline, RelativeTime, ColorSwatch, ColorPicker, AnchorNav, ErrorBoundary and DesignedProvider; add a canonical `size` prop to form controls.
+
+### Patch Changes
+
+- Updated dependencies [28c53a2]
+  - @ktjn/designed-icons@0.4.0
+
 ## 0.6.0
 
 ### Minor Changes
