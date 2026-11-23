@@ -13,6 +13,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./tag-input.module.css";
 
@@ -90,7 +92,7 @@ export function TagInput({
   id,
   className,
   wrapperClassName,
-  getRemoveLabel = defaultGetRemoveLabel,
+  getRemoveLabel,
   onKeyDown,
   onPaste,
   onFocus,
@@ -99,6 +101,12 @@ export function TagInput({
   "aria-invalid": ariaInvalid,
   ...rest
 }: TagInputProps) {
+  const Icon = useIconOverride("close", CloseIcon);
+  const resolvedGetRemoveLabel = useI18nMessage(
+    "getRemoveLabel",
+    getRemoveLabel,
+    defaultGetRemoveLabel,
+  );
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
@@ -432,10 +440,10 @@ export function TagInput({
                   type="button"
                   data-slot="tag-input-tag-remove"
                   className={styles.tagRemove}
-                  aria-label={getRemoveLabel(tag)}
+                  aria-label={resolvedGetRemoveLabel(tag)}
                   onClick={() => removeTagAt(index)}
                 >
-                  <CloseIcon aria-hidden />
+                  <Icon aria-hidden />
                 </button>
               ) : null}
             </span>

@@ -11,6 +11,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -83,12 +85,20 @@ export function CommandPalette<
   title = "Command palette",
   placeholder = "Type a command or search...",
   searchLabel = "Search commands",
-  emptyMessage = "No matching commands",
-  closeLabel = "Close",
+  emptyMessage,
+  closeLabel,
   enableGlobalShortcut = false,
   className,
   ...rest
 }: CommandPaletteProps<Item>) {
+  const SearchFieldIcon = useIconOverride("search", SearchIcon);
+  const CloseButtonIcon = useIconOverride("close", CloseIcon);
+  const resolvedEmptyMessage = useI18nMessage(
+    "empty",
+    emptyMessage,
+    "No matching commands",
+  );
+  const resolvedCloseLabel = useI18nMessage("close", closeLabel, "Close");
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const [uncontrolledQuery, setUncontrolledQuery] = useState("");
   const [activeId, setActiveId] = useState<string>();
@@ -254,7 +264,7 @@ export function CommandPalette<
               <BaseDialog.Title>{title}</BaseDialog.Title>
             </VisuallyHidden>
             <div className={styles.searchRow}>
-              <SearchIcon aria-hidden className={styles.searchIcon} />
+              <SearchFieldIcon aria-hidden className={styles.searchIcon} />
               <input
                 data-slot="command-palette-input"
                 type="text"
@@ -279,10 +289,10 @@ export function CommandPalette<
                 onKeyDown={handleInputKeyDown}
               />
               <BaseDialog.Close
-                aria-label={closeLabel}
+                aria-label={resolvedCloseLabel}
                 className={styles.closeButton}
               >
-                <CloseIcon aria-hidden />
+                <CloseButtonIcon aria-hidden />
               </BaseDialog.Close>
             </div>
             <div
@@ -293,7 +303,7 @@ export function CommandPalette<
               className={styles.list}
             >
               {flatItems.length === 0 ? (
-                <div className={styles.empty}>{emptyMessage}</div>
+                <div className={styles.empty}>{resolvedEmptyMessage}</div>
               ) : (
                 groupedSections.map(([group, groupItems]) => (
                   <div key={group || "__ungrouped"} role="presentation">

@@ -1,5 +1,6 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -9,11 +10,12 @@ import styles from "./autocomplete.module.css";
 
 export type AutocompleteSide = "top" | "right" | "bottom" | "left";
 export type AutocompleteAlign = "start" | "center" | "end";
+export type AutocompleteSize = "small" | "medium" | "large";
 
 export interface AutocompleteProps<Value = string>
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    "value" | "defaultValue" | "onChange"
+    "value" | "defaultValue" | "onChange" | "size"
   > {
   ref?: Ref<HTMLInputElement>;
   items: readonly Value[];
@@ -22,6 +24,7 @@ export interface AutocompleteProps<Value = string>
   onValueChange?: (value: string) => void;
   emptyMessage?: ReactNode;
   invalid?: boolean;
+  size?: AutocompleteSize;
   filter?: ((item: Value, query: string) => boolean) | null;
   open?: boolean;
   defaultOpen?: boolean;
@@ -48,8 +51,9 @@ export function Autocomplete<Value = string>({
   value,
   defaultValue,
   onValueChange,
-  emptyMessage = "No suggestions",
+  emptyMessage,
   invalid,
+  size = "medium",
   disabled,
   name,
   placeholder,
@@ -77,9 +81,13 @@ export function Autocomplete<Value = string>({
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
+  const dictEmptyMessage = useI18nMessage("empty", undefined, "No suggestions");
+  const resolvedEmptyMessage = emptyMessage ?? dictEmptyMessage;
   const activity = usePortalActivity(open, defaultOpen);
   const { container, scopeRef } = useDialogPortalContainer(activity.active);
-  const inputClasses = [styles.input, className].filter(Boolean).join(" ");
+  const inputClasses = [styles.input, styles[size], className]
+    .filter(Boolean)
+    .join(" ");
   const popupClasses = [styles.popup, popupClassName].filter(Boolean).join(" ");
 
   return (
@@ -132,7 +140,7 @@ export function Autocomplete<Value = string>({
             className={popupClasses}
           >
             <BaseAutocomplete.Empty className={styles.empty}>
-              {emptyMessage}
+              {resolvedEmptyMessage}
             </BaseAutocomplete.Empty>
             <BaseAutocomplete.List>
               {(item: Value) => (

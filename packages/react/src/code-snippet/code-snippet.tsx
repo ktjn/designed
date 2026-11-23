@@ -1,6 +1,7 @@
 import { CheckIcon, CopyIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { useRef, useState } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./code-snippet.module.css";
 
 export type CodeSnippetVariant = "inline" | "block";
@@ -26,6 +27,8 @@ export function CodeSnippet({
 }: CodeSnippetProps) {
   const [copied, setCopied] = useState(false);
   const codeRef = useRef<HTMLElement | null>(null);
+  const CopiedIcon = useIconOverride("check", CheckIcon);
+  const CopyActionIcon = useIconOverride("copy", CopyIcon);
 
   function assignRefs(node: HTMLElement | null) {
     codeRef.current = node;
@@ -80,7 +83,7 @@ export function CodeSnippet({
           onClick={handleCopy}
           className={styles.copyButton}
         >
-          {copied ? <CheckIcon aria-hidden /> : <CopyIcon aria-hidden />}
+          {copied ? <CopiedIcon aria-hidden /> : <CopyActionIcon aria-hidden />}
         </button>
       ) : null}
     </div>

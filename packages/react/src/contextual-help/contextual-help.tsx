@@ -1,5 +1,6 @@
 import { InfoIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import {
   Popover,
   type PopoverAlign,
@@ -70,6 +71,7 @@ export function ContextualHelp({
   className,
   ...rest
 }: ContextualHelpProps) {
+  const Icon = useIconOverride("info", InfoIcon);
   const resolvedLabel = label ?? (variant === "help" ? "Help" : "Information");
   const hasBody = hasRenderableContent(children);
   const hasFooter = hasRenderableContent(footer);
@@ -88,11 +90,7 @@ export function ContextualHelp({
           />
         }
       >
-        {variant === "help" ? (
-          <HelpCircleIcon />
-        ) : (
-          <InfoIcon aria-hidden="true" />
-        )}
+        {variant === "help" ? <HelpCircleIcon /> : <Icon aria-hidden="true" />}
       </Popover.Trigger>
       <Popover.Content
         ref={ref}

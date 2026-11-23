@@ -29,6 +29,16 @@ export const Default: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <Autocomplete items={SUGGESTIONS} size="small" placeholder="Small" />
+      <Autocomplete items={SUGGESTIONS} size="medium" placeholder="Medium" />
+      <Autocomplete items={SUGGESTIONS} size="large" placeholder="Large" />
+    </div>
+  ),
+};
+
 export const FilterAndSelectInteraction: Story = {
   ...Default,
   play: async ({ canvasElement }) => {

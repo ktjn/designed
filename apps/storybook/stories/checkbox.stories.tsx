@@ -28,6 +28,16 @@ export const Disabled: Story = {
   args: { disabled: true },
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      <Checkbox aria-label="Small" size="small" />
+      <Checkbox aria-label="Medium" size="medium" />
+      <Checkbox aria-label="Large" size="large" />
+    </div>
+  ),
+};
+
 export const ToggleInteraction: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

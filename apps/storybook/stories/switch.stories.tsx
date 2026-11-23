@@ -47,6 +47,16 @@ export const RightToLeft: Story = {
   },
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      <Switch aria-label="Small" size="small" />
+      <Switch aria-label="Medium" size="medium" />
+      <Switch aria-label="Large" size="large" />
+    </div>
+  ),
+};
+
 export const ToggleInteraction: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

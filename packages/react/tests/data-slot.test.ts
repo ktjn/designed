@@ -8,6 +8,12 @@ const srcDir = path.join(
   "src",
 );
 
+const NO_DOM_OUTPUT_FILES = new Set([
+  "designed-provider/icon-provider.tsx",
+  "designed-provider/i18n-provider.tsx",
+  "designed-provider/designed-provider.tsx",
+]);
+
 describe("data-slot contract", () => {
   it("defines data-slot attributes on every component source file", async () => {
     const entries = await readdir(srcDir, {
@@ -19,7 +25,12 @@ describe("data-slot contract", () => {
         (entry) =>
           entry.isFile() &&
           entry.name.endsWith(".tsx") &&
-          !entry.name.endsWith(".test.tsx"),
+          !entry.name.endsWith(".test.tsx") &&
+          !NO_DOM_OUTPUT_FILES.has(
+            path
+              .relative(srcDir, path.join(entry.parentPath, entry.name))
+              .replace(/\\/g, "/"),
+          ),
       )
       .map((entry) => path.join(entry.parentPath, entry.name))
       .sort();

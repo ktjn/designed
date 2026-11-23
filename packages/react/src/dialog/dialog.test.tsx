@@ -1,10 +1,16 @@
+import type { IconProps } from "@ktjn/designed-icons";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { Button } from "../button/button";
+import { IconProvider } from "../designed-provider/icon-provider.js";
 import { Dialog } from "./dialog";
+
+function CustomCloseIcon(props: IconProps) {
+  return <svg data-testid="custom-icon" {...props} />;
+}
 
 function ControlledDialog() {
   const [open, setOpen] = useState(false);
@@ -349,5 +355,17 @@ describe("Dialog", () => {
     await user.click(screen.getByRole("button", { name: "Delete" }));
     await screen.findByRole("dialog");
     expect(await axe(document.body)).toHaveNoViolations();
+  });
+
+  it("renders the overridden close icon from IconProvider", async () => {
+    const user = userEvent.setup();
+    render(
+      <IconProvider overrides={{ close: CustomCloseIcon }}>
+        <BasicDialog />
+      </IconProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await screen.findByRole("dialog");
+    expect(screen.getByTestId("custom-icon")).toBeTruthy();
   });
 });

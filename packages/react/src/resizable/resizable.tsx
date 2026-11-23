@@ -17,6 +17,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./resizable.module.css";
 
 export type ResizableOrientation = "horizontal" | "vertical";
@@ -427,6 +428,7 @@ function ResizableHandle({
 }: ResizableHandleProps) {
   const ctx = useContext(ResizableContext);
   const pair = useContext(HandlePairContext);
+  const Icon = useIconOverride("gripVertical", GripVerticalIcon);
   const [dragging, setDragging] = useState(false);
   const dragStateRef = useRef<DragState | null>(null);
 
@@ -616,7 +618,7 @@ function ResizableHandle({
       {children ??
         (withHandle ? (
           <span className={styles.grip} aria-hidden="true">
-            <GripVerticalIcon aria-hidden="true" />
+            <Icon aria-hidden="true" />
           </span>
         ) : null)}
     </div>

@@ -1,6 +1,12 @@
+import type { IconProps } from "@ktjn/designed-icons";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { IconProvider } from "../designed-provider/icon-provider.js";
 import { Select } from "./select";
+
+function CustomChevronIcon(props: IconProps) {
+  return <svg data-testid="custom-icon" {...props} />;
+}
 
 // See ../popover/popover.test.tsx: opening any Base UI floating-positioned
 // popup hangs indefinitely under jsdom. Open/close, keyboard-navigation, and
@@ -48,5 +54,49 @@ describe("Select", () => {
     );
     expect(screen.getByText("Pro")).toBeTruthy();
     expect(screen.queryByText("pro")).toBeNull();
+  });
+
+  it("applies the small size class to the trigger", () => {
+    render(
+      <Select>
+        <Select.Trigger aria-label="Plan" size="small">
+          <Select.Value placeholder="Choose a plan" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+        </Select.Content>
+      </Select>,
+    );
+    expect(screen.getByRole("combobox").className).toContain("small");
+  });
+
+  it("applies the large size class to the trigger", () => {
+    render(
+      <Select>
+        <Select.Trigger aria-label="Plan" size="large">
+          <Select.Value placeholder="Choose a plan" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+        </Select.Content>
+      </Select>,
+    );
+    expect(screen.getByRole("combobox").className).toContain("large");
+  });
+
+  it("renders the overridden chevron icon from IconProvider", () => {
+    render(
+      <IconProvider overrides={{ chevronDown: CustomChevronIcon }}>
+        <Select>
+          <Select.Trigger aria-label="Plan">
+            <Select.Value placeholder="Choose a plan" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="basic">Basic</Select.Item>
+          </Select.Content>
+        </Select>
+      </IconProvider>,
+    );
+    expect(screen.getByTestId("custom-icon")).toBeTruthy();
   });
 });

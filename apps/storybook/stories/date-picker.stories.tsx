@@ -27,6 +27,16 @@ export const Default: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <DatePicker aria-label="Small" size="small" defaultValue="2026-06-15" />
+      <DatePicker aria-label="Medium" size="medium" defaultValue="2026-06-15" />
+      <DatePicker aria-label="Large" size="large" defaultValue="2026-06-15" />
+    </div>
+  ),
+};
+
 export const SelectFromPopover: Story = {
   ...Default,
   play: async ({ canvasElement }) => {

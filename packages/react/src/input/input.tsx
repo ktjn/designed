@@ -2,14 +2,19 @@ import type { InputHTMLAttributes, Ref } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./input.module.css";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export type InputSize = "small" | "medium" | "large";
+
+export interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   ref?: Ref<HTMLInputElement>;
   invalid?: boolean;
+  size?: InputSize;
 }
 
 export function Input({
   ref,
   invalid,
+  size = "medium",
   disabled,
   id,
   className,
@@ -23,6 +28,7 @@ export function Input({
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const classes = [
     styles.root,
+    styles[size],
     resolvedInvalid ? styles.invalid : "",
     className,
   ]

@@ -72,4 +72,14 @@ describe("Checkbox", () => {
       svgs[1]?.getAttribute("class"),
     );
   });
+
+  it("applies the small size class", () => {
+    render(<Checkbox aria-label="Accept terms" size="small" />);
+    expect(screen.getByRole("checkbox").className).toContain("small");
+  });
+
+  it("applies the large size class", () => {
+    render(<Checkbox aria-label="Accept terms" size="large" />);
+    expect(screen.getByRole("checkbox").className).toContain("large");
+  });
 });

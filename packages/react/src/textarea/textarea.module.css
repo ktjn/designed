@@ -44,6 +44,20 @@
   border-color: var(--ds-color-action-danger-default);
 }
 
+.small {
+  padding-block: calc(var(--ds-space-control-block) * 0.6);
+}
+
+.medium {
+  padding-block: var(--ds-space-control-block);
+}
+
+.large {
+  padding-block: calc(var(--ds-space-control-block) * 1.25);
+  font-size: var(--ds-font-size-200);
+  line-height: var(--ds-font-line-height-200);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .root {
     transition: none;

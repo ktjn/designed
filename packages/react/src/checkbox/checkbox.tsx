@@ -4,6 +4,8 @@ import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./checkbox.module.css";
 
+export type CheckboxSize = "small" | "medium" | "large";
+
 export interface CheckboxProps
   extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
   ref?: Ref<HTMLElement>;
@@ -20,12 +22,14 @@ export interface CheckboxProps
   name?: string;
   value?: string;
   parent?: boolean;
+  size?: CheckboxSize;
 }
 
 export function Checkbox({
   ref,
   onCheckedChange,
   disabled,
+  size = "medium",
   id,
   className,
   "aria-describedby": ariaDescribedBy,
@@ -34,6 +38,9 @@ export function Checkbox({
 }: CheckboxProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
+  const classes = [styles.root, styles[size], className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseCheckbox.Root
       ref={ref}
@@ -42,7 +49,7 @@ export function Checkbox({
       disabled={disabled ?? field?.disabled}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
-      className={className ? `${styles.root} ${className}` : styles.root}
+      className={classes}
       onCheckedChange={(checked, eventDetails) =>
         onCheckedChange?.(checked, eventDetails)
       }

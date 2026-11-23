@@ -32,3 +32,13 @@ export const Invalid: Story = {
 export const Disabled: Story = {
   args: { placeholder: "Type your message", disabled: true },
 };
+
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <Textarea aria-label="Small" size="small" placeholder="Small" />
+      <Textarea aria-label="Medium" size="medium" placeholder="Medium" />
+      <Textarea aria-label="Large" size="large" placeholder="Large" />
+    </div>
+  ),
+};

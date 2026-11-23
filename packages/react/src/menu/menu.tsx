@@ -8,6 +8,7 @@ import type {
   Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -180,6 +181,7 @@ function MenuCheckboxItem({
   children,
   ...rest
 }: MenuCheckboxItemProps) {
+  const Icon = useIconOverride("check", CheckIcon);
   return (
     <BaseMenu.CheckboxItem
       data-slot="menu-checkbox-item"
@@ -196,7 +198,7 @@ function MenuCheckboxItem({
     >
       <span className={styles.indicatorSlot} aria-hidden="true">
         <BaseMenu.CheckboxItemIndicator>
-          <CheckIcon aria-hidden />
+          <Icon aria-hidden />
         </BaseMenu.CheckboxItemIndicator>
       </span>
       {children}

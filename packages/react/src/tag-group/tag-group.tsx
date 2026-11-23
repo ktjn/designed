@@ -16,6 +16,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { TagVariant } from "../tag/tag.js";
 import styles from "./tag-group.module.css";
 
@@ -114,11 +116,16 @@ function extractNodeText(node: ReactNode): string {
 function TagGroupRoot({
   ref,
   onRemove,
-  getRemoveLabel = defaultGetRemoveLabel,
+  getRemoveLabel,
   className,
   children,
   ...rest
 }: TagGroupRootProps) {
+  const resolvedGetRemoveLabel = useI18nMessage(
+    "getRemoveLabel",
+    getRemoveLabel,
+    defaultGetRemoveLabel,
+  );
   const rootRef = useRef<HTMLDivElement | null>(null);
   const buttonToIdRef = useRef(new Map<HTMLButtonElement, string>());
   const idToButtonRef = useRef(new Map<string, HTMLButtonElement>());
@@ -294,7 +301,7 @@ function TagGroupRoot({
   const contextValue = useMemo<TagGroupContextValue>(
     () => ({
       onRemove,
-      getRemoveLabel,
+      getRemoveLabel: resolvedGetRemoveLabel,
       tabStopId,
       setActiveId,
       registerButton,
@@ -302,7 +309,7 @@ function TagGroupRoot({
       requestRemove,
     }),
     [
-      getRemoveLabel,
+      resolvedGetRemoveLabel,
       handleButtonKeyDown,
       onRemove,
       registerButton,
@@ -346,6 +353,7 @@ function TagGroupItem({
     throw new Error("TagGroup.Item must be used within TagGroup");
   }
 
+  const Icon = useIconOverride("close", CloseIcon);
   const itemId = useId();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { registerButton } = ctx;
@@ -399,7 +407,7 @@ function TagGroupItem({
               ctx.handleButtonKeyDown(event, itemId, triggerRemove)
             }
           >
-            <CloseIcon aria-hidden />
+            <Icon aria-hidden />
           </button>
         ) : null}
       </span>

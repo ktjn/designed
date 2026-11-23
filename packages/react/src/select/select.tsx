@@ -7,6 +7,7 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -81,36 +82,44 @@ function SelectRoot<
   );
 }
 
+export type SelectSize = "small" | "medium" | "large";
+
 export interface SelectTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>;
   render?: ReactElement;
   nativeButton?: boolean;
+  size?: SelectSize;
   children?: ReactNode;
 }
 
 function SelectTrigger({
   id,
   className,
+  size = "medium",
   "aria-describedby": ariaDescribedBy,
   "aria-invalid": ariaInvalid,
   children,
   ...rest
 }: SelectTriggerProps) {
+  const Icon = useIconOverride("chevronDown", ChevronDownIcon);
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
+  const classes = [styles.trigger, styles[size], className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseSelect.Trigger
       data-slot="select-trigger"
       id={resolvedId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
-      className={className ? `${styles.trigger} ${className}` : styles.trigger}
+      className={classes}
       {...rest}
     >
       {children}
       <BaseSelect.Icon className={styles.icon}>
-        <ChevronDownIcon aria-hidden />
+        <Icon aria-hidden />
       </BaseSelect.Icon>
     </BaseSelect.Trigger>
   );
@@ -193,6 +202,7 @@ export interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function SelectItem({ className, children, ...rest }: SelectItemProps) {
+  const Icon = useIconOverride("check", CheckIcon);
   return (
     <BaseSelect.Item
       data-slot="select-item"
@@ -201,7 +211,7 @@ function SelectItem({ className, children, ...rest }: SelectItemProps) {
     >
       <span className={styles.indicatorSlot} aria-hidden="true">
         <BaseSelect.ItemIndicator>
-          <CheckIcon aria-hidden />
+          <Icon aria-hidden />
         </BaseSelect.ItemIndicator>
       </span>
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>

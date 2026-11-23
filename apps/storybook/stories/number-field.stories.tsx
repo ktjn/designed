@@ -36,6 +36,16 @@ export const Invalid: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <NumberField aria-label="Small" size="small" defaultValue={3} />
+      <NumberField aria-label="Medium" size="medium" defaultValue={3} />
+      <NumberField aria-label="Large" size="large" defaultValue={3} />
+    </div>
+  ),
+};
+
 export const StepInteraction: Story = {
   ...Default,
   play: async ({ canvasElement }) => {

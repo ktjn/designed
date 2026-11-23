@@ -5,6 +5,7 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -149,27 +150,34 @@ function ComboboxRoot<
   );
 }
 
+export type ComboboxSize = "small" | "medium" | "large";
+
 export interface ComboboxInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   ref?: Ref<HTMLInputElement>;
+  size?: ComboboxSize;
 }
 
 function ComboboxInput({
   id,
   className,
+  size = "medium",
   "aria-describedby": ariaDescribedBy,
   "aria-invalid": ariaInvalid,
   ...rest
 }: ComboboxInputProps) {
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
+  const classes = [styles.input, styles[size], className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseCombobox.Input
       data-slot="combobox-input"
       id={resolvedId}
       aria-describedby={ariaDescribedBy ?? field?.describedBy}
       aria-invalid={ariaInvalid ?? (field?.invalid || undefined)}
-      className={className ? `${styles.input} ${className}` : styles.input}
+      className={classes}
       {...rest}
     />
   );
@@ -194,7 +202,7 @@ export interface ComboboxContentProps<Value = unknown>
 
 function ComboboxContent<Value = unknown>({
   className,
-  emptyMessage = "No results",
+  emptyMessage,
   initialFocus,
   finalFocus,
   side,
@@ -206,6 +214,8 @@ function ComboboxContent<Value = unknown>({
   ...rest
 }: ComboboxContentProps<Value>) {
   const { container, scopeRef } = useDialogPortalContainer();
+  const dictEmptyMessage = useI18nMessage("empty", undefined, "No results");
+  const resolvedEmptyMessage = emptyMessage ?? dictEmptyMessage;
   return (
     <>
       <span hidden ref={scopeRef} />
@@ -228,7 +238,7 @@ function ComboboxContent<Value = unknown>({
             {...rest}
           >
             <BaseCombobox.Empty className={styles.empty}>
-              {emptyMessage}
+              {resolvedEmptyMessage}
             </BaseCombobox.Empty>
             <BaseCombobox.List>
               {(item: ComboboxItem<Value>) => (

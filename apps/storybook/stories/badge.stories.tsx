@@ -20,3 +20,13 @@ export const AllVariants: Story = {
     </div>
   ),
 };
+
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      <Badge size="small">Small</Badge>
+      <Badge size="medium">Medium</Badge>
+      <Badge size="large">Large</Badge>
+    </div>
+  ),
+};

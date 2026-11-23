@@ -16,15 +16,29 @@ export type {
   AlertDialogTriggerProps,
 } from "./alert-dialog/alert-dialog.js";
 export { AlertDialog } from "./alert-dialog/alert-dialog.js";
+export type {
+  AnchorNavItemProps,
+  AnchorNavLinkProps,
+  AnchorNavListProps,
+  AnchorNavRootProps,
+} from "./anchor-nav/anchor-nav.js";
+export { AnchorNav } from "./anchor-nav/anchor-nav.js";
 export type { AspectRatioProps } from "./aspect-ratio/aspect-ratio.js";
 export { AspectRatio } from "./aspect-ratio/aspect-ratio.js";
-export type { AutocompleteProps } from "./autocomplete/autocomplete.js";
+export type {
+  AutocompleteProps,
+  AutocompleteSize,
+} from "./autocomplete/autocomplete.js";
 export { Autocomplete } from "./autocomplete/autocomplete.js";
 export type { AvatarProps, AvatarSize } from "./avatar/avatar.js";
 export { Avatar } from "./avatar/avatar.js";
 export type { AvatarGroupProps } from "./avatar-group/avatar-group.js";
 export { AvatarGroup } from "./avatar-group/avatar-group.js";
-export type { BadgeProps, BadgeVariant } from "./badge/badge.js";
+export type {
+  BadgeProps,
+  BadgeSize,
+  BadgeVariant,
+} from "./badge/badge.js";
 export { Badge } from "./badge/badge.js";
 export type { BannerProps, BannerVariant } from "./banner/banner.js";
 export { Banner } from "./banner/banner.js";
@@ -64,7 +78,10 @@ export type {
   CardTitleProps,
 } from "./card/card.js";
 export { Card } from "./card/card.js";
-export type { CheckboxProps } from "./checkbox/checkbox.js";
+export type {
+  CheckboxProps,
+  CheckboxSize,
+} from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
 export type { CheckboxCardProps } from "./checkbox-card/checkbox-card.js";
 export { CheckboxCard } from "./checkbox-card/checkbox-card.js";
@@ -84,11 +101,19 @@ export type {
   CollapsibleTriggerProps,
 } from "./collapsible/collapsible.js";
 export { Collapsible } from "./collapsible/collapsible.js";
+export type { ColorPickerProps } from "./color-picker/color-picker.js";
+export { ColorPicker } from "./color-picker/color-picker.js";
+export type {
+  ColorSwatchProps,
+  ColorSwatchSize,
+} from "./color-swatch/color-swatch.js";
+export { ColorSwatch } from "./color-swatch/color-swatch.js";
 export type {
   ComboboxContentProps,
   ComboboxInputProps,
   ComboboxItem,
   ComboboxRootProps,
+  ComboboxSize,
 } from "./combobox/combobox.js";
 export { Combobox } from "./combobox/combobox.js";
 export type {
@@ -122,13 +147,36 @@ export type {
 export { ContextualHelp } from "./contextual-help/contextual-help.js";
 export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
-export type { DatePickerProps } from "./date-picker/date-picker.js";
+export type {
+  DatePickerProps,
+  DatePickerSize,
+} from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type {
   DescriptionListItemProps,
   DescriptionListRootProps,
 } from "./description-list/description-list.js";
 export { DescriptionList } from "./description-list/description-list.js";
+export type { CSPProviderProps } from "./designed-provider/csp-provider.js";
+export { CSPProvider } from "./designed-provider/csp-provider.js";
+export type { DesignedProviderProps } from "./designed-provider/designed-provider.js";
+export { DesignedProvider } from "./designed-provider/designed-provider.js";
+export type { I18nMessages } from "./designed-provider/i18n-provider.js";
+export {
+  I18nProvider,
+  useI18nMessage,
+  useI18nMessages,
+  useLocale,
+} from "./designed-provider/i18n-provider.js";
+export type {
+  IconKey,
+  IconOverrides,
+} from "./designed-provider/icon-provider.js";
+export {
+  IconProvider,
+  useIconOverride,
+  useIconOverrides,
+} from "./designed-provider/icon-provider.js";
 export type {
   DialogCloseProps,
   DialogContentProps,
@@ -160,6 +208,12 @@ export type {
   EmptyStateProps,
 } from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
+export type {
+  ErrorBoundaryClassNames,
+  ErrorBoundaryFallback,
+  ErrorBoundaryProps,
+} from "./error-boundary/error-boundary.js";
+export { ErrorBoundary } from "./error-boundary/error-boundary.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
 export type { FieldContextValue } from "./field/field-context.js";
@@ -190,7 +244,7 @@ export type {
   HeadingTag,
 } from "./heading/heading.js";
 export { Heading, HeadingSection } from "./heading/heading.js";
-export type { InputProps } from "./input/input.js";
+export type { InputProps, InputSize } from "./input/input.js";
 export { Input } from "./input/input.js";
 export type {
   InputGroupAddonAlign,
@@ -243,7 +297,10 @@ export type {
   NavigationMenuViewportProps,
 } from "./navigation-menu/navigation-menu.js";
 export { NavigationMenu } from "./navigation-menu/navigation-menu.js";
-export type { NumberFieldProps } from "./number-field/number-field.js";
+export type {
+  NumberFieldProps,
+  NumberFieldSize,
+} from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
@@ -323,6 +380,7 @@ export type {
   SelectItemProps,
   SelectRootProps,
   SelectSeparatorProps,
+  SelectSize,
   SelectTriggerProps,
   SelectValueProps,
 } from "./select/select.js";
@@ -376,7 +434,7 @@ export type {
   StepperStep,
 } from "./stepper/stepper.js";
 export { Stepper } from "./stepper/stepper.js";
-export type { SwitchProps } from "./switch/switch.js";
+export type { SwitchProps, SwitchSize } from "./switch/switch.js";
 export { Switch } from "./switch/switch.js";
 export type {
   TableBodyProps,
@@ -399,7 +457,7 @@ export type {
   TabsTabProps,
 } from "./tabs/tabs.js";
 export { Tabs } from "./tabs/tabs.js";
-export type { TagProps, TagVariant } from "./tag/tag.js";
+export type { TagProps, TagSize, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
 export type {
   TagGroupItemProps,
@@ -424,7 +482,7 @@ export type {
   TextWeight,
 } from "./text/text.js";
 export { Text } from "./text/text.js";
-export type { TextareaProps } from "./textarea/textarea.js";
+export type { TextareaProps, TextareaSize } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";

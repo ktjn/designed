@@ -1,0 +1,38 @@
+.root {
+  display: inline-block;
+  box-sizing: border-box;
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-control);
+  background-image:
+    conic-gradient(var(--color-swatch-value, transparent) 0 0),
+    conic-gradient(
+      #ccc 90deg,
+      #fff 90deg 180deg,
+      #ccc 180deg 270deg,
+      #fff 270deg
+    );
+  background-size:
+    100% 100%,
+    8px 8px;
+}
+
+.small {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.medium {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.large {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
+
+@media (forced-colors: active) {
+  .root {
+    border: 1px solid CanvasText;
+  }
+}

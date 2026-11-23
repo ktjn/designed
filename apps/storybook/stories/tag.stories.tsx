@@ -23,6 +23,16 @@ export const Variants: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      <Tag size="small">Small</Tag>
+      <Tag size="medium">Medium</Tag>
+      <Tag size="large">Large</Tag>
+    </div>
+  ),
+};
+
 function RemovableTagsDemo() {
   const [tags, setTags] = useState(["Design Tokens", "Accessibility", "React"]);
   return (

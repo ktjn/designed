@@ -1,6 +1,7 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { CheckIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -158,6 +159,7 @@ function ContextMenuCheckboxItem({
   children,
   ...rest
 }: ContextMenuCheckboxItemProps) {
+  const Icon = useIconOverride("check", CheckIcon);
   return (
     <BaseContextMenu.CheckboxItem
       data-slot="context-menu-checkbox-item"
@@ -174,7 +176,7 @@ function ContextMenuCheckboxItem({
     >
       <span className={styles.indicatorSlot} aria-hidden="true">
         <BaseContextMenu.CheckboxItemIndicator>
-          <CheckIcon aria-hidden />
+          <Icon aria-hidden />
         </BaseContextMenu.CheckboxItemIndicator>
       </span>
       {children}

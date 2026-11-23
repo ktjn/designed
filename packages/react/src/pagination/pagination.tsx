@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./pagination.module.css";
 
 export interface PaginationProps
@@ -71,6 +72,8 @@ export function Pagination({
   className,
   ...rest
 }: PaginationProps) {
+  const PreviousIcon = useIconOverride("chevronLeft", ChevronLeftIcon);
+  const NextIcon = useIconOverride("chevronRight", ChevronRightIcon);
   const safeTotal = Math.max(1, totalPages);
   const current = Math.min(Math.max(1, page), safeTotal);
   const items = buildPageRange(current, safeTotal, siblingCount);
@@ -93,7 +96,7 @@ export function Pagination({
             disabled={current <= 1}
             onClick={() => onPageChange(current - 1)}
           >
-            <ChevronLeftIcon aria-hidden />
+            <PreviousIcon aria-hidden />
             {previousLabel}
           </button>
         </li>
@@ -130,7 +133,7 @@ export function Pagination({
             onClick={() => onPageChange(current + 1)}
           >
             {nextLabel}
-            <ChevronRightIcon aria-hidden />
+            <NextIcon aria-hidden />
           </button>
         </li>
       </ul>

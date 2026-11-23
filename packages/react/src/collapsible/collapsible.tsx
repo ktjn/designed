@@ -7,6 +7,7 @@ import type {
   ReactNode,
   Ref,
 } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./collapsible.module.css";
 
 export interface CollapsibleRootProps
@@ -47,6 +48,7 @@ function CollapsibleTrigger({
   children,
   ...rest
 }: CollapsibleTriggerProps) {
+  const Icon = useIconOverride("chevronDown", ChevronDownIcon);
   return (
     <BaseCollapsible.Trigger
       data-slot="collapsible-trigger"
@@ -54,7 +56,7 @@ function CollapsibleTrigger({
       {...rest}
     >
       <span>{children}</span>
-      <ChevronDownIcon aria-hidden className={styles.icon} />
+      <Icon aria-hidden className={styles.icon} />
     </BaseCollapsible.Trigger>
   );
 }

@@ -45,6 +45,22 @@ describe("NumberField", () => {
     expect(input.getAttribute("aria-invalid")).toBe("true");
   });
 
+  it("applies the small size class to the root", () => {
+    render(<NumberField aria-label="Quantity" size="small" />);
+    expect(
+      screen.getByRole("textbox").closest('[data-slot="number-field"]')
+        ?.className,
+    ).toContain("small");
+  });
+
+  it("applies the large size class to the root", () => {
+    render(<NumberField aria-label="Quantity" size="large" />);
+    expect(
+      screen.getByRole("textbox").closest('[data-slot="number-field"]')
+        ?.className,
+    ).toContain("large");
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>
