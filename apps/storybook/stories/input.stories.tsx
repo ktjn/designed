@@ -36,3 +36,13 @@ export const Disabled: Story = {
 export const WithValue: Story = {
   args: { defaultValue: "a@b.com" },
 };
+
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <Input aria-label="Small" size="small" placeholder="Small" />
+      <Input aria-label="Medium" size="medium" placeholder="Medium" />
+      <Input aria-label="Large" size="large" placeholder="Large" />
+    </div>
+  ),
+};

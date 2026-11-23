@@ -98,6 +98,22 @@ describe("DatePicker", () => {
     ).toBe("true");
   });
 
+  it("applies the small size class to the root", () => {
+    render(<DatePicker aria-label="Start date" size="small" />);
+    expect(
+      screen.getByRole("textbox").closest('[data-slot="date-picker"]')
+        ?.className,
+    ).toContain("small");
+  });
+
+  it("applies the large size class to the root", () => {
+    render(<DatePicker aria-label="Start date" size="large" />);
+    expect(
+      screen.getByRole("textbox").closest('[data-slot="date-picker"]')
+        ?.className,
+    ).toContain("large");
+  });
+
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(
       <Field>

@@ -44,4 +44,28 @@ describe("Combobox", () => {
     expect(screen.getByPlaceholderText("Search plans")).toBeTruthy();
     expect(screen.queryByRole("listbox")).toBeNull();
   });
+
+  it("applies the small size class to the input", () => {
+    render(
+      <Combobox items={[{ value: "basic", label: "Basic" }]}>
+        <Combobox.Input placeholder="Search plans" size="small" />
+        <Combobox.Content />
+      </Combobox>,
+    );
+    expect(screen.getByPlaceholderText("Search plans").className).toContain(
+      "small",
+    );
+  });
+
+  it("applies the large size class to the input", () => {
+    render(
+      <Combobox items={[{ value: "basic", label: "Basic" }]}>
+        <Combobox.Input placeholder="Search plans" size="large" />
+        <Combobox.Content />
+      </Combobox>,
+    );
+    expect(screen.getByPlaceholderText("Search plans").className).toContain(
+      "large",
+    );
+  });
 });

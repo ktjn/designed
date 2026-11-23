@@ -57,6 +57,33 @@
   display: none;
 }
 
+.small {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.small .checkmark,
+.small .dash {
+  width: 0.583rem;
+  height: 0.583rem;
+}
+
+.medium {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.large {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.large .checkmark,
+.large .dash {
+  width: 0.917rem;
+  height: 0.917rem;
+}
+
 .indicator[data-indeterminate] .checkmark {
   display: none;
 }

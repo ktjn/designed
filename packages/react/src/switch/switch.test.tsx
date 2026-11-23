@@ -61,4 +61,14 @@ describe("Switch", () => {
       /\.thumb\[data-checked\]\s*\{[^}]*(?:margin|inset)-inline-start:/,
     );
   });
+
+  it("applies the small size class", () => {
+    render(<Switch aria-label="Enable notifications" size="small" />);
+    expect(screen.getByRole("switch").className).toContain("small");
+  });
+
+  it("applies the large size class", () => {
+    render(<Switch aria-label="Enable notifications" size="large" />);
+    expect(screen.getByRole("switch").className).toContain("large");
+  });
 });

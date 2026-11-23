@@ -105,6 +105,35 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
 export declare function Alert({ ref, variant, title, icon, action, children, role, className, ...rest }: AlertProps): import("react").JSX.Element;
 
 
+// ---- anchor-nav/anchor-nav.d.ts ----
+import { type AnchorHTMLAttributes, type HTMLAttributes, type LiHTMLAttributes, type OlHTMLAttributes, type ReactElement } from "react";
+export interface AnchorNavRootProps extends HTMLAttributes<HTMLElement> {
+    ref?: React.Ref<HTMLElement>;
+    smoothScroll?: boolean;
+}
+export interface AnchorNavListProps extends OlHTMLAttributes<HTMLOListElement> {
+    ref?: React.Ref<HTMLOListElement>;
+}
+export interface AnchorNavItemProps extends LiHTMLAttributes<HTMLLIElement> {
+    ref?: React.Ref<HTMLLIElement>;
+}
+export interface AnchorNavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    ref?: React.Ref<HTMLAnchorElement>;
+    render?: ReactElement;
+    href: string;
+}
+declare function AnchorNavRoot({ ref, "aria-label": ariaLabel, smoothScroll, className, ...rest }: AnchorNavRootProps): import("react").JSX.Element;
+declare function AnchorNavList({ className, ...rest }: AnchorNavListProps): import("react").JSX.Element;
+declare function AnchorNavItem({ className, ...rest }: AnchorNavItemProps): import("react").JSX.Element;
+declare function AnchorNavLink({ ref, render, href, className, onClick, "aria-current": ariaCurrentProp, ...rest }: AnchorNavLinkProps): import("react").JSX.Element | null;
+export declare const AnchorNav: typeof AnchorNavRoot & {
+    List: typeof AnchorNavList;
+    Item: typeof AnchorNavItem;
+    Link: typeof AnchorNavLink;
+};
+export {};
+
+
 // ---- aspect-ratio/aspect-ratio.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
@@ -119,7 +148,8 @@ export declare function AspectRatio({ ref, ratio, className, style, ...rest }: A
 import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 export type AutocompleteSide = "top" | "right" | "bottom" | "left";
 export type AutocompleteAlign = "start" | "center" | "end";
-export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange"> {
+export type AutocompleteSize = "small" | "medium" | "large";
+export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange" | "size"> {
     ref?: Ref<HTMLInputElement>;
     items: readonly Value[];
     value?: string;
@@ -127,6 +157,7 @@ export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttribu
     onValueChange?: (value: string) => void;
     emptyMessage?: ReactNode;
     invalid?: boolean;
+    size?: AutocompleteSize;
     filter?: ((item: Value, query: string) => boolean) | null;
     open?: boolean;
     defaultOpen?: boolean;
@@ -140,7 +171,7 @@ export interface AutocompleteProps<Value = string> extends Omit<InputHTMLAttribu
     alignOffset?: number;
     collisionPadding?: number | Partial<Record<AutocompleteSide, number>>;
 }
-export declare function Autocomplete<Value = string>({ items, value, defaultValue, onValueChange, emptyMessage, invalid, disabled, name, placeholder, id, className, filter, open, defaultOpen, onOpenChange, itemToStringValue, renderItem, popupClassName, side, sideOffset, align, alignOffset, collisionPadding, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps<Value>): import("react").JSX.Element;
+export declare function Autocomplete<Value = string>({ items, value, defaultValue, onValueChange, emptyMessage, invalid, size, disabled, name, placeholder, id, className, filter, open, defaultOpen, onOpenChange, itemToStringValue, renderItem, popupClassName, side, sideOffset, align, alignOffset, collisionPadding, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: AutocompleteProps<Value>): import("react").JSX.Element;
 
 
 // ---- avatar-group/avatar-group.d.ts ----
@@ -173,12 +204,14 @@ export declare function Avatar({ ref, src, alt, fallback, size, className, ...re
 // ---- badge/badge.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type BadgeVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export type BadgeSize = "small" | "medium" | "large";
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
     variant?: BadgeVariant;
+    size?: BadgeSize;
     children?: ReactNode;
 }
-export declare function Badge({ ref, variant, className, ...rest }: BadgeProps): import("react").JSX.Element;
+export declare function Badge({ ref, variant, size, className, ...rest }: BadgeProps): import("react").JSX.Element;
 
 
 // ---- banner/banner.d.ts ----
@@ -376,6 +409,7 @@ export declare function CheckboxGroup({ disabled, orientation, onValueChange, cl
 // ---- checkbox/checkbox.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type CheckboxSize = "small" | "medium" | "large";
 export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
@@ -388,8 +422,9 @@ export interface CheckboxProps extends Omit<HTMLAttributes<HTMLElement>, "defaul
     name?: string;
     value?: string;
     parent?: boolean;
+    size?: CheckboxSize;
 }
-export declare function Checkbox({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
+export declare function Checkbox({ ref, onCheckedChange, disabled, size, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: CheckboxProps): import("react").JSX.Element;
 
 
 // ---- code-snippet/code-snippet.d.ts ----
@@ -437,6 +472,45 @@ export declare const Collapsible: typeof CollapsibleRoot & {
 export {};
 
 
+// ---- color-picker/color-picker.d.ts ----
+import { type HTMLAttributes, type Ref } from "react";
+import { type PopoverAlign, type PopoverSide } from "../popover/popover.js";
+export interface ColorPickerProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+    ref?: Ref<HTMLDivElement>;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    presets?: readonly string[];
+    label?: string;
+    invalid?: boolean;
+    disabled?: boolean;
+    id?: string;
+    side?: PopoverSide;
+    sideOffset?: number;
+    align?: PopoverAlign;
+    alignOffset?: number;
+    collisionPadding?: number | Partial<Record<PopoverSide, number>>;
+}
+export declare function ColorPicker({ ref, value, defaultValue, onValueChange, presets, label, invalid, disabled, id, side, sideOffset, align, alignOffset, collisionPadding, className, "aria-describedby": ariaDescribedBy, "aria-label": ariaLabel, ...rest }: ColorPickerProps): import("react").JSX.Element;
+
+
+// ---- color-picker/color-utils.d.ts ----
+export declare function isValidColor(value: string): boolean;
+export declare function normalizeToHex(value: string): string | null;
+
+
+// ---- color-swatch/color-swatch.d.ts ----
+import type { HTMLAttributes, Ref } from "react";
+export type ColorSwatchSize = "small" | "medium" | "large";
+export interface ColorSwatchProps extends HTMLAttributes<HTMLSpanElement> {
+    ref?: Ref<HTMLSpanElement>;
+    value: string;
+    size?: ColorSwatchSize;
+    label?: string;
+}
+export declare function ColorSwatch({ ref, value, size, label, className, style, ...rest }: ColorSwatchProps): import("react").JSX.Element;
+
+
 // ---- combobox/combobox.d.ts ----
 import type { HTMLAttributes, InputHTMLAttributes, ReactNode, Ref } from "react";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
@@ -466,10 +540,12 @@ export interface ComboboxRootProps<Value = unknown, Multiple extends boolean | u
     children?: ReactNode;
 }
 declare function ComboboxRoot<Value = unknown, Multiple extends boolean | undefined = false>({ value, defaultValue, onValueChange, onInputValueChange, disabled, items, multiple, filter, open, defaultOpen, onOpenChange, ...rest }: ComboboxRootProps<Value, Multiple>): import("react").JSX.Element;
-export interface ComboboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export type ComboboxSize = "small" | "medium" | "large";
+export interface ComboboxInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
     ref?: Ref<HTMLInputElement>;
+    size?: ComboboxSize;
 }
-declare function ComboboxInput({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): import("react").JSX.Element;
+declare function ComboboxInput({ id, className, size, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: ComboboxInputProps): import("react").JSX.Element;
 export type ComboboxSide = "top" | "right" | "bottom" | "left";
 export type ComboboxAlign = "start" | "center" | "end";
 export interface ComboboxContentProps<Value = unknown> extends HTMLAttributes<HTMLDivElement> {
@@ -690,7 +766,8 @@ import type { InputHTMLAttributes, Ref } from "react";
 import { type CalendarMode, type CalendarRangeValue, type WeekdayIndex } from "../calendar/calendar.js";
 export type DatePickerSide = "top" | "right" | "bottom" | "left";
 export type DatePickerAlign = "start" | "center" | "end";
-export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange"> {
+export type DatePickerSize = "small" | "medium" | "large";
+export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange" | "size"> {
     ref?: Ref<HTMLInputElement>;
     mode?: CalendarMode;
     value?: string;
@@ -704,6 +781,7 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     locale?: string;
     weekStartsOn?: WeekdayIndex;
     invalid?: boolean;
+    size?: DatePickerSize;
     openCalendarLabel?: string;
     previousMonthLabel?: string;
     nextMonthLabel?: string;
@@ -718,7 +796,7 @@ export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputEleme
     alignOffset?: number;
     collisionPadding?: number | Partial<Record<DatePickerSide, number>>;
 }
-export declare function DatePicker({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, locale, weekStartsOn, invalid, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
+export declare function DatePicker({ ref, mode, value, defaultValue, onValueChange, rangeValue, defaultRangeValue, onRangeValueChange, min, max, locale, weekStartsOn, invalid, size, disabled, readOnly, placeholder, openCalendarLabel, previousMonthLabel, nextMonthLabel, isDateDisabled, formatValidationMessage, side, sideOffset, align, alignOffset, collisionPadding, id, className, onBlur, onKeyDown, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: DatePickerProps): import("react").JSX.Element;
 
 
 // ---- description-list/description-list.d.ts ----
@@ -738,6 +816,61 @@ export declare const DescriptionList: typeof DescriptionListRoot & {
     Item: typeof DescriptionListItem;
 };
 export {};
+
+
+// ---- designed-provider/csp-provider.d.ts ----
+export type { CSPProviderProps } from "@base-ui/react/csp-provider";
+export { CSPProvider } from "@base-ui/react/csp-provider";
+
+
+// ---- designed-provider/designed-provider.d.ts ----
+import type { ReactNode } from "react";
+import { type I18nMessages } from "./i18n-provider.js";
+import { type IconOverrides } from "./icon-provider.js";
+export interface DesignedProviderProps {
+    icons?: IconOverrides;
+    messages?: I18nMessages;
+    locale?: string;
+    cspNonce?: string;
+    disableCspStyleElements?: boolean;
+    children?: ReactNode;
+}
+export declare function DesignedProvider({ icons, messages, locale, cspNonce, disableCspStyleElements, children, }: DesignedProviderProps): import("react").JSX.Element;
+
+
+// ---- designed-provider/i18n-provider.d.ts ----
+import { type ReactNode } from "react";
+export interface I18nMessages {
+    close?: string;
+    dismiss?: string;
+    previousMonth?: string;
+    nextMonth?: string;
+    openCalendar?: string;
+    empty?: string;
+    remove?: string;
+    getRemoveLabel?: (label: string) => string;
+    locale?: string;
+}
+export declare function useI18nMessages(): I18nMessages;
+export declare function I18nProvider({ messages, children, }: {
+    messages: I18nMessages;
+    children?: ReactNode;
+}): import("react").JSX.Element;
+export declare function useI18nMessage<K extends keyof Omit<I18nMessages, "locale">>(key: K, explicitValue: I18nMessages[K] | undefined, builtInDefault: NonNullable<I18nMessages[K]>): NonNullable<I18nMessages[K]>;
+export declare function useLocale(): string | undefined;
+
+
+// ---- designed-provider/icon-provider.d.ts ----
+import type { IconProps } from "@ktjn/designed-icons";
+import { type ComponentType, type ReactNode } from "react";
+export type IconKey = "close" | "search" | "chevronLeft" | "chevronRight" | "chevronDown" | "check" | "calendar" | "copy" | "upload" | "eye" | "eyeOff" | "minus" | "plus" | "gripVertical" | "arrowUp" | "arrowDown" | "info" | "sort" | "alertCircle" | "alertTriangle";
+export type IconOverrides = Partial<Record<IconKey, ComponentType<IconProps>>>;
+export declare function useIconOverrides(): IconOverrides;
+export declare function IconProvider({ overrides, children, }: {
+    overrides: IconOverrides;
+    children?: ReactNode;
+}): import("react").JSX.Element;
+export declare function useIconOverride<K extends IconKey>(key: K, defaultIcon: NonNullable<IconOverrides[K]>): NonNullable<IconOverrides[K]>;
 
 
 // ---- dialog/dialog.d.ts ----
@@ -912,6 +1045,30 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
 export declare function EmptyState({ ref, icon, title, titleAs: Heading, description, action, classNames, className, children, ...rest }: EmptyStateProps): import("react").JSX.Element;
 
 
+// ---- error-boundary/error-boundary.d.ts ----
+import { type ReactNode } from "react";
+export interface ErrorBoundaryClassNames {
+    icon?: string;
+    title?: string;
+    description?: string;
+    action?: string;
+}
+export type ErrorBoundaryFallback = ReactNode | ((props: {
+    error: Error;
+    reset: () => void;
+}) => ReactNode);
+export interface ErrorBoundaryProps {
+    children?: ReactNode;
+    fallback?: ErrorBoundaryFallback;
+    onError?: (error: Error, info: {
+        componentStack?: string | null;
+    }) => void;
+    resetKeys?: readonly unknown[];
+    classNames?: ErrorBoundaryClassNames;
+}
+export declare function ErrorBoundary(props: ErrorBoundaryProps): import("react").JSX.Element;
+
+
 // ---- field/field-context.d.ts ----
 export interface FieldContextValue {
     controlId: string;
@@ -1050,15 +1207,17 @@ export type { AlertProps, AlertVariant } from "./alert/alert.js";
 export { Alert } from "./alert/alert.js";
 export type { AlertDialogCloseProps, AlertDialogContentProps, AlertDialogDescriptionProps, AlertDialogRootProps, AlertDialogTitleProps, AlertDialogTriggerProps, } from "./alert-dialog/alert-dialog.js";
 export { AlertDialog } from "./alert-dialog/alert-dialog.js";
+export type { AnchorNavItemProps, AnchorNavLinkProps, AnchorNavListProps, AnchorNavRootProps, } from "./anchor-nav/anchor-nav.js";
+export { AnchorNav } from "./anchor-nav/anchor-nav.js";
 export type { AspectRatioProps } from "./aspect-ratio/aspect-ratio.js";
 export { AspectRatio } from "./aspect-ratio/aspect-ratio.js";
-export type { AutocompleteProps } from "./autocomplete/autocomplete.js";
+export type { AutocompleteProps, AutocompleteSize, } from "./autocomplete/autocomplete.js";
 export { Autocomplete } from "./autocomplete/autocomplete.js";
 export type { AvatarProps, AvatarSize } from "./avatar/avatar.js";
 export { Avatar } from "./avatar/avatar.js";
 export type { AvatarGroupProps } from "./avatar-group/avatar-group.js";
 export { AvatarGroup } from "./avatar-group/avatar-group.js";
-export type { BadgeProps, BadgeVariant } from "./badge/badge.js";
+export type { BadgeProps, BadgeSize, BadgeVariant, } from "./badge/badge.js";
 export { Badge } from "./badge/badge.js";
 export type { BannerProps, BannerVariant } from "./banner/banner.js";
 export { Banner } from "./banner/banner.js";
@@ -1072,7 +1231,7 @@ export type { CalendarMode, CalendarProps, CalendarRangeValue, WeekdayIndex, } f
 export { Calendar } from "./calendar/calendar.js";
 export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardTitleProps, } from "./card/card.js";
 export { Card } from "./card/card.js";
-export type { CheckboxProps } from "./checkbox/checkbox.js";
+export type { CheckboxProps, CheckboxSize, } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
 export type { CheckboxCardProps } from "./checkbox-card/checkbox-card.js";
 export { CheckboxCard } from "./checkbox-card/checkbox-card.js";
@@ -1082,7 +1241,11 @@ export type { CodeSnippetProps, CodeSnippetVariant, } from "./code-snippet/code-
 export { CodeSnippet } from "./code-snippet/code-snippet.js";
 export type { CollapsiblePanelProps, CollapsibleRootProps, CollapsibleTriggerProps, } from "./collapsible/collapsible.js";
 export { Collapsible } from "./collapsible/collapsible.js";
-export type { ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps, } from "./combobox/combobox.js";
+export type { ColorPickerProps } from "./color-picker/color-picker.js";
+export { ColorPicker } from "./color-picker/color-picker.js";
+export type { ColorSwatchProps, ColorSwatchSize, } from "./color-swatch/color-swatch.js";
+export { ColorSwatch } from "./color-swatch/color-swatch.js";
+export type { ComboboxContentProps, ComboboxInputProps, ComboboxItem, ComboboxRootProps, ComboboxSize, } from "./combobox/combobox.js";
 export { Combobox } from "./combobox/combobox.js";
 export type { CommandPaletteItem, CommandPaletteProps, } from "./command-palette/command-palette.js";
 export { CommandPalette } from "./command-palette/command-palette.js";
@@ -1094,10 +1257,18 @@ export type { ContextualHelpProps, ContextualHelpVariant, } from "./contextual-h
 export { ContextualHelp } from "./contextual-help/contextual-help.js";
 export type { CopyButtonProps } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
-export type { DatePickerProps } from "./date-picker/date-picker.js";
+export type { DatePickerProps, DatePickerSize, } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type { DescriptionListItemProps, DescriptionListRootProps, } from "./description-list/description-list.js";
 export { DescriptionList } from "./description-list/description-list.js";
+export type { CSPProviderProps } from "./designed-provider/csp-provider.js";
+export { CSPProvider } from "./designed-provider/csp-provider.js";
+export type { DesignedProviderProps } from "./designed-provider/designed-provider.js";
+export { DesignedProvider } from "./designed-provider/designed-provider.js";
+export type { I18nMessages } from "./designed-provider/i18n-provider.js";
+export { I18nProvider, useI18nMessage, useI18nMessages, useLocale, } from "./designed-provider/i18n-provider.js";
+export type { IconKey, IconOverrides, } from "./designed-provider/icon-provider.js";
+export { IconProvider, useIconOverride, useIconOverrides, } from "./designed-provider/icon-provider.js";
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogRootProps, DialogTitleProps, DialogTriggerProps, } from "./dialog/dialog.js";
 export { Dialog } from "./dialog/dialog.js";
 export type { OverlayFocusTarget, OverlayInteractionType, } from "./dialog/overlay-focus.js";
@@ -1108,6 +1279,8 @@ export type { DrawerCloseProps, DrawerContentProps, DrawerDescriptionProps, Draw
 export { Drawer } from "./drawer/drawer.js";
 export type { EmptyStateClassNames, EmptyStateProps, } from "./empty-state/empty-state.js";
 export { EmptyState } from "./empty-state/empty-state.js";
+export type { ErrorBoundaryClassNames, ErrorBoundaryFallback, ErrorBoundaryProps, } from "./error-boundary/error-boundary.js";
+export { ErrorBoundary } from "./error-boundary/error-boundary.js";
 export type { FieldRootProps } from "./field/field.js";
 export { Field } from "./field/field.js";
 export type { FieldContextValue } from "./field/field-context.js";
@@ -1123,7 +1296,7 @@ export type { GridAlign, GridColumns, GridGap, GridProps, } from "./grid/grid.js
 export { Grid } from "./grid/grid.js";
 export type { HeadingProps, HeadingSectionProps, HeadingTag, } from "./heading/heading.js";
 export { Heading, HeadingSection } from "./heading/heading.js";
-export type { InputProps } from "./input/input.js";
+export type { InputProps, InputSize } from "./input/input.js";
 export { Input } from "./input/input.js";
 export type { InputGroupAddonAlign, InputGroupAddonProps, InputGroupInputProps, InputGroupRootProps, } from "./input-group/input-group.js";
 export { InputGroup } from "./input-group/input-group.js";
@@ -1143,7 +1316,7 @@ export type { MeterProps, MeterVariant } from "./meter/meter.js";
 export { Meter } from "./meter/meter.js";
 export type { NavigationMenuAlign, NavigationMenuContentProps, NavigationMenuItemProps, NavigationMenuLinkProps, NavigationMenuListProps, NavigationMenuRootProps, NavigationMenuSide, NavigationMenuTriggerProps, NavigationMenuViewportProps, } from "./navigation-menu/navigation-menu.js";
 export { NavigationMenu } from "./navigation-menu/navigation-menu.js";
-export type { NumberFieldProps } from "./number-field/number-field.js";
+export type { NumberFieldProps, NumberFieldSize, } from "./number-field/number-field.js";
 export { NumberField } from "./number-field/number-field.js";
 export type { OTPFieldProps } from "./otp-field/otp-field.js";
 export { OTPField } from "./otp-field/otp-field.js";
@@ -1175,7 +1348,7 @@ export type { SearchInputProps } from "./search-input/search-input.js";
 export { SearchInput } from "./search-input/search-input.js";
 export type { SegmentedControlItemProps, SegmentedControlRootProps, SegmentedControlSize, } from "./segmented-control/segmented-control.js";
 export { SegmentedControl } from "./segmented-control/segmented-control.js";
-export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
+export type { SelectContentProps, SelectGroupLabelProps, SelectGroupProps, SelectItemProps, SelectRootProps, SelectSeparatorProps, SelectSize, SelectTriggerProps, SelectValueProps, } from "./select/select.js";
 export { Select } from "./select/select.js";
 export type { SeparatorOrientation, SeparatorProps, } from "./separator/separator.js";
 export { Separator } from "./separator/separator.js";
@@ -1198,13 +1371,13 @@ export type { StatusIndicatorProps, StatusIndicatorVariant, } from "./status-ind
 export { StatusIndicator } from "./status-indicator/status-indicator.js";
 export type { StepperOrientation, StepperProps, StepperStep, } from "./stepper/stepper.js";
 export { Stepper } from "./stepper/stepper.js";
-export type { SwitchProps } from "./switch/switch.js";
+export type { SwitchProps, SwitchSize } from "./switch/switch.js";
 export { Switch } from "./switch/switch.js";
 export type { TableBodyProps, TableCaptionProps, TableCellProps, TableExpandButtonProps, TableExpandedRowProps, TableFooterProps, TableHeaderProps, TableHeadProps, TableRootProps, TableRowProps, TableSortDirection, } from "./table/table.js";
 export { Table } from "./table/table.js";
 export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from "./tabs/tabs.js";
 export { Tabs } from "./tabs/tabs.js";
-export type { TagProps, TagVariant } from "./tag/tag.js";
+export type { TagProps, TagSize, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
 export type { TagGroupItemProps, TagGroupRootProps, } from "./tag-group/tag-group.js";
 export { TagGroup } from "./tag-group/tag-group.js";
@@ -1214,7 +1387,7 @@ export type { TagOverflowItem, TagOverflowProps, } from "./tag-overflow/tag-over
 export { TagOverflow } from "./tag-overflow/tag-overflow.js";
 export type { TextProps, TextSize, TextTag, TextTone, TextWeight, } from "./text/text.js";
 export { Text } from "./text/text.js";
-export type { TextareaProps } from "./textarea/textarea.js";
+export type { TextareaProps, TextareaSize } from "./textarea/textarea.js";
 export { Textarea } from "./textarea/textarea.js";
 export type { ThemeProps, ThemeValues } from "./theme/theme.js";
 export { Theme, useTheme } from "./theme/theme.js";
@@ -1269,11 +1442,13 @@ export {};
 
 // ---- input/input.d.ts ----
 import type { InputHTMLAttributes, Ref } from "react";
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export type InputSize = "small" | "medium" | "large";
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
     ref?: Ref<HTMLInputElement>;
     invalid?: boolean;
+    size?: InputSize;
 }
-export declare function Input({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: InputProps): import("react").JSX.Element;
+export declare function Input({ ref, invalid, size, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: InputProps): import("react").JSX.Element;
 
 
 // ---- kbd/kbd.d.ts ----
@@ -1545,6 +1720,7 @@ export {};
 
 // ---- number-field/number-field.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
+export type NumberFieldSize = "small" | "medium" | "large";
 export interface NumberFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "children"> {
     ref?: Ref<HTMLDivElement>;
     value?: number | null;
@@ -1557,12 +1733,13 @@ export interface NumberFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "
     readOnly?: boolean;
     required?: boolean;
     invalid?: boolean;
+    size?: NumberFieldSize;
     name?: string;
     placeholder?: string;
     decrementLabel?: string;
     incrementLabel?: string;
 }
-export declare function NumberField({ ref, value, defaultValue, onValueChange, min, max, step, disabled, readOnly, required, invalid, name, placeholder, decrementLabel, incrementLabel, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: NumberFieldProps): import("react").JSX.Element;
+export declare function NumberField({ ref, value, defaultValue, onValueChange, min, max, step, disabled, readOnly, required, invalid, size, name, placeholder, decrementLabel, incrementLabel, id, className, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: NumberFieldProps): import("react").JSX.Element;
 
 
 // ---- otp-field/otp-field.d.ts ----
@@ -1955,13 +2132,15 @@ export interface SelectRootProps<Value = unknown, Multiple extends boolean | und
     children?: ReactNode;
 }
 declare function SelectRoot<Value = unknown, Multiple extends boolean | undefined = false>({ disabled, onValueChange, open, defaultOpen, onOpenChange, ...rest }: SelectRootProps<Value, Multiple>): import("react").JSX.Element;
+export type SelectSize = "small" | "medium" | "large";
 export interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ref?: Ref<HTMLButtonElement>;
     render?: ReactElement;
     nativeButton?: boolean;
+    size?: SelectSize;
     children?: ReactNode;
 }
-declare function SelectTrigger({ id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, ...rest }: SelectTriggerProps): import("react").JSX.Element;
+declare function SelectTrigger({ id, className, size, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, children, ...rest }: SelectTriggerProps): import("react").JSX.Element;
 export interface SelectValueProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
     placeholder?: string;
@@ -2239,6 +2418,7 @@ export declare function Stepper({ ref, steps, currentStep, orientation, classNam
 // ---- switch/switch.d.ts ----
 import type { HTMLAttributes, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
+export type SwitchSize = "small" | "medium" | "large";
 export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, "defaultChecked" | "onChange"> {
     ref?: Ref<HTMLElement>;
     checked?: boolean;
@@ -2248,8 +2428,9 @@ export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, "defaultC
     required?: boolean;
     readOnly?: boolean;
     name?: string;
+    size?: SwitchSize;
 }
-export declare function Switch({ ref, onCheckedChange, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SwitchProps): import("react").JSX.Element;
+export declare function Switch({ ref, onCheckedChange, disabled, size, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: SwitchProps): import("react").JSX.Element;
 
 
 // ---- table/table.d.ts ----
@@ -2437,14 +2618,16 @@ export declare function TagOverflow({ ref, items, max, renderItem, overflowLabel
 // ---- tag/tag.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type TagVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export type TagSize = "small" | "medium" | "large";
 export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
     variant?: TagVariant;
+    size?: TagSize;
     onRemove?: () => void;
     removeLabel?: string;
     children?: ReactNode;
 }
-export declare function Tag({ ref, variant, onRemove, removeLabel, className, children, ...rest }: TagProps): import("react").JSX.Element;
+export declare function Tag({ ref, variant, size, onRemove, removeLabel, className, children, ...rest }: TagProps): import("react").JSX.Element;
 
 
 // ---- text/text.d.ts ----
@@ -2466,11 +2649,13 @@ export declare function Text({ as, size, weight, tone, className, ...rest }: Tex
 
 // ---- textarea/textarea.d.ts ----
 import type { Ref, TextareaHTMLAttributes } from "react";
+export type TextareaSize = "small" | "medium" | "large";
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     ref?: Ref<HTMLTextAreaElement>;
     invalid?: boolean;
+    size?: TextareaSize;
 }
-export declare function Textarea({ ref, invalid, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TextareaProps): import("react").JSX.Element;
+export declare function Textarea({ ref, invalid, size, disabled, id, className, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, ...rest }: TextareaProps): import("react").JSX.Element;
 
 
 // ---- theme/theme.d.ts ----

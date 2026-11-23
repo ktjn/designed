@@ -13,6 +13,7 @@ import type {
   TdHTMLAttributes,
   ThHTMLAttributes,
 } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./table.module.css";
 
 export type TableSortDirection = "ascending" | "descending" | "none";
@@ -143,12 +144,15 @@ function TableHead({
   ...rest
 }: TableHeadProps) {
   const classes = [styles.head, className].filter(Boolean).join(" ");
+  const AscendingIcon = useIconOverride("arrowUp", ArrowUpIcon);
+  const DescendingIcon = useIconOverride("arrowDown", ArrowDownIcon);
+  const NoneIcon = useIconOverride("sort", SortIcon);
   const SortGlyph =
     sortDirection === "ascending"
-      ? ArrowUpIcon
+      ? AscendingIcon
       : sortDirection === "descending"
-        ? ArrowDownIcon
-        : SortIcon;
+        ? DescendingIcon
+        : NoneIcon;
 
   return (
     <th
@@ -195,6 +199,7 @@ function TableExpandButton({
   "aria-label": ariaLabel,
   ...rest
 }: TableExpandButtonProps) {
+  const Icon = useIconOverride("chevronRight", ChevronRightIcon);
   const classes = [styles.expandButton, className].filter(Boolean).join(" ");
   return (
     <button
@@ -207,7 +212,7 @@ function TableExpandButton({
       className={classes}
       {...rest}
     >
-      <ChevronRightIcon aria-hidden="true" className={styles.expandIcon} />
+      <Icon aria-hidden="true" className={styles.expandIcon} />
     </button>
   );
 }

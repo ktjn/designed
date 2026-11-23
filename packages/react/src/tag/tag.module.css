@@ -72,6 +72,41 @@
   block-size: 0.75rem;
 }
 
+.small {
+  padding-block: 0.1125rem;
+  padding-inline: 0.3rem;
+}
+
+.small .remove {
+  inline-size: 0.675rem;
+  block-size: 0.675rem;
+}
+
+.small .remove svg {
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+}
+
+.medium {
+  padding-block: 0.1875rem;
+  padding-inline: 0.5rem;
+}
+
+.large {
+  padding-block: 0.234rem;
+  padding-inline: 0.625rem;
+}
+
+.large .remove {
+  inline-size: 1.406rem;
+  block-size: 1.406rem;
+}
+
+.large .remove svg {
+  inline-size: 0.938rem;
+  block-size: 0.938rem;
+}
+
 @media (forced-colors: active) {
   .root {
     border: 1px solid CanvasText;

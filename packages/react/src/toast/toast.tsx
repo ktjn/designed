@@ -2,6 +2,8 @@ import { Toast as BaseToast } from "@base-ui/react/toast";
 import { CloseIcon } from "@ktjn/designed-icons";
 import type { ReactNode } from "react";
 import { useCallback, useMemo } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { useDialogPortalContainer } from "../dialog/use-dialog-portal-container.js";
 import styles from "./toast.module.css";
 
@@ -88,6 +90,7 @@ function toToastManagerOptions<
 }
 
 function ToastList({ dismissLabel }: { dismissLabel: string }) {
+  const Icon = useIconOverride("close", CloseIcon);
   const { toasts } = BaseToast.useToastManager<ToastItemData>();
 
   return (
@@ -136,7 +139,7 @@ function ToastList({ dismissLabel }: { dismissLabel: string }) {
               aria-hidden={false}
               className={styles.close}
             >
-              <CloseIcon aria-hidden />
+              <Icon aria-hidden />
             </BaseToast.Close>
           </div>
         </BaseToast.Root>
@@ -179,15 +182,20 @@ function ToastProvider({
   children,
   timeout = 5000,
   limit = 3,
-  dismissLabel = "Dismiss",
+  dismissLabel,
   position = "bottom-end",
   className,
 }: ToastProviderProps) {
+  const resolvedDismissLabel = useI18nMessage(
+    "dismiss",
+    dismissLabel,
+    "Dismiss",
+  );
   return (
     <BaseToast.Provider timeout={timeout} limit={limit}>
       {children}
       <ToastPortal
-        dismissLabel={dismissLabel}
+        dismissLabel={resolvedDismissLabel}
         position={position}
         className={className}
       />

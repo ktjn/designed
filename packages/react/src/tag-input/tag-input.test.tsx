@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
+import { I18nProvider } from "../designed-provider/i18n-provider.js";
 import { Field } from "../field/field.js";
 import { TagInput } from "./tag-input.js";
 
@@ -129,6 +130,32 @@ describe("TagInput", () => {
     expect(screen.getByText("first")).toBeTruthy();
     expect(screen.getByText("third")).toBeTruthy();
     expect(document.activeElement).toBe(input);
+  });
+
+  it("uses getRemoveLabel from I18nProvider but lets an explicit prop win", () => {
+    const { rerender } = render(
+      <I18nProvider
+        messages={{ getRemoveLabel: (label) => `Supprimer ${label}` }}
+      >
+        <TagInput aria-label="Labels" defaultValue={["first"]} />
+      </I18nProvider>,
+    );
+    expect(
+      screen.getByRole("button", { name: "Supprimer first" }),
+    ).toBeTruthy();
+
+    rerender(
+      <I18nProvider
+        messages={{ getRemoveLabel: (label) => `Supprimer ${label}` }}
+      >
+        <TagInput
+          aria-label="Labels"
+          defaultValue={["first"]}
+          getRemoveLabel={(tag) => `Delete ${tag}`}
+        />
+      </I18nProvider>,
+    );
+    expect(screen.getByRole("button", { name: "Delete first" })).toBeTruthy();
   });
 
   it("focuses the input when clicking the wrapper", async () => {

@@ -7,20 +7,23 @@ export type BadgeVariant =
   | "success"
   | "warning"
   | "danger";
+export type BadgeSize = "small" | "medium" | "large";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   ref?: Ref<HTMLSpanElement>;
   variant?: BadgeVariant;
+  size?: BadgeSize;
   children?: ReactNode;
 }
 
 export function Badge({
   ref,
   variant = "neutral",
+  size = "medium",
   className,
   ...rest
 }: BadgeProps) {
-  const classes = [styles.root, styles[variant], className]
+  const classes = [styles.root, styles[variant], styles[size], className]
     .filter(Boolean)
     .join(" ");
 

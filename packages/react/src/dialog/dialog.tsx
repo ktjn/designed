@@ -8,6 +8,8 @@ import type {
   Ref,
 } from "react";
 import buttonStyles from "../button/button.module.css";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./dialog.module.css";
 import type { OverlayFocusTarget } from "./overlay-focus.js";
@@ -89,12 +91,14 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
 
 function DialogContent({
   children,
-  closeLabel = "Close",
+  closeLabel,
   showCloseButton = true,
   backdropClassName,
   className,
   ...rest
 }: DialogContentProps) {
+  const Icon = useIconOverride("close", CloseIcon);
+  const resolvedCloseLabel = useI18nMessage("close", closeLabel, "Close");
   const { container, scopeRef } = useDialogPortalContainer();
   return (
     <>
@@ -114,10 +118,10 @@ function DialogContent({
         >
           {showCloseButton ? (
             <BaseDialog.Close
-              aria-label={closeLabel}
+              aria-label={resolvedCloseLabel}
               className={styles.iconClose}
             >
-              <CloseIcon aria-hidden />
+              <Icon aria-hidden />
             </BaseDialog.Close>
           ) : null}
           {children}

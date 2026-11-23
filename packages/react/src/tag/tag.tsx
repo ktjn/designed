@@ -1,12 +1,16 @@
 import { CloseIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./tag.module.css";
 
 export type TagVariant = "neutral" | "info" | "success" | "warning" | "danger";
+export type TagSize = "small" | "medium" | "large";
 
 export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   ref?: Ref<HTMLSpanElement>;
   variant?: TagVariant;
+  size?: TagSize;
   onRemove?: () => void;
   removeLabel?: string;
   children?: ReactNode;
@@ -15,13 +19,16 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 export function Tag({
   ref,
   variant = "neutral",
+  size = "medium",
   onRemove,
-  removeLabel = "Remove",
+  removeLabel,
   className,
   children,
   ...rest
 }: TagProps) {
-  const classes = [styles.root, styles[variant], className]
+  const Icon = useIconOverride("close", CloseIcon);
+  const resolvedRemoveLabel = useI18nMessage("remove", removeLabel, "Remove");
+  const classes = [styles.root, styles[variant], styles[size], className]
     .filter(Boolean)
     .join(" ");
 
@@ -33,10 +40,10 @@ export function Tag({
           type="button"
           data-slot="tag-remove"
           className={styles.remove}
-          aria-label={removeLabel}
+          aria-label={resolvedRemoveLabel}
           onClick={onRemove}
         >
-          <CloseIcon aria-hidden />
+          <Icon aria-hidden />
         </button>
       ) : null}
     </span>

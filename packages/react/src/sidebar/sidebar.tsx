@@ -13,6 +13,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -389,6 +390,8 @@ function SidebarTrigger({
 }: SidebarTriggerProps) {
   const { open, toggle, mobileOpen, setMobileOpen } = useSidebar();
   const expanded = mobile ? mobileOpen : open;
+  const CollapseIcon = useIconOverride("chevronLeft", ChevronLeftIcon);
+  const ExpandIcon = useIconOverride("chevronRight", ChevronRightIcon);
 
   return (
     <button
@@ -408,11 +411,7 @@ function SidebarTrigger({
       {...rest}
     >
       {children ??
-        (expanded ? (
-          <ChevronLeftIcon aria-hidden />
-        ) : (
-          <ChevronRightIcon aria-hidden />
-        ))}
+        (expanded ? <CollapseIcon aria-hidden /> : <ExpandIcon aria-hidden />)}
     </button>
   );
 }

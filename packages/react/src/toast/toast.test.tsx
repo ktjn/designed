@@ -1,8 +1,15 @@
+import type { IconProps } from "@ktjn/designed-icons";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
+import { I18nProvider } from "../designed-provider/i18n-provider.js";
+import { IconProvider } from "../designed-provider/icon-provider.js";
 import { Toast, useToast } from "./toast";
+
+function CustomCloseIcon(props: IconProps) {
+  return <svg data-testid="custom-icon" {...props} />;
+}
 
 function ToastDemo({ onUndo }: { onUndo?: () => void }) {
   const toast = useToast();
@@ -165,5 +172,46 @@ describe("Toast", () => {
     await user.click(screen.getByRole("button", { name: "Show toast" }));
     await screen.findByText("Settings saved");
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders the overridden close icon from IconProvider", async () => {
+    const user = userEvent.setup();
+    render(
+      <IconProvider overrides={{ close: CustomCloseIcon }}>
+        <Toast.Provider>
+          <ToastDemo />
+        </Toast.Provider>
+      </IconProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Show toast" }));
+    await screen.findByText("Settings saved");
+    expect(screen.getByTestId("custom-icon")).toBeTruthy();
+  });
+
+  it("uses the dismiss label from I18nProvider but lets an explicit prop win", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <I18nProvider messages={{ dismiss: "Fermer" }}>
+        <Toast.Provider>
+          <ToastDemo />
+        </Toast.Provider>
+      </I18nProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Show toast" }));
+    await screen.findByText("Settings saved");
+    expect(screen.getByRole("button", { name: "Fermer" })).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Fermer" }));
+
+    rerender(
+      <I18nProvider messages={{ dismiss: "Fermer" }}>
+        <Toast.Provider dismissLabel="Close toast">
+          <ToastDemo />
+        </Toast.Provider>
+      </I18nProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Show toast" }));
+    await screen.findByText("Settings saved");
+    expect(screen.getByRole("button", { name: "Close toast" })).toBeTruthy();
   });
 });

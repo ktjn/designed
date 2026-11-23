@@ -2,15 +2,19 @@ import type { Ref, TextareaHTMLAttributes } from "react";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./textarea.module.css";
 
+export type TextareaSize = "small" | "medium" | "large";
+
 export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   ref?: Ref<HTMLTextAreaElement>;
   invalid?: boolean;
+  size?: TextareaSize;
 }
 
 export function Textarea({
   ref,
   invalid,
+  size = "medium",
   disabled,
   id,
   className,
@@ -24,6 +28,7 @@ export function Textarea({
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const classes = [
     styles.root,
+    styles[size],
     resolvedInvalid ? styles.invalid : "",
     className,
   ]

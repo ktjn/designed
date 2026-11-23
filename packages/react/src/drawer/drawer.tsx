@@ -9,6 +9,8 @@ import type {
 } from "react";
 import { createContext, useContext } from "react";
 import buttonStyles from "../button/button.module.css";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import type { OverlayFocusTarget } from "../dialog/overlay-focus.js";
 import {
   PortalActivityContext,
@@ -133,13 +135,15 @@ function DrawerTrigger({
 
 function DrawerContent({
   side,
-  closeLabel = "Close",
+  closeLabel,
   showCloseButton = true,
   backdropClassName,
   className,
   children,
   ...rest
 }: DrawerContentProps) {
+  const Icon = useIconOverride("close", CloseIcon);
+  const resolvedCloseLabel = useI18nMessage("close", closeLabel, "Close");
   const inheritedSide = useContext(DrawerSideContext);
   const resolvedSide = side ?? inheritedSide;
   const { container, scopeRef } = useDialogPortalContainer();
@@ -166,10 +170,10 @@ function DrawerContent({
           >
             {showCloseButton ? (
               <BaseDrawer.Close
-                aria-label={closeLabel}
+                aria-label={resolvedCloseLabel}
                 className={styles.iconClose}
               >
-                <CloseIcon aria-hidden />
+                <Icon aria-hidden />
               </BaseDrawer.Close>
             ) : null}
             {children}

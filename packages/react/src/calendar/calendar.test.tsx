@@ -1,8 +1,15 @@
+import type { IconProps } from "@ktjn/designed-icons";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
+import { I18nProvider } from "../designed-provider/i18n-provider.js";
+import { IconProvider } from "../designed-provider/icon-provider.js";
 import { Calendar, type CalendarProps } from "./calendar";
+
+function CustomChevronIcon(props: IconProps) {
+  return <svg data-testid="custom-icon" {...props} />;
+}
 
 describe("Calendar", () => {
   it("selects a date and emits an ISO YYYY-MM-DD string", async () => {
@@ -225,5 +232,46 @@ describe("Calendar", () => {
   it("has no automatically detectable accessibility violations", async () => {
     const { container } = render(<Calendar defaultValue="2026-05-15" />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders the overridden chevron icon from IconProvider", () => {
+    render(
+      <IconProvider overrides={{ chevronLeft: CustomChevronIcon }}>
+        <Calendar defaultValue="2026-05-15" />
+      </IconProvider>,
+    );
+    expect(screen.getAllByTestId("custom-icon")).toHaveLength(1);
+  });
+
+  it("uses month-navigation labels from I18nProvider but lets explicit props win", () => {
+    const { rerender } = render(
+      <I18nProvider
+        messages={{
+          previousMonth: "Mois précédent",
+          nextMonth: "Mois suivant",
+        }}
+      >
+        <Calendar defaultValue="2026-05-15" />
+      </I18nProvider>,
+    );
+    expect(screen.getByRole("button", { name: "Mois précédent" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Mois suivant" })).toBeTruthy();
+
+    rerender(
+      <I18nProvider
+        messages={{
+          previousMonth: "Mois précédent",
+          nextMonth: "Mois suivant",
+        }}
+      >
+        <Calendar
+          defaultValue="2026-05-15"
+          previousMonthLabel="Back"
+          nextMonthLabel="Forward"
+        />
+      </I18nProvider>,
+    );
+    expect(screen.getByRole("button", { name: "Back" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Forward" })).toBeTruthy();
   });
 });

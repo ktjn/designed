@@ -23,4 +23,14 @@ describe("Textarea", () => {
     render(<Textarea aria-label="Bio" ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
   });
+
+  it("applies the small size class", () => {
+    render(<Textarea aria-label="Bio" size="small" />);
+    expect(screen.getByRole("textbox").className).toContain("small");
+  });
+
+  it("applies the large size class", () => {
+    render(<Textarea aria-label="Bio" size="large" />);
+    expect(screen.getByRole("textbox").className).toContain("large");
+  });
 });

@@ -42,3 +42,18 @@
   color: var(--ds-color-status-danger-foreground);
   border-color: var(--ds-color-status-danger-border);
 }
+
+.small {
+  padding-block: 0.075rem;
+  padding-inline: 0.3rem;
+}
+
+.medium {
+  padding-block: 0.125rem;
+  padding-inline: 0.5rem;
+}
+
+.large {
+  padding-block: 0.156rem;
+  padding-inline: 0.625rem;
+}

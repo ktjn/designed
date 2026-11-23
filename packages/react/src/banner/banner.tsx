@@ -6,6 +6,8 @@ import {
   InfoIcon,
 } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./banner.module.css";
 
 export type BannerVariant = "info" | "success" | "warning" | "danger";
@@ -22,13 +24,6 @@ export interface BannerProps
   children?: ReactNode;
 }
 
-const variantIcons = {
-  info: InfoIcon,
-  success: CheckIcon,
-  warning: AlertTriangleIcon,
-  danger: AlertCircleIcon,
-} as const;
-
 function hasRenderableContent(node: ReactNode): boolean {
   return node != null && typeof node !== "boolean" && node !== "";
 }
@@ -40,17 +35,36 @@ export function Banner({
   icon,
   action,
   onDismiss,
-  dismissLabel = "Dismiss",
+  dismissLabel,
   children,
   role,
   className,
   ...rest
 }: BannerProps) {
+  const resolvedDismissLabel = useI18nMessage(
+    "dismiss",
+    dismissLabel,
+    "Dismiss",
+  );
+  const InfoVariantIcon = useIconOverride("info", InfoIcon);
+  const SuccessVariantIcon = useIconOverride("check", CheckIcon);
+  const WarningVariantIcon = useIconOverride(
+    "alertTriangle",
+    AlertTriangleIcon,
+  );
+  const DangerVariantIcon = useIconOverride("alertCircle", AlertCircleIcon);
+  const CloseButtonIcon = useIconOverride("close", CloseIcon);
   const defaultRole =
     variant === "danger" || variant === "warning" ? "alert" : "status";
   const classes = [styles.root, styles[variant], className]
     .filter(Boolean)
     .join(" ");
+  const variantIcons = {
+    info: InfoVariantIcon,
+    success: SuccessVariantIcon,
+    warning: WarningVariantIcon,
+    danger: DangerVariantIcon,
+  } as const;
   const DefaultIcon = variantIcons[variant];
   const resolvedIcon =
     icon === undefined ? (
@@ -97,11 +111,11 @@ export function Banner({
         <button
           type="button"
           data-slot="banner-dismiss"
-          aria-label={dismissLabel}
+          aria-label={resolvedDismissLabel}
           className={styles.dismiss}
           onClick={onDismiss}
         >
-          <CloseIcon aria-hidden="true" />
+          <CloseButtonIcon aria-hidden="true" />
         </button>
       ) : null}
     </div>

@@ -44,6 +44,20 @@
   cursor: not-allowed;
 }
 
+.small .input {
+  padding-block: calc(var(--ds-space-control-block) * 0.6);
+}
+
+.medium .input {
+  padding-block: var(--ds-space-control-block);
+}
+
+.large .input {
+  padding-block: calc(var(--ds-space-control-block) * 1.25);
+  font-size: var(--ds-font-size-200);
+  line-height: var(--ds-font-line-height-200);
+}
+
 .trigger {
   display: inline-flex;
   align-items: center;

@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, KeyboardEvent, ReactNode, Ref } from "react";
 import { useRef, useState } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./tree-view.module.css";
 
 export interface TreeViewNode<T = unknown> {
@@ -70,6 +71,7 @@ export function TreeView<T = unknown>({
   className,
   ...rest
 }: TreeViewProps<T>) {
+  const ToggleIcon = useIconOverride("chevronRight", ChevronRightIcon);
   const [internalSelected, setInternalSelected] = useState<string[]>(
     Array.from(defaultSelected),
   );
@@ -277,7 +279,7 @@ export function TreeView<T = unknown>({
                   toggleExpanded(node);
                 }}
               >
-                <ChevronRightIcon aria-hidden />
+                <ToggleIcon aria-hidden />
               </button>
             ) : (
               <span className={styles.togglePlaceholder} />

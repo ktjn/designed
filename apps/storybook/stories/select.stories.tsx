@@ -45,6 +45,40 @@ export const Default: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <Select items={items}>
+        <Select.Trigger aria-label="Small" size="small">
+          <Select.Value placeholder="Small" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Content>
+      </Select>
+      <Select items={items}>
+        <Select.Trigger aria-label="Medium" size="medium">
+          <Select.Value placeholder="Medium" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Content>
+      </Select>
+      <Select items={items}>
+        <Select.Trigger aria-label="Large" size="large">
+          <Select.Value placeholder="Large" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="basic">Basic</Select.Item>
+          <Select.Item value="pro">Pro</Select.Item>
+        </Select.Content>
+      </Select>
+    </div>
+  ),
+};
+
 export const Invalid: Story = {
   render: () => (
     <Field invalid>

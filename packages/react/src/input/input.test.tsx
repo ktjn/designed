@@ -29,4 +29,14 @@ describe("Input", () => {
     expect(input.name).toBe("email");
     expect(input.value).toBe("a@b.com");
   });
+
+  it("applies the small size class", () => {
+    render(<Input aria-label="Email" size="small" />);
+    expect(screen.getByRole("textbox").className).toContain("small");
+  });
+
+  it("applies the large size class", () => {
+    render(<Input aria-label="Email" size="large" />);
+    expect(screen.getByRole("textbox").className).toContain("large");
+  });
 });

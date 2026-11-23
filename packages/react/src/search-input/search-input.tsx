@@ -1,6 +1,7 @@
 import { CloseIcon, SearchIcon } from "@ktjn/designed-icons";
 import type { InputHTMLAttributes, KeyboardEvent, Ref } from "react";
 import { useState } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { InputGroup } from "../input-group/input-group.js";
 import styles from "./search-input.module.css";
 
@@ -32,6 +33,8 @@ export function SearchInput({
 }: SearchInputProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const currentValue = value ?? internalValue;
+  const SearchFieldIcon = useIconOverride("search", SearchIcon);
+  const ClearIcon = useIconOverride("close", CloseIcon);
 
   function setValue(next: string) {
     if (value === undefined) {
@@ -56,7 +59,7 @@ export function SearchInput({
   return (
     <InputGroup invalid={invalid} className={className}>
       <InputGroup.Addon>
-        <SearchIcon aria-hidden />
+        <SearchFieldIcon aria-hidden />
       </InputGroup.Addon>
       <InputGroup.Input
         ref={ref}
@@ -77,7 +80,7 @@ export function SearchInput({
             onClick={clear}
             className={styles.clear}
           >
-            <CloseIcon aria-hidden />
+            <ClearIcon aria-hidden />
           </button>
         </InputGroup.Addon>
       ) : null}

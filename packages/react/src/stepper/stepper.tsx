@@ -1,5 +1,6 @@
 import { CheckIcon } from "@ktjn/designed-icons";
 import type { OlHTMLAttributes, ReactNode, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./stepper.module.css";
 
 export type StepperOrientation = "horizontal" | "vertical";
@@ -26,6 +27,7 @@ export function Stepper({
   className,
   ...rest
 }: StepperProps) {
+  const Icon = useIconOverride("check", CheckIcon);
   const classes = [
     styles.root,
     orientation === "vertical" ? styles.vertical : undefined,
@@ -56,7 +58,7 @@ export function Stepper({
               className={styles.indicator}
               aria-hidden="true"
             >
-              {status === "complete" ? <CheckIcon aria-hidden /> : index + 1}
+              {status === "complete" ? <Icon aria-hidden /> : index + 1}
             </span>
             <div data-slot="stepper-content" className={styles.content}>
               <span data-slot="stepper-label" className={styles.label}>

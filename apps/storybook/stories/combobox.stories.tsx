@@ -37,6 +37,25 @@ export const Default: Story = {
   ),
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <Combobox items={items}>
+        <Combobox.Input placeholder="Small" size="small" />
+        <Combobox.Content />
+      </Combobox>
+      <Combobox items={items}>
+        <Combobox.Input placeholder="Medium" size="medium" />
+        <Combobox.Content />
+      </Combobox>
+      <Combobox items={items}>
+        <Combobox.Input placeholder="Large" size="large" />
+        <Combobox.Content />
+      </Combobox>
+    </div>
+  ),
+};
+
 export const Invalid: Story = {
   render: () => (
     <Field invalid>

@@ -6,6 +6,7 @@ import {
   MinusIcon,
 } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./status-indicator.module.css";
 
 export type StatusIndicatorVariant =
@@ -24,14 +25,6 @@ export interface StatusIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
   children?: ReactNode;
 }
 
-const variantIcons = {
-  neutral: MinusIcon,
-  info: InfoIcon,
-  success: CheckIcon,
-  warning: AlertTriangleIcon,
-  danger: AlertCircleIcon,
-} as const;
-
 export function StatusIndicator({
   ref,
   variant = "neutral",
@@ -40,6 +33,21 @@ export function StatusIndicator({
   children,
   ...rest
 }: StatusIndicatorProps) {
+  const NeutralIcon = useIconOverride("minus", MinusIcon);
+  const InfoVariantIcon = useIconOverride("info", InfoIcon);
+  const SuccessVariantIcon = useIconOverride("check", CheckIcon);
+  const WarningVariantIcon = useIconOverride(
+    "alertTriangle",
+    AlertTriangleIcon,
+  );
+  const DangerVariantIcon = useIconOverride("alertCircle", AlertCircleIcon);
+  const variantIcons = {
+    neutral: NeutralIcon,
+    info: InfoVariantIcon,
+    success: SuccessVariantIcon,
+    warning: WarningVariantIcon,
+    danger: DangerVariantIcon,
+  } as const;
   const classes = [styles.root, styles[variant], className]
     .filter(Boolean)
     .join(" ");

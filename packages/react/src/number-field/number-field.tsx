@@ -1,8 +1,11 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { MinusIcon, PlusIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./number-field.module.css";
+
+export type NumberFieldSize = "small" | "medium" | "large";
 
 export interface NumberFieldProps
   extends Omit<
@@ -20,6 +23,7 @@ export interface NumberFieldProps
   readOnly?: boolean;
   required?: boolean;
   invalid?: boolean;
+  size?: NumberFieldSize;
   name?: string;
   placeholder?: string;
   decrementLabel?: string;
@@ -38,6 +42,7 @@ export function NumberField({
   readOnly,
   required,
   invalid,
+  size = "medium",
   name,
   placeholder,
   decrementLabel = "Decrease",
@@ -50,12 +55,15 @@ export function NumberField({
   "aria-invalid": ariaInvalid,
   ...rest
 }: NumberFieldProps) {
+  const DecrementIcon = useIconOverride("minus", MinusIcon);
+  const IncrementIcon = useIconOverride("plus", PlusIcon);
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedInvalid = invalid ?? field?.invalid ?? false;
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
   const classes = [
     styles.root,
+    styles[size],
     resolvedInvalid ? styles.invalid : "",
     className,
   ]
@@ -89,7 +97,7 @@ export function NumberField({
           aria-label={decrementLabel}
           className={styles.button}
         >
-          <MinusIcon aria-hidden />
+          <DecrementIcon aria-hidden />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
           data-slot="number-field-input"
@@ -105,7 +113,7 @@ export function NumberField({
           aria-label={incrementLabel}
           className={styles.button}
         >
-          <PlusIcon aria-hidden />
+          <IncrementIcon aria-hidden />
         </BaseNumberField.Increment>
       </BaseNumberField.Group>
     </BaseNumberField.Root>

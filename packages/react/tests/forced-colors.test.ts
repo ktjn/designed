@@ -10,6 +10,7 @@ const srcDir = path.join(
 
 const stylesheetsWithForcedColors = [
   "accordion/accordion.module.css",
+  "anchor-nav/anchor-nav.module.css",
   "autocomplete/autocomplete.module.css",
   "avatar-group/avatar-group.module.css",
   "banner/banner.module.css",
@@ -20,6 +21,8 @@ const stylesheetsWithForcedColors = [
   "checkbox/checkbox.module.css",
   "checkbox-card/checkbox-card.module.css",
   "collapsible/collapsible.module.css",
+  "color-picker/color-picker.module.css",
+  "color-swatch/color-swatch.module.css",
   "combobox/combobox.module.css",
   "command-palette/command-palette.module.css",
   "context-menu/context-menu.module.css",

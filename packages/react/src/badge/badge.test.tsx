@@ -30,4 +30,14 @@ describe("Badge", () => {
     const { container } = render(<Badge variant="success">Active</Badge>);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it("applies the small size class", () => {
+    render(<Badge size="small">Small</Badge>);
+    expect(screen.getByText("Small").className).toContain("small");
+  });
+
+  it("applies the large size class", () => {
+    render(<Badge size="large">Large</Badge>);
+    expect(screen.getByText("Large").className).toContain("large");
+  });
 });

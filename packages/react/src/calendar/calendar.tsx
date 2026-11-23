@@ -1,6 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, KeyboardEvent, Ref } from "react";
 import { useMemo, useRef, useState } from "react";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./calendar.module.css";
 
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -177,14 +179,26 @@ export function Calendar({
   locale,
   weekStartsOn,
   disabled = false,
-  previousMonthLabel = "Previous month",
-  nextMonthLabel = "Next month",
+  previousMonthLabel,
+  nextMonthLabel,
   month,
   defaultMonth,
   onMonthChange,
   className,
   ...rest
 }: CalendarProps) {
+  const PreviousIcon = useIconOverride("chevronLeft", ChevronLeftIcon);
+  const NextIcon = useIconOverride("chevronRight", ChevronRightIcon);
+  const resolvedPreviousMonthLabel = useI18nMessage(
+    "previousMonth",
+    previousMonthLabel,
+    "Previous month",
+  );
+  const resolvedNextMonthLabel = useI18nMessage(
+    "nextMonth",
+    nextMonthLabel,
+    "Next month",
+  );
   const isRangeMode = mode === "range";
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const selectedIso = value ?? internalValue;
@@ -382,11 +396,11 @@ export function Calendar({
           type="button"
           data-slot="calendar-previous"
           className={styles.navButton}
-          aria-label={previousMonthLabel}
+          aria-label={resolvedPreviousMonthLabel}
           disabled={disabled}
           onClick={() => shiftMonth(-1)}
         >
-          <ChevronLeftIcon aria-hidden />
+          <PreviousIcon aria-hidden />
         </button>
         <span
           data-slot="calendar-month-label"
@@ -399,11 +413,11 @@ export function Calendar({
           type="button"
           data-slot="calendar-next"
           className={styles.navButton}
-          aria-label={nextMonthLabel}
+          aria-label={resolvedNextMonthLabel}
           disabled={disabled}
           onClick={() => shiftMonth(1)}
         >
-          <ChevronRightIcon aria-hidden />
+          <NextIcon aria-hidden />
         </button>
       </div>
       <table

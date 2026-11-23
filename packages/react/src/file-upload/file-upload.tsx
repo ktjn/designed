@@ -7,6 +7,8 @@ import type {
   Ref,
 } from "react";
 import { useEffect, useRef, useState } from "react";
+import { useI18nMessages } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { useFieldContext, useFieldControlId } from "../field/field-context.js";
 import styles from "./file-upload.module.css";
 
@@ -83,7 +85,7 @@ export function FileUpload({
   accept,
   prompt = "Choose files or drag and drop",
   hint,
-  getRemoveLabel = (file) => `Remove ${file.name}`,
+  getRemoveLabel,
   renderItem,
   id,
   className,
@@ -91,6 +93,15 @@ export function FileUpload({
   "aria-invalid": ariaInvalid,
   ...rest
 }: FileUploadProps) {
+  const UploadZoneIcon = useIconOverride("upload", UploadIcon);
+  const RemoveIcon = useIconOverride("close", CloseIcon);
+  const messages = useI18nMessages();
+  const dictGetRemoveLabel = messages.getRemoveLabel;
+  const resolvedGetRemoveLabel =
+    getRemoveLabel ??
+    (dictGetRemoveLabel
+      ? (file: File) => dictGetRemoveLabel(file.name)
+      : (file: File) => `Remove ${file.name}`);
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
@@ -185,7 +196,7 @@ export function FileUpload({
           className={styles.input}
           {...rest}
         />
-        <UploadIcon aria-hidden className={styles.uploadIcon} />
+        <UploadZoneIcon aria-hidden className={styles.uploadIcon} />
         <p data-slot="file-upload-prompt" className={styles.prompt}>
           {prompt}
         </p>
@@ -227,11 +238,11 @@ export function FileUpload({
                 type="button"
                 data-slot="file-upload-item-remove"
                 disabled={resolvedDisabled}
-                aria-label={getRemoveLabel(file)}
+                aria-label={resolvedGetRemoveLabel(file)}
                 onClick={() => removeFile(index)}
                 className={styles.remove}
               >
-                <CloseIcon aria-hidden />
+                <RemoveIcon aria-hidden />
               </button>
             </li>
           ))}

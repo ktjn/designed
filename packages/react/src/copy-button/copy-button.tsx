@@ -1,6 +1,7 @@
 import { CheckIcon, CopyIcon } from "@ktjn/designed-icons";
 import { useState } from "react";
 import { Button, type ButtonProps } from "../button/button.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { LiveRegion } from "../live-region/live-region.js";
 
 export interface CopyButtonProps
@@ -24,6 +25,8 @@ export function CopyButton({
   ...rest
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const CopiedIcon = useIconOverride("check", CheckIcon);
+  const CopyActionIcon = useIconOverride("copy", CopyIcon);
 
   async function handleClick() {
     const text = typeof value === "function" ? value() : value;
@@ -45,7 +48,7 @@ export function CopyButton({
         onClick={handleClick}
         {...rest}
       >
-        {copied ? <CheckIcon aria-hidden /> : <CopyIcon aria-hidden />}
+        {copied ? <CopiedIcon aria-hidden /> : <CopyActionIcon aria-hidden />}
         {copied ? copiedLabel : label}
       </Button>
       <LiveRegion>{copied ? copiedLabel : ""}</LiveRegion>

@@ -1,6 +1,7 @@
 import { EyeIcon, EyeOffIcon } from "@ktjn/designed-icons";
 import type { InputHTMLAttributes, Ref } from "react";
 import { useState } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import { InputGroup } from "../input-group/input-group.js";
 import styles from "./password-input.module.css";
 
@@ -28,6 +29,8 @@ export function PasswordInput({
 }: PasswordInputProps) {
   const [internalVisible, setInternalVisible] = useState(defaultVisible);
   const currentVisible = visible ?? internalVisible;
+  const HideIcon = useIconOverride("eyeOff", EyeOffIcon);
+  const ShowIcon = useIconOverride("eye", EyeIcon);
 
   function toggleVisible() {
     const next = !currentVisible;
@@ -55,11 +58,7 @@ export function PasswordInput({
           onClick={toggleVisible}
           className={styles.toggle}
         >
-          {currentVisible ? (
-            <EyeOffIcon aria-hidden />
-          ) : (
-            <EyeIcon aria-hidden />
-          )}
+          {currentVisible ? <HideIcon aria-hidden /> : <ShowIcon aria-hidden />}
         </button>
       </InputGroup.Addon>
     </InputGroup>

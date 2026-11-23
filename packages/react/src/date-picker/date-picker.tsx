@@ -14,6 +14,8 @@ import {
   parseIsoDate,
   type WeekdayIndex,
 } from "../calendar/calendar.js";
+import { useI18nMessage } from "../designed-provider/i18n-provider.js";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import {
   useDialogPortalContainer,
   usePortalActivity,
@@ -23,11 +25,12 @@ import styles from "./date-picker.module.css";
 
 export type DatePickerSide = "top" | "right" | "bottom" | "left";
 export type DatePickerAlign = "start" | "center" | "end";
+export type DatePickerSize = "small" | "medium" | "large";
 
 export interface DatePickerProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    "type" | "value" | "defaultValue" | "onChange"
+    "type" | "value" | "defaultValue" | "onChange" | "size"
   > {
   ref?: Ref<HTMLInputElement>;
   mode?: CalendarMode;
@@ -42,6 +45,7 @@ export interface DatePickerProps
   locale?: string;
   weekStartsOn?: WeekdayIndex;
   invalid?: boolean;
+  size?: DatePickerSize;
   openCalendarLabel?: string;
   previousMonthLabel?: string;
   nextMonthLabel?: string;
@@ -102,10 +106,11 @@ export function DatePicker({
   locale,
   weekStartsOn,
   invalid,
+  size = "medium",
   disabled,
   readOnly,
   placeholder = "YYYY-MM-DD",
-  openCalendarLabel = "Choose date",
+  openCalendarLabel,
   previousMonthLabel,
   nextMonthLabel,
   isDateDisabled,
@@ -123,6 +128,22 @@ export function DatePicker({
   "aria-invalid": ariaInvalid,
   ...rest
 }: DatePickerProps) {
+  const Icon = useIconOverride("calendar", CalendarIcon);
+  const resolvedOpenCalendarLabel = useI18nMessage(
+    "openCalendar",
+    openCalendarLabel,
+    "Choose date",
+  );
+  const resolvedPreviousMonthLabel = useI18nMessage(
+    "previousMonth",
+    previousMonthLabel,
+    "Previous month",
+  );
+  const resolvedNextMonthLabel = useI18nMessage(
+    "nextMonth",
+    nextMonthLabel,
+    "Next month",
+  );
   const field = useFieldContext();
   const resolvedId = useFieldControlId(id);
   const resolvedDisabled = disabled ?? field?.disabled ?? false;
@@ -161,6 +182,7 @@ export function DatePicker({
     invalid ?? (field?.invalid || validationFailed || false);
   const classes = [
     styles.root,
+    styles[size],
     resolvedInvalid ? styles.invalid : "",
     className,
   ]
@@ -275,11 +297,11 @@ export function DatePicker({
         />
         <BasePopover.Trigger
           data-slot="date-picker-trigger"
-          aria-label={openCalendarLabel}
+          aria-label={resolvedOpenCalendarLabel}
           disabled={resolvedDisabled || Boolean(readOnly)}
           className={styles.trigger}
         >
-          <CalendarIcon aria-hidden />
+          <Icon aria-hidden />
         </BasePopover.Trigger>
       </div>
       <span hidden ref={scopeRef} />
@@ -306,8 +328,8 @@ export function DatePicker({
                 locale={locale}
                 weekStartsOn={weekStartsOn}
                 disabled={resolvedDisabled || Boolean(readOnly)}
-                previousMonthLabel={previousMonthLabel}
-                nextMonthLabel={nextMonthLabel}
+                previousMonthLabel={resolvedPreviousMonthLabel}
+                nextMonthLabel={resolvedNextMonthLabel}
                 onRangeValueChange={commitRangeValue}
               />
             ) : (
@@ -319,8 +341,8 @@ export function DatePicker({
                 locale={locale}
                 weekStartsOn={weekStartsOn}
                 disabled={resolvedDisabled || Boolean(readOnly)}
-                previousMonthLabel={previousMonthLabel}
-                nextMonthLabel={nextMonthLabel}
+                previousMonthLabel={resolvedPreviousMonthLabel}
+                nextMonthLabel={resolvedNextMonthLabel}
                 onValueChange={(next) => {
                   commitValidValue(next);
                   setOpen(false);

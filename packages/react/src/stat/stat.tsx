@@ -1,5 +1,6 @@
 import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "@ktjn/designed-icons";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./stat.module.css";
 
 export type StatTrend = "up" | "down" | "neutral";
@@ -14,12 +15,6 @@ export interface StatProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-const trendIcons = {
-  up: ArrowUpIcon,
-  down: ArrowDownIcon,
-  neutral: MinusIcon,
-} as const;
-
 export function Stat({
   ref,
   label,
@@ -31,6 +26,14 @@ export function Stat({
   children,
   ...rest
 }: StatProps) {
+  const UpIcon = useIconOverride("arrowUp", ArrowUpIcon);
+  const DownIcon = useIconOverride("arrowDown", ArrowDownIcon);
+  const NeutralIcon = useIconOverride("minus", MinusIcon);
+  const trendIcons = {
+    up: UpIcon,
+    down: DownIcon,
+    neutral: NeutralIcon,
+  } as const;
   const classes = [styles.root, className].filter(Boolean).join(" ");
   const deltaClasses = [styles.delta, styles[trend]].filter(Boolean).join(" ");
   const TrendIcon = trendIcons[trend];
