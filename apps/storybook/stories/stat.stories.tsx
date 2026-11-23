@@ -1,5 +1,6 @@
 import { Stat } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 const meta: Meta<typeof Stat> = {
   title: "Stat",
@@ -36,6 +37,8 @@ export const Trends: Story = {
       }}
     >
       <Stat
+        data-testid="stat-with-consumer-tone"
+        data-tone="success"
         label="Monthly revenue"
         value="$48,200"
         delta="+12.4%"
@@ -43,10 +46,12 @@ export const Trends: Story = {
         helpText="vs. prior 30 days"
       />
       <Stat
+        data-testid="stat-with-accent"
         label="Churn rate"
         value="2.1%"
         delta="-0.4%"
         trend="down"
+        tone="success"
         helpText="vs. prior 30 days"
       />
       <Stat
@@ -54,8 +59,18 @@ export const Trends: Story = {
         value="99.98%"
         delta="0.0%"
         trend="neutral"
+        tone="warning"
         helpText="SLA target 99.9%"
       />
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const consumerTone = canvas.getByTestId("stat-with-consumer-tone");
+    const accent = canvas.getByTestId("stat-with-accent");
+    await expect(getComputedStyle(consumerTone).borderBlockStartWidth).toBe(
+      "1px",
+    );
+    await expect(getComputedStyle(accent).borderBlockStartWidth).toBe("3px");
+  },
 };

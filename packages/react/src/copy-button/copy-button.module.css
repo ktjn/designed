@@ -1,0 +1,15 @@
+.compact {
+  flex-shrink: 0;
+}
+
+.compact.xs {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  font-size: 0.75rem;
+}
+
+.compact.sm {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  font-size: 0.875rem;
+}

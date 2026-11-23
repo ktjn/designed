@@ -51,3 +51,16 @@ export const Pulsing: Story = {
     </div>
   ),
 };
+
+export const CustomIcons: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+      <StatusIndicator variant="warning" icon={<span>△</span>}>
+        Degraded
+      </StatusIndicator>
+      <StatusIndicator variant="warning" icon={<span>◇</span>}>
+        Maintenance
+      </StatusIndicator>
+    </div>
+  ),
+};

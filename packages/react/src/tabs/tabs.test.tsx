@@ -40,6 +40,30 @@ describe("Tabs", () => {
     expect(screen.getByText("Password settings")).toBeTruthy();
   });
 
+  it("supports small tabs while preserving keyboard activation", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tabs defaultValue="account">
+        <Tabs.List>
+          <Tabs.Tab value="account" size="small">
+            Account
+          </Tabs.Tab>
+          <Tabs.Tab value="password" size="small">
+            Password
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="account">Account settings</Tabs.Panel>
+        <Tabs.Panel value="password">Password settings</Tabs.Panel>
+      </Tabs>,
+    );
+    const account = screen.getByRole("tab", { name: "Account" });
+    expect(account.getAttribute("data-size")).toBe("small");
+    expect(account.hasAttribute("size")).toBe(false);
+    account.focus();
+    await user.keyboard("{ArrowRight}{Enter}");
+    expect(screen.getByRole("tabpanel").textContent).toBe("Password settings");
+  });
+
   it("reports the selected value via onValueChange", async () => {
     const user = userEvent.setup();
     let value: unknown;

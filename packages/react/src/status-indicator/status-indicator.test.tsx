@@ -120,6 +120,37 @@ describe("StatusIndicator", () => {
     expect(root?.hasAttribute("data-pulse")).toBe(false);
   });
 
+  it("supports distinct decorative icon overrides within a variant", () => {
+    const { container, rerender } = render(
+      <>
+        <StatusIndicator variant="warning" icon={<span>△</span>}>
+          Degraded
+        </StatusIndicator>
+        <StatusIndicator variant="warning" icon={<span>◇</span>}>
+          Maintenance
+        </StatusIndicator>
+      </>,
+    );
+    for (const shape of ["△", "◇"]) {
+      expect(
+        screen.getByText(shape).closest('[aria-hidden="true"]'),
+      ).toBeTruthy();
+    }
+    expect(container.querySelector("svg")).toBeNull();
+    expect(screen.getByText("Degraded")).toBeTruthy();
+    expect(screen.getByText("Maintenance")).toBeTruthy();
+
+    rerender(
+      <StatusIndicator variant="loading" icon={null}>
+        Updating
+      </StatusIndicator>,
+    );
+    expect(
+      container.querySelector('[data-slot="status-indicator-spinner"]'),
+    ).toBeNull();
+    expect(screen.getByText("Updating")).toBeTruthy();
+  });
+
   it("renders numeric 0 children and omits label slot for null, undefined, booleans, and empty string", () => {
     const { container, rerender } = render(
       <StatusIndicator variant="info">{0}</StatusIndicator>,

@@ -17,6 +17,7 @@ import {
   useDialogPortalContainer,
   usePortalActivity,
 } from "../dialog/use-dialog-portal-container.js";
+import { LiveRegion } from "../live-region/live-region.js";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden.js";
 import styles from "./command-palette.module.css";
 
@@ -49,6 +50,8 @@ export interface CommandPaletteProps<
   placeholder?: string;
   searchLabel?: string;
   emptyMessage?: string;
+  status?: { kind: "loading" | "error"; message: string };
+  getResultsAnnouncement?: (count: number) => string;
   closeLabel?: string;
   enableGlobalShortcut?: boolean;
 }
@@ -86,6 +89,8 @@ export function CommandPalette<
   placeholder = "Type a command or search...",
   searchLabel = "Search commands",
   emptyMessage,
+  status,
+  getResultsAnnouncement,
   closeLabel,
   enableGlobalShortcut = false,
   className,
@@ -295,6 +300,20 @@ export function CommandPalette<
                 <CloseButtonIcon aria-hidden />
               </BaseDialog.Close>
             </div>
+            {status ? (
+              <div
+                data-slot="command-palette-status"
+                data-state={status.kind}
+                className={styles.empty}
+                aria-hidden="true"
+              >
+                {status.message}
+              </div>
+            ) : null}
+            <LiveRegion>
+              {status?.message ??
+                getResultsAnnouncement?.(filteredItems.length)}
+            </LiveRegion>
             <div
               data-slot="command-palette-list"
               id={listboxId}
@@ -302,7 +321,7 @@ export function CommandPalette<
               aria-label={title}
               className={styles.list}
             >
-              {flatItems.length === 0 ? (
+              {filteredItems.length === 0 && !status ? (
                 <div className={styles.empty}>{resolvedEmptyMessage}</div>
               ) : (
                 groupedSections.map(([group, groupItems]) => (

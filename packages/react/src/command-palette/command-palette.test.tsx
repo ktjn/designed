@@ -160,6 +160,67 @@ describe("CommandPalette", () => {
     expect(onSelect).toHaveBeenCalledExactlyOnceWith(replacement[0]);
   });
 
+  it("shows and announces search status without creating selectable options", () => {
+    const onSelect = vi.fn();
+    const { rerender } = render(
+      <CommandPalette
+        open
+        items={[]}
+        status={{ kind: "loading", message: "Searching…" }}
+        onSelect={onSelect}
+      />,
+    );
+
+    const listbox = screen.getByRole("listbox");
+    const announcement = screen.getByRole("status");
+    expect(announcement.textContent).toBe("Searching…");
+    expect(screen.queryByText("No matching commands")).toBeNull();
+    expect(screen.queryByRole("option")).toBeNull();
+    const statusRow = screen.getByText("Searching…", {
+      selector: '[data-slot="command-palette-status"]',
+    });
+    expect(statusRow.getAttribute("data-state")).toBe("loading");
+    expect(listbox.contains(statusRow)).toBe(false);
+
+    rerender(
+      <CommandPalette
+        open
+        items={COMMANDS}
+        status={{ kind: "error", message: "Search failed" }}
+        onSelect={onSelect}
+      />,
+    );
+
+    expect(screen.getByRole("status")).toBe(announcement);
+    expect(announcement.textContent).toBe("Search failed");
+    expect(statusRow.textContent).toBe("Search failed");
+    expect(statusRow.getAttribute("data-state")).toBe("error");
+    expect(screen.getAllByRole("option")).toHaveLength(COMMANDS.length);
+    fireEvent.keyDown(screen.getByRole("combobox"), { key: "Enter" });
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(COMMANDS[0]);
+  });
+
+  it("announces the displayed result count after filtering", () => {
+    render(
+      <CommandPalette
+        open
+        items={COMMANDS}
+        getResultsAnnouncement={(count: number) => `Results: ${count}`}
+      />,
+    );
+
+    const announcement = screen.getByRole("status");
+    expect(announcement.textContent).toBe("Results: 3");
+
+    const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: "config" } });
+    expect(announcement.textContent).toBe("Results: 1");
+
+    fireEvent.change(input, { target: { value: "no match" } });
+    expect(announcement.textContent).toBe("Results: 0");
+    expect(screen.getByText("No matching commands")).toBeTruthy();
+  });
+
   it("filters commands and invokes onSelect on click or Enter", () => {
     const onSelect = vi.fn();
     const onOpenChange = vi.fn();

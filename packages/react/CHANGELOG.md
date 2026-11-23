@@ -5,6 +5,7 @@
 ### Minor Changes
 
 - 349050c: Add polymorphic `render`, Table/Resizable/PageHeader/Stat, SegmentedControl, AvatarGroup, StatusIndicator, Banner, TagGroup, TagInput, Popconfirm, ContextualHelp, Timeline, RelativeTime, ColorSwatch, ColorPicker, AnchorNav, ErrorBoundary and DesignedProvider; add a canonical `size` prop to form controls.
+- **Breaking change for `Input`.** `InputProps.size` now takes `"small"`, `"medium"`, or `"large"`. The native numeric `size` attribute is no longer forwarded. Type wrappers that spread props into `Input` with `InputProps`, or omit `size` from `InputHTMLAttributes<HTMLInputElement>` if the wrapper handles sizing itself. Use a native `<input>` when you need the numeric attribute.
 
 ### Patch Changes
 

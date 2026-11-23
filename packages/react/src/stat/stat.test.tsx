@@ -41,6 +41,29 @@ describe("Stat", () => {
     expect(container.querySelector('[data-slot="stat-help-text"]')).toBeNull();
   });
 
+  it("sets an optional tone independently of the trend and extra content", () => {
+    const { rerender } = render(
+      <Stat
+        label="Latency"
+        value="90 ms"
+        tone="warning"
+        trend="up"
+        delta="+15 ms"
+        data-testid="stat"
+      >
+        <span>Last hour</span>
+      </Stat>,
+    );
+    expect(screen.getByTestId("stat").getAttribute("data-tone")).toBe(
+      "warning",
+    );
+    expect(screen.getByText("+15 ms").getAttribute("data-trend")).toBe("up");
+    expect(screen.getByText("Last hour")).toBeTruthy();
+
+    rerender(<Stat label="Latency" value="90 ms" data-testid="stat" />);
+    expect(screen.getByTestId("stat").hasAttribute("data-tone")).toBe(false);
+  });
+
   it("renders distinct decorative icons for up, down, and neutral trends", () => {
     const { container, rerender } = render(
       <Stat label="Conversion" value="4.2%" delta="+0.8%" trend="up" />,

@@ -17,6 +17,22 @@
   color: var(--ds-color-foreground-muted);
 }
 
+.info {
+  border-block-start: 3px solid var(--ds-color-status-info-border);
+}
+
+.success {
+  border-block-start: 3px solid var(--ds-color-status-success-border);
+}
+
+.warning {
+  border-block-start: 3px solid var(--ds-color-status-warning-border);
+}
+
+.danger {
+  border-block-start: 3px solid var(--ds-color-status-danger-border);
+}
+
 .value {
   font-size: var(--ds-font-size-300);
   line-height: var(--ds-font-line-height-200);
@@ -61,6 +77,6 @@
 
 @media (forced-colors: active) {
   .root {
-    border: 1px solid CanvasText;
+    border-color: CanvasText;
   }
 }

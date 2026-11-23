@@ -10,6 +10,7 @@ import type { ChangeEventDetails } from "../shared/change-event-details.js";
 import styles from "./tabs.module.css";
 
 export type TabsOrientation = "horizontal" | "vertical";
+export type TabsSize = "small" | "medium";
 
 export interface TabsRootProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
@@ -60,14 +61,19 @@ export interface TabsTabProps
   nativeButton?: boolean;
   value: unknown;
   disabled?: boolean;
+  size?: TabsSize;
   children?: ReactNode;
 }
 
-function TabsTab({ className, children, ...rest }: TabsTabProps) {
+function TabsTab({ className, children, size, ...rest }: TabsTabProps) {
+  const classes = [styles.tab, size === "small" && styles.small, className]
+    .filter(Boolean)
+    .join(" ");
   return (
     <BaseTabs.Tab
       data-slot="tabs-tab"
-      className={className ? `${styles.tab} ${className}` : styles.tab}
+      data-size={size}
+      className={classes}
       {...rest}
     >
       {children}

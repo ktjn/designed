@@ -47,7 +47,8 @@
   color: var(--ds-color-action-primary-default);
 }
 
-.icon {
+.icon,
+.indicator > :is(svg, img) {
   inline-size: 0.875rem;
   block-size: 0.875rem;
   flex-shrink: 0;

@@ -75,6 +75,7 @@ export type {
   CardFooterProps,
   CardHeaderProps,
   CardRootProps,
+  CardSectionProps,
   CardTitleProps,
 } from "./card/card.js";
 export { Card } from "./card/card.js";
@@ -145,8 +146,16 @@ export type {
   ContextualHelpVariant,
 } from "./contextual-help/contextual-help.js";
 export { ContextualHelp } from "./contextual-help/contextual-help.js";
-export type { CopyButtonProps } from "./copy-button/copy-button.js";
+export type {
+  CopyButtonProps,
+  CopyButtonSize,
+} from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
+export type {
+  CopyToClipboardResult,
+  CopyToClipboardState,
+} from "./copy-button/use-copy-to-clipboard.js";
+export { useCopyToClipboard } from "./copy-button/use-copy-to-clipboard.js";
 export type {
   DatePickerProps,
   DatePickerSize,
@@ -421,7 +430,7 @@ export type {
   StackProps,
 } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
-export type { StatProps, StatTrend } from "./stat/stat.js";
+export type { StatProps, StatTone, StatTrend } from "./stat/stat.js";
 export { Stat } from "./stat/stat.js";
 export type {
   StatusIndicatorProps,
@@ -454,6 +463,7 @@ export type {
   TabsListProps,
   TabsPanelProps,
   TabsRootProps,
+  TabsSize,
   TabsTabProps,
 } from "./tabs/tabs.js";
 export { Tabs } from "./tabs/tabs.js";
