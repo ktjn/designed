@@ -181,6 +181,48 @@ describe("RelativeTime", () => {
     );
   });
 
+  it("formats elapsed time from an unrounded signed difference", () => {
+    function formatElapsed(elapsedMilliseconds: number): string {
+      const seconds = Math.max(0, Math.floor(elapsedMilliseconds / 1000));
+      if (seconds < 60) return `${seconds}s ago`;
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+      return `${Math.floor(seconds / 3600)}h ago`;
+    }
+
+    const { rerender } = render(
+      <RelativeTime
+        date="2026-06-15T11:59:47.500Z"
+        now={FIXED_NOW}
+        formatter={formatElapsed}
+        data-testid="rt"
+      />,
+    );
+    const time = screen.getByTestId("rt");
+    expect(time.textContent).toBe("12s ago");
+    expect(time.getAttribute("datetime")).toBe("2026-06-15T11:59:47.500Z");
+    expect(time.getAttribute("title")).toBeTruthy();
+
+    rerender(
+      <RelativeTime
+        date={FIXED_NOW.getTime() + 1000}
+        now={FIXED_NOW}
+        formatter={formatElapsed}
+        data-testid="rt"
+      />,
+    );
+    expect(time.textContent).toBe("0s ago");
+
+    rerender(
+      <RelativeTime
+        date="2026-06-14T11:00:00.000Z"
+        now={FIXED_NOW}
+        formatter={formatElapsed}
+        data-testid="rt"
+      />,
+    );
+    expect(time.textContent).toBe("25h ago");
+  });
+
   it("supports numeric auto and always", () => {
     const yesterday = new Date("2026-06-14T12:00:00.000Z");
 

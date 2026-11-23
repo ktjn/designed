@@ -43,3 +43,17 @@ export const Default: Story = {
     </Card>
   ),
 };
+
+export const Section: Story = {
+  render: () => (
+    <Card as="section" aria-labelledby="deployment-summary">
+      <Card.Header>
+        <span>Release status</span>
+        <Card.Title as="h2" id="deployment-summary">
+          Deployment summary
+        </Card.Title>
+      </Card.Header>
+      <Card.Content>All services are running the latest release.</Card.Content>
+    </Card>
+  ),
+};

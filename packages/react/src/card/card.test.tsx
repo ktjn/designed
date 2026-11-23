@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import { Button } from "../button/button";
@@ -32,6 +33,30 @@ describe("Card", () => {
     expect(
       screen.getByRole("heading", { name: "Workspace", level: 2 }),
     ).toBeTruthy();
+  });
+
+  it("composes a labeled section with an eyebrow and forwards its ref", () => {
+    const sectionRef = createRef<HTMLElement>();
+    const defaultRef = createRef<HTMLDivElement>();
+
+    render(
+      <>
+        <Card as="section" ref={sectionRef} aria-labelledby="workspace-title">
+          <Card.Header>
+            <span>Settings</span>
+            <Card.Title id="workspace-title">Workspace</Card.Title>
+          </Card.Header>
+        </Card>
+        <Card ref={defaultRef}>Default card</Card>
+      </>,
+    );
+    const section = screen.getByRole("region", { name: "Workspace" });
+    expect(section.tagName).toBe("SECTION");
+    expect(section).toBe(sectionRef.current);
+    expect(screen.getByText("Settings").nextElementSibling?.id).toBe(
+      "workspace-title",
+    );
+    expect(defaultRef.current?.tagName).toBe("DIV");
   });
 
   it("has no automatically detectable accessibility violations", async () => {

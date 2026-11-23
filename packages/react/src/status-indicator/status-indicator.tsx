@@ -22,6 +22,7 @@ export interface StatusIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
   ref?: Ref<HTMLSpanElement>;
   variant?: StatusIndicatorVariant;
   pulse?: boolean;
+  icon?: ReactNode;
   children?: ReactNode;
 }
 
@@ -29,6 +30,7 @@ export function StatusIndicator({
   ref,
   variant = "neutral",
   pulse = false,
+  icon,
   className,
   children,
   ...rest
@@ -55,6 +57,12 @@ export function StatusIndicator({
     children != null && typeof children !== "boolean" && children !== "";
 
   const renderCue = () => {
+    if (icon !== undefined) {
+      return icon == null || typeof icon === "boolean" || icon === ""
+        ? null
+        : icon;
+    }
+
     if (variant === "pending") {
       return (
         <span
@@ -78,6 +86,7 @@ export function StatusIndicator({
     const Icon = variantIcons[variant];
     return <Icon aria-hidden="true" className={styles.icon} />;
   };
+  const cue = renderCue();
 
   return (
     <span
@@ -88,9 +97,11 @@ export function StatusIndicator({
       className={classes}
       {...rest}
     >
-      <span className={styles.indicator} aria-hidden="true">
-        {renderCue()}
-      </span>
+      {cue !== null ? (
+        <span className={styles.indicator} aria-hidden="true">
+          {cue}
+        </span>
+      ) : null}
       {hasLabel ? (
         <span data-slot="status-indicator-label" className={styles.label}>
           {children}

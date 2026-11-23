@@ -78,3 +78,16 @@ export const Formats: Story = {
     </Stack>
   ),
 };
+
+export const CustomFormatter: Story = {
+  args: {
+    date: "2026-06-14T11:00:00.000Z",
+    now: FIXED_NOW,
+    formatter: (elapsedMilliseconds) => {
+      const seconds = Math.max(0, Math.floor(elapsedMilliseconds / 1000));
+      if (seconds < 60) return `${seconds}s ago`;
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+      return `${Math.floor(seconds / 3600)}h ago`;
+    },
+  },
+};

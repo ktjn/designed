@@ -22,6 +22,15 @@
     border-color 120ms ease;
 }
 
+.small {
+  box-sizing: border-box;
+  min-block-size: 1.75rem;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  padding-block: calc(var(--ds-space-control-block) * 0.5);
+  padding-inline: calc(var(--ds-space-control-inline) * 0.75);
+}
+
 .tab:hover:not([data-disabled], [data-active]) {
   color: var(--ds-color-foreground-default);
   border-bottom-color: var(--ds-color-border-control);

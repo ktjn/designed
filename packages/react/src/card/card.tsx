@@ -2,7 +2,14 @@ import type { HTMLAttributes, ReactNode, Ref } from "react";
 import styles from "./card.module.css";
 
 export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
+  as?: "div";
   ref?: Ref<HTMLDivElement>;
+  children?: ReactNode;
+}
+
+export interface CardSectionProps extends HTMLAttributes<HTMLElement> {
+  as: "section" | "article";
+  ref?: Ref<HTMLElement>;
   children?: ReactNode;
 }
 
@@ -33,9 +40,14 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-function CardRoot({ ref, className, ...rest }: CardRootProps) {
+function CardRoot({ className, ...props }: CardRootProps | CardSectionProps) {
   const classes = [styles.root, className].filter(Boolean).join(" ");
-  return <div ref={ref} data-slot="card" className={classes} {...rest} />;
+  if (props.as === undefined || props.as === "div") {
+    const { as, ...rest } = props;
+    return <div data-slot="card" className={classes} {...rest} />;
+  }
+  const { as: Element, ...rest } = props;
+  return <Element data-slot="card" className={classes} {...rest} />;
 }
 
 function CardHeader({ className, ...rest }: CardHeaderProps) {

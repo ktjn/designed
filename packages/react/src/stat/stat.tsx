@@ -4,6 +4,7 @@ import { useIconOverride } from "../designed-provider/icon-provider.js";
 import styles from "./stat.module.css";
 
 export type StatTrend = "up" | "down" | "neutral";
+export type StatTone = "info" | "success" | "warning" | "danger";
 
 export interface StatProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
@@ -11,6 +12,7 @@ export interface StatProps extends HTMLAttributes<HTMLDivElement> {
   value: ReactNode;
   delta?: ReactNode;
   trend?: StatTrend;
+  tone?: StatTone;
   helpText?: ReactNode;
   children?: ReactNode;
 }
@@ -21,6 +23,7 @@ export function Stat({
   value,
   delta,
   trend = "neutral",
+  tone,
   helpText,
   className,
   children,
@@ -34,7 +37,9 @@ export function Stat({
     down: DownIcon,
     neutral: NeutralIcon,
   } as const;
-  const classes = [styles.root, className].filter(Boolean).join(" ");
+  const classes = [styles.root, tone && styles[tone], className]
+    .filter(Boolean)
+    .join(" ");
   const deltaClasses = [styles.delta, styles[trend]].filter(Boolean).join(" ");
   const TrendIcon = trendIcons[trend];
   const hasDelta = delta != null && typeof delta !== "boolean" && delta !== "";
@@ -42,7 +47,13 @@ export function Stat({
     helpText != null && typeof helpText !== "boolean" && helpText !== "";
 
   return (
-    <div ref={ref} data-slot="stat" className={classes} {...rest}>
+    <div
+      ref={ref}
+      data-slot="stat"
+      data-tone={tone}
+      className={classes}
+      {...rest}
+    >
       <span data-slot="stat-label" className={styles.label}>
         {label}
       </span>

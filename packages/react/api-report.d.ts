@@ -331,7 +331,13 @@ export declare function Calendar({ ref, mode, value, defaultValue, onValueChange
 // ---- card/card.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export interface CardRootProps extends HTMLAttributes<HTMLDivElement> {
+    as?: "div";
     ref?: Ref<HTMLDivElement>;
+    children?: ReactNode;
+}
+export interface CardSectionProps extends HTMLAttributes<HTMLElement> {
+    as: "section" | "article";
+    ref?: Ref<HTMLElement>;
     children?: ReactNode;
 }
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -355,7 +361,7 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     children?: ReactNode;
 }
-declare function CardRoot({ ref, className, ...rest }: CardRootProps): import("react").JSX.Element;
+declare function CardRoot({ className, ...props }: CardRootProps | CardSectionProps): import("react").JSX.Element;
 declare function CardHeader({ className, ...rest }: CardHeaderProps): import("react").JSX.Element;
 declare function CardTitle({ as: Heading, className, ...rest }: CardTitleProps): import("react").JSX.Element;
 declare function CardDescription({ className, ...rest }: CardDescriptionProps): import("react").JSX.Element;
@@ -593,10 +599,15 @@ export interface CommandPaletteProps<Item extends CommandPaletteItem = CommandPa
     placeholder?: string;
     searchLabel?: string;
     emptyMessage?: string;
+    status?: {
+        kind: "loading" | "error";
+        message: string;
+    };
+    getResultsAnnouncement?: (count: number) => string;
     closeLabel?: string;
     enableGlobalShortcut?: boolean;
 }
-export declare function CommandPalette<Item extends CommandPaletteItem = CommandPaletteItem>({ items, open, defaultOpen, onOpenChange, query: controlledQuery, onQueryChange, filter, renderItem, onSelect, title, placeholder, searchLabel, emptyMessage, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps<Item>): import("react").JSX.Element;
+export declare function CommandPalette<Item extends CommandPaletteItem = CommandPaletteItem>({ items, open, defaultOpen, onOpenChange, query: controlledQuery, onQueryChange, filter, renderItem, onSelect, title, placeholder, searchLabel, emptyMessage, status, getResultsAnnouncement, closeLabel, enableGlobalShortcut, className, ...rest }: CommandPaletteProps<Item>): import("react").JSX.Element;
 
 
 // ---- container/container.d.ts ----
@@ -749,16 +760,36 @@ export declare function ContextualHelp({ ref, heading, children, footer, variant
 
 
 // ---- copy-button/copy-button.d.ts ----
-import { type ButtonProps } from "../button/button.js";
-export interface CopyButtonProps extends Omit<ButtonProps, "onClick" | "onCopy" | "value" | "children"> {
+import { type ButtonProps, type ButtonSize } from "../button/button.js";
+export type CopyButtonSize = ButtonSize | "xs" | "sm";
+type CopyButtonOverrides = "onClick" | "onCopy" | "value" | "children" | "size";
+export interface CopyButtonProps extends Omit<ButtonProps, CopyButtonOverrides> {
     value: string | (() => string);
     label?: string;
     copiedLabel?: string;
+    errorLabel?: string;
     copiedDuration?: number;
+    size?: CopyButtonSize;
     onCopy?: (value: string) => void;
     onError?: (error: unknown) => void;
 }
-export declare function CopyButton({ value, label, copiedLabel, copiedDuration, onCopy, onError, variant, ...rest }: CopyButtonProps): import("react").JSX.Element;
+export declare function CopyButton({ value, label, copiedLabel, errorLabel, copiedDuration, size, onCopy, onError, variant, className, "aria-label": ariaLabel, ...rest }: CopyButtonProps): import("react").JSX.Element;
+export {};
+
+
+// ---- copy-button/use-copy-to-clipboard.d.ts ----
+export type CopyToClipboardState = "idle" | "copied" | "error";
+export type CopyToClipboardResult = {
+    ok: true;
+    value: string;
+} | {
+    ok: false;
+    error: unknown;
+};
+export declare function useCopyToClipboard(resetMs?: number): {
+    copy: (value: string | (() => string)) => Promise<CopyToClipboardResult>;
+    state: CopyToClipboardState;
+};
 
 
 // ---- date-picker/date-picker.d.ts ----
@@ -1229,7 +1260,7 @@ export type { ButtonGroupOrientation, ButtonGroupProps, } from "./button-group/b
 export { ButtonGroup } from "./button-group/button-group.js";
 export type { CalendarMode, CalendarProps, CalendarRangeValue, WeekdayIndex, } from "./calendar/calendar.js";
 export { Calendar } from "./calendar/calendar.js";
-export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardTitleProps, } from "./card/card.js";
+export type { CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardRootProps, CardSectionProps, CardTitleProps, } from "./card/card.js";
 export { Card } from "./card/card.js";
 export type { CheckboxProps, CheckboxSize, } from "./checkbox/checkbox.js";
 export { Checkbox } from "./checkbox/checkbox.js";
@@ -1255,8 +1286,10 @@ export type { ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenu
 export { ContextMenu } from "./context-menu/context-menu.js";
 export type { ContextualHelpProps, ContextualHelpVariant, } from "./contextual-help/contextual-help.js";
 export { ContextualHelp } from "./contextual-help/contextual-help.js";
-export type { CopyButtonProps } from "./copy-button/copy-button.js";
+export type { CopyButtonProps, CopyButtonSize, } from "./copy-button/copy-button.js";
 export { CopyButton } from "./copy-button/copy-button.js";
+export type { CopyToClipboardResult, CopyToClipboardState, } from "./copy-button/use-copy-to-clipboard.js";
+export { useCopyToClipboard } from "./copy-button/use-copy-to-clipboard.js";
 export type { DatePickerProps, DatePickerSize, } from "./date-picker/date-picker.js";
 export { DatePicker } from "./date-picker/date-picker.js";
 export type { DescriptionListItemProps, DescriptionListRootProps, } from "./description-list/description-list.js";
@@ -1365,7 +1398,7 @@ export type { SplitButtonProps } from "./split-button/split-button.js";
 export { SplitButton } from "./split-button/split-button.js";
 export type { StackAlign, StackDirection, StackGap, StackJustify, StackProps, } from "./stack/stack.js";
 export { Stack } from "./stack/stack.js";
-export type { StatProps, StatTrend } from "./stat/stat.js";
+export type { StatProps, StatTone, StatTrend } from "./stat/stat.js";
 export { Stat } from "./stat/stat.js";
 export type { StatusIndicatorProps, StatusIndicatorVariant, } from "./status-indicator/status-indicator.js";
 export { StatusIndicator } from "./status-indicator/status-indicator.js";
@@ -1375,7 +1408,7 @@ export type { SwitchProps, SwitchSize } from "./switch/switch.js";
 export { Switch } from "./switch/switch.js";
 export type { TableBodyProps, TableCaptionProps, TableCellProps, TableExpandButtonProps, TableExpandedRowProps, TableFooterProps, TableHeaderProps, TableHeadProps, TableRootProps, TableRowProps, TableSortDirection, } from "./table/table.js";
 export { Table } from "./table/table.js";
-export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsTabProps, } from "./tabs/tabs.js";
+export type { TabsListProps, TabsPanelProps, TabsRootProps, TabsSize, TabsTabProps, } from "./tabs/tabs.js";
 export { Tabs } from "./tabs/tabs.js";
 export type { TagProps, TagSize, TagVariant } from "./tag/tag.js";
 export { Tag } from "./tag/tag.js";
@@ -2010,12 +2043,13 @@ export interface RelativeTimeProps extends Omit<ComponentPropsWithRef<"time">, "
     date: Date | string | number;
     locale?: string;
     format?: RelativeTimeFormat;
+    formatter?: (elapsedMilliseconds: number) => string;
     numeric?: "always" | "auto";
     refreshInterval?: number;
     now?: Date | number;
     showTitle?: boolean;
 }
-export declare function RelativeTime({ ref, date, locale, format, numeric, refreshInterval, now, showTitle, title, className, ...rest }: RelativeTimeProps): import("react").JSX.Element;
+export declare function RelativeTime({ ref, date, locale, format, formatter, numeric, refreshInterval, now, showTitle, title, className, ...rest }: RelativeTimeProps): import("react").JSX.Element;
 
 
 // ---- resizable/resizable.d.ts ----
@@ -2374,16 +2408,18 @@ export declare function Stack({ ref, direction, gap, align, justify, wrap, class
 // ---- stat/stat.d.ts ----
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 export type StatTrend = "up" | "down" | "neutral";
+export type StatTone = "info" | "success" | "warning" | "danger";
 export interface StatProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     label: ReactNode;
     value: ReactNode;
     delta?: ReactNode;
     trend?: StatTrend;
+    tone?: StatTone;
     helpText?: ReactNode;
     children?: ReactNode;
 }
-export declare function Stat({ ref, label, value, delta, trend, helpText, className, children, ...rest }: StatProps): import("react").JSX.Element;
+export declare function Stat({ ref, label, value, delta, trend, tone, helpText, className, children, ...rest }: StatProps): import("react").JSX.Element;
 
 
 // ---- status-indicator/status-indicator.d.ts ----
@@ -2393,9 +2429,10 @@ export interface StatusIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
     ref?: Ref<HTMLSpanElement>;
     variant?: StatusIndicatorVariant;
     pulse?: boolean;
+    icon?: ReactNode;
     children?: ReactNode;
 }
-export declare function StatusIndicator({ ref, variant, pulse, className, children, ...rest }: StatusIndicatorProps): import("react").JSX.Element;
+export declare function StatusIndicator({ ref, variant, pulse, icon, className, children, ...rest }: StatusIndicatorProps): import("react").JSX.Element;
 
 
 // ---- stepper/stepper.d.ts ----
@@ -2508,6 +2545,7 @@ export {};
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import type { ChangeEventDetails } from "../shared/change-event-details.js";
 export type TabsOrientation = "horizontal" | "vertical";
+export type TabsSize = "small" | "medium";
 export interface TabsRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
     ref?: Ref<HTMLDivElement>;
     value?: unknown;
@@ -2530,9 +2568,10 @@ export interface TabsTabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
     nativeButton?: boolean;
     value: unknown;
     disabled?: boolean;
+    size?: TabsSize;
     children?: ReactNode;
 }
-declare function TabsTab({ className, children, ...rest }: TabsTabProps): import("react").JSX.Element;
+declare function TabsTab({ className, children, size, ...rest }: TabsTabProps): import("react").JSX.Element;
 export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>;
     value: unknown;

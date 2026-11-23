@@ -9,6 +9,7 @@ export interface RelativeTimeProps
   date: Date | string | number;
   locale?: string;
   format?: RelativeTimeFormat;
+  formatter?: (elapsedMilliseconds: number) => string;
   numeric?: "always" | "auto";
   refreshInterval?: number;
   now?: Date | number;
@@ -85,6 +86,7 @@ export function RelativeTime({
   date,
   locale,
   format = "long",
+  formatter,
   numeric = "auto",
   refreshInterval,
   now,
@@ -135,13 +137,9 @@ export function RelativeTime({
       ? explicitNowMs
       : currentTime;
 
-  const formattedText = formatRelativeTime(
-    ms,
-    referenceMs,
-    locale,
-    format,
-    numeric,
-  );
+  const formattedText = formatter
+    ? formatter(referenceMs - ms)
+    : formatRelativeTime(ms, referenceMs, locale, format, numeric);
   const resolvedTitle =
     title !== undefined
       ? title

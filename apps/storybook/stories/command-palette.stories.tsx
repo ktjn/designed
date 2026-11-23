@@ -1,7 +1,7 @@
 import { Button, CommandPalette } from "@ktjn/designed-react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
-import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, userEvent, within } from "storybook/test";
 
 const meta: Meta<typeof CommandPalette> = {
   title: "CommandPalette",
@@ -79,18 +79,17 @@ const SEARCH_RESULTS = [
 function AsyncSearchDemo() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [items, setItems] = useState(SEARCH_RESULTS);
+  const [results, setResults] = useState({ query: "", items: SEARCH_RESULTS });
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       const search = query.trim().toLowerCase();
-      setItems(
-        SEARCH_RESULTS.filter(
-          (item) =>
-            item.terms.includes(search) ||
-            item.label.toLowerCase().includes(search),
-        ),
+      const items = SEARCH_RESULTS.filter(
+        (item) =>
+          item.terms.includes(search) ||
+          item.label.toLowerCase().includes(search),
       );
+      setResults({ query, items });
     }, 150);
     return () => window.clearTimeout(timer);
   }, [query]);
@@ -106,7 +105,15 @@ function AsyncSearchDemo() {
         }}
         query={query}
         onQueryChange={setQuery}
-        items={items}
+        items={results.items}
+        status={
+          results.query !== query
+            ? { kind: "loading", message: "Searching workspace…" }
+            : undefined
+        }
+        getResultsAnnouncement={(count) =>
+          count === 1 ? "1 result" : `${count} results`
+        }
         filter={null}
         renderItem={(item) => (
           <span>
@@ -125,14 +132,20 @@ export const AsyncSearch: Story = {
       within(canvasElement).getByRole("button", { name: "Search workspace" }),
     );
     const body = within(document.body);
-    await userEvent.type(await body.findByRole("combobox"), "handbook");
+    const input = await body.findByRole("combobox");
+    const [pending] = await Promise.all([
+      body.findByText("Searching workspace…", {
+        selector: '[data-slot="command-palette-status"]',
+      }),
+      userEvent.type(input, "handbook"),
+    ]);
+    await expect(pending).toHaveAttribute("data-state", "loading");
+    await expect(await body.findByText("1 result")).toBeInTheDocument();
     await expect(
-      await body.findByText("Team Handbook · Document"),
+      body.getByRole("option", { name: "Team Handbook · Document" }),
     ).toBeInTheDocument();
-    await waitFor(() =>
-      expect(
-        body.queryByRole("option", { name: "Design System" }),
-      ).not.toBeInTheDocument(),
-    );
+    await expect(
+      body.queryByRole("option", { name: "Design System · Project" }),
+    ).not.toBeInTheDocument();
   },
 };
