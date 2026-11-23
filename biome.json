@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/api-report.d.ts"]
+    "includes": ["**", "!**/api-report.d.ts", "!.changeset/*.md"]
   },
   "formatter": {
     "enabled": true,
