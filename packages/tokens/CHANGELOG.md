@@ -1,5 +1,11 @@
 # @ktjn/design-tokens
 
+## 0.6.1
+
+### Patch Changes
+
+- 48d87c3: Compose nested color scheme, brand, and contrast settings with `light-dark()` so colors follow the effective theme. Preserve explicit `data-color-scheme` selections when a stylesheet also declares a native color scheme.
+
 ## 0.6.0
 
 ### Minor Changes

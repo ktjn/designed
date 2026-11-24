@@ -1,6 +1,6 @@
 {
   "name": "@ktjn/designed-tokens",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Framework-independent design tokens for Designed.",
   "type": "module",
   "license": "MIT",
