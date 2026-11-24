@@ -3,6 +3,11 @@ import type { TransformedToken } from "style-dictionary/types";
 
 const PRIMITIVES = "src/primitives/*.json";
 const SEMANTIC_BASE = "src/semantic/base.json";
+const DARK = "src/semantic/dark.json";
+const MORE = "src/semantic/contrast-more.json";
+const DARK_MORE = "src/semantic/contrast-more-dark.json";
+const EDITORIAL = "src/semantic/brand-editorial.json";
+const DARK_EDITORIAL = "src/semantic/brand-editorial-dark.json";
 
 const GENERATED_HEADER =
   "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n";
@@ -175,15 +180,150 @@ async function writeLayeredSheet(options: {
   destination: string;
   layer: string;
   blocks: string[];
+  composedBlocks?: string[];
 }) {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
   const outPath = path.join("dist/css", options.destination);
+  const blocks = options.composedBlocks
+    ? composedSheet(options.blocks, options.composedBlocks)
+    : options.blocks;
   await fs.mkdir(path.dirname(outPath), { recursive: true });
-  await fs.writeFile(
-    outPath,
-    wrapInLayer(options.layer, options.blocks.join("\n")),
+  await fs.writeFile(outPath, wrapInLayer(options.layer, blocks.join("\n")));
+}
+
+const LIGHT_DARK_SUPPORT = "(color: light-dark(white, black))";
+const SELECTED_ROLE = "ds-color-background-selected";
+const FOCUS_ROLE = "ds-color-border-focus";
+const SCHEME_SELECTED = "ds-scheme-selected";
+const CONTRAST_FOCUS = "ds-contrast-focus";
+
+function composedSheet(legacy: string[], composed: string[]): string[] {
+  return [
+    `@supports not ${LIGHT_DARK_SUPPORT} {\n${indentBlock(legacy.join("\n"))}\n}\n`,
+    `@supports ${LIGHT_DARK_SUPPORT} {\n${indentBlock(composed.join("\n"))}\n}\n`,
+  ];
+}
+
+function pairSchemeColors(
+  light: TransformedToken[],
+  dark: TransformedToken[],
+  names: Set<string>,
+): TransformedToken[] {
+  const darkValues = new Map(dark.map((token) => [token.name, token.$value]));
+  return light
+    .filter((token) => names.has(token.name))
+    .map((token) => {
+      const darkValue = darkValues.get(token.name);
+      if (darkValue === undefined || darkValue === token.$value) return token;
+      if (token.$type !== "color") {
+        throw new TypeError(
+          `Scheme-dependent token ${token.name} must be a color`,
+        );
+      }
+      return { ...token, $value: `light-dark(${token.$value}, ${darkValue})` };
+    });
+}
+
+function changedTokenNames(
+  tokens: TransformedToken[],
+  files: string[],
+): Set<string> {
+  return new Set(
+    tokens
+      .filter((token) => files.some((file) => isFromFile(file)(token)))
+      .map((token) => token.name),
   );
+}
+
+async function buildComposedThemes() {
+  const [light, dark, lightMore, darkMore, lightEditorial, darkEditorial] =
+    await Promise.all([
+      getPlatformTokens([PRIMITIVES, SEMANTIC_BASE]),
+      getPlatformTokens([PRIMITIVES, SEMANTIC_BASE, DARK]),
+      getPlatformTokens([PRIMITIVES, SEMANTIC_BASE, MORE]),
+      getPlatformTokens([PRIMITIVES, SEMANTIC_BASE, DARK, MORE, DARK_MORE]),
+      getPlatformTokens([PRIMITIVES, SEMANTIC_BASE, EDITORIAL]),
+      getPlatformTokens([
+        PRIMITIVES,
+        SEMANTIC_BASE,
+        DARK,
+        EDITORIAL,
+        DARK_EDITORIAL,
+      ]),
+    ]);
+  const schemeNames = changedTokenNames(dark, [DARK]);
+  const contrastNames = changedTokenNames(darkMore, [MORE, DARK_MORE]);
+  const editorialNames = changedTokenNames(darkEditorial, [
+    EDITORIAL,
+    DARK_EDITORIAL,
+  ]);
+  const scheme = pairSchemeColors(light, dark, schemeNames);
+  const selected = scheme.find((token) => token.name === SELECTED_ROLE);
+  const contrastDefault = pairSchemeColors(light, dark, contrastNames);
+  const contrastMore = pairSchemeColors(lightMore, darkMore, contrastNames);
+  const focusAlias = (tokens: TransformedToken[]) =>
+    tokens.flatMap((token) =>
+      token.name === FOCUS_ROLE
+        ? [
+            { ...token, name: CONTRAST_FOCUS },
+            { ...token, $value: `var(--${CONTRAST_FOCUS})` },
+          ]
+        : [token],
+    );
+  const brandDefault = light
+    .filter((token) => isBaseCssToken(token) && isBrandableToken(token))
+    .map((token) => {
+      const inherited =
+        token.name === SELECTED_ROLE
+          ? SCHEME_SELECTED
+          : token.name === FOCUS_ROLE
+            ? CONTRAST_FOCUS
+            : undefined;
+      return inherited
+        ? { ...token, $value: `var(--${inherited}, ${token.$value})` }
+        : token;
+    });
+
+  return {
+    scheme: [
+      formatBlock({
+        tokens: selected
+          ? [...scheme, { ...selected, name: SCHEME_SELECTED }]
+          : scheme,
+        selector: ":root",
+      }),
+      ":root { color-scheme: light; }\n",
+      '@media (prefers-color-scheme: dark) {\n  :root:not([data-color-scheme="light"]) { color-scheme: dark; }\n}\n',
+      '[data-color-scheme="light"] { color-scheme: light only !important; }\n',
+      '[data-color-scheme="dark"] { color-scheme: dark only !important; }\n',
+    ],
+    contrast: [
+      formatBlock({
+        tokens: focusAlias(contrastMore),
+        selector: ':root:not([data-contrast="default"])',
+        media: "(prefers-contrast: more)",
+      }),
+      formatBlock({
+        tokens: focusAlias(contrastMore),
+        selector: '[data-contrast="more"]',
+      }),
+      formatBlock({
+        tokens: focusAlias(contrastDefault),
+        selector: '[data-contrast="default"]',
+      }),
+      `@scope ([data-brand]:not([data-brand="default"])) to ([data-brand]) {\n  :scope :is([data-contrast="default"], [data-contrast="more"]) {\n    --${FOCUS_ROLE}: inherit;\n  }\n}\n`,
+    ],
+    brandDefault: [
+      formatBlock({ tokens: brandDefault, selector: '[data-brand="default"]' }),
+    ],
+    editorial: [
+      formatBlock({
+        tokens: pairSchemeColors(lightEditorial, darkEditorial, editorialNames),
+        selector: '[data-brand="editorial"]',
+      }),
+    ],
+  };
 }
 
 export async function buildTokens() {
@@ -213,9 +353,12 @@ export async function buildTokens() {
     ],
   });
 
+  const composed = await buildComposedThemes();
+
   await writeLayeredSheet({
     destination: "schemes/dark.css",
     layer: "ds.tokens.scheme",
+    composedBlocks: composed.scheme,
     blocks: [
       await renderResetBlock({
         matchSourceFiles: ["src/semantic/dark.json"],
@@ -237,6 +380,7 @@ export async function buildTokens() {
   await writeLayeredSheet({
     destination: "contrasts/more.css",
     layer: "ds.tokens.contrast",
+    composedBlocks: composed.contrast,
     blocks: [
       await renderResetBlock({
         matchSourceFiles: [
@@ -332,6 +476,7 @@ export async function buildTokens() {
   await writeLayeredSheet({
     destination: "brands/default.css",
     layer: "ds.tokens.brand",
+    composedBlocks: composed.brandDefault,
     blocks: [
       formatBlock({
         tokens: baseValueTokens,
@@ -393,6 +538,7 @@ export async function buildTokens() {
   await writeLayeredSheet({
     destination: "brands/editorial.css",
     layer: "ds.tokens.brand",
+    composedBlocks: composed.editorial,
     blocks: [
       await renderOverrideBlock({
         sourceFile: "src/semantic/brand-editorial.json",
