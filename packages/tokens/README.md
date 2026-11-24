@@ -27,6 +27,8 @@ Or import individual dimension sheets:
 
 All rules use ordered cascade sub-layers: `@layer ds.tokens.base, ds.tokens.density, ds.tokens.scheme, ds.tokens.contrast, ds.tokens.brand, ds.components;`.
 
+With individual sheets, include `schemes/dark.css` to resolve light and dark colors for a scope. Browsers that support `light-dark()` resolve scheme-dependent tokens at the element that paints them. Read the computed CSS color on that element when you need the resolved value. An explicit `data-color-scheme` sets the native scheme for that scope and takes precedence over ordinary `color-scheme` declarations on the same element. The bundle includes legacy theme rules for browsers without `light-dark()`.
+
 ## Custom Brands
 
 Author custom brand themes inside `@layer ds.tokens.brand` using `[data-brand="<name>"]`:
@@ -44,3 +46,5 @@ Author custom brand themes inside `@layer ds.tokens.brand` using `[data-brand="<
 ```
 
 Nested `[data-brand="default"]` scopes in `brands/default.css` reset brandable tokens (action colors, focus border, selected background, font families, radii, shadows, and motion) without clobbering active density or color-scheme dimensions.
+
+In browsers with CSS `@scope` support, focus colors inherit through named brand scopes when a nested scope changes contrast. Supply a focus color for a custom brand, or add an inner `data-brand="default"` scope to use the system focus color for the effective contrast.
