@@ -34,7 +34,7 @@ jobs:
       - run: pnpm build
       - name: Publish to Chromatic
         if: ${{ env.HAS_CHROMATIC_TOKEN == 'true' }}
-        uses: chromaui/action@98132da0fca2211fb41b3af7b49ce85176007851 # v17
+        uses: chromaui/action@0a7067e5ffc663a631b14db505d8a94b26e1bf2f # v18.15.3
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         with:
@@ -82,7 +82,7 @@ jobs:
       - run: pnpm build
       - name: Publish to Chromatic
         if: ${{ env.HAS_CHROMATIC_TOKEN == 'true' }}
-        uses: chromaui/action@98132da0fca2211fb41b3af7b49ce85176007851 # v17
+        uses: chromaui/action@0a7067e5ffc663a631b14db505d8a94b26e1bf2f # v18.15.3
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         with:
